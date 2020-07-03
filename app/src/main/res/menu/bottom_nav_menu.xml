@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_home"
+        android:enabled="true"
+        android:visible="true"
+        android:title="@string/home"
+        app:cnb_iconColor="@color/colorAccent"
+        android:icon="@drawable/home" />
+
+    <item
+        android:id="@+id/nav_groups"
+        android:enabled="true"
+        android:title="Groups"
+        android:icon="@drawable/groupsicon"
+        app:cnb_iconColor="@color/blue"/>
+
+
+    <item
+        android:id="@+id/nav_settings"
+        android:enabled="true"
+        android:visible="true"
+        app:cnb_iconColor="@color/oppBackground"
+        android:icon="@drawable/settingsicon"
+        android:title="settings" />
+
+</menu>
