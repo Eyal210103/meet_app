@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/homeFragment"
         android:enabled="true"
         android:visible="true"
         android:title="@string/home"
+        android:iconTint="@color/colorAccent"
         app:cnb_iconColor="@color/colorAccent"
         android:icon="@drawable/home" />
 
     <item
-        android:id="@+id/nav_groups"
+        android:id="@+id/groupInfoFragment"
         android:enabled="true"
         android:title="Groups"
         android:icon="@drawable/groupsicon"
