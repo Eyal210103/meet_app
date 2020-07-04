@@ -11,8 +11,13 @@
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" />
     <fragment
-        android:id="@+id/groupInfoFragment"
-        android:name="com.example.meetapp.groupInfo.groupInfoFragment"
-        android:label="group_info_fragment"
-        tools:layout="@layout/group_info_fragment" />
+        android:id="@+id/socialMenuFragment"
+        android:name="com.example.meetapp.ui.socialInfo.SocialMenuFragment"
+        android:label="social_menu_fragment"
+        tools:layout="@layout/social_menu_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.meetapp.ui.settings.settingsFragment"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
 </navigation>

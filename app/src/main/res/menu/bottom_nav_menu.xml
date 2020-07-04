@@ -12,7 +12,7 @@
         android:icon="@drawable/home" />
 
     <item
-        android:id="@+id/groupInfoFragment"
+        android:id="@+id/socialMenuFragment"
         android:enabled="true"
         android:title="Groups"
         android:icon="@drawable/groupsicon"
@@ -20,7 +20,7 @@
 
 
     <item
-        android:id="@+id/nav_settings"
+        android:id="@+id/settingsFragment"
         android:enabled="true"
         android:visible="true"
         app:cnb_iconColor="@color/oppBackground"
