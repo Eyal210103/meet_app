@@ -11,7 +11,8 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        app:tabTextColor="@color/colorAccent"
+        app:tabTextColor="@color/oppBackground"
+        app:tabSelectedTextColor="@color/colorAccent"
         android:theme="@style/AppTheme"
         android:layout_height="wrap_content">
 

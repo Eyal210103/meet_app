@@ -66,7 +66,7 @@ public class SocialMenuFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText("OBJECT " + (position + 1));
+                tab.setText(titles[position]);
             }
         }
         ).attach();

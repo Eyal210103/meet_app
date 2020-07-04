@@ -1,5 +1,6 @@
 package com.example.meetapp;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
