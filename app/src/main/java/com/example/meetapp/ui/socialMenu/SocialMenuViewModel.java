@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.socialInfo;
+package com.example.meetapp.ui.socialMenu;
 
 import androidx.lifecycle.ViewModel;
 

@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.socialInfo.SocialMenuFragment">
+    android:orientation="vertical">
 
-</FrameLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/colorAccent">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="Chat" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="Groups" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="Meetings" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

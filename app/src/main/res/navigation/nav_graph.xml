@@ -12,7 +12,7 @@
         tools:layout="@layout/home_fragment" />
     <fragment
         android:id="@+id/socialMenuFragment"
-        android:name="com.example.meetapp.ui.socialInfo.SocialMenuFragment"
+        android:name="com.example.meetapp.ui.socialMenu.SocialMenuFragment"
         android:label="social_menu_fragment"
         tools:layout="@layout/social_menu_fragment" />
     <fragment
