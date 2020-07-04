@@ -25,6 +25,9 @@ import android.view.ViewGroup;
 
 import com.example.meetapp.R;
 import com.example.meetapp.ui.home.HomeFragment;
+import com.example.meetapp.ui.socialMenu.GroupsChats.GroupsChatsFragment;
+import com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment;
+import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -71,29 +74,24 @@ public class SocialMenuFragment extends Fragment {
         }
         ).attach();
     }
-
-
-
-
 }
 class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
     public ViewPagerFragmentAdapter(FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new HomeFragment();
+                return new GroupsChatsFragment();
             case 1:
-                return new HomeFragment();
+                return new MyGroupsFragment();
             case 2:
-                return new HomeFragment();
+                return new MyMeetingsFragment();
         }
-        return new HomeFragment();
+        return new MyGroupsFragment();
     }
 
     @Override
