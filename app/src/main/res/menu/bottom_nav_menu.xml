@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
@@ -7,24 +8,20 @@
         android:enabled="true"
         android:visible="true"
         android:title="@string/home"
-        android:iconTint="@color/colorAccent"
-        app:cnb_iconColor="@color/colorAccent"
-        android:icon="@drawable/home" />
+        android:icon="@drawable/home"/>
 
     <item
         android:id="@+id/socialMenuFragment"
         android:enabled="true"
-        android:title="Groups"
-        android:icon="@drawable/groupsicon"
-        app:cnb_iconColor="@color/blue"/>
+        android:title="@string/groups"
+        android:icon="@drawable/groupsicon" />
 
 
     <item
         android:id="@+id/settingsFragment"
         android:enabled="true"
         android:visible="true"
-        app:cnb_iconColor="@color/oppBackground"
         android:icon="@drawable/settingsicon"
-        android:title="settings" />
+        android:title="@string/settings" />
 
 </menu>
