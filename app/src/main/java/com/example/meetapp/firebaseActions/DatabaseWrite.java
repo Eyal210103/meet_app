@@ -1,4 +1,4 @@
-package com.example.meetapp;
+package com.example.meetapp.firebaseActions;
 
 import androidx.annotation.NonNull;
 
