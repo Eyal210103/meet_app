@@ -9,12 +9,11 @@
 
 
     <com.google.android.material.tabs.TabLayout
-        style="@style/Widget.MaterialComponents.TabLayout.Colored"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:background="@color/colorAccent">
+        app:tabTextColor="@color/colorAccent"
+        android:theme="@style/AppTheme"
+        android:layout_height="wrap_content">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="50dp"
@@ -32,10 +31,10 @@
             android:text="Meetings" />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
