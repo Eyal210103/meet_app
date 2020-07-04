@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
+        //mAuth.signOut();
         if (mAuth.getCurrentUser() != null){
             CurrentUser.firebaseUserToAppUser(mAuth.getCurrentUser());
             openMainAppScreen();
