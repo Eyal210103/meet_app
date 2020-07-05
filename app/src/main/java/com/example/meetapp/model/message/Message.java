@@ -1,14 +1,16 @@
-package com.example.meetapp.model;
+package com.example.meetapp.model.message;
 
 public class Message {
     private String senderId;
     private String senderDisplayName;
+    private String context;
     private String hour; // HH:MM format
     private int day;
 
-    public Message(String senderId, String senderDisplayName, String hour, int day) {
+    public Message(String senderId, String senderDisplayName, String context, String hour, int day) {
         this.senderId = senderId;
         this.senderDisplayName = senderDisplayName;
+        this.context = context;
         this.hour = hour;
         this.day = day;
     }
@@ -30,6 +32,14 @@ public class Message {
 
     public void setSenderDisplayName(String senderDisplayName) {
         this.senderDisplayName = senderDisplayName;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public String getHour() {
