@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.example.meetapp.R;
 
+import java.util.Objects;
+
 public class GroupInfoFragment extends Fragment {
 
     private GroupInfoViewModel mViewModel;
@@ -25,14 +27,16 @@ public class GroupInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.group_info_fragment, container, false);
+        View view = inflater.inflate(R.layout.group_info_fragment, container, false);
+
+        return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
-        // TODO: Use the ViewModel
+        mViewModel.init(this.requireContext(),"");
     }
 
 }
