@@ -71,7 +71,6 @@ class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
-
     }
 
     @Override
