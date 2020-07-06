@@ -21,7 +21,7 @@ public class MyGroupsViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Map<String, MutableLiveData<Group>>> getGroupMutableLiveData() {
+    public LiveData<Map<String, MutableLiveData<Group>>> getGroups() {
         return map;
     }
 }
