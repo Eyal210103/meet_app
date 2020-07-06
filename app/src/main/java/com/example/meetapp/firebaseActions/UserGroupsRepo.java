@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class UserGroupsRepo {
 
-    Map<String,MutableLiveData<Group>> map = new HashMap<>();
+    HashMap<String,MutableLiveData<Group>> map = new HashMap<>();
     static UserGroupsRepo instance = null;
     private static Context context;
 
@@ -36,9 +36,9 @@ public class UserGroupsRepo {
         return instance;
     }
 
-    public MutableLiveData<Map<String,MutableLiveData<Group>>> getGroups(){
+    public MutableLiveData<HashMap<String,MutableLiveData<Group>>> getGroups(){
         loadGroups();
-        MutableLiveData<Map<String,MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
+        MutableLiveData<HashMap<String,MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(map);
         return mutableLiveData;
     }

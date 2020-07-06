@@ -21,6 +21,7 @@ import com.example.meetapp.R;
 import com.example.meetapp.model.Group;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,9 +55,9 @@ public class MyGroupsFragment extends Fragment {
 class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder> {
 
     Context context;
-    Map<String,MutableLiveData<Group>> map;
+    HashMap<String,MutableLiveData<Group>> map;
 
-    public GroupsAdapter(Context context, Map<String,MutableLiveData<Group>> map) {
+    public GroupsAdapter(Context context, HashMap<String,MutableLiveData<Group>> map) {
         this.context = context;
         this.map = map;
     }
