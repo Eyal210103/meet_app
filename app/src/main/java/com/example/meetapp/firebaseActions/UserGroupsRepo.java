@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.meetapp.dataLoadListener.GroupUpdatedListener;
 import com.example.meetapp.dataLoadListener.GroupsLoadListener;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
@@ -83,6 +84,8 @@ public class UserGroupsRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 groupMutableLiveData.setValue(snapshot.getValue(Group.class));
+                GroupUpdatedListener listener= (GroupUpdatedListener)context;
+                listener.onGroupUpdated(snapshot.getKey());
             }
 
             @Override
