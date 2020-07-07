@@ -38,7 +38,7 @@ import static android.widget.LinearLayout.VERTICAL;
 public class MyGroupsFragment extends Fragment {
 
     private MyGroupsViewModel mViewModel;
-
+    RecyclerView recyclerView;
     public static MyGroupsFragment newInstance() {
         return new MyGroupsFragment();
     }
@@ -58,8 +58,14 @@ public class MyGroupsFragment extends Fragment {
 
         FloatingActionButton floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         FloatingActionButton floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
-        RecyclerView recyclerView = view.findViewById(R.id.groups_recycler_view);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+         recyclerView = view.findViewById(R.id.groups_recycler_view);
+
+
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+
+        recyclerView.setHasFixedSize(true);
 
         ArrayList<MutableLiveData<Group>> groups = new ArrayList<>();
         Group group = new Group();
@@ -69,8 +75,7 @@ public class MyGroupsFragment extends Fragment {
         g.setValue(group);
         groups.add(g);
         GroupsAdapter adapter = new GroupsAdapter(getContext(), groups);
-
-        recyclerView.setLayoutManager(horizontalLayoutManager);
+        recyclerView.setAdapter(adapter);
 
         floatingActionButtonCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +83,6 @@ public class MyGroupsFragment extends Fragment {
                 navController.navigate(R.id.action_socialMenuFragment_to_createGroupFragment2);
             }
         });
-
 
         recyclerView.setAdapter(adapter);
 
