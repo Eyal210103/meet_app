@@ -9,6 +9,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -44,10 +47,19 @@ public class MyGroupsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.my_groups_fragment, container, false);
+
+        final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
         FloatingActionButton floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         FloatingActionButton floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
         RecyclerView recyclerView = view.findViewById(R.id.groups_recycler_view);
 
+        floatingActionButtonCreateGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_socialMenuFragment_to_createGroupFragment2);
+            }
+        });
         return view;
     }
 }

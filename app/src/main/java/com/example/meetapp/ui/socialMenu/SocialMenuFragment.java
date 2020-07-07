@@ -50,9 +50,16 @@ public class SocialMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.social_menu_fragment, container, false);
-        tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.viewpager);
-        init();
+        viewPager.setAdapter(new ViewPagerFragmentAdapter(requireActivity()));
+        tabLayout = view.findViewById(R.id.tab_layout);
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(titles[position]);
+            }
+        }
+        ).attach();
         return view;
     }
 
@@ -64,7 +71,6 @@ public class SocialMenuFragment extends Fragment {
 
 
     private void init() {
-
         viewPager.setAdapter(new ViewPagerFragmentAdapter(getActivity()));
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

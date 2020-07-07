@@ -10,10 +10,11 @@ import androidx.lifecycle.ViewModel;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.example.meetapp.model.Group;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MyGroupsViewModel extends ViewModel {
-    MutableLiveData<Map<String, MutableLiveData<Group>>> map = null;
+    MutableLiveData<HashMap<String, MutableLiveData<Group>>> map = null;
 
     public void init(@NonNull Context context) {
         if (map == null){
@@ -21,7 +22,7 @@ public class MyGroupsViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Map<String, MutableLiveData<Group>>> getGroups() {
+    public LiveData<HashMap<String, MutableLiveData<Group>>> getGroups() {
         return map;
     }
 }
