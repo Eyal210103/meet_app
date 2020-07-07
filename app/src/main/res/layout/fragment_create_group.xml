@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/main_app_design"
                 android:text=""
-                android:textSize="20sp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/main_app_design"
                 android:text=""
-                android:textSize="20sp" />
+                android:textSize="23sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
