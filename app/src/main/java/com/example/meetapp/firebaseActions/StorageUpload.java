@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
 import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
@@ -20,8 +21,8 @@ public class StorageUpload {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-    public static void uploadGroupImage(final Context context, final String groupId , byte[] data){
-                reference.child("Group").child(groupId).putBytes(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+    public static void uploadGroupImage(final Fragment context, final String groupId , byte[] data){
+                reference.child("Groups Images").child(groupId).putBytes(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()){
@@ -33,6 +34,7 @@ public class StorageUpload {
                                         PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
                                         photoUploadCompleteListener.onPhotoUploadComplete();
                                     }else {
+                                        reference.child("Group").child(groupId).delete();
                                         PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
                                         photoUploadErrorListener.onPhotoUploadError();
                                     }

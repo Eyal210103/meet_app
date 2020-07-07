@@ -51,7 +51,8 @@ public class SocialMenuFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.social_menu_fragment, container, false);
         viewPager = view.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ViewPagerFragmentAdapter(requireActivity()));
+        ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(getActivity());
+        viewPager.setAdapter(adapter);
         tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -79,30 +80,6 @@ public class SocialMenuFragment extends Fragment {
             }
         }
         ).attach();
-    }
-}
-class ViewPagerFragmentAdapter extends FragmentStateAdapter {
-
-    public ViewPagerFragmentAdapter(FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
-    }
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return new GroupsChatsFragment();
-            case 1:
-                return new MyGroupsFragment();
-            case 2:
-                return new MyMeetingsFragment();
-        }
-        return new MyGroupsFragment();
-    }
-
-    @Override
-    public int getItemCount() {
-        return 3;
     }
 }
 

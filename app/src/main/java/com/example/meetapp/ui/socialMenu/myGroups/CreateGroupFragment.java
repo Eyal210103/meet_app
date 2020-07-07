@@ -22,6 +22,8 @@ import com.example.meetapp.R;
 import com.example.meetapp.firebaseActions.DatabaseWrite;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.Group;
+import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
+import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -36,15 +38,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.app.Activity.RESULT_OK;
 
 
-public class CreateGroupFragment extends Fragment {
+public class CreateGroupFragment extends Fragment implements PhotoUploadCompleteListener, PhotoUploadErrorListener {
 
     private static final int PICK_IMAGE = 52;
     EditText groupNameEditText;
     EditText groupSubjectEditText;
     CircleImageView groupImageCIV;
-    private Uri imageUri;
-    private Bitmap bitmap;
-    private Group newGroup;
     ProgressDialog progressDialog;
 
     @Override
@@ -56,11 +55,24 @@ public class CreateGroupFragment extends Fragment {
         groupNameEditText = view.findViewById(R.id.create_group_group_name_et);
         groupSubjectEditText = view.findViewById(R.id.create_group_group_subject);
 
+        view.findViewById(R.id.create_group_choose_img_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGalleryGroup();
+            }
+        });
+
+        view.findViewById(R.id.creat_group_submit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickCreateGroup();
+            }
+        });
         return view;
     }
 
     private void onClickCreateGroup() {
-        this.newGroup = new Group();
+        Group newGroup = new Group();
         boolean isGood = false;
         String name = "";
         String sub = "";
@@ -71,27 +83,29 @@ public class CreateGroupFragment extends Fragment {
                 sub = groupSubjectEditText.getText().toString();
             }
             if (isGood) {
-                this.newGroup.setName(name);
-                this.newGroup.setSubject(sub);
+                newGroup.setName(name);
+                newGroup.setSubject(sub);
                 final String groupImageURL = "https://www.liberaldictionary.com/wp-content/uploads/2018/11/null.png";
+                newGroup.setPhotoUrl(groupImageURL);
                 groupImageCIV.setDrawingCacheEnabled(true);
                 groupImageCIV.buildDrawingCache();
+
                 String id = DatabaseWrite.AddOrUpdateGroupGetID(newGroup);
+
                 Bitmap bitmap = ((BitmapDrawable) groupImageCIV.getDrawable()).getBitmap();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
                 byte[] data = baos.toByteArray();
                 progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle("Creating , Please Wait..");
                 progressDialog.show();
-                StorageUpload.uploadGroupImage(getContext(),id,data);
+                StorageUpload.uploadGroupImage(this,id,data);
             }
         } else {
            // errors.setText("Type");
         }
     }
-
 
     private void openGalleryGroup() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -102,13 +116,24 @@ public class CreateGroupFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            this.imageUri = data.getData();
-            groupImageCIV.setImageURI(this.imageUri);
+            Uri imageUri = data.getData();
+            groupImageCIV.setImageURI(imageUri);
             try {
-                this.bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri); //TODO check if need
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onPhotoUploadComplete() {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void onPhotoUploadError() {
+        progressDialog.dismiss();
+        Toast.makeText(getActivity(), "Photo Wont Upload... \n Try Again Later", Toast.LENGTH_SHORT).show();
     }
 }
