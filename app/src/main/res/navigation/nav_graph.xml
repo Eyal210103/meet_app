@@ -29,10 +29,20 @@
         android:id="@+id/myGroupsFragment"
         android:name="com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment"
         android:label="my_groups_fragment"
-        tools:layout="@layout/my_groups_fragment" />
+        tools:layout="@layout/my_groups_fragment" >
+        <action
+            android:id="@+id/action_myGroupsFragment_to_createGroupFragment"
+            app:destination="@id/createGroupFragment"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
+    </fragment>
     <fragment
         android:id="@+id/myMeetingsFragment"
         android:name="com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment"
         android:label="my_meetings_fragment"
         tools:layout="@layout/my_meetings_fragment" />
+    <fragment
+        android:id="@+id/createGroupFragment"
+        android:name="com.example.meetapp.ui.socialMenu.CreateGroupFragment"
+        android:label="fragment_create_group"
+        tools:layout="@layout/fragment_create_group" />
 </navigation>

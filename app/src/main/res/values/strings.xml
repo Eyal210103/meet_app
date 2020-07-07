@@ -7,4 +7,10 @@
     <string name="home">Home</string>
     <string name="groups">Groups</string>
     <string name="settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_s_subject">Group\'s Subject</string>
+    <string name="create_group">Create Group</string>
 </resources>
