@@ -8,11 +8,12 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
-        app:itemBackground="@color/background"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:background="@color/background"
+        app:itemIconTint="@drawable/nav_bar_color"
+        app:itemTextColor="@drawable/nav_bar_color"
         app:menu="@menu/bottom_nav_menu"
         app:cnb_menuResource="@menu/bottom_nav_menu"
         app:cnb_orientationMode="horizontal"

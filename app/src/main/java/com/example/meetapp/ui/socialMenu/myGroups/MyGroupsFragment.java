@@ -58,13 +58,11 @@ public class MyGroupsFragment extends Fragment {
 
         FloatingActionButton floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         FloatingActionButton floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
-         recyclerView = view.findViewById(R.id.groups_recycler_view);
-
+        recyclerView = view.findViewById(R.id.groups_recycler_view);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-
         recyclerView.setHasFixedSize(true);
 
         ArrayList<MutableLiveData<Group>> groups = new ArrayList<>();
@@ -74,7 +72,7 @@ public class MyGroupsFragment extends Fragment {
         MutableLiveData<Group> g = new MutableLiveData<Group>();
         g.setValue(group);
         groups.add(g);
-        GroupsAdapter adapter = new GroupsAdapter(getContext(), groups);
+        GroupsAdapter adapter = new GroupsAdapter(requireActivity(), groups);
         recyclerView.setAdapter(adapter);
 
         floatingActionButtonCreateGroup.setOnClickListener(new View.OnClickListener() {

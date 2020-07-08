@@ -45,10 +45,10 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     @Override
     public int getItemCount() {
-        return 0;
+        return map.size();
     }
 
-    class GroupsViewHolder extends RecyclerView.ViewHolder {
+    static class GroupsViewHolder extends RecyclerView.ViewHolder {
         CircleImageView groupImage;
         TextView groupName;
         ImageView subject;

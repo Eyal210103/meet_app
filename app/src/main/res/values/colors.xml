@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#787878</color>
     <color name="colorAccent">#FFA952</color>
     <color name="background">#FFFFFF</color>
+    <color name="backgroundSec">#9F9F9F</color>
     <color name="oppBackground">#202020</color>
     <color name="blue">#2979FF</color>
     <color name="colorAlt">#F44336</color>
+
 </resources>
