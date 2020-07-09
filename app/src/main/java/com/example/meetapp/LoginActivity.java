@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             CurrentUser.firebaseUserToAppUser(mAuth.getCurrentUser());
-                            DatabaseWrite.AddOrUpdateUser(CurrentUser.getCurrentUser());
+                            DatabaseWrite.addOrUpdateUser(CurrentUser.getCurrentUser());
                             Toast.makeText(getApplicationContext(), "Authentication succeed.", Toast.LENGTH_SHORT).show();
                             openMainAppScreen();
                         } else {

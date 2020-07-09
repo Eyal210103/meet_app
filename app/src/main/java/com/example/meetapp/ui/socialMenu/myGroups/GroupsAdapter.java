@@ -8,7 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,10 +24,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder> {
 
-    Context context;
+    Fragment context;
     ArrayList<MutableLiveData<Group>> map;
 
-    public GroupsAdapter(Context context, ArrayList<MutableLiveData<Group>> map) {
+    public GroupsAdapter(Fragment context, ArrayList<MutableLiveData<Group>> map) {
         this.context = context;
         this.map = map;
     }
@@ -40,7 +43,15 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
         Group current = map.get(position).getValue();
         holder.groupName.setText(current.getName());
-        Glide.with(context).load(current.getPhotoUrl()).into(holder.groupImage);
+        Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment);
+
+            }
+        });
     }
 
     @Override

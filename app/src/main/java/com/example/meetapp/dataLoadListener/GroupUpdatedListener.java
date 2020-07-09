@@ -1,5 +1,5 @@
 package com.example.meetapp.dataLoadListener;
 
 public interface GroupUpdatedListener {
-    void onGroupUpdated(String key);
+    void onGroupUpdated();
 }

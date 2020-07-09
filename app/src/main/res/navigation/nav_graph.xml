@@ -55,5 +55,10 @@
         android:id="@+id/groupInfoFragment"
         android:name="com.example.meetapp.ui.groupInfo.GroupInfoFragment"
         android:label="group_info_fragment"
-        tools:layout="@layout/group_info_fragment" />
+        tools:layout="@layout/group_info_fragment" >
+        <argument
+            android:name="arg"
+            app:argType="Group"
+            android:defaultValue="@null"/>
+    </fragment>
 </navigation>

@@ -1,6 +1,8 @@
 package com.example.meetapp.model;
 
-public class Group {
+import java.io.Serializable;
+
+public class Group implements Serializable {
 
     private String name;
     private String id;

@@ -2,6 +2,7 @@ package com.example.meetapp.firebaseActions;
 
 import androidx.annotation.NonNull;
 
+import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,16 +16,20 @@ public class DatabaseWrite {
     private static String userRef = "Users";
     private static String groupsRef = "Groups";
 
-    public static void AddOrUpdateUser(User user){
+    public static void addOrUpdateUser(User user){
         database.getReference().child(userRef).child(user.getId()).setValue(user);
     }
 
-
-
-    public static String AddOrUpdateGroupGetID(Group group){
+    public static String addOrUpdateGroupGetID(Group group){
        DatabaseReference reference = database.getReference().child(groupsRef).push();
        group.setId(reference.getKey());
        reference.setValue(group);
-       return reference.getKey().toString();
+       addUserToGroup(CurrentUser.getCurrentUser().getId(),group.getId());
+       return reference.getKey();
+    }
+
+    public static void addUserToGroup(String userId , String groupsId){
+        database.getReference().child(groupsRef).child(groupsId).child("Members").child(userId).setValue(userId);
+        database.getReference().child(userRef).child(userId).child("Groups").child(groupsId).setValue(groupsId);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.meetapp.ui.socialMenu.myGroups;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.dataLoadListener.GroupUpdatedListener;
 import com.example.meetapp.model.Group;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,10 +38,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.widget.LinearLayout.VERTICAL;
 
-public class MyGroupsFragment extends Fragment {
+public class MyGroupsFragment extends Fragment implements GroupUpdatedListener {
 
     private MyGroupsViewModel mViewModel;
     RecyclerView recyclerView;
+    GroupsAdapter adapter;
     public static MyGroupsFragment newInstance() {
         return new MyGroupsFragment();
     }
@@ -55,6 +59,8 @@ public class MyGroupsFragment extends Fragment {
         View view = inflater.inflate(R.layout.my_groups_fragment, container, false);
 
         final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        mViewModel.init(this);
+        adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue());
 
         FloatingActionButton floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         FloatingActionButton floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
@@ -65,14 +71,6 @@ public class MyGroupsFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<MutableLiveData<Group>> groups = new ArrayList<>();
-        Group group = new Group();
-        group.setName("TRY");
-        group.setPhotoUrl("https://www.liberaldictionary.com/wp-content/uploads/2018/11/null.png");
-        MutableLiveData<Group> g = new MutableLiveData<Group>();
-        g.setValue(group);
-        groups.add(g);
-        GroupsAdapter adapter = new GroupsAdapter(requireActivity(), groups);
         recyclerView.setAdapter(adapter);
 
         floatingActionButtonCreateGroup.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +83,16 @@ public class MyGroupsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onGroupUpdated() {
+        try {
+            adapter.notifyDataSetChanged();
+
+        }catch (Exception ignored){
+
+        }
     }
 }
 

@@ -1,15 +1,19 @@
 package com.example.meetapp.firebaseActions;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.dataLoadListener.GroupUpdatedListener;
 import com.example.meetapp.dataLoadListener.GroupsLoadListener;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
+import com.example.meetapp.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,11 +25,14 @@ import java.util.HashMap;
 
 public class UserGroupsRepo {
 
-    HashMap<String,MutableLiveData<Group>> map = new HashMap<>();
-    static UserGroupsRepo instance = null;
-    private static Context context;
+    private static User thisUser = CurrentUser.getCurrentUser();
+    ArrayList<MutableLiveData<Group>> map = new ArrayList<MutableLiveData<Group>>();
+    ArrayList<String> ids = new ArrayList<>();
 
-    public static UserGroupsRepo getInstance(Context context){
+    static UserGroupsRepo instance = null;
+    private static Fragment context;
+
+    public static UserGroupsRepo getInstance(Fragment context){
         UserGroupsRepo.context = context;
         if (instance == null){
             instance = new UserGroupsRepo();
@@ -33,45 +40,59 @@ public class UserGroupsRepo {
         return instance;
     }
 
-    public MutableLiveData<HashMap<String,MutableLiveData<Group>>> getGroups(){
+    public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
         loadGroups();
-        MutableLiveData<HashMap<String,MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
+        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getCurrentUser().getId()).child("Groups")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        String key = snapshot.getValue(String.class);
+                        Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
+                        boolean isThere = false;
+                        for (String s : ids) {
+                            if (s.equals(key)) {
+                                isThere = true;
+                                break;
+                            }
+                        }
+                        if (!isThere) {
+                            MutableLiveData<Group> groupMutableLiveData = putGroupsData(key);
+                            map.add(groupMutableLiveData);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        String key = snapshot.getValue(String.class);
+                        for (MutableLiveData<Group> g : map) {
+                            if (key.equals(g.getValue().getId())) {
+                                map.remove(g);
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+        MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(map);
+        GroupUpdatedListener listener= (GroupUpdatedListener)context;
+        listener.onGroupUpdated();
         return mutableLiveData;
     }
 
     private void loadGroups() {
-        Query reference = FirebaseDatabase.getInstance().getReference().child(CurrentUser.getCurrentUser().getId()).child("Groups");
-        reference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String key = snapshot.getValue(String.class);
-                if (!map.containsKey(key)) {
-                    map.put(key, putGroupsData(key));
-                    GroupsLoadListener listener= (GroupsLoadListener)context;
-                    listener.onGroupsLoad();
-                }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                map.remove(snapshot.getKey());
-                GroupsLoadListener listener= (GroupsLoadListener)context;
-                listener.onGroupsLoad();
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
     }
 
     private MutableLiveData<Group> putGroupsData(String key){
@@ -81,8 +102,9 @@ public class UserGroupsRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 groupMutableLiveData.setValue(snapshot.getValue(Group.class));
+                Log.d("observer", "onChanged: " + snapshot.getValue(Group.class).toString() + "**********************************************************");
                 GroupUpdatedListener listener= (GroupUpdatedListener)context;
-                listener.onGroupUpdated(snapshot.getKey());
+                listener.onGroupUpdated();
             }
 
             @Override
@@ -91,4 +113,71 @@ public class UserGroupsRepo {
         });
         return  groupMutableLiveData;
     }
+
+
+//    public static MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups() {
+//        final ArrayList<MutableLiveData<Group>> groupsObj = new ArrayList<>();
+//        final GroupUpdatedListener listener= (GroupUpdatedListener)context;
+//        final MutableLiveData<ArrayList<MutableLiveData<Group>>> g = new MutableLiveData<>();
+//        final int before = 0;
+//        FirebaseDatabase.getInstance().getReference().child("Users").child(thisUser.getId()).child("Groups").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                final ArrayList<String> groups = new ArrayList<String>();
+//                try {
+//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                        String group = postSnapshot.getValue(String.class);
+//                        groups.add(group);
+//                    }
+//                    for (String id : groups) {
+//                        FirebaseDatabase.getInstance().getReference().child("Groups").child(id).child("details").addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                if (before > groups.size()){
+//                                    groups.clear();
+//                                    listener.onGroupUpdated();
+//                                }
+//                                Group group = dataSnapshot.getValue(Group.class);
+//                                boolean isThere = false;
+//                                int i = 0;
+//                                for (MutableLiveData<Group> g : groupsObj) {
+//                                    try {
+//                                        if (g.getValue().getId().equals(group.getId())) {
+//                                            MutableLiveData<Group> mlvg = new MutableLiveData<>();
+//                                            mlvg.setValue(group);
+//                                            groupsObj.set(i, mlvg);
+//                                            listener.onGroupUpdated();
+//                                            isThere = true;
+//                                            break;
+//                                        }
+//                                        i++;
+//                                    }catch (Exception ignored){}
+//                                }
+//                                if (!isThere) {
+//                                    MutableLiveData<Group> mlvg = new MutableLiveData<>();
+//                                    mlvg.setValue(group);
+//                                    groupsObj.add(mlvg);
+//                                }
+//                                listener.onGroupUpdated();
+//                            }
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                        listener.onGroupUpdated();
+//                    }
+//                    g.setValue(groupsObj);
+//                    listener.onGroupUpdated();
+//                } catch (Exception ignored) {
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//
+//        g.setValue(groupsObj);
+//        return g;
+//    }
 }
