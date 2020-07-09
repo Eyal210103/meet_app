@@ -1,6 +1,7 @@
 package com.example.meetapp.ui.socialMenu.myGroups;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,15 +42,16 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
-        Group current = map.get(position).getValue();
+        final Group current = map.get(position).getValue();
         holder.groupName.setText(current.getName());
         Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("group", current);
                 final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment);
-
+                navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment,bundle);
             }
         });
     }

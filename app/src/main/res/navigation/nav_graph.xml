@@ -58,7 +58,7 @@
         tools:layout="@layout/group_info_fragment" >
         <argument
             android:name="arg"
-            app:argType="Group"
+            app:argType="com.example.meetapp.model.Group"
             android:defaultValue="@null"/>
     </fragment>
 </navigation>
