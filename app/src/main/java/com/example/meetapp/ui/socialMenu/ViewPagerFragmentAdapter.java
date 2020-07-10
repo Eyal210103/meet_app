@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.meetapp.model.Fragments;
 import com.example.meetapp.ui.socialMenu.GroupsChats.GroupsChatsFragment;
 import com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment;
 import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment;
@@ -19,13 +20,13 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new GroupsChatsFragment();
+                return Fragments.groupsChatsFragment;
             case 1:
-                return new MyGroupsFragment();
+                return Fragments.myGroupsFragment;
             case 2:
-                return new MyMeetingsFragment();
+                return Fragments.myMeetingsFragment;
         }
-        return new MyGroupsFragment();
+        return Fragments.groupsChatsFragment;
     }
 
     @Override

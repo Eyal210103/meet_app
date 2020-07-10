@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.model.CurrentUser;
+import com.example.meetapp.model.Fragments;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -28,5 +29,6 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView,navController);
+        Fragments.reset();
     }
 }
