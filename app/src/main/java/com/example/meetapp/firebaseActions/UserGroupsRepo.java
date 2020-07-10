@@ -22,12 +22,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UserGroupsRepo {
 
     private static User thisUser = CurrentUser.getCurrentUser();
     ArrayList<MutableLiveData<Group>> map = new ArrayList<MutableLiveData<Group>>();
-    ArrayList<String> ids = new ArrayList<>();
+    HashMap<String,String> ids = new HashMap<>();
 
     static UserGroupsRepo instance = null;
     private static Fragment context;
@@ -41,6 +42,7 @@ public class UserGroupsRepo {
     }
 
     public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
+        map.clear();
         loadGroups();
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getCurrentUser().getId()).child("Groups")
                 .addChildEventListener(new ChildEventListener() {
@@ -49,11 +51,10 @@ public class UserGroupsRepo {
                         String key = snapshot.getValue(String.class);
                         Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
                         boolean isThere = false;
-                        for (String s : ids) {
-                            if (s.equals(key)) {
-                                isThere = true;
-                                break;
-                            }
+                        if (ids.containsKey(key)){
+                            isThere= true;
+                        }else {
+                            ids.put(key,key);
                         }
                         if (!isThere) {
                             MutableLiveData<Group> groupMutableLiveData = putGroupsData(key);
@@ -71,6 +72,9 @@ public class UserGroupsRepo {
                         for (MutableLiveData<Group> g : map) {
                             if (key.equals(g.getValue().getId())) {
                                 map.remove(g);
+                                ids.remove(key);
+                                GroupUpdatedListener listener= (GroupUpdatedListener)context;
+                                listener.onGroupUpdated();
                                 break;
                             }
                         }

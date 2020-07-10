@@ -43,17 +43,19 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
         final Group current = map.get(position).getValue();
-        holder.groupName.setText(current.getName());
-        Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("group", current);
-                final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment,bundle);
-            }
-        });
+        if (current!= null) {
+            holder.groupName.setText(current.getName());
+            Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("group", current);
+                    final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
+                    navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment, bundle);
+                }
+            });
+        }
     }
 
     @Override
