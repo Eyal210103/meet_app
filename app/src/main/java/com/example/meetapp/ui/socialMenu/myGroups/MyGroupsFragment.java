@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class MyGroupsFragment extends Fragment implements GroupUpdatedListener {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mViewModel = ViewModelProviders.of(this).get(MyGroupsViewModel.class);
+        mViewModel.init(this);
     }
 
     @Override
@@ -59,11 +61,10 @@ public class MyGroupsFragment extends Fragment implements GroupUpdatedListener {
         View view = inflater.inflate(R.layout.my_groups_fragment, container, false);
 
         final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        mViewModel.init(this);
         adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue());
 
-        FloatingActionButton floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
-        FloatingActionButton floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
+        Button floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
+        Button floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
         recyclerView = view.findViewById(R.id.groups_recycler_view);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());

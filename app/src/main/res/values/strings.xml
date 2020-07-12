@@ -13,4 +13,6 @@
     <string name="group_name">Group Name</string>
     <string name="group_s_subject">Group\'s Subject</string>
     <string name="create_group">Create Group</string>
+    <string name="create">Create</string>
+    <string name="join">Join</string>
 </resources>

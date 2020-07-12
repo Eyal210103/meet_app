@@ -42,6 +42,7 @@ public class UserGroupsRepo {
     }
 
     public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
+        ids.clear();
         map.clear();
         loadGroups();
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getCurrentUser().getId()).child("Groups")

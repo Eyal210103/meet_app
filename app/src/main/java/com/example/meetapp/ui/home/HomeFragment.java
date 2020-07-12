@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
 
         this.mapView = view.findViewById(R.id.mapView);
 
-        //initGoogleMap(savedInstanceState);
+        initGoogleMap(savedInstanceState);
 
 
         return view;
@@ -79,11 +79,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void getLocation() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
@@ -94,13 +94,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
-        if (mapView == null){
-            Log.d(TAG,"map == null");
-        }
-        if (savedInstanceState == null){
-            Log.d(TAG,"savedInstanceState == null");
-
-        }
         mapView.onCreate(savedInstanceState);
         getLocation();
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -121,39 +114,39 @@ public class HomeFragment extends Fragment {
         });
     }
 
-//    @Override
-//    public void onPause() {
-//        mapView.onPause();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        mapView.onDestroy();
-//        super.onDestroy();
-//    }
-//
-//    @Override
-//    public void onLowMemory() {
-//        super.onLowMemory();
-//        mapView.onLowMemory();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mapView.onResume();
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mapView.onStart();
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        mapView.onStop();
-//    }
+    @Override
+    public void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
 }

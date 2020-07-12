@@ -20,10 +20,16 @@
 <!--            motion:layout_constraintBottom_toBottomOf="@+id/group_info_group_civ"-->
 <!--            android:id="@+id/constraintLayout5" />-->
         <Constraint
-            android:id="@+id/group_info_group_name">
+            android:id="@+id/group_info_group_name"
+            android:layout_marginBottom="50dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            motion:layout_constraintTop_toTopOf="@+id/group_info_group_civ"
+            motion:layout_constraintBottom_toBottomOf="@+id/group_info_group_civ"
+            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ">
             <CustomAttribute
                 motion:attributeName="textSize"
-                motion:customDimension="24sp" />
+                motion:customDimension="14sp" />
         </Constraint>
     </ConstraintSet>
 
@@ -45,11 +51,9 @@
             motion:layout_constraintBottom_toBottomOf="@+id/group_info_group_civ"
             android:layout_width="wrap_content"
             motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
-            android:textSize="18sp"
-            android:layout_marginStart="8dp" >
-            <CustomAttribute
-                motion:attributeName="textSize"
-                motion:customDimension="8sp" />
+            android:layout_marginStart="0dp"
+            android:scaleX="0.6"
+            android:scaleY="0.6">
         </Constraint>
         <Constraint
             android:id="@+id/group_info_subject_imageView"

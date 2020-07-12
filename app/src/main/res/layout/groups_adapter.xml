@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@drawable/main_app_design"
-    android:layout_marginVertical="10dp"
+    android:layout_marginVertical="5dp"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
