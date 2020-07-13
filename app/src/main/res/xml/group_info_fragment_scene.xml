@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<MotionScene 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:motion="http://schemas.android.com/apk/res-auto">
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
 
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="500">
+        motion:duration="300">
        <KeyFrameSet>
        </KeyFrameSet>
         <OnSwipe />
@@ -31,6 +31,18 @@
                 motion:attributeName="textSize"
                 motion:customDimension="14sp" />
         </Constraint>
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/imageView"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp" />
+        <Constraint
+            motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"
+            android:id="@+id/recyclerView" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -38,7 +50,7 @@
             android:id="@+id/group_info_group_civ"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="15dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="4dp"
@@ -61,9 +73,41 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             motion:layout_constraintBottom_toBottomOf="@+id/group_info_group_name"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="10dp" />
+        <Constraint
+            android:id="@+id/imageView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible">
+        </Constraint>
+<!--        <Constraint-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_width="50dp"-->
+<!--            motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"-->
+<!--            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"-->
+<!--            android:id="@+id/group_info_recyclerView_members"-->
+<!--            motion:layout_constraintTop_toTopOf="parent"-->
+<!--            motion:layout_constraintHorizontal_bias="0.727"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            motion:layout_constraintTop_toBottomOf="@+id/group_info_group_name" />-->
+        <Constraint
+            android:id="@+id/group_info_recyclerView_members"
+            motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"
+            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
+            android:layout_width="125dp"
+            android:layout_height="40dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            motion:layout_constraintTop_toBottomOf="@+id/group_info_group_name"
+            motion:layout_constraintHorizontal_bias="0.727"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp" />
     </ConstraintSet>
 
 </MotionScene>

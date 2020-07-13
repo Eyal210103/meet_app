@@ -7,6 +7,16 @@
     android:background="@color/backgroundSec"
     app:layoutDescription="@xml/group_info_fragment_scene">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_settings_24" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/group_info_group_civ"
         android:layout_width="150dp"
@@ -23,8 +33,7 @@
         android:id="@+id/group_info_group_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="50dp"
         android:gravity="start"
         android:text="@string/app_name"
         android:textColor="@color/oppBackground"
@@ -58,14 +67,18 @@
         app:layout_constraintTop_toBottomOf="@+id/group_info_group_civ"
         app:layout_constraintVertical_bias="1.0">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_info_recyclerView_members"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"
+        app:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
+        app:layout_constraintTop_toBottomOf="@+id/group_info_group_name" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

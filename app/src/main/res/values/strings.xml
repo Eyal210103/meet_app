@@ -15,4 +15,5 @@
     <string name="create_group">Create Group</string>
     <string name="create">Create</string>
     <string name="join">Join</string>
+    <string name="type_locations_or_subjects">Type Locations Or Subjects</string>
 </resources>
