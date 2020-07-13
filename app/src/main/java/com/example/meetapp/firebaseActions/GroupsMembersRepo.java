@@ -26,6 +26,7 @@ public class GroupsMembersRepo {
     private String groupId;
     private Fragment context;
     static GroupsMembersRepo instance = null;
+    ChildEventListener childEventListener;
 
     public GroupsMembersRepo (Fragment context, String groupId){
         this.context = context;
@@ -35,9 +36,7 @@ public class GroupsMembersRepo {
     public MutableLiveData<ArrayList<MutableLiveData<User>>> getMembers(){
         ids.clear();
         map.clear();
-        loadGroups();
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members")
-                .addChildEventListener(new ChildEventListener() {
+        this.childEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         String key = snapshot.getValue(String.class);
@@ -77,8 +76,10 @@ public class GroupsMembersRepo {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("observer", "onCancelled: ERROR:GET GroupsMembersRepo" );
                     }
-                });
+                };
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").addChildEventListener(childEventListener);
         MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(map);
         DataUpdatedListener listener= (DataUpdatedListener)context;
@@ -86,9 +87,6 @@ public class GroupsMembersRepo {
         return mutableLiveData;
     }
 
-    private void loadGroups() {
-
-    }
 
     private MutableLiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
@@ -97,16 +95,22 @@ public class GroupsMembersRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userMutableLiveData.setValue(snapshot.getValue(User.class));
-                Log.d("observer", "onChanged: " + snapshot.getValue(User.class).toString() + "**********************************************************");
+                Log.d("observer", "onChanged: " + snapshot.getValue(User.class).toString());
                 DataUpdatedListener listener= (DataUpdatedListener)context;
                 listener.onDataUpdated();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("observer", "onCancelled: ERROR:putUserData GroupsMembersRepo" );
+
             }
         });
         return  userMutableLiveData;
+    }
+
+    private void OnDetach(){
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").removeEventListener(childEventListener);
     }
 
 }

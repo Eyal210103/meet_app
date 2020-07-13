@@ -1,6 +1,7 @@
 package com.example.meetapp.ui.groupInfo;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         User current = members.get(position).getValue();
         if (current != null){
             Glide.with(context).load(current.getProfileImageUrl()).into(holder.circleImageView);
+            Log.d("", "onBindViewHolder: " + current.toString());
         }
     }
 
