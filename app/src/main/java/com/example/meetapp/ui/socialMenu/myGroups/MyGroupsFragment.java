@@ -1,7 +1,5 @@
 package com.example.meetapp.ui.socialMenu.myGroups;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -12,34 +10,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
-import com.example.meetapp.dataLoadListener.GroupUpdatedListener;
-import com.example.meetapp.model.Group;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.meetapp.dataLoadListener.DataUpdatedListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.widget.LinearLayout.VERTICAL;
-
-public class MyGroupsFragment extends Fragment implements GroupUpdatedListener {
+public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
 
     private MyGroupsViewModel mViewModel;
     RecyclerView recyclerView;
@@ -87,7 +69,7 @@ public class MyGroupsFragment extends Fragment implements GroupUpdatedListener {
     }
 
     @Override
-    public void onGroupUpdated() {
+    public void onDataUpdated() {
         try {
             adapter.notifyDataSetChanged();
 

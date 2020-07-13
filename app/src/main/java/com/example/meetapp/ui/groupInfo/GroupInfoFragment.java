@@ -2,6 +2,7 @@ package com.example.meetapp.ui.groupInfo;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,9 +47,15 @@ public class GroupInfoFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
+
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
     }
 
 }

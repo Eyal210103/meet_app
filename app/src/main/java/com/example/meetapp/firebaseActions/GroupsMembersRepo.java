@@ -1,0 +1,112 @@
+package com.example.meetapp.firebaseActions;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.meetapp.dataLoadListener.DataUpdatedListener;
+import com.example.meetapp.model.Group;
+import com.example.meetapp.model.User;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class GroupsMembersRepo {
+    ArrayList<MutableLiveData<User>> map = new ArrayList<MutableLiveData<User>>();
+    HashMap<String,String> ids = new HashMap<>();
+    private String groupId;
+    private Fragment context;
+    static GroupsMembersRepo instance = null;
+
+    public GroupsMembersRepo (Fragment context, String groupId){
+        this.context = context;
+        this.groupId = groupId;
+    }
+
+    public MutableLiveData<ArrayList<MutableLiveData<User>>> getMembers(){
+        ids.clear();
+        map.clear();
+        loadGroups();
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        String key = snapshot.getValue(String.class);
+                        Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
+                        boolean isThere = false;
+                        if (ids.containsKey(key)){
+                            isThere= true;
+                        }else {
+                            ids.put(key,key);
+                        }
+                        if (!isThere) {
+                            MutableLiveData<User> groupMutableLiveData = putUserData(key);
+                            map.add(groupMutableLiveData);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        String key = snapshot.getValue(String.class);
+                        for (MutableLiveData<User> u : map) {
+                            if (key.equals(u.getValue().getId())) {
+                                map.remove(u);
+                                ids.remove(key);
+                                DataUpdatedListener listener= (DataUpdatedListener)context;
+                                listener.onDataUpdated();
+                                break;
+                            }
+                        }
+                    }
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+        MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
+        mutableLiveData.setValue(map);
+        DataUpdatedListener listener= (DataUpdatedListener)context;
+        listener.onDataUpdated();
+        return mutableLiveData;
+    }
+
+    private void loadGroups() {
+
+    }
+
+    private MutableLiveData<User> putUserData(String key){
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+        final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userMutableLiveData.setValue(snapshot.getValue(User.class));
+                Log.d("observer", "onChanged: " + snapshot.getValue(User.class).toString() + "**********************************************************");
+                DataUpdatedListener listener= (DataUpdatedListener)context;
+                listener.onDataUpdated();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        return  userMutableLiveData;
+    }
+
+}
