@@ -72,7 +72,6 @@ public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
     public void onDataUpdated() {
         try {
             adapter.notifyDataSetChanged();
-
         }catch (Exception ignored){
 
         }

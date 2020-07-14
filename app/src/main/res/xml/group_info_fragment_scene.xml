@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:motion="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools">
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
         motion:constraintSetEnd="@+id/end"
@@ -47,7 +46,7 @@
             motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"
             motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             motion:layout_constraintTop_toBottomOf="@+id/group_info_group_name"
             android:layout_marginStart="16dp"
@@ -111,15 +110,13 @@
         <Constraint
             android:id="@+id/group_info_recyclerView_members"
             motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"
-            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
-            android:layout_width="125dp"
-            android:layout_height="50dp"
+            motion:layout_constraintStart_toEndOf="@+id/group_info_group_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             motion:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"
             motion:layout_constraintTop_toBottomOf="@+id/group_info_group_name"
-            motion:layout_constraintHorizontal_bias="0.727"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" />
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp" />
     </ConstraintSet>
-
 </MotionScene>

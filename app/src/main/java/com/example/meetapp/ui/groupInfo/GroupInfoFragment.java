@@ -29,40 +29,35 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class GroupInfoFragment extends Fragment implements DataUpdatedListener {
 
     private GroupInfoViewModel mViewModel;
-    MembersAdapter membersAdapter;
-    RecyclerView recyclerViewMembers;
-    public static GroupInfoFragment newInstance() {
-        return new GroupInfoFragment();
+    private MembersAdapter membersAdapter;
+    private Group group;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
+        group = (Group) (getArguments().getSerializable("group"));
+        mViewModel.init(this, group);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.group_info_fragment, container, false);
-        Group group = (Group) (getArguments().getSerializable("group"));
-        mViewModel.init(this, group);
         CircleImageView groupImage = view.findViewById(R.id.group_info_group_civ);
         TextView groupName = view.findViewById(R.id.group_info_group_name);
 
-        assert group != null;
         Glide.with(requireActivity()).load(group.getPhotoUrl()).into(groupImage);
         groupName.setText(group.getName());
 
-        recyclerViewMembers = view.findViewById(R.id.group_info_recyclerView_members);
+        RecyclerView recyclerViewMembers = view.findViewById(R.id.group_info_recyclerView_members);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewMembers.setLayoutManager(llm);
         recyclerViewMembers.setHasFixedSize(true);
-        membersAdapter= new MembersAdapter(this.requireActivity(), mViewModel.membersMutableLiveData.getValue());
+        membersAdapter= new MembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
+        /*recyclerViewMembers.stopScroll();*/
         return view;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
-
     }
 
     @Override
@@ -73,7 +68,6 @@ public class GroupInfoFragment extends Fragment implements DataUpdatedListener {
     @Override
     public void onDataUpdated() {
         try {
-
             membersAdapter.notifyDataSetChanged();
         }catch (Exception ignored){
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,10 +21,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersViewHolder>{
 
-    private Context context;
+    private Fragment context;
     private ArrayList<MutableLiveData<User>> members;
 
-    public MembersAdapter(Context context, ArrayList<MutableLiveData<User>> members) {
+    public MembersAdapter(Fragment context, ArrayList<MutableLiveData<User>> members) {
         this.context = context;
         this.members = members;
     }
@@ -39,14 +40,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
     public void onBindViewHolder(@NonNull MembersViewHolder holder, int position) {
         User current = members.get(position).getValue();
         if (current != null){
-            Glide.with(context).load(current.getProfileImageUrl()).into(holder.circleImageView);
+            Glide.with(context.requireActivity()).load(current.getProfileImageUrl()).into(holder.circleImageView);
             Log.d("", "onBindViewHolder: " + current.toString());
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return members.size();
     }
 
     static class MembersViewHolder extends RecyclerView.ViewHolder{
