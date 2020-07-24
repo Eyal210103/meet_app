@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class UserGroupsRepo {
 
     private static User thisUser = CurrentUser.getCurrentUser();
-    ArrayList<MutableLiveData<Group>> map = new ArrayList<MutableLiveData<Group>>();
+    ArrayList<MutableLiveData<Group>> list = new ArrayList<MutableLiveData<Group>>();
     HashMap<String,String> ids = new HashMap<>();
 
     static UserGroupsRepo instance = null;
@@ -39,7 +39,7 @@ public class UserGroupsRepo {
 
     public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
         ids.clear();
-        map.clear();
+        list.clear();
         loadGroups();
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getCurrentUser().getId()).child("Groups")
                 .addChildEventListener(new ChildEventListener() {
@@ -55,7 +55,7 @@ public class UserGroupsRepo {
                         }
                         if (!isThere) {
                             MutableLiveData<Group> groupMutableLiveData = putGroupsData(key);
-                            map.add(groupMutableLiveData);
+                            list.add(groupMutableLiveData);
                         }
                     }
 
@@ -66,9 +66,9 @@ public class UserGroupsRepo {
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         String key = snapshot.getValue(String.class);
-                        for (MutableLiveData<Group> g : map) {
+                        for (MutableLiveData<Group> g : list) {
                             if (key.equals(g.getValue().getId())) {
-                                map.remove(g);
+                                list.remove(g);
                                 ids.remove(key);
                                 DataUpdatedListener listener= (DataUpdatedListener)context;
                                 listener.onDataUpdated();
@@ -86,7 +86,7 @@ public class UserGroupsRepo {
                     }
                 });
         MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(map);
+        mutableLiveData.setValue(list);
         DataUpdatedListener listener= (DataUpdatedListener)context;
         listener.onDataUpdated();
         return mutableLiveData;
