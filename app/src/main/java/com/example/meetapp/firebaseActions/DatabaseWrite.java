@@ -1,15 +1,13 @@
 package com.example.meetapp.firebaseActions;
 
-import androidx.annotation.NonNull;
-
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+
 
 public class DatabaseWrite {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -17,7 +15,12 @@ public class DatabaseWrite {
     private static String groupsRef = "Groups";
 
     public static void addOrUpdateUser(User user){
-        database.getReference().child(userRef).child(user.getId()).setValue(user);
+        HashMap<String,Object> map = new HashMap<String, Object>();
+        map.put("displayName",user.getDisplayName());
+        map.put("email",user.getEmail());
+        map.put("id",user.getId());
+        map.put("profileImageUrl",user.getProfileImageUrl());
+        database.getReference().child(userRef).child(user.getId()).updateChildren(map);
     }
 
     public static String addOrUpdateGroupGetID(Group group){

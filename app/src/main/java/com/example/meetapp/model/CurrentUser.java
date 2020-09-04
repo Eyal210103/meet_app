@@ -1,5 +1,6 @@
 package com.example.meetapp.model;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class CurrentUser {
@@ -25,6 +26,10 @@ public class CurrentUser {
         user.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
     }
 
+    public static void logout(){
+        FirebaseAuth.getInstance().signOut();
+        user = null;
+    }
     public static boolean isConnected(){
         return user != null;
     }

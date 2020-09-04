@@ -32,7 +32,6 @@ public class GroupsChatsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupsChatsViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

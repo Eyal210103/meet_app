@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInFragment;
 import com.example.meetapp.model.CurrentUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -40,7 +41,13 @@ public class settingsFragment extends Fragment {
         Glide.with(requireActivity()).load(CurrentUser.getCurrentUser().getProfileImageUrl()).into(circleImageView);
         textViewName.setText(CurrentUser.getCurrentUser().getDisplayName());
         textViewEmail.setText(CurrentUser.getCurrentUser().getEmail());
-
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnClickInFragment onClickInFragment = (OnClickInFragment) requireActivity();
+                onClickInFragment.onClickInFragment(String.valueOf(R.string.logoutAction));
+            }
+        });
         return view;
     }
 

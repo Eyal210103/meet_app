@@ -69,17 +69,5 @@ public class SocialMenuFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SocialMenuViewModel.class);
     }
-
-
-    private void init() {
-        viewPager.setAdapter(new ViewPagerFragmentAdapter(getActivity()));
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(titles[position]);
-            }
-        }
-        ).attach();
-    }
 }
 
