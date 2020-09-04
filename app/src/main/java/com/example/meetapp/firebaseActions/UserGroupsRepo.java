@@ -40,7 +40,6 @@ public class UserGroupsRepo {
     public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
         ids.clear();
         list.clear();
-        loadGroups();
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getCurrentUser().getId()).child("Groups")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
@@ -70,8 +69,10 @@ public class UserGroupsRepo {
                             if (key.equals(g.getValue().getId())) {
                                 list.remove(g);
                                 ids.remove(key);
-                                DataUpdatedListener listener= (DataUpdatedListener)context;
-                                listener.onDataUpdated();
+                                if (context != null) {
+                                    DataUpdatedListener listener = (DataUpdatedListener) context;
+                                    listener.onDataUpdated();
+                                }
                                 break;
                             }
                         }
@@ -87,13 +88,11 @@ public class UserGroupsRepo {
                 });
         MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(list);
-        DataUpdatedListener listener= (DataUpdatedListener)context;
-        listener.onDataUpdated();
+        if (context != null) {
+            DataUpdatedListener listener = (DataUpdatedListener) context;
+            listener.onDataUpdated();
+        }
         return mutableLiveData;
-    }
-
-    private void loadGroups() {
-
     }
 
     private MutableLiveData<Group> putGroupsData(String key){
@@ -104,10 +103,11 @@ public class UserGroupsRepo {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 groupMutableLiveData.setValue(snapshot.getValue(Group.class));
                 Log.d("observer", "onChanged: " + snapshot.getValue(Group.class).toString() + "**********************************************************");
-                DataUpdatedListener listener= (DataUpdatedListener)context;
-                listener.onDataUpdated();
+                if (context != null) {
+                    DataUpdatedListener listener = (DataUpdatedListener) context;
+                    listener.onDataUpdated();
+                }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -115,70 +115,4 @@ public class UserGroupsRepo {
         return  groupMutableLiveData;
     }
 
-
-//    public static MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups() {
-//        final ArrayList<MutableLiveData<Group>> groupsObj = new ArrayList<>();
-//        final GroupUpdatedListener listener= (GroupUpdatedListener)context;
-//        final MutableLiveData<ArrayList<MutableLiveData<Group>>> g = new MutableLiveData<>();
-//        final int before = 0;
-//        FirebaseDatabase.getInstance().getReference().child("Users").child(thisUser.getId()).child("Groups").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                final ArrayList<String> groups = new ArrayList<String>();
-//                try {
-//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                        String group = postSnapshot.getValue(String.class);
-//                        groups.add(group);
-//                    }
-//                    for (String id : groups) {
-//                        FirebaseDatabase.getInstance().getReference().child("Groups").child(id).child("details").addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                if (before > groups.size()){
-//                                    groups.clear();
-//                                    listener.onGroupUpdated();
-//                                }
-//                                Group group = dataSnapshot.getValue(Group.class);
-//                                boolean isThere = false;
-//                                int i = 0;
-//                                for (MutableLiveData<Group> g : groupsObj) {
-//                                    try {
-//                                        if (g.getValue().getId().equals(group.getId())) {
-//                                            MutableLiveData<Group> mlvg = new MutableLiveData<>();
-//                                            mlvg.setValue(group);
-//                                            groupsObj.set(i, mlvg);
-//                                            listener.onGroupUpdated();
-//                                            isThere = true;
-//                                            break;
-//                                        }
-//                                        i++;
-//                                    }catch (Exception ignored){}
-//                                }
-//                                if (!isThere) {
-//                                    MutableLiveData<Group> mlvg = new MutableLiveData<>();
-//                                    mlvg.setValue(group);
-//                                    groupsObj.add(mlvg);
-//                                }
-//                                listener.onGroupUpdated();
-//                            }
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//                        listener.onGroupUpdated();
-//                    }
-//                    g.setValue(groupsObj);
-//                    listener.onGroupUpdated();
-//                } catch (Exception ignored) {
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//
-//        g.setValue(groupsObj);
-//        return g;
-//    }
 }

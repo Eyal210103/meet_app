@@ -2,6 +2,7 @@ package com.example.meetapp;
 
 import android.os.Bundle;
 
+import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,5 +23,6 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView,navController);
+        UserGroupsRepo.getInstance(null).getGroups();
     }
 }
