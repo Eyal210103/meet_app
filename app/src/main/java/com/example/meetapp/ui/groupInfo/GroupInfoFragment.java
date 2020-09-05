@@ -1,8 +1,9 @@
 package com.example.meetapp.ui.groupInfo;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +19,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
-import com.example.meetapp.dataLoadListener.DataUpdatedListener;
 import com.example.meetapp.model.Group;
+import com.example.meetapp.model.User;
 
-import java.util.Objects;
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class GroupInfoFragment extends Fragment implements DataUpdatedListener {
+public class GroupInfoFragment extends Fragment {
 
     private GroupInfoViewModel mViewModel;
     private MembersAdapter membersAdapter;
@@ -56,21 +56,27 @@ public class GroupInfoFragment extends Fragment implements DataUpdatedListener {
         recyclerViewMembers.setHasFixedSize(true);
         membersAdapter= new MembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
-        /*recyclerViewMembers.stopScroll();*/
+
+        mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+            @Override
+            public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
+                membersAdapter.notifyDataSetChanged();
+            }
+        });
+
+        for (MutableLiveData<User> u:mViewModel.getMembersMutableLiveData().getValue()) {
+            u.observe(getViewLifecycleOwner(), new Observer<User>() {
+                @Override
+                public void onChanged(User user) {
+                    membersAdapter.notifyDataSetChanged();
+                }
+            });
+        }
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onDataUpdated() {
-        try {
-            membersAdapter.notifyDataSetChanged();
-        }catch (Exception ignored){
-
-        }
     }
 }

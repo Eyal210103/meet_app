@@ -5,10 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.meetapp.dataLoadListener.DataUpdatedListener;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
@@ -70,10 +68,6 @@ public class UserGroupsRepo {
                             if (key.equals(g.getValue().getId())) {
                                 list.remove(g);
                                 ids.remove(key);
-                                if (context != null) {
-                                    DataUpdatedListener listener = (DataUpdatedListener) context;
-                                    listener.onDataUpdated();
-                                }
                                 break;
                             }
                         }
@@ -89,10 +83,6 @@ public class UserGroupsRepo {
                 });
         MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(list);
-        if (context != null) {
-            DataUpdatedListener listener = (DataUpdatedListener) context;
-            listener.onDataUpdated();
-        }
         return mutableLiveData;
     }
 
@@ -103,11 +93,6 @@ public class UserGroupsRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 groupMutableLiveData.setValue(snapshot.getValue(Group.class));
-                Log.d("observer", "onChanged: " + snapshot.getValue(Group.class).toString() + "**********************************************************");
-                if (context != null) {
-                    DataUpdatedListener listener = (DataUpdatedListener) context;
-                    listener.onDataUpdated();
-                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

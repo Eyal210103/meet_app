@@ -7,8 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.meetapp.dataLoadListener.DataUpdatedListener;
-import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -64,8 +62,6 @@ public class GroupsMembersRepo {
                             if (key.equals(u.getValue().getId())) {
                                 map.remove(u);
                                 ids.remove(key);
-                                DataUpdatedListener listener= (DataUpdatedListener)context;
-                                listener.onDataUpdated();
                                 break;
                             }
                         }
@@ -82,8 +78,6 @@ public class GroupsMembersRepo {
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").addChildEventListener(childEventListener);
         MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(map);
-        DataUpdatedListener listener= (DataUpdatedListener)context;
-        listener.onDataUpdated();
         return mutableLiveData;
     }
 
@@ -96,8 +90,6 @@ public class GroupsMembersRepo {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userMutableLiveData.setValue(snapshot.getValue(User.class));
                 Log.d("observer", "onChanged: " + snapshot.getValue(User.class).toString());
-                DataUpdatedListener listener= (DataUpdatedListener)context;
-                listener.onDataUpdated();
             }
 
             @Override

@@ -21,21 +21,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.meetapp.model.Group;
-import com.example.meetapp.ui.MainActivity;
 import com.example.meetapp.R;
-import com.example.meetapp.dataLoadListener.DataUpdatedListener;
 import com.example.meetapp.ui.MainActivityViewModel;
 
 import java.util.ArrayList;
 
-public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
+public class MyGroupsFragment extends Fragment {
 
     MainActivityViewModel mViewModel;
     RecyclerView recyclerView;
     GroupsAdapter adapter;
-    public static MyGroupsFragment newInstance() {
-        return new MyGroupsFragment();
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -90,14 +85,7 @@ public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
 
         return view;
     }
-    @Override
-    public void onDataUpdated() {
-        try {
-            adapter.notifyDataSetChanged();
-        }catch (Exception ignored){
 
-        }
-    }
 
 }
 

@@ -5,11 +5,8 @@ import android.os.Bundle;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
-import com.example.meetapp.dataLoadListener.DataUpdatedListener;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.ui.LoginActivity;
-import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity implements OnClickInFragment , DataUpdatedListener {
+public class MainActivity extends AppCompatActivity implements OnClickInFragment  {
 
     private NavController navController;
 
@@ -46,10 +43,5 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         this.finish();
-    }
-
-    @Override
-    public void onDataUpdated() {
-
     }
 }
