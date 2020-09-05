@@ -67,7 +67,7 @@ public class SocialMenuFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SocialMenuViewModel.class);
+        mViewModel = ViewModelProviders.of(requireActivity()).get(SocialMenuViewModel.class);
     }
 }
 

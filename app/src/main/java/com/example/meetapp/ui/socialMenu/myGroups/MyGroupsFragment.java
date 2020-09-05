@@ -1,5 +1,7 @@
 package com.example.meetapp.ui.socialMenu.myGroups;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -18,12 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.meetapp.model.Group;
+import com.example.meetapp.ui.MainActivity;
 import com.example.meetapp.R;
 import com.example.meetapp.dataLoadListener.DataUpdatedListener;
+import com.example.meetapp.ui.MainActivityViewModel;
+
+import java.util.ArrayList;
 
 public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
 
-    private MyGroupsViewModel mViewModel;
+    MainActivityViewModel mViewModel;
     RecyclerView recyclerView;
     GroupsAdapter adapter;
     public static MyGroupsFragment newInstance() {
@@ -33,9 +40,8 @@ public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mViewModel = ViewModelProviders.of(this).get(MyGroupsViewModel.class);
-        mViewModel.init(this);
-    }
+        mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,9 +71,25 @@ public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
 
         recyclerView.setAdapter(adapter);
 
+
+        mViewModel.getGroups().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Group>>>() {
+            @Override
+            public void onChanged(ArrayList<MutableLiveData<Group>> mutableLiveData) {
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        for (MutableLiveData<Group> m:mViewModel.getGroups().getValue()) {
+            m.observe(getViewLifecycleOwner(), new Observer<Group>() {
+                @Override
+                public void onChanged(Group group) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
         return view;
     }
-
     @Override
     public void onDataUpdated() {
         try {
@@ -76,5 +98,6 @@ public class MyGroupsFragment extends Fragment implements DataUpdatedListener {
 
         }
     }
+
 }
 

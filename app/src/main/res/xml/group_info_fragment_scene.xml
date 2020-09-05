@@ -5,7 +5,7 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="300">
+        motion:duration="275">
        <KeyFrameSet>
        </KeyFrameSet>
         <OnSwipe />
@@ -25,7 +25,9 @@
             android:layout_width="wrap_content"
             motion:layout_constraintTop_toTopOf="@+id/group_info_group_civ"
             motion:layout_constraintBottom_toBottomOf="@+id/group_info_group_civ"
-            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ">
+            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp">
             <CustomAttribute
                 motion:attributeName="textSize"
                 motion:customDimension="14sp" />
@@ -55,8 +57,8 @@
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp" />
         <Constraint
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="8dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
@@ -85,7 +87,9 @@
             motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
             android:layout_marginStart="0dp"
             android:scaleX="0.6"
-            android:scaleY="0.6">
+            android:scaleY="0.6"
+            android:layout_marginLeft="0dp"
+            motion:layout_constraintVertical_bias="0.39999998">
         </Constraint>
         <Constraint
             android:id="@+id/group_info_subject_imageView"
@@ -106,16 +110,6 @@
             android:layout_marginTop="16dp"
             android:visibility="invisible">
         </Constraint>
-<!--        <Constraint-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_width="50dp"-->
-<!--            motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"-->
-<!--            motion:layout_constraintStart_toEndOf="@+id/group_info_group_civ"-->
-<!--            android:id="@+id/group_info_recyclerView_members"-->
-<!--            motion:layout_constraintTop_toTopOf="parent"-->
-<!--            motion:layout_constraintHorizontal_bias="0.727"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            motion:layout_constraintTop_toBottomOf="@+id/group_info_group_name" />-->
         <Constraint
             android:id="@+id/group_info_recyclerView_members"
             motion:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"

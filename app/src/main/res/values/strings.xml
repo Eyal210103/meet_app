@@ -4,16 +4,17 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="home">Home</string>
-    <string name="groups">Groups</string>
-    <string name="settings">Settings</string>
+    <string name="home" translatable="true">Home</string>
+    <string name="groups" translatable="true">Groups</string>
+    <string name="settings" translatable="true">Settings</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="choose_image">Choose Image</string>
-    <string name="group_name">Group Name</string>
+    <string name="choose_image" translatable="true">Choose Image</string>
+    <string name="group_name" translatable="true">Group Name</string>
     <string name="group_s_subject">Group\'s Subject</string>
-    <string name="create_group">Create Group</string>
-    <string name="create">Create</string>
-    <string name="join">Join</string>
-    <string name="type_locations_or_subjects">Type Locations Or Subjects</string>
+    <string name="create_group" translatable="true">Create Group</string>
+    <string name="create" translatable="true">Create</string>
+    <string name="join" translatable="true">Join</string>
+    <string name="type_locations_or_subjects" translatable="true">Type Locations Or Subjects</string>
+    <string name="type_a_message">Type A Message</string>
 </resources>

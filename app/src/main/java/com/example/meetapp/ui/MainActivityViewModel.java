@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.socialMenu.myGroups;
+package com.example.meetapp.ui;
 
 import android.content.Context;
 
@@ -11,14 +11,12 @@ import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.example.meetapp.model.Group;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class MyGroupsViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel {
     MutableLiveData<ArrayList<MutableLiveData<Group>>> map = null;
 
-    public void init(@NonNull MyGroupsFragment context) {
-            map = UserGroupsRepo.getInstance(context).getGroups();
+    public void init(@NonNull Context context) {
+        map = UserGroupsRepo.getInstance(context).getGroups();
     }
 
     public LiveData<ArrayList<MutableLiveData<Group>>> getGroups() {

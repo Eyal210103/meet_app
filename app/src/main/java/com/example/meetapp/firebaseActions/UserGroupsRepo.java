@@ -1,5 +1,6 @@
 package com.example.meetapp.firebaseActions;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -27,9 +28,9 @@ public class UserGroupsRepo {
     HashMap<String,String> ids = new HashMap<>();
 
     static UserGroupsRepo instance = null;
-    private static Fragment context;
+    private static Context context;
 
-    public static UserGroupsRepo getInstance(Fragment context){
+    public static UserGroupsRepo getInstance(Context context){
         UserGroupsRepo.context = context;
         if (instance == null){
             instance = new UserGroupsRepo();

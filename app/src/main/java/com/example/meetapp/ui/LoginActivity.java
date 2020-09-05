@@ -1,4 +1,4 @@
-package com.example.meetapp;
+package com.example.meetapp.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.meetapp.R;
 import com.example.meetapp.firebaseActions.DatabaseWrite;
 import com.example.meetapp.model.CurrentUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
