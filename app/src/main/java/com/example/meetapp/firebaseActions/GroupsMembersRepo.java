@@ -22,12 +22,10 @@ public class GroupsMembersRepo {
     ArrayList<MutableLiveData<User>> map = new ArrayList<MutableLiveData<User>>();
     HashMap<String,String> ids = new HashMap<>();
     private String groupId;
-    private Fragment context;
     static GroupsMembersRepo instance = null;
     ChildEventListener childEventListener;
 
-    public GroupsMembersRepo (Fragment context, String groupId){
-        this.context = context;
+    public GroupsMembersRepo (String groupId){
         this.groupId = groupId;
     }
 

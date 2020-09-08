@@ -1,4 +1,4 @@
-package com.example.meetapp.ui;
+package com.example.meetapp.ui.chat;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.meetapp.R;
+import com.example.meetapp.ui.GroupChatViewModel;
 
 public class GroupChatFragment extends Fragment {
 

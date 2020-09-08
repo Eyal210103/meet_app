@@ -5,6 +5,7 @@ public class Message {
     private String senderDisplayName;
     private String context;
     private String hour; // HH:MM format
+    private String id;
     private int day;
 
     public Message(String senderId, String senderDisplayName, String context, String hour, int day) {
@@ -56,6 +57,14 @@ public class Message {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@color/background"
     android:layout_height="match_parent"
-    tools:context=".ui.GroupChatFragment">
+    tools:context=".ui.chat.GroupChatFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recyclerView"
