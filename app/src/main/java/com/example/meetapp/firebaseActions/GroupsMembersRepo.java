@@ -44,8 +44,8 @@ public class GroupsMembersRepo {
                             ids.put(key,key);
                         }
                         if (!isThere) {
-                            MutableLiveData<User> groupMutableLiveData = putUserData(key);
-                            map.add(groupMutableLiveData);
+                            MutableLiveData<User> userMutableLiveData = putUserData(key);
+                            map.add(userMutableLiveData);
                         }
                     }
 

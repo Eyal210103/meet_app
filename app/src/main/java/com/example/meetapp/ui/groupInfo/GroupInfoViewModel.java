@@ -24,7 +24,7 @@ public class GroupInfoViewModel extends ViewModel {
     public void init(@NonNull Fragment context, @Nullable Group group){
         this.groupMutableLiveData = new MutableLiveData<>();
         groupMutableLiveData.setValue(group);
-        groupsMembersRepo = new GroupsMembersRepo(context,group.getId());
+        groupsMembersRepo = new GroupsMembersRepo(group.getId());
         membersMutableLiveData = groupsMembersRepo.getMembers();
     }
 

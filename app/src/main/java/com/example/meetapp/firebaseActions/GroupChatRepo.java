@@ -10,9 +10,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.message.Message;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -22,9 +25,9 @@ import java.util.HashMap;
 
 public class GroupChatRepo {
 
-    ArrayList<MutableLiveData<Message>> list = new ArrayList<MutableLiveData<Message>>();
+    ArrayList<Message> list = new ArrayList<Message>();
     HashMap<String, String> ids = new HashMap<>();
-    HashMap<String, User> userHashMap = new HashMap<>();
+    HashMap<String, MutableLiveData<User>> userHashMap = new HashMap<>();
     private ChildEventListener childEventListener;
     private String groupId;
 
@@ -33,26 +36,20 @@ public class GroupChatRepo {
         this.groupId = groupId;
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<Message>>> getMessages() {
+    public MutableLiveData<ArrayList<Message>> getMessages() {
         ids.clear();
         list.clear();
 
         this.childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String key = snapshot.getValue(String.class);
-                Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
-                boolean isThere = false;
-                if (ids.containsKey(key)){
-                    isThere= true;
-                }else {
-                    ids.put(key,key);
+                Message key = snapshot.getValue(Message.class);
+                ids.put(key.getId(), key.getId());
+                list.add(key);
+                if (!userHashMap.containsKey(key.getSenderId())) {
+                    MutableLiveData<User> userMutableLiveData = putUserData(key.getSenderId());
+                    userHashMap.put(userMutableLiveData.getValue().getId(),userMutableLiveData);
                 }
-                //TODO add users
-//                if (!isThere) {
-//                    MutableLiveData<User> groupMutableLiveData = putUserData(key);
-//                    list.add(groupMutableLiveData);
-//                }
             }
 
             @Override
@@ -61,10 +58,10 @@ public class GroupChatRepo {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                String key = snapshot.getValue(String.class);
-                for (MutableLiveData<Message> u : list) {
-                    if (key.equals(u.getValue().getId())) {
-                        list.remove(u);
+                Message key = snapshot.getValue(Message.class);
+                for (Message m : list) {
+                    if (key.getId().equals(m.getId())) {
+                        list.remove(m);
                         ids.remove(key);
                         break;
                     }
@@ -76,11 +73,11 @@ public class GroupChatRepo {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:GET GroupsMembersRepo" );
+                Log.d("observer", "onCancelled: ERROR:GET ChatRepo" );
             }
         };
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").addChildEventListener(childEventListener);
-        MutableLiveData<ArrayList<MutableLiveData<Message>>> mutableLiveData = new MutableLiveData<>();
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").addChildEventListener(childEventListener);
+        MutableLiveData<ArrayList<Message>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(list);
         return mutableLiveData;
     }
@@ -97,10 +94,29 @@ public class GroupChatRepo {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:putUserData GroupsMembersRepo" );
+                Log.d("observer", "onCancelled: ERROR:putUserData ChatRepo" );
 
             }
         });
         return  userMutableLiveData;
+    }
+
+    public void sendMessage(Message message){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").push();
+        message.setId(reference.getKey());
+        reference.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isComplete())
+                    Log.d("sendMessage", "onComplete: Succeed ChatRepo" );
+                else
+                    Log.d("sendMessage", "onComplete: ERROR ChatRepo" );
+
+            }
+        });
+    }
+
+    private void OnDetach(){
+        //FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").removeEventListener(childEventListener);
     }
 }
