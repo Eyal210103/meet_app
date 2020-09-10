@@ -65,7 +65,7 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
 
     @Override
     public int getItemCount() {
-        return 0;
+        return lastMessage.size();
     }
 
     public class ChatsViewHolder extends RecyclerView.ViewHolder{
