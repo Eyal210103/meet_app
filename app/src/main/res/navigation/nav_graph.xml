@@ -25,6 +25,11 @@
         <action
             android:id="@+id/action_socialMenuFragment_to_groupInfoFragment"
             app:destination="@id/groupInfoFragment" />
+        <action
+            android:id="@+id/action_socialMenuFragment_to_groupChatFragment"
+            app:destination="@id/groupChatFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -35,13 +40,7 @@
         android:id="@+id/groupsChatsFragment"
         android:name="com.example.meetapp.ui.socialMenu.GroupsChats.GroupsChatsFragment"
         android:label="groups_chats_fragment"
-        tools:layout="@layout/groups_chats_fragment" >
-        <action
-            android:id="@+id/action_groupsChatsFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/groups_chats_fragment" />
     <fragment
         android:id="@+id/myGroupsFragment"
         android:name="com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment"
@@ -68,9 +67,7 @@
             android:defaultValue="@null"/>
         <action
             android:id="@+id/action_groupInfoFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/groupChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupChatFragment"
@@ -78,8 +75,10 @@
         android:label="group_chat_fragment"
         tools:layout="@layout/group_chat_fragment" >
         <argument
-            android:name="arg"
+            android:name="id"
             app:argType="string"
-            android:defaultValue="@null"/>
+            android:defaultValue="@null">
+        </argument>
     </fragment>
+
 </navigation>

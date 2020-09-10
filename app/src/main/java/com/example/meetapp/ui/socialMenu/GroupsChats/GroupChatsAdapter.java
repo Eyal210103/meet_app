@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,18 +27,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.ChatsViewHolder> {
 
-    ArrayList<Message> lastMessage;
-    ArrayList<User> lastUser;
-    ArrayList<MutableLiveData<Group>> groups;
+    ArrayList<MutableLiveData<Message>> lastMessage;
+    ArrayList<MutableLiveData<String>> lastUser;
+    LiveData<ArrayList<MutableLiveData<Group>>> groups;
     Context context;
 
-    public GroupChatsAdapter(Context context, ArrayList<Message> lastMessage, ArrayList<User> lastUser, ArrayList<MutableLiveData<Group>> groups) {
+    public GroupChatsAdapter(Context context, ArrayList<MutableLiveData<Message>> lastMessage, ArrayList<MutableLiveData<String>> lastUser, LiveData<ArrayList<MutableLiveData<Group>>> groups) {
         this.lastMessage = lastMessage;
         this.lastUser = lastUser;
         this.groups = groups;
         this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -48,24 +48,26 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
 
     @Override
     public void onBindViewHolder(@NonNull ChatsViewHolder holder, int position) {
-        final Group curr = groups.get(position).getValue();
+        final Group curr = groups.getValue().get(position).getValue();
         Glide.with(context).load(curr.getPhotoUrl()).dontAnimate().into(holder.groupImgCiv);
         holder.groupName.setText(curr.getName());
-        holder.lastMessage.setText(String.format("%s: %s", lastUser.get(position).getDisplayName(), lastMessage.get(position).getContext().substring(0,25)+"..."));
+        if (lastMessage.get(position).getValue() != null) {
+            holder.lastMessage.setText(String.format("%s: %s", lastUser.get(position), lastMessage.get(position).getValue().getContext().substring(0, 25) + "..."));
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle =new Bundle();
-                bundle.putString("groupId" , curr.getId());
+                bundle.putString("id" , curr.getId());
                 final NavController navController = Navigation.findNavController((Activity)context, R.id.nav_host_fragment);
-                navController.navigate(R.id.action_groupsChatsFragment_to_groupChatFragment, bundle);
+                navController.navigate(R.id.action_socialMenuFragment_to_groupChatFragment, bundle);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return lastMessage.size();
+        return groups.getValue().size();
     }
 
     public class ChatsViewHolder extends RecyclerView.ViewHolder{

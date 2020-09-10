@@ -2,6 +2,7 @@ package com.example.meetapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         MainActivityViewModel mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModel.init(this);
 
+        Log.d("_____________", "onCreate: " + CurrentUser.getCurrentUser().toString());
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
