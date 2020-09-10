@@ -14,9 +14,6 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <permission
-        android:name="com.example.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -37,7 +34,5 @@
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBVdb3GbCXputSzM9viLfm2292lw54IqCk"/>
     </application>
-
-
 
 </manifest>

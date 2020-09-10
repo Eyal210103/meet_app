@@ -12,6 +12,7 @@
 
     <item
         android:id="@+id/socialMenuFragment"
+        android:visible="true"
         android:enabled="true"
         android:title="@string/groups"
         android:icon="@drawable/groupsicon" />

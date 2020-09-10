@@ -12,8 +12,6 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/background"
-        app:cnb_menuResource="@menu/bottom_nav_menu"
-        app:cnb_orientationMode="horizontal"
         app:itemIconTint="@drawable/nav_bar_color"
         app:itemTextColor="@drawable/nav_bar_color"
         app:labelVisibilityMode="unlabeled"
