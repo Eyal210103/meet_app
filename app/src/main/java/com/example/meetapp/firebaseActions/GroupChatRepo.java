@@ -116,6 +116,8 @@ public class GroupChatRepo {
         });
     }
 
+
+
     private void OnDetach(){
         //FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").removeEventListener(childEventListener);
     }

@@ -21,15 +21,12 @@ import java.util.HashMap;
 
 public class UserGroupsRepo {
 
-    private static User thisUser = CurrentUser.getCurrentUser();
     ArrayList<MutableLiveData<Group>> list = new ArrayList<MutableLiveData<Group>>();
-    HashMap<String,String> ids = new HashMap<>();
+    HashMap<String,MutableLiveData<Group>> ids = new HashMap<>();
 
     static UserGroupsRepo instance = null;
-    private static Context context;
 
-    public static UserGroupsRepo getInstance(Context context){
-        UserGroupsRepo.context = context;
+    public static UserGroupsRepo getInstance(){
         if (instance == null){
             instance = new UserGroupsRepo();
         }
@@ -45,16 +42,12 @@ public class UserGroupsRepo {
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         String key = snapshot.getValue(String.class);
                         Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
-                        boolean isThere = false;
-                        if (ids.containsKey(key)){
-                            isThere= true;
-                        }else {
-                            ids.put(key,key);
-                        }
-                        if (!isThere) {
+                        if (!ids.containsKey(key)) {
                             MutableLiveData<Group> groupMutableLiveData = putGroupsData(key);
                             list.add(groupMutableLiveData);
+                            ids.put(key,groupMutableLiveData);
                         }
+
                     }
 
                     @Override
@@ -101,4 +94,7 @@ public class UserGroupsRepo {
         return  groupMutableLiveData;
     }
 
+    public HashMap<String, MutableLiveData<Group>> getHashMapGroups() {
+        return ids;
+    }
 }

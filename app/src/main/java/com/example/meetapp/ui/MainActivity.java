@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView,navController);
-        UserGroupsRepo.getInstance(null).getGroups();
+        UserGroupsRepo.getInstance().getGroups();
     }
 
     @Override

@@ -51,7 +51,7 @@ public class SocialMenuFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.social_menu_fragment, container, false);
         viewPager = view.findViewById(R.id.viewpager);
-        ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(getActivity());
+        ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(requireActivity());
         viewPager.setAdapter(adapter);
         tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {

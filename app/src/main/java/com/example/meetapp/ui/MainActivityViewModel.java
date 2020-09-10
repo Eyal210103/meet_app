@@ -16,7 +16,7 @@ public class MainActivityViewModel extends ViewModel {
     MutableLiveData<ArrayList<MutableLiveData<Group>>> map = null;
 
     public void init(@NonNull Context context) {
-        map = UserGroupsRepo.getInstance(context).getGroups();
+        map = UserGroupsRepo.getInstance().getGroups();
     }
 
     public LiveData<ArrayList<MutableLiveData<Group>>> getGroups() {
