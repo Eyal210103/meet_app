@@ -37,15 +37,15 @@ public class GroupChatRepo {
     }
 
     public MutableLiveData<ArrayList<Message>> getMessages() {
-        ids.clear();
-        list.clear();
-
+        final MutableLiveData<ArrayList<Message>> mutableLiveData = new MutableLiveData<>();
+        mutableLiveData.setValue(list);
         this.childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message key = snapshot.getValue(Message.class);
                 if (!ids.containsKey(key.getId())){
                     list.add(key);
+                    mutableLiveData.setValue(list);
                     ids.put(key.getId(), key.getId());
                 }
                 if (!userHashMap.containsKey(key.getSenderId())) {
@@ -79,8 +79,6 @@ public class GroupChatRepo {
             }
         };
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").addChildEventListener(childEventListener);
-        MutableLiveData<ArrayList<Message>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(list);
         return mutableLiveData;
     }
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.meetapp.model.message.Message;
 import com.example.meetapp.ui.MainActivityViewModel;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class GroupsChatsFragment extends Fragment {
 
@@ -64,6 +67,7 @@ public class GroupsChatsFragment extends Fragment {
                 @Override
                 public void onChanged(Group group) {
                     groupChatsAdapter.notifyDataSetChanged();
+                    Log.d(TAG, "onChanged: CALLED OBSERVER CHAT");
                 }
             });
         }

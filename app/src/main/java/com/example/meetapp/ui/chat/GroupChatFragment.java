@@ -67,6 +67,7 @@ public class GroupChatFragment extends Fragment {
                     message.setHour("12:00");
                     mViewModel.sendMessage(message);
                     contextET.setText("");
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount());
                 }
             }
         });
@@ -75,11 +76,11 @@ public class GroupChatFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<Message> messages) {
                 adapter.notifyDataSetChanged();
-                try {
-                    recyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
-                }catch (Exception ignored){}
+                recyclerView.smoothScrollToPosition(adapter.getItemCount());
             }
         });
+        recyclerView.smoothScrollToPosition(adapter.getItemCount());
+
         return view;
     }
 
