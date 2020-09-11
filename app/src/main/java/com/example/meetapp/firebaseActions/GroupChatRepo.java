@@ -25,9 +25,9 @@ import java.util.HashMap;
 
 public class GroupChatRepo {
 
-    ArrayList<Message> list = new ArrayList<Message>();
-    HashMap<String, String> ids = new HashMap<>();
-    HashMap<String, MutableLiveData<User>> userHashMap = new HashMap<>();
+    private ArrayList<Message> list = new ArrayList<Message>();
+    private HashMap<String, String> ids = new HashMap<>();
+    private HashMap<String, MutableLiveData<User>> userHashMap = new HashMap<>();
     private ChildEventListener childEventListener;
     private String groupId;
 
@@ -44,11 +44,13 @@ public class GroupChatRepo {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message key = snapshot.getValue(Message.class);
-                ids.put(key.getId(), key.getId());
-                list.add(key);
+                if (!ids.containsKey(key.getId())){
+                    list.add(key);
+                    ids.put(key.getId(), key.getId());
+                }
                 if (!userHashMap.containsKey(key.getSenderId())) {
                     MutableLiveData<User> userMutableLiveData = putUserData(key.getSenderId());
-                    userHashMap.put(userMutableLiveData.getValue().getId(),userMutableLiveData);
+                    userHashMap.put(key.getSenderId(),userMutableLiveData);
                 }
             }
 

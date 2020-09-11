@@ -53,7 +53,11 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
         Glide.with(context).load(curr.getPhotoUrl()).dontAnimate().into(holder.groupImgCiv);
         holder.groupName.setText(curr.getName());
         if (lastMessage.get(position).getValue() != null) {
-            holder.lastMessage.setText(String.format("%s: %s", lastUser.get(position), lastMessage.get(position).getValue().getContext().substring(0, 25) + "..."));
+            if (lastMessage.get(position).getValue().getContext().length() > 10)
+                holder.lastMessage.setText(String.format("%s: %s", lastMessage.get(position).getValue().getSenderDisplayName(), lastMessage.get(position).getValue().getContext().substring(0,10) + "..."));
+            else
+                holder.lastMessage.setText(String.format("%s: %s",lastMessage.get(position).getValue().getSenderDisplayName(), lastMessage.get(position).getValue().getContext()));
+
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

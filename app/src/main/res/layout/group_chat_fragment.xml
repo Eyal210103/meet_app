@@ -36,7 +36,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/caht_send_button"
+            app:layout_constraintEnd_toStartOf="@+id/chat_send_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -55,16 +55,17 @@
                 android:inputType="text"
                 android:padding="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/caht_send_button"
+                app:layout_constraintEnd_toStartOf="@+id/chat_send_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/caht_send_button"
+            android:id="@+id/chat_send_button"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/main_app_design"
             android:backgroundTint="@color/colorAccent"
             android:foreground="@drawable/send_16"
