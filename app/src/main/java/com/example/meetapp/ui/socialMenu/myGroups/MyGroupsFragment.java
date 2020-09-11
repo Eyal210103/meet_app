@@ -64,6 +64,13 @@ public class MyGroupsFragment extends Fragment {
             }
         });
 
+        floatingActionButtonJoinGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_socialMenuFragment_to_joinGroupFragment);
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
 

@@ -30,6 +30,11 @@
             app:destination="@id/groupChatFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_socialMenuFragment_to_joinGroupFragment"
+            app:destination="@id/joinGroupFragment"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -80,5 +85,10 @@
             android:defaultValue="@null">
         </argument>
     </fragment>
+    <fragment
+        android:id="@+id/joinGroupFragment"
+        android:name="com.example.meetapp.ui.socialMenu.myGroups.JoinGroupFragment"
+        android:label="join_group_fragment"
+        tools:layout="@layout/join_group_fragment" />
 
 </navigation>
