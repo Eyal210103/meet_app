@@ -46,7 +46,7 @@ public class GroupsChatsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.groups_chats_fragment, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.group_chats_recycler_view);
-        groupChatsAdapter = new GroupChatsAdapter(requireActivity(),mViewModel.lastMessage,mViewModel.users,mainActivityViewModel.getGroups());
+        groupChatsAdapter = new GroupChatsAdapter(this, mViewModel.lastMessage, mViewModel.users, mainActivityViewModel.getGroups().getValue());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -59,17 +59,24 @@ public class GroupsChatsFragment extends Fragment {
                 groupChatsAdapter.notifyDataSetChanged();
             }
         });
-
-        if (mViewModel.lastMessage != null) {
-            for (MutableLiveData<Message> m : mViewModel.lastMessage) {
-                m.observe(getViewLifecycleOwner(), new Observer<Message>() {
-                    @Override
-                    public void onChanged(Message message) {
-                        groupChatsAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
+        for (MutableLiveData<Group> m:mainActivityViewModel.getGroups().getValue()) {
+            m.observe(getViewLifecycleOwner(), new Observer<Group>() {
+                @Override
+                public void onChanged(Group group) {
+                    groupChatsAdapter.notifyDataSetChanged();
+                }
+            });
         }
+
+        for (MutableLiveData<Message> m : mViewModel.lastMessage) {
+            m.observe(getViewLifecycleOwner(), new Observer<Message>() {
+                @Override
+                public void onChanged(Message message) {
+                    groupChatsAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
         return view;
     }
 

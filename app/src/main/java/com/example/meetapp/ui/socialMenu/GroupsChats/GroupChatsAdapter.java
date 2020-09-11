@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
@@ -29,10 +30,10 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
 
     ArrayList<MutableLiveData<Message>> lastMessage;
     ArrayList<MutableLiveData<String>> lastUser;
-    LiveData<ArrayList<MutableLiveData<Group>>> groups;
-    Context context;
+    ArrayList<MutableLiveData<Group>> groups;
+    Fragment context;
 
-    public GroupChatsAdapter(Context context, ArrayList<MutableLiveData<Message>> lastMessage, ArrayList<MutableLiveData<String>> lastUser, LiveData<ArrayList<MutableLiveData<Group>>> groups) {
+    public GroupChatsAdapter(Fragment context, ArrayList<MutableLiveData<Message>> lastMessage, ArrayList<MutableLiveData<String>> lastUser, ArrayList<MutableLiveData<Group>> groups) {
         this.lastMessage = lastMessage;
         this.lastUser = lastUser;
         this.groups = groups;
@@ -48,7 +49,7 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
 
     @Override
     public void onBindViewHolder(@NonNull ChatsViewHolder holder, int position) {
-        final Group curr = groups.getValue().get(position).getValue();
+        final Group curr = groups.get(position).getValue();
         Glide.with(context).load(curr.getPhotoUrl()).dontAnimate().into(holder.groupImgCiv);
         holder.groupName.setText(curr.getName());
         if (lastMessage.get(position).getValue() != null) {
@@ -59,7 +60,7 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
             public void onClick(View v) {
                 Bundle bundle =new Bundle();
                 bundle.putString("id" , curr.getId());
-                final NavController navController = Navigation.findNavController((Activity)context, R.id.nav_host_fragment);
+                final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_socialMenuFragment_to_groupChatFragment, bundle);
             }
         });
@@ -67,7 +68,7 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
 
     @Override
     public int getItemCount() {
-        return groups.getValue().size();
+        return lastMessage.size();
     }
 
     public class ChatsViewHolder extends RecyclerView.ViewHolder{
