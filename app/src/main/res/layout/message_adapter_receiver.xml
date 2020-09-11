@@ -15,7 +15,6 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/message_background_design"
         android:backgroundTint="@color/backgroundSec"
-        android:backgroundTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

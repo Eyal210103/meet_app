@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/message_background_design"
         android:backgroundTint="@color/colorAccent"
-        android:backgroundTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
