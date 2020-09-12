@@ -18,9 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.message.Message;
+import com.example.meetapp.notifications.Token;
 import com.example.meetapp.ui.MainActivityViewModel;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
@@ -81,8 +86,15 @@ public class GroupsChatsFragment extends Fragment {
             });
         }
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
         return view;
     }
 
+    public void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(CurrentUser.getCurrentUser().getId()).setValue(token1);
+    }
 
 }

@@ -36,7 +36,6 @@ public class GroupsMembersRepo {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         String key = snapshot.getValue(String.class);
-                        Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
                         boolean isThere = false;
                         if (ids.containsKey(key)){
                             isThere= true;
@@ -87,13 +86,11 @@ public class GroupsMembersRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userMutableLiveData.setValue(snapshot.getValue(User.class));
-                Log.d("observer", "onChanged: " + snapshot.getValue(User.class).toString());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("observer", "onCancelled: ERROR:putUserData GroupsMembersRepo" );
-
             }
         });
         return  userMutableLiveData;

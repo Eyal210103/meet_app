@@ -2,16 +2,26 @@ package com.example.meetapp.firebaseActions;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.meetapp.R;
+import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.message.Message;
+import com.example.meetapp.notifications.APIService;
+import com.example.meetapp.notifications.Client;
+import com.example.meetapp.notifications.Data;
+import com.example.meetapp.notifications.MyResponse;
+import com.example.meetapp.notifications.Sender;
+import com.example.meetapp.notifications.Token;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +33,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class GroupChatRepo {
 
     private ArrayList<Message> list = new ArrayList<Message>();
@@ -30,10 +44,12 @@ public class GroupChatRepo {
     private HashMap<String, MutableLiveData<User>> userHashMap = new HashMap<>();
     private ChildEventListener childEventListener;
     private String groupId;
+    private APIService apiService;
 
     
     public GroupChatRepo(String groupId) {
         this.groupId = groupId;
+        apiService = Client.getClient("https://fcm.googleapis.com/fcm/notification/").create(APIService.class);
     }
 
     public MutableLiveData<ArrayList<Message>> getMessages() {
@@ -43,10 +59,13 @@ public class GroupChatRepo {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message key = snapshot.getValue(Message.class);
-                if (!ids.containsKey(key.getId())){
+                if (!ids.containsKey(key.getId())) {
                     list.add(key);
                     mutableLiveData.setValue(list);
                     ids.put(key.getId(), key.getId());
+
+                    if (!key.getSenderId().equals(CurrentUser.getCurrentUser().getId()))
+                        sendNotification(CurrentUser.getCurrentUser().getId(), key);
                 }
                 if (!userHashMap.containsKey(key.getSenderId())) {
                     MutableLiveData<User> userMutableLiveData = putUserData(key.getSenderId());
@@ -82,6 +101,45 @@ public class GroupChatRepo {
         return mutableLiveData;
     }
 
+    private void sendNotification(final String id, final Message key) {
+
+
+        DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = token.orderByKey();
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds:snapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Log.d("sendNotification", "onResponse: "+token.getToken());
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.mipmap.ic_launcher_round , key.getSenderDisplayName() + ": " + key.getContext(),"New Message",id);
+                    Sender sender = new Sender(data,token.getToken());
+//                    Log.d("sendNotification", "onResponse:" + token.toString() + data.toString() + sender.toString());
+
+                    apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
+                        @Override
+                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                            if (response.code() == 200){
+                                assert response.body() != null;
+                                if (response.body().success == 1){
+                                    Log.d("sendNotification", "onResponse: failed");
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<MyResponse> call, Throwable t) {
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     private MutableLiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
@@ -89,13 +147,11 @@ public class GroupChatRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userMutableLiveData.setValue(snapshot.getValue(User.class));
-                Log.d("observer", "onChanged: " + snapshot.getValue(User.class).toString());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("observer", "onCancelled: ERROR:putUserData ChatRepo" );
-
             }
         });
         return  userMutableLiveData;
@@ -115,8 +171,6 @@ public class GroupChatRepo {
             }
         });
     }
-
-
 
     private void OnDetach(){
         //FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").removeEventListener(childEventListener);

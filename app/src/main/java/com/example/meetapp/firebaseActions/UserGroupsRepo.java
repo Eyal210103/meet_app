@@ -41,7 +41,6 @@ public class UserGroupsRepo {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         String key = snapshot.getValue(String.class);
-                        Log.d("observer" , "onChildAdded: " + key + "____________________________________________**********************************************************");
                         if (!ids.containsKey(key)) {
                             MutableLiveData<Group> groupMutableLiveData = putGroupsData(key);
                             list.add(groupMutableLiveData);
