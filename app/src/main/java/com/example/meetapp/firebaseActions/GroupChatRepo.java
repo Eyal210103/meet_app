@@ -60,7 +60,7 @@ public class GroupChatRepo{
     private ChildEventListener childEventListener;
     private String groupId;
     private APIService apiService;
-
+    boolean notify = false;
     
     public GroupChatRepo(String groupId) {
         this.groupId = groupId;
@@ -80,8 +80,12 @@ public class GroupChatRepo{
                     mutableLiveData.setValue(list);
                     ids.put(key.getId(), key.getId());
 
-                    if (!key.getSenderId().equals(CurrentUser.getCurrentUser().getId()))
-                        sendNotification(CurrentUser.getCurrentUser().getId(), key);
+                    if (!key.getSenderId().equals(CurrentUser.getCurrentUser().getId())) {
+                        if (notify) {
+                            sendNotification(CurrentUser.getCurrentUser().getId(), key);
+                        }
+                        notify = false;
+                    }
                 }
                 if (!userHashMap.containsKey(key.getSenderId())) {
                     MutableLiveData<User> userMutableLiveData = putUserData(key.getSenderId());
@@ -118,7 +122,6 @@ public class GroupChatRepo{
     }
 
     private void sendNotification(final String id, final Message key) {
-
 
         DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = token.orderByKey();
@@ -174,6 +177,7 @@ public class GroupChatRepo{
     }
 
     public void sendMessage(Message message){
+        notify = true;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").push();
         message.setId(reference.getKey());
         reference.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
