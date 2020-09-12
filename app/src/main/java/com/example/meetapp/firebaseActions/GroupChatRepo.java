@@ -1,11 +1,21 @@
 package com.example.meetapp.firebaseActions;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.R;
@@ -16,9 +26,12 @@ import com.example.meetapp.model.message.Message;
 import com.example.meetapp.notifications.APIService;
 import com.example.meetapp.notifications.Client;
 import com.example.meetapp.notifications.Data;
+import com.example.meetapp.notifications.FirebaseMessaging;
 import com.example.meetapp.notifications.MyResponse;
+import com.example.meetapp.notifications.OreoNotification;
 import com.example.meetapp.notifications.Sender;
 import com.example.meetapp.notifications.Token;
+import com.example.meetapp.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +42,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +52,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GroupChatRepo {
+public class GroupChatRepo{
 
     private ArrayList<Message> list = new ArrayList<Message>();
     private HashMap<String, String> ids = new HashMap<>();
@@ -49,7 +64,8 @@ public class GroupChatRepo {
     
     public GroupChatRepo(String groupId) {
         this.groupId = groupId;
-        apiService = Client.getClient("https://fcm.googleapis.com/fcm/notification/").create(APIService.class);
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+        FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
     }
 
     public MutableLiveData<ArrayList<Message>> getMessages() {
@@ -173,6 +189,7 @@ public class GroupChatRepo {
     }
 
     private void OnDetach(){
-        //FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").removeEventListener(childEventListener);
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").removeEventListener(childEventListener);
     }
+
 }

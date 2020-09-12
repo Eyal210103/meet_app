@@ -9,12 +9,8 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface APIService {
-    @Headers(
-            {
-                    "Content-Type:application/json",
-                    "Authorization:key = AAAAcujv7pk:APA91bEtjeaKqiz3z1qUfrsKDb3HoF450sGUQ5GI46vZPis3I9Btn05CtLO2ToXqMK3nfv5PYZ0XI_l_lLVqpMvGHmNK2fmNERrrzrULKEe4Q099gL9tsk8DJx4bkZ4MTbictcNrIPNP"
-            }
-    )
+    @Headers({"Authorization:key = AAAAcujv7pk:APA91bHMFEod8roanRDiRaKrzMvFe6IGCSjL7jbvH9S_MUwLKadw3Jmh8qBXAm07bzfYPP_IJmV_wfZEciOuHJqhpwY6IWxMI5obFAhSIXmMtBzcOqAvQBoTWENYZ6KnTS6eon-Rm1GD",
+             "Content-Type:application/json"})
 
     @POST("fcm/send")
     Call<MyResponse> sendNotification(@Body Sender body);
