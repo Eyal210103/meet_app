@@ -1,11 +1,6 @@
 package com.example.meetapp.ui;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,11 +8,10 @@ import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.notifications.OreoNotification;
+import com.example.meetapp.notifications.MessageNotificationService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.iid.ServiceStarter;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -43,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView,navController);
         UserGroupsRepo.getInstance().getGroups();
+
+        MessageNotificationService messageNotificationService = new MessageNotificationService();
+        messageNotificationService.startService();
+
     }
 
     @Override

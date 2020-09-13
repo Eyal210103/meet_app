@@ -46,23 +46,23 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        assert user != null;
-        int i = Integer.parseInt(user.replaceAll("[\\D]",""));
+        int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("userId",user);
+        bundle.putString("userId", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,i,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, i, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         OreoNotification oreoNotification = new OreoNotification(this);
-        Notification.Builder builder= oreoNotification.getOreoNotification(title , body ,pendingIntent , defaultSound , icon);
+        Notification.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent, defaultSound, icon);
         int j = 0;
-        if (i>0){
-            j=i;
+        if (i > 0) {
+            j = i;
         }
-        oreoNotification.getNotificationManager().notify(j,builder.build());
+        oreoNotification.getNotificationManager().notify(j, builder.build());
+
     }
 
     private void sendNotification(RemoteMessage remoteMessage) {
@@ -70,15 +70,13 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
-
-        assert user != null;
-        int i = Integer.parseInt(user.replaceAll("[\\D]",""));
+        int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, LoginActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("userId",user);
+        bundle.putString("userId", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,i,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, i, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -91,6 +89,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0,builder.build());
+        notificationManager.notify(0, builder.build());
+
     }
 }
