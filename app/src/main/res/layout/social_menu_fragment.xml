@@ -24,12 +24,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="Chat" />
+            android:text="Groups" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="Groups" />
+            android:text="Chat" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="50dp"

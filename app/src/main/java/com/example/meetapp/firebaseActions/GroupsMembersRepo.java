@@ -22,7 +22,6 @@ public class GroupsMembersRepo {
     ArrayList<MutableLiveData<User>> map = new ArrayList<MutableLiveData<User>>();
     HashMap<String,String> ids = new HashMap<>();
     private String groupId;
-    static GroupsMembersRepo instance = null;
     ChildEventListener childEventListener;
 
     public GroupsMembersRepo (String groupId){
@@ -32,6 +31,8 @@ public class GroupsMembersRepo {
     public MutableLiveData<ArrayList<MutableLiveData<User>>> getMembers(){
         ids.clear();
         map.clear();
+        MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
+        mutableLiveData.setValue(map);
         this.childEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -45,6 +46,7 @@ public class GroupsMembersRepo {
                         if (!isThere) {
                             MutableLiveData<User> userMutableLiveData = putUserData(key);
                             map.add(userMutableLiveData);
+                            mutableLiveData.setValue(map);
                         }
                     }
 
@@ -73,8 +75,6 @@ public class GroupsMembersRepo {
                     }
                 };
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").addChildEventListener(childEventListener);
-        MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(map);
         return mutableLiveData;
     }
 

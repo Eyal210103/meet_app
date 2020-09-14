@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
 
         MessageNotificationService messageNotificationService = new MessageNotificationService();
         messageNotificationService.startService();
-
     }
 
     @Override
@@ -52,6 +51,4 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         startActivity(intent);
         this.finish();
     }
-
-
 }

@@ -26,7 +26,6 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d("onMessageReceived", "onMessageReceived: FIREBASE___________________" + remoteMessage.toString());
         String sented = remoteMessage.getData().get("sented");
         if (CurrentUser.getCurrentUser() != null && sented!= null && sented.equals(CurrentUser.getCurrentUser().getId())){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -70,6 +69,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        assert user != null;
         int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, LoginActivity.class);
         Bundle bundle = new Bundle();
@@ -89,6 +89,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        assert notificationManager != null;
         notificationManager.notify(0, builder.build());
 
     }

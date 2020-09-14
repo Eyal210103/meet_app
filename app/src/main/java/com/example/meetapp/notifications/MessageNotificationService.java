@@ -24,9 +24,11 @@ import retrofit2.Response;
 public class MessageNotificationService {
 
     private APIService apiService;
+    private boolean first;
 
     public MessageNotificationService() {
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+        first = true;
     }
 
     public void startService(){
@@ -60,12 +62,14 @@ public class MessageNotificationService {
                     if (i== snapshot.getChildrenCount()-1){
                         Message message = ds.getValue(Message.class);
                         if (!message.getSenderId().equals(CurrentUser.getCurrentUser().getId())) {
-                            sendNotification(CurrentUser.getCurrentUser().getId(), message);
+                            if (!first)
+                                sendNotification(CurrentUser.getCurrentUser().getId(), message);
                         }
                         break;
                     }
                     i++;
                 }
+                first = false;
             }
 
             @Override
@@ -76,7 +80,6 @@ public class MessageNotificationService {
     }
 
     private void sendNotification(final String id, final Message key) {
-
         DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = token.orderByKey();
         query.addValueEventListener(new ValueEventListener() {
@@ -85,7 +88,7 @@ public class MessageNotificationService {
                 for (DataSnapshot ds:snapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
                     Log.d("sendNotification", "onResponse: "+token.getToken());
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.mipmap.ic_launcher_round , key.getSenderDisplayName() + ": " + key.getContext(),"New Message",id);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.mipmap.ic_launcher_round , key.getSenderDisplayName() + ": " + key.getContext(),key.getGroupName(),id);
                     Sender sender = new Sender(data,token.getToken());
                     apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
                         @Override

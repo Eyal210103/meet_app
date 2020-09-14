@@ -37,11 +37,7 @@ public class SocialMenuFragment extends Fragment {
 
     private SocialMenuViewModel mViewModel;
 
-    public static SocialMenuFragment newInstance() {
-        return new SocialMenuFragment();
-    }
-
-    private String[] titles = new String[]{"Chat", "Groups", "Meetings"};
+    private String[] titles = new String[]{"Groups", "Chat", "Meetings"};
     ViewPager2 viewPager;
     TabLayout tabLayout;
 

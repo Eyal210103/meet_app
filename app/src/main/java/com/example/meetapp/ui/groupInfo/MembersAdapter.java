@@ -41,7 +41,6 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         User current = members.get(position).getValue();
         if (current != null){
             Glide.with(context.requireActivity()).load(current.getProfileImageUrl()).into(holder.circleImageView);
-            Log.d("", "onBindViewHolder: " + current.toString());
         }
     }
 

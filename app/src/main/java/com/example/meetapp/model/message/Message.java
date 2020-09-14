@@ -6,6 +6,7 @@ public class Message {
     private String context;
     private String hour; // HH:MM format
     private String id;
+    String groupName;
     private int day;
 
     public Message(String senderId, String senderDisplayName, String context, String hour, int day) {
@@ -65,6 +66,14 @@ public class Message {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     @Override

@@ -59,11 +59,20 @@ public class GroupChatRepo{
     private HashMap<String, MutableLiveData<User>> userHashMap = new HashMap<>();
     private ChildEventListener childEventListener;
     private String groupId;
+    private Group group;
 
     public GroupChatRepo(String groupId) {
         this.groupId = groupId;
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                group = snapshot.getValue(Group.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
-
     public MutableLiveData<ArrayList<Message>> getMessages() {
         final MutableLiveData<ArrayList<Message>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(list);
@@ -129,6 +138,7 @@ public class GroupChatRepo{
 
     public void sendMessage(Message message){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").push();
+        message.setGroupName(group.getName());
         message.setId(reference.getKey());
         reference.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

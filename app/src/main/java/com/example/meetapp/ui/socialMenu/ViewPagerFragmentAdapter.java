@@ -19,9 +19,9 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new GroupsChatsFragment();
-            case 1:
                 return new MyGroupsFragment();
+            case 1:
+                return new GroupsChatsFragment();
             case 2:
                 return new MyMeetingsFragment();
         }
