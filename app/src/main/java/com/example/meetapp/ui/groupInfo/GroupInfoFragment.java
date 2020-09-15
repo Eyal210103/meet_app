@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +25,12 @@ import com.example.meetapp.R;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.ui.MainActivityViewModel;
+import com.example.meetapp.ui.socialMenu.ViewPagerFragmentAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -62,6 +68,14 @@ public class GroupInfoFragment extends Fragment {
         recyclerViewMembers.setHasFixedSize(true);
         membersAdapter = new MembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
+        
+//        ViewPager viewPager = view.findViewById(R.id.viewPager_group);
+//        viewPager.setNestedScrollingEnabled(true);
+//
+//        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireFragmentManager(), group.getId());
+//        viewPager.setAdapter(adapter);
+//        TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
+//        tabLayout.setupWithViewPager(viewPager);
 
         mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override

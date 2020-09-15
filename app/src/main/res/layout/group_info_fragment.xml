@@ -68,14 +68,49 @@
         app:layout_constraintTop_toBottomOf="@+id/group_info_group_civ"
         app:layout_constraintVertical_bias="1.0">
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_background"
+            android:theme="@style/AppTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/viewPager_group"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="16dp"
+            app:tabPaddingStart="16dp"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextAppearance="@style/TabTextAppearance"
+            app:tabTextColor="@color/oppBackground">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="TITLE" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="Chat" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="Meetings" />
+        </com.google.android.material.tabs.TabLayout>
+
+
         <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager_group"
             android:layout_width="409dp"
             android:layout_height="0dp"
             android:nestedScrollingEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout_group" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
