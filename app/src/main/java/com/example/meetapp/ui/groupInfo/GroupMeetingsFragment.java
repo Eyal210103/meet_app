@@ -1,16 +1,15 @@
 package com.example.meetapp.ui.groupInfo;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
 
@@ -18,8 +17,10 @@ public class GroupMeetingsFragment extends Fragment {
 
     private GroupMeetingsViewModel mViewModel;
 
-    public static GroupMeetingsFragment newInstance() {
-        return new GroupMeetingsFragment();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -32,7 +33,6 @@ public class GroupMeetingsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupMeetingsViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }
