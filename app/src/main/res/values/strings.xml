@@ -17,4 +17,5 @@
     <string name="join" translatable="true">Join</string>
     <string name="type_locations_or_subjects" translatable="true">Type Locations Or Subjects</string>
     <string name="type_a_message">Type A Message</string>
+    <string name="next_meeting">Next Meeting</string>
 </resources>
