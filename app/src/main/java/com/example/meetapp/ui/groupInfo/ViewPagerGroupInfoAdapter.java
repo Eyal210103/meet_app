@@ -31,7 +31,7 @@ class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new MyGroupsFragment();
+                return new GroupDashboardFragment();
             case 1:
                 GroupChatFragment groupChatFragment = new GroupChatFragment();
                 Bundle bundle = new Bundle();
