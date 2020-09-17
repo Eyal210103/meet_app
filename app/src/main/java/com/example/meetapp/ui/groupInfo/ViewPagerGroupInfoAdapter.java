@@ -17,34 +17,36 @@ import com.example.meetapp.ui.socialMenu.GroupsChats.GroupsChatsFragment;
 import com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment;
 import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment;
 
-public class ViewPagerGroupInfoAdapter extends FragmentPagerAdapter {
+class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
 
     String groupId;
 
-    public ViewPagerGroupInfoAdapter(@NonNull FragmentManager fm ,String groupId) {
-        super(fm);
+    public ViewPagerGroupInfoAdapter(FragmentActivity fragmentActivity, String groupId) {
+        super((FragmentActivity) fragmentActivity);
         this.groupId = groupId;
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         switch (position) {
-//            case 0:
-//                return FirstFragment.newInstance(0, "Page # 1");
-            default:
-                Bundle bundle = new Bundle();
-                bundle.putString("id", groupId);
+            case 0:
+                return new MyGroupsFragment();
+            case 1:
                 GroupChatFragment groupChatFragment = new GroupChatFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("id",groupId);
                 groupChatFragment.setArguments(bundle);
                 return groupChatFragment;
-//            case 2:
-//                return SecondFragment.newInstance(2, "Page # 3");
+            case 2:
+                return new MyMeetingsFragment();
         }
+        return new MyGroupsFragment();
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return 3;
     }
 }
+

@@ -38,6 +38,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     EditText groupSubjectEditText;
     CircleImageView groupImageCIV;
     ProgressDialog progressDialog;
+    Uri imageUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,14 +87,14 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 String id = DatabaseWrite.addOrUpdateGroupGetID(newGroup);
 
                 Bitmap bitmap = ((BitmapDrawable) groupImageCIV.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                byte[] data = baos.toByteArray();
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+//                byte[] data = baos.toByteArray();
                 progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle("Creating , Please Wait..");
                 progressDialog.show();
-                StorageUpload.uploadGroupImage(this,id,data);
+                StorageUpload.uploadGroupImage(this,id,imageUri);
             }
         } else {
            // errors.setText("Type");
@@ -109,13 +110,8 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            Uri imageUri = data.getData();
+            imageUri = data.getData();
             groupImageCIV.setImageURI(imageUri);
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri); //TODO check if need
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

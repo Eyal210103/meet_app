@@ -21,12 +21,12 @@ public class StorageUpload {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-    public static void uploadGroupImage(final Fragment context, final String groupId , byte[] data){
-                reference.child("Groups Images").child(groupId).putBytes(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+    public static void uploadGroupImage(final Fragment context, final String groupId , Uri data){
+                reference.child("Groups Images").child(groupId).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()){
-                            reference.child("Group").child(groupId).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            reference.child("Groups Images").child(groupId).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
                                     if (task.isSuccessful()){

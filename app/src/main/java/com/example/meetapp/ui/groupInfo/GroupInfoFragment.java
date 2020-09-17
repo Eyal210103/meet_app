@@ -69,14 +69,21 @@ public class GroupInfoFragment extends Fragment {
         membersAdapter = new MembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
         
-//        ViewPager viewPager = view.findViewById(R.id.viewPager_group);
-//        viewPager.setNestedScrollingEnabled(true);
-//
-//        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireFragmentManager(), group.getId());
-//        viewPager.setAdapter(adapter);
-//        TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
-//        tabLayout.setupWithViewPager(viewPager);
+        ViewPager2 viewPager = view.findViewById(R.id.viewPager_group);
+        viewPager.setNestedScrollingEnabled(true);
 
+        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(), group.getId());
+        viewPager.setAdapter(adapter);
+        String[] titles = {"TITLE" , "Chat" , "Meetings"};
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
+
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(titles[position]);
+            }
+        }
+        ).attach();
         mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {

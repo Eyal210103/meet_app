@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundSec"
-    app:layoutDescription="@xml/group_info_fragment_scene">
+    android:background="@drawable/group_header_greadient">
+<!--    app:layoutDescription="@xml/group_info_fragment_scene">-->
 
     <ImageView
         android:id="@+id/imageView"
@@ -19,9 +19,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/group_info_group_civ"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="32dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:src="@mipmap/ic_launcher"
         app:civ_border_color="@color/oppBackground"
@@ -34,8 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:gravity="start"
         android:foregroundGravity="left"
+        android:gravity="start"
         android:text="@string/app_name"
         android:textColor="@color/oppBackground"
         android:textSize="24sp"
@@ -49,7 +49,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="@+id/group_info_group_civ"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -102,7 +102,7 @@
         </com.google.android.material.tabs.TabLayout>
 
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager_group"
             android:layout_width="409dp"
             android:layout_height="0dp"
@@ -125,4 +125,4 @@
         app:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
         app:layout_constraintTop_toBottomOf="@+id/group_info_group_name" />
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
