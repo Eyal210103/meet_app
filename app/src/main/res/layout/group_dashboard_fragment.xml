@@ -13,8 +13,23 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/group_dash_create_meeting_imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/main_app_design"
+        android:backgroundTint="@color/colorAlt"
+        android:src="@drawable/add_meeting_icon_150"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toEndOf="@+id/include"
+        app:layout_constraintTop_toTopOf="@+id/include" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
