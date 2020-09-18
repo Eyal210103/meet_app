@@ -1,10 +1,9 @@
-package com.example.meetapp.ui.groupInfo;
+package com.example.meetapp.ui.groupInfo.groupsMeetings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

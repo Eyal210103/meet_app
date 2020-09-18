@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.groupInfo;
+package com.example.meetapp.ui.groupInfo.groupDashboard;
 
 import androidx.lifecycle.ViewModel;
 
