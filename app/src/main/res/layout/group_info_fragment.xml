@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/group_header_greadient">
+    android:background="@color/secondry">
 <!--    app:layoutDescription="@xml/group_info_fragment_scene">-->
 
     <ImageView
@@ -33,16 +33,15 @@
         android:id="@+id/group_info_group_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
         android:foregroundGravity="left"
         android:gravity="start"
         android:text="@string/app_name"
         android:textColor="@color/oppBackground"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/group_info_group_civ"
+        android:textSize="26sp"
         app:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
-        app:layout_constraintTop_toTopOf="@+id/group_info_group_civ"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintTop_toTopOf="@+id/group_info_group_civ" />
 
     <ImageView
         android:id="@+id/group_info_subject_imageView"
@@ -88,8 +87,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:text="TITLE" />
-
+                android:text="Dashboard" />
             <com.google.android.material.tabs.TabItem
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -117,9 +115,9 @@
         android:id="@+id/group_info_recyclerView_members"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:nestedScrollingEnabled="false"
         app:layout_constraintEnd_toStartOf="@+id/group_info_subject_imageView"
         app:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
