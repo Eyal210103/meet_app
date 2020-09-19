@@ -25,6 +25,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
 
+    <Button
+        android:background="@drawable/main_app_design"
+        android:id="@+id/login_activity_login_Button"
+        android:textColor="@color/oppBackground"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/login"
+        app:layout_constraintEnd_toEndOf="@+id/google_sign_in_button"
+        app:layout_constraintStart_toStartOf="@+id/google_sign_in_button"
+        app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="400dp"
         android:layout_height="400dp"
