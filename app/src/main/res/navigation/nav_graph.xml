@@ -60,7 +60,13 @@
         android:id="@+id/createGroupFragment"
         android:name="com.example.meetapp.ui.socialMenu.myGroups.CreateGroupFragment"
         android:label="fragment_create_group"
-        tools:layout="@layout/fragment_create_group" />
+        tools:layout="@layout/fragment_create_group" >
+        <action
+            android:id="@+id/action_createGroupFragment_to_socialMenuFragment"
+            app:destination="@id/socialMenuFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/groupInfoFragment"
         android:name="com.example.meetapp.ui.groupInfo.GroupInfoFragment"

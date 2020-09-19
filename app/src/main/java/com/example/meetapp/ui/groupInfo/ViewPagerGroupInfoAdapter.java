@@ -15,10 +15,12 @@ import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment;
 class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
 
     String groupId;
+    GroupInfoFragment groupInfoFragment;
 
-    public ViewPagerGroupInfoAdapter(FragmentActivity fragmentActivity, String groupId) {
+    public ViewPagerGroupInfoAdapter(FragmentActivity fragmentActivity, GroupInfoFragment groupInfoFragment, String groupId) {
         super((FragmentActivity) fragmentActivity);
         this.groupId = groupId;
+        this.groupInfoFragment = groupInfoFragment;
     }
 
     @NonNull
@@ -26,7 +28,9 @@ class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new GroupDashboardFragment();
+                GroupDashboardFragment groupDashboardFragment =  new GroupDashboardFragment();
+                groupDashboardFragment.setParent(groupInfoFragment);
+                return groupDashboardFragment;
             case 1:
                 GroupChatFragment groupChatFragment = new GroupChatFragment();
                 Bundle bundle = new Bundle();

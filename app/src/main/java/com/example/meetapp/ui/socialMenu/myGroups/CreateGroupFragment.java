@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -34,17 +36,19 @@ import static android.app.Activity.RESULT_OK;
 public class CreateGroupFragment extends Fragment implements PhotoUploadCompleteListener, PhotoUploadErrorListener {
 
     private static final int PICK_IMAGE = 52;
-    EditText groupNameEditText;
-    EditText groupSubjectEditText;
-    CircleImageView groupImageCIV;
-    ProgressDialog progressDialog;
-    Uri imageUri;
+    private EditText groupNameEditText;
+    private EditText groupSubjectEditText;
+    private CircleImageView groupImageCIV;
+    private ProgressDialog progressDialog;
+    private Uri imageUri;
+    private NavController navController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_create_group, container, false);
 
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         groupImageCIV = view.findViewById(R.id.create_group_civ);
         groupNameEditText = view.findViewById(R.id.create_group_group_name_et);
         groupSubjectEditText = view.findViewById(R.id.create_group_group_subject);
@@ -83,13 +87,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 newGroup.setPhotoUrl(groupImageURL);
                 groupImageCIV.setDrawingCacheEnabled(true);
                 groupImageCIV.buildDrawingCache();
-
                 String id = DatabaseWrite.addOrUpdateGroupGetID(newGroup);
-
-                Bitmap bitmap = ((BitmapDrawable) groupImageCIV.getDrawable()).getBitmap();
-//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-//                byte[] data = baos.toByteArray();
                 progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle("Creating , Please Wait..");
@@ -118,6 +116,8 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     @Override
     public void onPhotoUploadComplete() {
         progressDialog.dismiss();
+        navController.navigate(R.id.action_createGroupFragment_to_socialMenuFragment);
+        //  "action_createGroupFragment_to_socialMenuFragment";
     }
 
     @Override

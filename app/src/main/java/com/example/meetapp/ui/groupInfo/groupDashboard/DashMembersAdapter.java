@@ -36,7 +36,10 @@ public class DashMembersAdapter extends RecyclerView.Adapter<DashMembersAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull DashMembersViewHolder holder, int position) {
-        Glide.with(context).load(members.get(position).getValue().getProfileImageUrl()).into(holder.circleImageView);
+        User current = members.get(position).getValue();
+        if (current != null){
+            Glide.with(context.requireActivity()).load(current.getProfileImageUrl()).into(holder.circleImageView);
+        }
     }
 
     @Override

@@ -40,6 +40,7 @@ public class GroupInfoFragment extends Fragment {
     MainActivityViewModel mainActivityViewModel;
     private MembersAdapter membersAdapter;
     private Group group;
+    private ViewPager2 viewPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,10 +70,10 @@ public class GroupInfoFragment extends Fragment {
         membersAdapter = new MembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
         
-        ViewPager2 viewPager = view.findViewById(R.id.viewPager_group);
+        viewPager = view.findViewById(R.id.viewPager_group);
         viewPager.setNestedScrollingEnabled(true);
 
-        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(), group.getId());
+        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this, group.getId());
         viewPager.setAdapter(adapter);
         String[] titles = {"Dashboard" , "Chat" , "Meetings"};
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
@@ -84,10 +85,10 @@ public class GroupInfoFragment extends Fragment {
             }
         }
         ).attach();
+
         mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
-                Log.d("getMembers", "onChanged: " + mutableLiveData.toString());
                 membersAdapter.notifyDataSetChanged();
                 for (MutableLiveData<User> u : mViewModel.getMembersMutableLiveData().getValue()) {
                     if (!u.hasObservers()) {
@@ -113,5 +114,12 @@ public class GroupInfoFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void swipeToChat(){
+        viewPager.setCurrentItem(1, true);
+    }
+    public void swipeToMeetings(){
+        viewPager.setCurrentItem(2, true);
     }
 }
