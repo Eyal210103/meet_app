@@ -46,6 +46,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         if (current!= null) {
             holder.groupName.setText(current.getName());
             Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
+            Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
