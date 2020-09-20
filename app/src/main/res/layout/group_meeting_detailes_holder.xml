@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_app_design"
+    android:backgroundTint="@color/colorAlt">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/calendar_150"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/group_meetings_day_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:fontFamily="@font/archivo_black"
+        android:text="24"
+        android:textSize="42sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/group_meetings_month_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:text="July"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/group_meetings_day_textView"
+        app:layout_constraintStart_toStartOf="@+id/group_meetings_day_textView"
+        app:layout_constraintTop_toBottomOf="@+id/group_meetings_day_textView" />
+
+    <ImageView
+        android:id="@+id/group_meetings_subject_imageView"
+        android:layout_width="75dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:srcCompat="@drawable/groups_subjects" />
+
+    <TextView
+        android:id="@+id/group_meetings_description_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="DESCDESCDESDDESCDSSDDEESDESCDESCDESDDESCDSSDDEESDESCDESCDESDDESCDSSDDEESDESCDESCDESDDESCDSSDDEESDESCDESCDESC"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toStartOf="@+id/group_meetings_subject_imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/group_meetings_mapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

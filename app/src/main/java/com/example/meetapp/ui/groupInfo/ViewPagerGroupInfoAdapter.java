@@ -9,6 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.meetapp.ui.chat.GroupChatFragment;
 import com.example.meetapp.ui.groupInfo.groupDashboard.GroupDashboardFragment;
+import com.example.meetapp.ui.groupInfo.groupsMeetings.GroupMeetingsFragment;
 import com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment;
 import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment;
 
@@ -38,7 +39,7 @@ class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
                 groupChatFragment.setArguments(bundle);
                 return groupChatFragment;
             case 2:
-                return new MyMeetingsFragment();
+                return new GroupMeetingsFragment();
         }
         return new MyGroupsFragment();
     }
