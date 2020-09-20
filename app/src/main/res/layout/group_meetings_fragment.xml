@@ -11,7 +11,7 @@
         android:id="@+id/singleRowCalendar"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/green"
+        android:background="@color/backgroundSec"
         app:longPress="false"
         app:multiSelection="false"
         app:deselection="false"
