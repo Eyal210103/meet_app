@@ -1,5 +1,6 @@
 package com.example.meetapp.ui.Views.CalenderBarPackage;
 
+import android.content.Context;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.view.MotionEvent;
@@ -11,33 +12,45 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.meetapp.model.meetings.Meeting;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CalenderBar {
     private Date today;
+    private Context context;
     private RecyclerView recyclerView;
+    private CalenderBarAdapter adapter;
     private TextView monthTextView;
     private Button nextDays;
     private Button previousDays;
-    private int selectLayout;
-    private int dotSelectLayout;
-    private int regularLayout;
-    private int dotRegularLayout;
+    private int layout;
     private ArrayList<Date> days;
+    private HashMap<String, Meeting> meetings;
     private View.OnClickListener onClickDate;
 
 
-    public CalenderBar() {
+    public CalenderBar(Context context) {
+        this.context = context;
         today = Calendar.getInstance().getTime();
         days = new ArrayList<>();
+        addNextMonth();
+        addPreviousMonth();
+        meetings = new HashMap<>();
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
+        this.adapter = new CalenderBarAdapter(this.context,this.days,this.meetings);
+    }
 
+    public void setMeetings(HashMap<String, Meeting> meetings) {
+        this.meetings = meetings;
+        adapter.notifyDataSetChanged();
     }
 
     public void setMonthTextView(TextView monthTextView) {
@@ -52,20 +65,8 @@ public class CalenderBar {
         this.previousDays = previousDays;
     }
 
-    public void setSelectLayout(int selectLayout) {
-        this.selectLayout = selectLayout;
-    }
-
-    public void setDotSelectLayout(int dotSelectLayout) {
-        this.dotSelectLayout = dotSelectLayout;
-    }
-
-    public void setRegularLayout(int regularLayout) {
-        this.regularLayout = regularLayout;
-    }
-
-    public void setDotRegularLayout(int dotRegularLayout) {
-        this.dotRegularLayout = dotRegularLayout;
+    public void setLayout(int layout) {
+        this.layout = layout;
     }
 
     public void setOnClickDate(View.OnClickListener onClickDate) {
@@ -150,6 +151,8 @@ public class CalenderBar {
             Date date = new Date(next);
             days.add(date);
         }
+        if (adapter!=null)
+            adapter.notifyDataSetChanged();
     }
 
     public void addPreviousMonth(){
@@ -158,5 +161,7 @@ public class CalenderBar {
             Date date = new Date(next);
             days.add(0,date);
         }
+        if (adapter!=null)
+            adapter.notifyDataSetChanged();
     }
 }
