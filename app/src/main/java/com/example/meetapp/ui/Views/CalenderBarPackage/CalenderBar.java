@@ -1,11 +1,13 @@
-package com.example.meetapp.ui.Views;
+package com.example.meetapp.ui.Views.CalenderBarPackage;
 
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ public class CalenderBar {
 
     public void setRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
+
     }
 
     public void setMonthTextView(TextView monthTextView) {
@@ -151,9 +154,9 @@ public class CalenderBar {
 
     public void addPreviousMonth(){
         for (int i = 0; i < 30; i++) {
-            long next = (long) (this.days.get(days.size()-1).getTime() - 8.64e+7);
+            long next = (long) (this.days.get(0).getTime() - 8.64e+7);
             Date date = new Date(next);
-            days.add(date);
+            days.add(0,date);
         }
     }
 }
