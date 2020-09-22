@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_calendar_item"
     android:layout_width="70dp"
     android:layout_height="80dp"
@@ -7,16 +9,20 @@
     android:layout_marginEnd="4dp"
     android:background="@drawable/calender_item_background"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <TextView
-        android:id="@+id/tv_date_calendar_item"
+        android:id="@+id/tv_day_of_month_calendar_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="33dp"
         android:layout_gravity="center_horizontal"
         android:fontFamily="sans-serif-black"
-        android:textColor="@color/blue"
-        android:textSize="20sp" />
+        android:text="21"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_day_calendar_item"
@@ -24,35 +30,46 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="sans-serif"
-        android:textColor="@color/blue"
-        android:textSize="14sp" />
+        android:text="MON"
+        android:textColor="@color/secondry"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_day_of_month_calendar_item"
+        app:layout_constraintStart_toStartOf="@+id/tv_day_of_month_calendar_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_day_of_month_calendar_item" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_day_calendar_item">
 
         <View
-            android:layout_width="5dp"
-            android:layout_height="5dp"
+            android:id="@+id/dot1"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
             android:background="@drawable/red_dot" />
 
         <View
-            android:layout_width="5dp"
-            android:layout_height="5dp"
+            android:id="@+id/dot2"
+
+            android:layout_width="7dp"
+            android:layout_height="7dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:background="@drawable/red_dot"
-            android:backgroundTint="@color/blue"/>
+            android:backgroundTint="@color/blue" />
 
         <View
-            android:layout_width="5dp"
-            android:layout_height="5dp"
+            android:id="@+id/dot3"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
             android:background="@drawable/red_dot"
-            android:backgroundTint="@color/green"/>
+            android:backgroundTint="@color/green" />
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

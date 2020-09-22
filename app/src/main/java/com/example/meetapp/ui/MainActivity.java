@@ -4,20 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.meetapp.R;
-import com.example.meetapp.callbacks.OnClickInFragment;
-import com.example.meetapp.firebaseActions.UserGroupsRepo;
-import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.notifications.MessageNotificationService;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.iid.ServiceStarter;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInFragment;
+import com.example.meetapp.firebaseActions.UserGroupsRepo;
+import com.example.meetapp.model.CurrentUser;
+import com.example.meetapp.notifications.MessageNotificationService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements OnClickInFragment  {
 

@@ -6,26 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.groupInfo.groupsMeetings.GroupMeetingsFragment">
 
-
-    <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
-        android:id="@+id/singleRowCalendar"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/backgroundSec"
-        app:longPress="false"
-        app:multiSelection="false"
-        app:deselection="false"
+    <include
+        android:id="@+id/include4"
+        layout="@layout/calender_bar_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        layout="@layout/group_meeting_detailes_holder"
+        layout="@layout/group_meeting_details_holder"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/singleRowCalendar" />
+        app:layout_constraintTop_toBottomOf="@+id/include4" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,25 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager;
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar;
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter;
-import com.michalsvec.singlerowcalendar.utils.DateUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import kotlin.jvm.internal.markers.KMutableList;
 
 public class GroupMeetingsFragment extends Fragment {
 
@@ -56,47 +46,14 @@ public class GroupMeetingsFragment extends Fragment {
 
         initGoogleMap(savedInstanceState);
 
-        calendar.setTime(new Date());
-        int currentMonth = calendar.MONTH;
-
-
-        CalendarViewManager calendarViewManager = new CalendarViewManager() {
-            @Override
-            public int setCalendarViewResourceId(int i, @NotNull Date date, boolean isSelected) {
-                int layout = 0;
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                if (isSelected){
-                    return R.layout.speical_selected_calender_item;
-                }else {
-                    return R.layout.speical_calender_item;
-                }
-            }
-
-            @Override
-            public void bindDataToCalendarView(@NotNull SingleRowCalendarAdapter.CalendarViewHolder holder, @NotNull Date date, int i, boolean b) {
-                ((TextView)holder.itemView.findViewById(R.id.tv_date_calendar_item)).setText(DateUtils.INSTANCE.getDayName(date));
-                ((TextView)holder.itemView.findViewById(R.id.tv_day_calendar_item)).setText(DateUtils.INSTANCE.getDay3LettersName(date));
-
-            }
-        };
-
-        SingleRowCalendar singleRowCalendar  = view.findViewById(R.id.singleRowCalendar);
-        singleRowCalendar.setCalendarViewManager(calendarViewManager);
-    //    singleRowCalendar.setDates(getFutureDatesOfCurrentMonth());
+        CalenderBar calenderBar = new CalenderBar(this,R.layout.speical_calender_item);
+        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
+        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
+        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
+        calenderBar.setRecyclerView(recyclerView);
 
         return view;
     }
-
-//    private List<? extends Date> getFutureDatesOfCurrentMonth() {
-////        currentMonth++ // + because we want next month
-////        if (currentMonth == 12) {
-////            // we will switch to january of next year, when we reach last month of year
-////            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
-////            currentMonth = 0 // 0 == january
-////        }
-////        return getDates(mutableListOf())
-//    }
 
     private void initGoogleMap(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/group_meetings_arrow_back_imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/oppBackground" />
+
+    <ImageView
+        android:id="@+id/group_meetings_arrow_forward_imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_arrow_forward_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/oppBackground" />
+
+    <TextView
+        android:id="@+id/group_meetings_month_calender_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="January"
+        android:textColor="@color/oppBackground"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/group_meetings_arrow_forward_imageView"
+        app:layout_constraintEnd_toStartOf="@+id/group_meetings_arrow_forward_imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/group_meetings_arrow_forward_imageView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_meetings_calender_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:nestedScrollingEnabled="true"
+        app:layout_constraintTop_toBottomOf="@+id/group_meetings_arrow_back_imageView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

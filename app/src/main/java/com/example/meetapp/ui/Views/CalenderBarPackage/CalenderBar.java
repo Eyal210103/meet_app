@@ -1,17 +1,22 @@
 package com.example.meetapp.ui.Views.CalenderBarPackage;
 
 import android.content.Context;
+import android.drm.DrmStore;
 import android.icu.util.Calendar;
 import android.os.Build;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.meetapp.R;
 import com.example.meetapp.model.meetings.Meeting;
 
 import java.util.ArrayList;
@@ -22,34 +27,69 @@ import java.util.HashMap;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CalenderBar {
     private Date today;
-    private Context context;
+    private Fragment context;
     private RecyclerView recyclerView;
     private CalenderBarAdapter adapter;
     private TextView monthTextView;
-    private Button nextDays;
-    private Button previousDays;
+    private View nextDays ,previousDays;
     private int layout;
     private ArrayList<Date> days;
-    private HashMap<String, Meeting> meetings;
+    private MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings;
     private View.OnClickListener onClickDate;
 
 
-    public CalenderBar(Context context) {
+    public CalenderBar(Fragment context , int layout) {
         this.context = context;
+        this.layout = layout;
         today = Calendar.getInstance().getTime();
         days = new ArrayList<>();
+        days.add(today);
         addNextMonth();
-        addPreviousMonth();
-        meetings = new HashMap<>();
+        //addPreviousMonth();
+        meetings = new MutableLiveData<>();
+        this.onClickDate = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
-        this.adapter = new CalenderBarAdapter(this.context,this.days,this.meetings);
+        recyclerView.setNestedScrollingEnabled(true);
+        this.adapter = new CalenderBarAdapter(this.context.requireActivity(),this.days,this.meetings.getValue(), layout, onClickDate);
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager llm = new LinearLayoutManager(context.requireActivity());
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(llm);
+
+        if (nextDays != null) {
+            nextDays.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
+                }
+            });
+        }
+        if (previousDays != null){
+            previousDays.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerView.smoothScrollToPosition(0);
+                }
+            });
+        }
     }
 
-    public void setMeetings(HashMap<String, Meeting> meetings) {
+    public void setMeetings(MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings) {
         this.meetings = meetings;
+        meetings.observe(context.getViewLifecycleOwner(), new Observer<HashMap<String, MutableLiveData<Meeting>>>() {
+            @Override
+            public void onChanged(HashMap<String, MutableLiveData<Meeting>> stringMutableLiveDataHashMap) {
+                adapter.notifyDataSetChanged();
+            }
+        });
         adapter.notifyDataSetChanged();
     }
 
@@ -57,11 +97,11 @@ public class CalenderBar {
         this.monthTextView = monthTextView;
     }
 
-    public void setNextDaysButton(Button nextDays) {
+    public void setNextDaysButton(View nextDays) {
         this.nextDays = nextDays;
     }
 
-    public void setPreviousDaysButton(Button previousDays) {
+    public void setPreviousDaysButton(View previousDays) {
         this.previousDays = previousDays;
     }
 
@@ -71,34 +111,6 @@ public class CalenderBar {
 
     public void setOnClickDate(View.OnClickListener onClickDate) {
         this.onClickDate = onClickDate;
-    }
-
-    public String getThreeLetterDay(int day){
-        switch (day){
-            case Calendar.SUNDAY:
-                return "SUN";
-
-            case Calendar.MONDAY:
-                return "MON";
-
-            case Calendar.TUESDAY:
-                return "TUE";
-
-            case Calendar.WEDNESDAY:
-                return "WED";
-
-            case Calendar.THURSDAY:
-                return "THU";
-
-            case Calendar.FRIDAY:
-                return "FRI";
-
-            case Calendar.SATURDAY:
-                return "SAT";
-
-            default:
-                return "";
-        }
     }
 
     public String getMonth(int month){
