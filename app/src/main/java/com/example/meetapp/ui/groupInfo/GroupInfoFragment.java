@@ -69,6 +69,7 @@ public class GroupInfoFragment extends Fragment {
 
         ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this, group.getId());
         viewPager.setAdapter(adapter);
+        viewPager.setUserInputEnabled(false);
         String[] titles = {"Dashboard" , "Chat" , "Meetings"};
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
 
