@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ public class GroupMeetingsFragment extends Fragment {
         calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
         RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
         calenderBar.setRecyclerView(recyclerView);
+        calenderBar.setSeekBar((SeekBar)view.findViewById(R.id.group_meetings_seekBar));
 
         return view;
     }
