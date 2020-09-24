@@ -9,14 +9,13 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.ui.LoginActivity;
+import com.example.meetapp.ui.Login.LoginActivity;
 import com.example.meetapp.ui.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
