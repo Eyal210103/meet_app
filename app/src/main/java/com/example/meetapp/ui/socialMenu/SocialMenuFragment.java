@@ -49,6 +49,7 @@ public class SocialMenuFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager);
         ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(requireActivity());
         viewPager.setAdapter(adapter);
+        viewPager.setUserInputEnabled(false);
         tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

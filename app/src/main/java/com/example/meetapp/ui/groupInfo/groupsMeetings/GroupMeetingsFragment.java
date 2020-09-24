@@ -52,7 +52,7 @@ public class GroupMeetingsFragment extends Fragment {
         calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
         RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
         calenderBar.setRecyclerView(recyclerView);
-        calenderBar.setSeekBar((SeekBar)view.findViewById(R.id.group_meetings_seekBar));
+        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
 
         return view;
     }

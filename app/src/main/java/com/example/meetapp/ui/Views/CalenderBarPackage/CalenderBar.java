@@ -1,13 +1,8 @@
 package com.example.meetapp.ui.Views.CalenderBarPackage;
 
-import android.content.Context;
-import android.drm.DrmStore;
 import android.icu.util.Calendar;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,13 +13,11 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.meetapp.R;
 import com.example.meetapp.model.meetings.Meeting;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CalenderBar {
@@ -38,8 +31,6 @@ public class CalenderBar {
     private ArrayList<Date> days;
     private MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings;
     private View.OnClickListener onClickDate;
-    private SeekBar seekBar;
-
 
     public CalenderBar(Fragment context , int layout) {
         this.context = context;
@@ -50,6 +41,9 @@ public class CalenderBar {
         addNextMonth();
         //addPreviousMonth();
         meetings = new MutableLiveData<>();
+        HashMap<String, MutableLiveData<Meeting>> hashMap = new HashMap<>();
+        hashMap.put(String.valueOf((today.getDay())),null);
+        meetings.setValue(hashMap);
         this.onClickDate = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +84,10 @@ public class CalenderBar {
                 if ((adapter.getItemCount() - ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition())< 5){
                     addNextMonth();
                 }
-                if (((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition() < 5){
-                    addPreviousMonth();
-                }
+//                if (((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition() < 5){
+//                    //addPreviousMonth();
+//                }
+                monthTextView.setText(getMonth(days.get(((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()).getMonth()));
             }
         });
     }
@@ -110,6 +105,7 @@ public class CalenderBar {
 
     public void setMonthTextView(TextView monthTextView) {
         this.monthTextView = monthTextView;
+        monthTextView.setText(getMonth(today.getMonth()));
     }
 
     public void setNextDaysButton(View nextDays) {
@@ -122,34 +118,6 @@ public class CalenderBar {
 
     public void setLayout(int layout) {
         this.layout = layout;
-    }
-
-    public void setSeekBar(SeekBar seekBar){
-        this.seekBar = seekBar;
-        this.seekBar.setMax(adapter.getItemCount());
-        this.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                recyclerView.smoothScrollToPosition(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                seekBar.setProgress(((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition());
-            }
-        });
     }
 
     public void setOnClickDate(View.OnClickListener onClickDate) {
@@ -208,8 +176,8 @@ public class CalenderBar {
         }
         if (adapter!=null)
             adapter.notifyDataSetChanged();
-        if (seekBar!= null)
-            seekBar.setMax(adapter.getItemCount());
+//        if (seekBar!= null)
+//            seekBar.setMax(adapter.getItemCount());
     }
 
     public void addPreviousMonth(){
@@ -220,9 +188,9 @@ public class CalenderBar {
         }
         if (adapter!=null)
             adapter.notifyDataSetChanged();
-        if (seekBar!= null) {
-            seekBar.setMax(adapter.getItemCount());
-            seekBar.setProgress(30);
-        }
+//        if (seekBar!= null) {
+//            seekBar.setMax(adapter.getItemCount());
+//            seekBar.setProgress(30);
+//        }
     }
 }

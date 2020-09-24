@@ -26,15 +26,16 @@ public class MyMeetingsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.my_meetings_fragment, container, false);
         CalenderBar calenderBar = new CalenderBar(this,R.layout.speical_calender_item);
         calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
         calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
         RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
         calenderBar.setRecyclerView(recyclerView);
-        calenderBar.setSeekBar((SeekBar)view.findViewById(R.id.group_meetings_seekBar));
+        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
+
         return view;
     }
 
@@ -42,7 +43,6 @@ public class MyMeetingsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MyMeetingsViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

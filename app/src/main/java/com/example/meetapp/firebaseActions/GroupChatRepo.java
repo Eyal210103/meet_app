@@ -73,6 +73,7 @@ public class GroupChatRepo{
             }
         });
     }
+
     public MutableLiveData<ArrayList<Message>> getMessages() {
         final MutableLiveData<ArrayList<Message>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(list);

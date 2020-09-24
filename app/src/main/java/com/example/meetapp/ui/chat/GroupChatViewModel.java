@@ -19,7 +19,6 @@ public class GroupChatViewModel extends ViewModel {
             messages = repo.getMessages();
         }
     }
-
     public MutableLiveData<ArrayList<Message>> getMessages() { return messages;}
 
     public void sendMessage(Message message){

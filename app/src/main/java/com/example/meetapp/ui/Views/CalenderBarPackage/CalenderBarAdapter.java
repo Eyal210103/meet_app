@@ -52,9 +52,9 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         calendar.set(date.getYear(),date.getMonth(),date.getDate());
         holder.day.setText(getThreeLetterDay(calendar.get(Calendar.DAY_OF_WEEK)));
         holder.date.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
-        //invisibleDots(holder);
-//        if (meetings.containsKey(date.getTime())) //TODO choose format
-//            visibleDots(holder);
+        invisibleDots(holder);
+        if (meetings.containsKey(String.valueOf(date.getDay())));
+            visibleDots(holder);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
