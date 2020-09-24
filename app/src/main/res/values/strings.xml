@@ -7,8 +7,6 @@
     <string name="home" translatable="true">Home</string>
     <string name="groups" translatable="true">Groups</string>
     <string name="settings" translatable="true">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="choose_image" translatable="true">Choose Image</string>
     <string name="group_name" translatable="true">Group Name</string>
     <string name="group_s_subject">Group\'s Subject</string>
@@ -18,5 +16,8 @@
     <string name="type_locations_or_subjects" translatable="true">Type Locations Or Subjects</string>
     <string name="type_a_message">Type A Message</string>
     <string name="next_meeting">Next Meeting</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="login">Login</string>
 </resources>

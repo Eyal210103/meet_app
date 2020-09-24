@@ -36,7 +36,6 @@ import java.util.concurrent.Executor;
 
 public class LoginOptionsFragment extends Fragment {
 
-    private LoginOptionsViewModel mViewModel;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "LoginActivity";
     private static final int GOOGLE = 101;
@@ -68,11 +67,6 @@ public class LoginOptionsFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LoginOptionsViewModel.class);
-    }
 
     private void onClickSignInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

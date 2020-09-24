@@ -7,7 +7,7 @@
     android:background="@color/background"
     tools:context=".ui.Login.LoginActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_login"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
