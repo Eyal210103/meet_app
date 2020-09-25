@@ -8,6 +8,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +44,7 @@ public class LoginOptionsFragment extends Fragment {
     private static final String TAG = "LoginActivity";
     private static final int GOOGLE = 101;
     private FirebaseAuth mAuth;
+    View view;
 
     public static LoginOptionsFragment newInstance() {
         return new LoginOptionsFragment();
@@ -54,7 +59,7 @@ public class LoginOptionsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.login_options_fragment, container, false);
+        view =  inflater.inflate(R.layout.login_options_fragment, container, false);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         this.mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
@@ -62,6 +67,22 @@ public class LoginOptionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onClickSignInWithGoogle();
+            }
+        });
+
+        view.findViewById(R.id.login_activity_login_Button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_login);
+                navController.navigate(R.id.action_loginOptionsFragment_to_loginFragment);
+            }
+        });
+
+        view.findViewById(R.id.login_options_sign_up_textView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_login);
+                navController.navigate(R.id.action_loginOptionsFragment_to_signupFragment);
             }
         });
         return view;
@@ -83,9 +104,10 @@ public class LoginOptionsFragment extends Fragment {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(requireActivity(), "Authentication failed, Try Again", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar
+                        .make(view, "Authentication failed, Try Again", Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
-
         }
     }
 
@@ -98,7 +120,6 @@ public class LoginOptionsFragment extends Fragment {
                         if (task.isSuccessful()) {
                             CurrentUser.firebaseUserToAppUser(mAuth.getCurrentUser());
                             DatabaseWrite.addOrUpdateUser(CurrentUser.getCurrentUser());
-                            Toast.makeText(requireActivity(), "Authentication succeed.", Toast.LENGTH_SHORT).show();
                             openMainAppScreen();
                         } else {
                             Toast.makeText(requireActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();
