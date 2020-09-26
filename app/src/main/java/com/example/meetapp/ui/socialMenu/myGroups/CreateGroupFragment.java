@@ -88,7 +88,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 groupImageCIV.setDrawingCacheEnabled(true);
                 groupImageCIV.buildDrawingCache();
                 String id = DatabaseWrite.addOrUpdateGroupGetID(newGroup);
-                progressDialog = new ProgressDialog(getActivity());
+                progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle("Creating , Please Wait..");
                 progressDialog.show();

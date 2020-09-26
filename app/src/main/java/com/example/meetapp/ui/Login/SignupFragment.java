@@ -1,19 +1,24 @@
 package com.example.meetapp.ui.Login;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.meetapp.R;
 import com.example.meetapp.firebaseActions.DatabaseWrite;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.CurrentUser;
+import com.example.meetapp.ui.MainActivity;
 import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
 import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,15 +30,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
+
 public class SignupFragment extends Fragment implements PhotoUploadErrorListener, PhotoUploadCompleteListener {
 
+    private static final int PICK_IMAGE = 50;
+    Uri imageUri;
     View view;
+    ProgressDialog progressDialog;
 
     //https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        imageUri = null;
     }
 
     @Override
@@ -41,6 +54,36 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_signup, container, false);
 
+        progressDialog = new ProgressDialog(requireActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Creating Your Account, Please Wait...");
+
+        EditText displayET = view.findViewById(R.id.signup_editTextTextDisplayName);
+        EditText emailET = view.findViewById(R.id.signup_editTextTextEmailAddress);
+        EditText passET = view.findViewById(R.id.signup_editTextTextPassword);
+        EditText passConfirmET = view.findViewById(R.id.signup_editTextTextPasswordConfirm);
+
+        view.findViewById(R.id.signup_profilepic_civ).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
+        view.findViewById(R.id.signup_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String display = displayET.getText().toString();
+                String email = emailET.getText().toString();
+                String pass = passET.getText().toString();
+                String passConfirm = passConfirmET.getText().toString();
+
+                if (validateSignUp(display,email,pass,passConfirm)){
+                    progressDialog.show();
+                    signUpWithEmail(display,email,pass);
+                }
+            }
+        });
 
         return view;
     }
@@ -62,7 +105,12 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                     public void onComplete(@NonNull Task<Void> task) {
                                         CurrentUser.firebaseUserToAppUser(user);
                                         DatabaseWrite.addOrUpdateUser(CurrentUser.getCurrentUser());
-                                        //TODO implement select Image
+                                        if (imageUri != null){
+                                            StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getCurrentUser().getId(),imageUri);
+                                        }
+                                        else {
+                                            signUpComplete();
+                                        }
                                     }
                                 });
                             }
@@ -92,13 +140,40 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
             snackbar.show();
             return false;
         }
-        else if (!pass.matches(passConfirm)){
+        else if (!pass.equals(passConfirm)){
             Snackbar snackbar = Snackbar
                     .make(view, "Passwords Are Not Identical", Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }
         return true;
+    }
+
+
+
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            imageUri = data.getData();
+            ((CircleImageView)view.findViewById(R.id.signup_profilepic_civ)).setImageURI(imageUri);
+        }
+    }
+
+
+    private void signUpComplete() {
+        progressDialog.dismiss();
+        openMainAppScreen();
+    }
+
+    private void openMainAppScreen() {
+        startActivity(new Intent(this.requireActivity(), MainActivity.class));
+        this.requireActivity().finish();
     }
 
     @Override
@@ -108,6 +183,6 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
 
     @Override
     public void onPhotoUploadComplete() {
-
+        signUpComplete();
     }
 }
