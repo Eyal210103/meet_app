@@ -149,8 +149,6 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
         return true;
     }
 
-
-
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
@@ -165,7 +163,6 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
         }
     }
 
-
     private void signUpComplete() {
         progressDialog.dismiss();
         openMainAppScreen();
@@ -175,6 +172,8 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
         startActivity(new Intent(this.requireActivity(), MainActivity.class));
         this.requireActivity().finish();
     }
+
+
 
     @Override
     public void onPhotoUploadError() {
