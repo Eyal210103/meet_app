@@ -51,7 +51,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("group", current);
+                    bundle.putString("group", current.getId());
                     final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment, bundle);
                 }

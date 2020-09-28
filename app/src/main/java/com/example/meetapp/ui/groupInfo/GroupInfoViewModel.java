@@ -18,14 +18,19 @@ public class GroupInfoViewModel extends ViewModel {
     MutableLiveData<ArrayList<MutableLiveData<User>>> membersMutableLiveData;
     GroupsMembersRepo groupsMembersRepo;
 
-    public void init(@NonNull Fragment context,  String group){
+
+    public void init(String groupId){
         this.groupMutableLiveData = new MutableLiveData<>();
-        groupsMembersRepo = new GroupsMembersRepo(group);
+        groupsMembersRepo = new GroupsMembersRepo(groupId);
         membersMutableLiveData = groupsMembersRepo.getMembers();
     }
 
     public void setGroupMutableLiveData(MutableLiveData<Group> groupMutableLiveData) {
         this.groupMutableLiveData = groupMutableLiveData;
+    }
+
+    public MutableLiveData<Group> getGroup() {
+        return groupMutableLiveData;
     }
 
     public LiveData<Group> getGroupMutableLiveData() {

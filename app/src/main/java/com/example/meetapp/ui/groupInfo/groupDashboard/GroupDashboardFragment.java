@@ -33,9 +33,7 @@ import java.util.ArrayList;
 public class GroupDashboardFragment extends Fragment {
 
     private GroupDashboardViewModel mViewModel;
-    private GroupInfoViewModel parentViewModel;
-    private GroupInfoFragment parent;
-    private MainActivityViewModel mainActivityViewModel;
+    GroupInfoFragment parent;
     TextView lastMessageTextView;
     DashMembersAdapter adapter;
 
@@ -44,15 +42,14 @@ public class GroupDashboardFragment extends Fragment {
     }
 
     public void setParent(Fragment fragment){
-        this.parent = (GroupInfoFragment) fragment;
-        parentViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
+        parent = (GroupInfoFragment) fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupDashboardViewModel.class);
-        mViewModel.init(parentViewModel.getGroupMutableLiveData().getValue().getId());
+        mViewModel.init((String) getArguments().get("id"));
     }
 
     @Override
@@ -61,10 +58,10 @@ public class GroupDashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.group_dashboard_fragment, container, false);
 
         lastMessageTextView = view.findViewById(R.id.dash_last_message_textView);
-        lastMessageTextView.setText("There is no messages");
+        lastMessageTextView.setText(String.valueOf(R.string.no_messages));
 
         RecyclerView recyclerView = view.findViewById(R.id.group_dash_members_recycler);
-        adapter = new DashMembersAdapter(this,parentViewModel.getMembersMutableLiveData().getValue());
+        adapter = new DashMembersAdapter(this,mViewModel.getMembersMutableLiveData().getValue());
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setAdapter(adapter);
         GridLayoutManager glm = new GridLayoutManager(requireActivity(),3);
@@ -86,11 +83,11 @@ public class GroupDashboardFragment extends Fragment {
             }
         });
 
-        parentViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+        mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
-                for (MutableLiveData<User> u : parentViewModel.getMembersMutableLiveData().getValue()) {
+                for (MutableLiveData<User> u : mViewModel.getMembersMutableLiveData().getValue()) {
                     u.observe(getViewLifecycleOwner(), new Observer<User>() {
                         @Override
                         public void onChanged(User user) {

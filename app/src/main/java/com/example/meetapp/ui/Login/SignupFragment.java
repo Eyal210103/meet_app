@@ -174,7 +174,6 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
     }
 
 
-
     @Override
     public void onPhotoUploadError() {
 

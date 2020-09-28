@@ -56,14 +56,6 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-
-//        SharedPreferences googleBug = getActivity().getSharedPreferences("google_bug", Context.MODE_PRIVATE);
-//        if (!googleBug.contains("fixed")) {
-//            File corruptedZoomTables = new File(getActivity().getFilesDir(), "ZoomTables.data");
-//            corruptedZoomTables.delete();
-//            googleBug.edit().putBoolean("fixed", true).apply();
-//        }
-
         this.mapView = view.findViewById(R.id.mapView);
 
         initGoogleMap(savedInstanceState);
@@ -85,6 +77,7 @@ public class HomeFragment extends Fragment {
                 requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
+            assert locationManager != null;
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
                 latitude = locationGPS.getLatitude();
@@ -100,7 +93,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     googleMap.setMyLocationEnabled(true);
                     googleMap.setBuildingsEnabled(true);
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -114,39 +108,61 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+    public void fixGoogleBug(){
+        SharedPreferences googleBug = requireActivity().getSharedPreferences("google_bug", Context.MODE_PRIVATE);
+        if (!googleBug.contains("fixed")) {
+            File corruptedZoomTables = new File(requireActivity().getFilesDir(), "ZoomTables.data");
+            corruptedZoomTables.delete();
+            googleBug.edit().putBoolean("fixed", true).apply();
+        }
+    }
+
     @Override
     public void onPause() {
-        mapView.onPause();
+        if (mapView != null) {
+            mapView.onPause();
+        }
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        mapView.onDestroy();
+        if (mapView != null) {
+            mapView.onDestroy();
+        }
         super.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        if (mapView != null) {
+            mapView.onLowMemory();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        if (mapView != null) {
+            mapView.onResume();
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
+        if (mapView != null) {
+            mapView.onStart();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+        if (mapView != null) {
+            mapView.onStop();
+        }
     }
 }

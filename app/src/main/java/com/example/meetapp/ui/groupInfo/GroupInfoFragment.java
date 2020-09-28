@@ -33,28 +33,27 @@ public class GroupInfoFragment extends Fragment {
     private GroupInfoViewModel mViewModel;
     MainActivityViewModel mainActivityViewModel;
     private MembersAdapter membersAdapter;
-    private Group group;
     private ViewPager2 viewPager;
 
+    CircleImageView groupImage;
+    TextView groupName;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
-        group = (Group) (getArguments().getSerializable("group"));
-        mViewModel.init(this, group.getId());
+        String groupId = getArguments().getString("group");
+        mViewModel.init(groupId);
         mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        group = mainActivityViewModel.getGroupsMap().get(group.getId()).getValue();
-        mViewModel.setGroupMutableLiveData(mainActivityViewModel.getGroupsMap().get(group.getId()));
+        mViewModel.setGroupMutableLiveData(mainActivityViewModel.getGroupsMap().get(groupId));
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.group_info_fragment, container, false);
-        CircleImageView groupImage = view.findViewById(R.id.group_info_group_civ);
-        TextView groupName = view.findViewById(R.id.group_info_group_name);
 
-        Glide.with(requireActivity()).load(group.getPhotoUrl()).into(groupImage);
-        groupName.setText(group.getName());
+        groupImage = view.findViewById(R.id.group_info_group_civ);
+        groupName = view.findViewById(R.id.group_info_group_name);
+
 
         RecyclerView recyclerViewMembers = view.findViewById(R.id.group_info_recyclerView_members);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -67,7 +66,7 @@ public class GroupInfoFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager_group);
         viewPager.setNestedScrollingEnabled(true);
 
-        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this, group.getId());
+        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this,mViewModel.getGroup().getValue().getId());
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
         String[] titles = {"Dashboard" , "Chat" , "Meetings"};
@@ -78,8 +77,7 @@ public class GroupInfoFragment extends Fragment {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(titles[position]);
             }
-        }
-        ).attach();
+        }).attach();
 
         mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override
@@ -99,18 +97,20 @@ public class GroupInfoFragment extends Fragment {
         });
 
 
-        mainActivityViewModel.getGroupsMap().get(group.getId()).observe(getViewLifecycleOwner(), new Observer<Group>() {
+        mViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
             @Override
             public void onChanged(Group group) {
-                Glide.with(requireActivity()).load(group.getPhotoUrl()).into(groupImage);
-                groupName.setText(group.getName());
-
+                updateUI(group);
             }
         });
 
         return view;
     }
 
+    public void updateUI(Group group){
+        Glide.with(requireActivity()).load(group.getPhotoUrl()).into(groupImage);
+        groupName.setText(group.getName());
+    }
     public void swipeToChat(){
         viewPager.setCurrentItem(1, true);
     }

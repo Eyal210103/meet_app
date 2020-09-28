@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.User;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GroupsMembersRepo {
-    ArrayList<MutableLiveData<User>> map = new ArrayList<MutableLiveData<User>>();
+    ArrayList<MutableLiveData<User>> membersAL = new ArrayList<MutableLiveData<User>>();
     HashMap<String,String> ids = new HashMap<>();
     private String groupId;
     ChildEventListener childEventListener;
@@ -30,9 +29,9 @@ public class GroupsMembersRepo {
 
     public MutableLiveData<ArrayList<MutableLiveData<User>>> getMembers(){
         ids.clear();
-        map.clear();
+        membersAL.clear();
         MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(map);
+        mutableLiveData.setValue(membersAL);
         this.childEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -45,8 +44,8 @@ public class GroupsMembersRepo {
                         }
                         if (!isThere) {
                             MutableLiveData<User> userMutableLiveData = putUserData(key);
-                            map.add(userMutableLiveData);
-                            mutableLiveData.setValue(map);
+                            membersAL.add(userMutableLiveData);
+                            mutableLiveData.setValue(membersAL);
                         }
                     }
 
@@ -57,9 +56,9 @@ public class GroupsMembersRepo {
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         String key = snapshot.getValue(String.class);
-                        for (MutableLiveData<User> u : map) {
+                        for (MutableLiveData<User> u : membersAL) {
                             if (key.equals(u.getValue().getId())) {
-                                map.remove(u);
+                                membersAL.remove(u);
                                 ids.remove(key);
                                 break;
                             }
