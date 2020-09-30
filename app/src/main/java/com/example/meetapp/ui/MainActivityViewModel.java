@@ -17,12 +17,18 @@ public class MainActivityViewModel extends ViewModel {
     MutableLiveData<ArrayList<MutableLiveData<Group>>> list = null;
     HashMap<String, MutableLiveData<Group>> map = null;
 
-    public void init(@NonNull Context context) {
-        if (list == null) {
-            list = UserGroupsRepo.getInstance().getGroups();
-            map = UserGroupsRepo.getInstance().getHashMapGroups();
-        }
+    public MainActivityViewModel() {
+        super();
+        list = UserGroupsRepo.getInstance().getGroups();
+        map = UserGroupsRepo.getInstance().getHashMapGroups();
     }
+
+//    public void init(@NonNull Context context) {
+//        if (list == null) {
+//            list = UserGroupsRepo.getInstance().getGroups();
+//            map = UserGroupsRepo.getInstance().getHashMapGroups();
+//        }
+//    }
 
     public LiveData<ArrayList<MutableLiveData<Group>>> getGroups() {
         return list;

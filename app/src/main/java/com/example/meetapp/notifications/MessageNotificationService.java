@@ -40,7 +40,6 @@ public class MessageNotificationService {
                 String groupId = snapshot.getValue(String.class);
                 notificationListener(groupId);
             }
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override

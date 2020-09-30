@@ -55,6 +55,7 @@ public class GroupChatFragment extends Fragment {
 
         final EditText contextET = view.findViewById(R.id.chat_context_et);
         ImageView cameraIV = view.findViewById(R.id.chat_camera_iv);
+
         view.findViewById(R.id.chat_send_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +80,6 @@ public class GroupChatFragment extends Fragment {
                 recyclerView.smoothScrollToPosition(adapter.getItemCount());
             }
         });
-        recyclerView.smoothScrollToPosition(adapter.getItemCount());
 
         return view;
     }

@@ -30,6 +30,7 @@ public class CurrentUser {
         FirebaseAuth.getInstance().signOut();
         user = null;
     }
+
     public static boolean isConnected(){
         return user != null;
     }

@@ -36,7 +36,12 @@ public class MyGroupsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-}
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -46,25 +51,24 @@ public class MyGroupsFragment extends Fragment {
         final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue());
 
-        Button floatingActionButtonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
-        Button floatingActionButtonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
-        recyclerView = view.findViewById(R.id.groups_recycler_view);
+        Button buttonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
+        Button buttonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
 
+        recyclerView = view.findViewById(R.id.groups_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setAdapter(adapter);
 
-        floatingActionButtonCreateGroup.setOnClickListener(new View.OnClickListener() {
+        buttonCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.action_socialMenuFragment_to_createGroupFragment2);
             }
         });
 
-        floatingActionButtonJoinGroup.setOnClickListener(new View.OnClickListener() {
+        buttonJoinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.action_socialMenuFragment_to_joinGroupFragment);

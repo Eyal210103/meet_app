@@ -37,10 +37,6 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     private HomeViewModel mViewModel;
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
-    }
-
     private MapView mapView;
     private GoogleMap mMap;
     private double latitude = 0;
@@ -57,9 +53,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
         this.mapView = view.findViewById(R.id.mapView);
-
         initGoogleMap(savedInstanceState);
-
 
         return view;
     }

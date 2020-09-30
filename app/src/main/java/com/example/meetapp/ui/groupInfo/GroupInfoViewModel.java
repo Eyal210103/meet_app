@@ -18,7 +18,6 @@ public class GroupInfoViewModel extends ViewModel {
     MutableLiveData<ArrayList<MutableLiveData<User>>> membersMutableLiveData;
     GroupsMembersRepo groupsMembersRepo;
 
-
     public void init(String groupId){
         this.groupMutableLiveData = new MutableLiveData<>();
         groupsMembersRepo = new GroupsMembersRepo(groupId);
