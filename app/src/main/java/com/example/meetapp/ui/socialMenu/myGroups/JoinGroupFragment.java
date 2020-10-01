@@ -21,6 +21,7 @@ import android.widget.EditText;
 
 import com.example.meetapp.R;
 import com.example.meetapp.firebaseActions.SearchGroupFirebase;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class JoinGroupFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
 
-        GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getResult().getValue());
+        GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getResult().getValue(), ConstantValues.TYPE_JOINGROUP);
         recyclerView.setAdapter(adapter);
 
         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Group>>>() {

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 
 import java.util.ArrayList;
@@ -26,11 +27,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder> {
 
     Fragment context;
+    int type;
     ArrayList<MutableLiveData<Group>> map;
 
-    public GroupsAdapter(Fragment context, ArrayList<MutableLiveData<Group>> map) {
+    public GroupsAdapter(Fragment context, ArrayList<MutableLiveData<Group>> map , int type) {
         this.context = context;
         this.map = map;
+        this.type =type;
     }
 
     @NonNull
@@ -47,15 +50,31 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             holder.groupName.setText(current.getName());
             Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
             Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("group", current.getId());
-                    final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment, bundle);
-                }
-            });
+
+
+            if (type == ConstantValues.TYPE_MYGROUPS) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("group", current.getId());
+                        final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
+                        navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment, bundle);
+                    }
+                });
+            }
+
+            if (type == ConstantValues.TYPE_JOINGROUP){
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("group", current);
+                        final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
+                        navController.navigate(R.id.action_joinGroupFragment_to_joinGroupDialog, bundle);
+                    }
+                });
+            }
         }
     }
 

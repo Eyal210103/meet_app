@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.R;
 import com.example.meetapp.ui.MainActivityViewModel;
@@ -49,7 +50,7 @@ public class MyGroupsFragment extends Fragment {
         View view = inflater.inflate(R.layout.my_groups_fragment, container, false);
 
         final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue());
+        adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue(), ConstantValues.TYPE_MYGROUPS);
 
         Button buttonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         Button buttonJoinGroup = view.findViewById(R.id.groups_join_group_fab);

@@ -95,6 +95,22 @@
         android:id="@+id/joinGroupFragment"
         android:name="com.example.meetapp.ui.socialMenu.myGroups.JoinGroupFragment"
         android:label="join_group_fragment"
-        tools:layout="@layout/join_group_fragment" />
+        tools:layout="@layout/join_group_fragment" >
+        <action
+            android:id="@+id/action_joinGroupFragment_to_joinGroupDialog"
+            app:destination="@id/joinGroupDialog"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <dialog
+        android:id="@+id/joinGroupDialog"
+        android:name="com.example.meetapp.ui.socialMenu.myGroups.JoinGroupDialog"
+        android:label="JoinGroupDialog" >
+        <argument
+            android:name="arg_group"
+            app:argType="com.example.meetapp.model.Group"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 
 </navigation>
