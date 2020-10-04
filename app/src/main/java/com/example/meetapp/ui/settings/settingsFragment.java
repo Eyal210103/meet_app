@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.ActivityNavigator;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,9 +37,9 @@ public class settingsFragment extends Fragment {
         TextView textViewName = view.findViewById(R.id.settings_user_name);
         TextView textViewEmail = view.findViewById(R.id.settings_user_email);
 
-        Glide.with(requireActivity()).load(CurrentUser.getCurrentUser().getProfileImageUrl()).into(circleImageView);
-        textViewName.setText(CurrentUser.getCurrentUser().getDisplayName());
-        textViewEmail.setText(CurrentUser.getCurrentUser().getEmail());
+        Glide.with(requireActivity()).load(CurrentUser.getInstance().getProfileImageUrl()).into(circleImageView);
+        textViewName.setText(CurrentUser.getInstance().getDisplayName());
+        textViewEmail.setText(CurrentUser.getInstance().getEmail());
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

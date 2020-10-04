@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.GroupsMembersRepo;
+import com.example.meetapp.firebaseActions.SingleGroupRepo;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 
@@ -14,12 +15,16 @@ import java.util.ArrayList;
 
 public class GroupInfoViewModel extends ViewModel {
 
-    MutableLiveData<Group> groupMutableLiveData;
-    MutableLiveData<ArrayList<MutableLiveData<User>>> membersMutableLiveData;
-    GroupsMembersRepo groupsMembersRepo;
+    private MutableLiveData<Group> groupMutableLiveData;
+    private MutableLiveData<ArrayList<MutableLiveData<User>>> membersMutableLiveData;
+    private GroupsMembersRepo groupsMembersRepo;
+    private String groupId;
 
     public void init(String groupId){
+        this.groupId = groupId;
         this.groupMutableLiveData = new MutableLiveData<>();
+        SingleGroupRepo singleGroupRepo = new SingleGroupRepo();
+        groupMutableLiveData = singleGroupRepo.getGroupData(groupId);
         groupsMembersRepo = new GroupsMembersRepo(groupId);
         membersMutableLiveData = groupsMembersRepo.getMembers();
     }
@@ -44,4 +49,7 @@ public class GroupInfoViewModel extends ViewModel {
         this.groupMutableLiveData = groupMutableLiveData;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
 }

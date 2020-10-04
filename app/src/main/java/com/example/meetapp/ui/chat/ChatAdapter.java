@@ -7,16 +7,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.model.User;
 import com.example.meetapp.model.message.Message;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -49,17 +46,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof ChatViewHolderReceiver){
             ((ChatViewHolderReceiver) holder).context.setText(message.getContext());
             ((ChatViewHolderReceiver) holder).name.setText(message.getSenderDisplayName());
-            ((ChatViewHolderReceiver) holder).hour.setText(message.getHour());
+           // ((ChatViewHolderReceiver) holder).hour.setText(message.getHour());
         }
         if (holder instanceof ChatViewHolderSender){
             ((ChatViewHolderSender) holder).context.setText(message.getContext());
-            ((ChatViewHolderSender) holder).hour.setText(message.getHour());
+    //        ((ChatViewHolderSender) holder).hour.setText(message.getHour());
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (list.get(position).getSenderId().equals(CurrentUser.getCurrentUser().getId())){
+        if (list.get(position).getSenderId().equals(CurrentUser.getInstance().getId())){
             return 1;
         }
         return 0;

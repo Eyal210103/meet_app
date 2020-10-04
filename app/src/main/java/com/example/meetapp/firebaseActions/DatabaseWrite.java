@@ -27,7 +27,7 @@ public class DatabaseWrite {
        DatabaseReference reference = database.getReference().child(groupsRef).push();
        group.setId(reference.getKey());
        reference.setValue(group);
-       addUserToGroup(CurrentUser.getCurrentUser().getId(),group.getId());
+       addUserToGroup(CurrentUser.getInstance().getId(),group.getId());
        return reference.getKey();
     }
 

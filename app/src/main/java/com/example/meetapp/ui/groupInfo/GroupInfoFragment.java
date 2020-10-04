@@ -31,7 +31,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class GroupInfoFragment extends Fragment {
 
     private GroupInfoViewModel mViewModel;
-    MainActivityViewModel mainActivityViewModel;
     private MembersAdapter membersAdapter;
     private ViewPager2 viewPager;
 
@@ -43,8 +42,6 @@ public class GroupInfoFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
         String groupId = getArguments().getString("group");
         mViewModel.init(groupId);
-        mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.setGroupMutableLiveData(mainActivityViewModel.getGroupsMap().get(groupId));
     }
 
     @Override
@@ -65,19 +62,17 @@ public class GroupInfoFragment extends Fragment {
         
         viewPager = view.findViewById(R.id.viewPager_group);
         viewPager.setNestedScrollingEnabled(true);
-
-        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this,mViewModel.getGroup().getValue().getId());
+        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this,mViewModel.getGroupId());
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
+
         String[] titles = {"Dashboard" , "Chat" , "Meetings"};
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
-
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(titles[position]);
-            }
-        }).attach();
+            }}).attach();
 
         mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override
@@ -96,14 +91,12 @@ public class GroupInfoFragment extends Fragment {
             }
         });
 
-
         mViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
             @Override
             public void onChanged(Group group) {
                 updateUI(group);
             }
         });
-
         return view;
     }
 

@@ -26,7 +26,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         String sented = remoteMessage.getData().get("sented");
-        if (CurrentUser.getCurrentUser() != null && sented!= null && sented.equals(CurrentUser.getCurrentUser().getId())){
+        if (CurrentUser.getInstance() != null && sented!= null && sented.equals(CurrentUser.getInstance().getId())){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 sendOreo(remoteMessage);
             }

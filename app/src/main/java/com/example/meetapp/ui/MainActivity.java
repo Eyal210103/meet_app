@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
 
         MainActivityViewModel mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        Log.d("_____________", "onCreate: " + CurrentUser.getCurrentUser().toString());
+        Log.d("_____________", "onCreate: " + CurrentUser.getInstance().toString());
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);

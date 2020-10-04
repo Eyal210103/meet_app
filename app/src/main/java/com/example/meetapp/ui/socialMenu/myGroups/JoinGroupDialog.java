@@ -1,6 +1,5 @@
 package com.example.meetapp.ui.socialMenu.myGroups;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +37,7 @@ public class JoinGroupDialog extends DialogFragment {
         view.findViewById(R.id.join_group_dialog_join_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseWrite.addUserToGroup(CurrentUser.getCurrentUser().getId(),group.getId());
+                DatabaseWrite.addUserToGroup(CurrentUser.getInstance().getId(),group.getId());
                 Bundle bundle = new Bundle();
                 bundle.putString("group", group.getId());
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);

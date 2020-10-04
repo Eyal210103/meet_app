@@ -1,7 +1,5 @@
 package com.example.meetapp.ui.Login;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,8 +32,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.annotations.NotNull;
-
-import java.util.concurrent.Executor;
 
 public class LoginOptionsFragment extends Fragment {
 
@@ -118,8 +113,7 @@ public class LoginOptionsFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            CurrentUser.firebaseUserToAppUser(mAuth.getCurrentUser());
-                            DatabaseWrite.addOrUpdateUser(CurrentUser.getCurrentUser());
+                            DatabaseWrite.addOrUpdateUser(CurrentUser.getInstance());
                             openMainAppScreen();
                         } else {
                             Toast.makeText(requireActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();

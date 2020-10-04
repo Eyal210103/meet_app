@@ -1,20 +1,24 @@
 package com.example.meetapp.model.message;
 
+import com.example.meetapp.model.ConstantValues;
+
 public class Message {
     private String senderId;
     private String senderDisplayName;
     private String context;
-    private String hour; // HH:MM format
+    private long hour; // millis
     private String id;
-    String groupName;
+    private String groupName;
     private int day;
+    protected int type;
 
-    public Message(String senderId, String senderDisplayName, String context, String hour, int day) {
+    public Message(String senderId, String senderDisplayName, String context, long hour, int day) {
         this.senderId = senderId;
         this.senderDisplayName = senderDisplayName;
         this.context = context;
         this.hour = hour;
         this.day = day;
+        type = ConstantValues.TYPE_TEXT;
     }
 
     public Message() {
@@ -44,20 +48,12 @@ public class Message {
         this.context = context;
     }
 
-    public String getHour() {
+    public long getHour() {
         return hour;
     }
 
-    public void setHour(String hour) {
+    public void setHour(long hour) {
         this.hour = hour;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
     }
 
     public String getId() {
@@ -74,6 +70,22 @@ public class Message {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override

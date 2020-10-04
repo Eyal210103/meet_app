@@ -108,8 +108,10 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            imageUri = data.getData();
-            groupImageCIV.setImageURI(imageUri);
+            if (data != null) {
+                imageUri = data.getData();
+                groupImageCIV.setImageURI(imageUri);
+            }
         }
     }
 

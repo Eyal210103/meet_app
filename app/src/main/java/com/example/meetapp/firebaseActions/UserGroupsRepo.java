@@ -1,15 +1,11 @@
 package com.example.meetapp.firebaseActions;
 
-import android.content.Context;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
-import com.example.meetapp.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +32,7 @@ public class UserGroupsRepo {
     public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
         ids.clear();
         list.clear();
-        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getCurrentUser().getId()).child("Groups")
+        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Groups")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

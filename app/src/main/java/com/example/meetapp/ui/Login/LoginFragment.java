@@ -64,7 +64,6 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             openMainAppScreen();
-                            CurrentUser.firebaseUserToAppUser(user);
                         } else {
                             Snackbar snackbar = Snackbar
                                     .make(view, "Authentication failed, Try Again", Snackbar.LENGTH_LONG);
@@ -75,7 +74,7 @@ public class LoginFragment extends Fragment {
     }
 
     private boolean validateEmailAndPassword(String email ,String password){
-        return !email.matches("") && !email.matches("");
+        return !email.matches("") && !password.matches("");
     }
 
     private void openMainAppScreen() {

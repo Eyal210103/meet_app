@@ -50,6 +50,30 @@ public class StorageUpload {
                 });
     }
 
+    public static void uploadChatImage(final Fragment context, final String groupId , String messageId , Uri data){
+        reference.child("Chat Images").child(groupId).child(messageId).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()){
+                    reference.child("Chat Images").child(groupId).child(messageId).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()){
+                                database.getReference().child("Groups").child("chat").child("url").setValue(task.getResult().toString());
+                                PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
+                                photoUploadCompleteListener.onPhotoUploadComplete();
+                            }else {
+                                reference.child("Chat Images").child(groupId).child(messageId).delete();
+                                PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
+                                photoUploadErrorListener.onPhotoUploadError();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public static void uploadProfileImage(final Fragment context, final String id , Uri data){
         reference.child("Profile Images").child(id).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override

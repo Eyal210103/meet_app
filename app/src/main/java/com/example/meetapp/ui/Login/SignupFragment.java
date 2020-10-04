@@ -22,7 +22,6 @@ import com.example.meetapp.ui.MainActivity;
 import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
 import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
@@ -103,10 +102,9 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                 user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        CurrentUser.firebaseUserToAppUser(user);
-                                        DatabaseWrite.addOrUpdateUser(CurrentUser.getCurrentUser());
+                                        DatabaseWrite.addOrUpdateUser(CurrentUser.getInstance());
                                         if (imageUri != null){
-                                            StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getCurrentUser().getId(),imageUri);
+                                            StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getInstance().getId(),imageUri);
                                         }
                                         else {
                                             signUpComplete();

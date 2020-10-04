@@ -32,7 +32,7 @@ public class MessageNotificationService {
     }
 
     public void startService(){
-        String id = CurrentUser.getCurrentUser().getId();
+        String id = CurrentUser.getInstance().getId();
 
         FirebaseDatabase.getInstance().getReference("Users/"+id+"/Groups").addChildEventListener(new ChildEventListener() {
             @Override
@@ -60,9 +60,9 @@ public class MessageNotificationService {
                 for (DataSnapshot ds:snapshot.getChildren()) {
                     if (i== snapshot.getChildrenCount()-1){
                         Message message = ds.getValue(Message.class);
-                        if (!message.getSenderId().equals(CurrentUser.getCurrentUser().getId())) {
+                        if (!message.getSenderId().equals(CurrentUser.getInstance().getId())) {
                             if (!first)
-                                sendNotification(CurrentUser.getCurrentUser().getId(), message);
+                                sendNotification(CurrentUser.getInstance().getId(), message);
                         }
                         break;
                     }

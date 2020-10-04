@@ -1,11 +1,14 @@
 package com.example.meetapp.model.message;
 
+import com.example.meetapp.model.ConstantValues;
+
 public class ImageMessage extends Message {
     String url;
 
-    public ImageMessage(String senderId, String senderDisplayName, String context, String hour, int day, String url) {
+    public ImageMessage(String senderId, String senderDisplayName, String context, long hour, int day, String url) {
         super(senderId, senderDisplayName, context, hour, day);
         this.url = url;
+        super.type = ConstantValues.TYPE_IMAGE;
     }
 
     public ImageMessage(String url) {

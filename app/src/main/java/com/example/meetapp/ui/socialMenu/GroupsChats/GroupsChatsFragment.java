@@ -94,7 +94,7 @@ public class GroupsChatsFragment extends Fragment {
     public void updateToken(String token){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
-        reference.child(CurrentUser.getCurrentUser().getId()).setValue(token1);
+        reference.child(CurrentUser.getInstance().getId()).setValue(token1);
     }
 
 }
