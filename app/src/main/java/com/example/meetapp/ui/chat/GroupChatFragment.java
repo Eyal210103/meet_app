@@ -1,16 +1,13 @@
 package com.example.meetapp.ui.chat;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.exifinterface.media.ExifInterface;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -20,21 +17,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.meetapp.R;
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -84,14 +77,28 @@ public class GroupChatFragment extends Fragment {
         view.findViewById(R.id.chat_send_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!contextET.getText().toString().matches("")){
+                if(imageUri != null){
+                    //StorageUpload.uploadChatImage();
+                    Message message = new Message();
+                    message.setContext(contextET.getText().toString());
+                    message.setSenderDisplayName(CurrentUser.getInstance().getDisplayName());
+                    message.setSenderId(CurrentUser.getInstance().getId());
+                    message.setUrl(imageUri.toString());
+                    Date currentTime = Calendar.getInstance().getTime();
+                    message.setTime(currentTime.getTime());
+                    mViewModel.sendImageMessage(message);
+                    contextET.setText("");
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                    imageUri = null;
+                    imagePreview.setVisibility(View.GONE);
+                }
+                else if (!contextET.getText().toString().matches("")){
                     Message message = new Message();
                     message.setContext(contextET.getText().toString());
                     message.setSenderDisplayName(CurrentUser.getInstance().getDisplayName());
                     message.setSenderId(CurrentUser.getInstance().getId());
                     Date currentTime = Calendar.getInstance().getTime();
-                    message.setDay(1);
-                    message.setHour(currentTime.getTime());
+                    message.setTime(currentTime.getTime());
                     mViewModel.sendMessage(message);
                     contextET.setText("");
                     recyclerView.smoothScrollToPosition(adapter.getItemCount());
@@ -106,11 +113,20 @@ public class GroupChatFragment extends Fragment {
             }
         });
 
-        mViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<Message>>() {
+        mViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Message>>>() {
             @Override
-            public void onChanged(ArrayList<Message> messages) {
+            public void onChanged(ArrayList<MutableLiveData<Message>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                for (MutableLiveData<Message> m : mutableLiveData) {
+                    m.observe(getViewLifecycleOwner(), new Observer<Message>() {
+                        @Override
+                        public void onChanged(Message message) {
+                            adapter.notifyDataSetChanged();
+                            recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                        }
+                    });
+                }
             }
         });
         return view;

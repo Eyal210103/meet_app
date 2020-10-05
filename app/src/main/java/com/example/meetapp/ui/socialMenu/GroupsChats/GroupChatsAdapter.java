@@ -1,7 +1,5 @@
 package com.example.meetapp.ui.socialMenu.GroupsChats;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,8 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.model.Group;
-import com.example.meetapp.model.User;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 
 import java.util.ArrayList;
 

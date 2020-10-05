@@ -1,4 +1,4 @@
-package com.example.meetapp.model.message;
+package com.example.meetapp.model;
 
 import com.example.meetapp.model.ConstantValues;
 
@@ -6,18 +6,17 @@ public class Message {
     private String senderId;
     private String senderDisplayName;
     private String context;
-    private long hour; // millis
+    private long time; // millis
     private String id;
     private String groupName;
-    private int day;
     protected int type;
+    private String url;
 
-    public Message(String senderId, String senderDisplayName, String context, long hour, int day) {
+    public Message(String senderId, String senderDisplayName, String context, long time) {
         this.senderId = senderId;
         this.senderDisplayName = senderDisplayName;
         this.context = context;
-        this.hour = hour;
-        this.day = day;
+        this.time = time;
         type = ConstantValues.TYPE_TEXT;
     }
 
@@ -48,12 +47,12 @@ public class Message {
         this.context = context;
     }
 
-    public long getHour() {
-        return hour;
+    public long getTime() {
+        return time;
     }
 
-    public void setHour(long hour) {
-        this.hour = hour;
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public String getId() {
@@ -72,12 +71,12 @@ public class Message {
         this.groupName = groupName;
     }
 
-    public int getDay() {
-        return day;
+    public String getUrl() {
+        return url;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public int getType() {
@@ -93,8 +92,7 @@ public class Message {
         return "Message{" +
                 "senderId='" + senderId + '\'' +
                 ", senderDisplayName='" + senderDisplayName + '\'' +
-                ", hour='" + hour + '\'' +
-                ", day=" + day +
+                ", hour='" + time + '\'' +
                 '}';
     }
 }

@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.example.meetapp.R;
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

@@ -4,12 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.airbnb.lottie.L;
 import com.example.meetapp.firebaseActions.GroupsMembersRepo;
 import com.example.meetapp.firebaseActions.LastMessageRepo;
-import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 
 import java.util.ArrayList;
 

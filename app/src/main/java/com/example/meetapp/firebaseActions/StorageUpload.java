@@ -59,13 +59,13 @@ public class StorageUpload {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()){
-                                database.getReference().child("Groups").child("chat").child("url").setValue(task.getResult().toString());
-                                PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
-                                photoUploadCompleteListener.onPhotoUploadComplete();
+                                database.getReference().child("Groups").child(groupId).child("Chat").child(messageId).child("url").setValue(task.getResult().toString());
+//                                PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
+//                                photoUploadCompleteListener.onPhotoUploadComplete();
                             }else {
                                 reference.child("Chat Images").child(groupId).child(messageId).delete();
-                                PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
-                                photoUploadErrorListener.onPhotoUploadError();
+//                                PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
+//                                photoUploadErrorListener.onPhotoUploadError();
                             }
                         }
                     });

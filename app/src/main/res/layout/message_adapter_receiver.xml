@@ -13,8 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
+        android:layout_marginStart="4dp"
         android:background="@drawable/message_background_design"
         android:backgroundTint="@color/backgroundSec"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,28 +27,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:shadowColor="#00202020"
             android:text="CONTEXTCONTEXTCONTEXT"
             android:textColor="@color/oppBackground"
             android:textColorHighlight="#00FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/receiver_adapter_hour_textView"
             app:layout_constraintStart_toStartOf="@+id/receiver_adapter_name_textView"
-            app:layout_constraintTop_toBottomOf="@+id/receiver_adapter_name_textView" />
+            app:layout_constraintTop_toBottomOf="@+id/receiver_imageView" />
 
         <TextView
             android:id="@+id/receiver_adapter_hour_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
             android:shadowColor="@color/backgroundSec"
             android:text="13:00"
             android:textColor="@color/oppBackground"
             android:textColorHighlight="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/receiver_adapter_context_textView" />
 
         <TextView
             android:id="@+id/receiver_adapter_name_textView"
@@ -58,5 +59,17 @@
             android:textColor="@color/oppBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/receiver_imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiver_adapter_name_textView"
+            app:srcCompat="@drawable/logo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

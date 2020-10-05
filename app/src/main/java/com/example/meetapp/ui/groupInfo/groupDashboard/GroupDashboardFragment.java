@@ -1,11 +1,9 @@
 package com.example.meetapp.ui.groupInfo.groupDashboard;
 
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,19 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.meetapp.R;
 import com.example.meetapp.model.User;
-import com.example.meetapp.model.message.Message;
-import com.example.meetapp.ui.MainActivityViewModel;
+import com.example.meetapp.model.Message;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
-import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
 
 import java.util.ArrayList;
 

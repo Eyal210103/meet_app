@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import com.example.meetapp.R;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 import com.example.meetapp.notifications.Token;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.firebase.database.DatabaseReference;

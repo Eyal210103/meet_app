@@ -24,10 +24,11 @@
             android:id="@+id/sender_adapter_context_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
             android:shadowColor="#00202020"
             android:text="CONTEXTCONTEXTCONTEXT"
             android:textColor="@color/oppBackground"
@@ -35,19 +36,33 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sender_adapter_hour_textView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/sender_imageView" />
 
         <TextView
             android:id="@+id/sender_adapter_hour_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
+            android:paddingBottom="5dp"
             android:shadowColor="@color/backgroundSec"
             android:text="13:00"
             android:textColor="@color/oppBackground"
             android:textColorHighlight="#00FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/sender_adapter_context_textView" />
+
+        <ImageView
+            android:id="@+id/sender_imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/sender_adapter_context_textView"
+            app:layout_constraintStart_toStartOf="@+id/sender_adapter_context_textView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

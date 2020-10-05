@@ -1,16 +1,16 @@
 package com.example.meetapp.ui.chat;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.GroupChatRepo;
-import com.example.meetapp.model.Group;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 
 import java.util.ArrayList;
 
 public class GroupChatViewModel extends ViewModel {
-    MutableLiveData<ArrayList<Message>> messages = null;
+    MutableLiveData<ArrayList<MutableLiveData<Message>>> messages = null;
     GroupChatRepo repo = null;
 
     public void init(String groupId) {
@@ -19,9 +19,13 @@ public class GroupChatViewModel extends ViewModel {
             messages = repo.getMessages();
         }
     }
-    public MutableLiveData<ArrayList<Message>> getMessages() { return messages;}
+    public LiveData<ArrayList<MutableLiveData<Message>>> getMessages() { return messages;}
 
     public void sendMessage(Message message){
         repo.sendMessage(message);
     }
+    public void sendImageMessage(Message message){
+        repo.sendImageMessage(message);
+    }
+
 }

@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.User;
-import com.example.meetapp.model.message.Message;
+import com.example.meetapp.model.Message;
 import com.google.firebase.database.*;
 
 
