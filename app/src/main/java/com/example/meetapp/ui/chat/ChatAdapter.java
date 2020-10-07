@@ -1,10 +1,12 @@
 package com.example.meetapp.ui.chat;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,10 +18,8 @@ import com.example.meetapp.R;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Message;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.Calendar;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -52,8 +52,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (message != null) {
             long millis = message.getTime();
             @SuppressLint("DefaultLocale")
-            String hour = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis), TimeUnit.MILLISECONDS.toMinutes(millis));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(millis);
+            int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int mMinute = calendar.get(Calendar.MINUTE);
+            String hour = String.format("%02d:%02d", mHour, mMinute);
 
+            Log.d("", "onBindViewHolder: " + message.toString());
             if (holder instanceof ChatViewHolderReceiver) {
                 ((ChatViewHolderReceiver) holder).context.setText(message.getContext());
                 ((ChatViewHolderReceiver) holder).name.setText(message.getSenderDisplayName());
@@ -61,14 +66,20 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((ChatViewHolderReceiver) holder).image.setVisibility(View.VISIBLE);
                     Glide.with(context).load(message.getUrl()).into(((ChatViewHolderReceiver) holder).image);
                 }
+                else if (message.getUrl() == null){
+                    ((ChatViewHolderReceiver) holder).image.setVisibility(View.GONE);
+                }
                 ((ChatViewHolderReceiver) holder).hour.setText(hour);
             }
-            if (holder instanceof ChatViewHolderSender) {
+            else if (holder instanceof ChatViewHolderSender) {
                 ((ChatViewHolderSender) holder).context.setText(message.getContext());
                 ((ChatViewHolderSender) holder).hour.setText(hour);
                 if (message.getUrl() != null) {
                     ((ChatViewHolderSender) holder).image.setVisibility(View.VISIBLE);
                     Glide.with(context).load(message.getUrl()).into(((ChatViewHolderSender) holder).image);
+                }
+                else if (message.getUrl() == null){
+                    ((ChatViewHolderSender) holder).image.setVisibility(View.GONE);
                 }
             }
         }

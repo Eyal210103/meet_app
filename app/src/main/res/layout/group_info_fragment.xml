@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondry">
@@ -15,7 +14,8 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_settings_24" />
+        app:srcCompat="@drawable/ic_baseline_settings_24"
+        app:tint="#FFFFFF" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/group_info_group_civ"
@@ -38,7 +38,7 @@
         android:foregroundGravity="left"
         android:gravity="start"
         android:text="@string/app_name"
-        android:textColor="@color/oppBackground"
+        android:textColor="#FFFFFF"
         android:textSize="26sp"
         app:layout_constraintStart_toEndOf="@+id/group_info_group_civ"
         app:layout_constraintTop_toTopOf="@+id/group_info_group_civ" />

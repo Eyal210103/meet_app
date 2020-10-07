@@ -1,7 +1,5 @@
 package com.example.meetapp.model;
 
-import com.example.meetapp.model.ConstantValues;
-
 public class Message {
     private String senderId;
     private String senderDisplayName;
@@ -9,7 +7,6 @@ public class Message {
     private long time; // millis
     private String id;
     private String groupName;
-    protected int type;
     private String url;
 
     public Message(String senderId, String senderDisplayName, String context, long time) {
@@ -17,7 +14,6 @@ public class Message {
         this.senderDisplayName = senderDisplayName;
         this.context = context;
         this.time = time;
-        type = ConstantValues.TYPE_TEXT;
     }
 
     public Message() {
@@ -79,20 +75,16 @@ public class Message {
         this.url = url;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "senderId='" + senderId + '\'' +
                 ", senderDisplayName='" + senderDisplayName + '\'' +
-                ", hour='" + time + '\'' +
+                ", context='" + context + '\'' +
+                ", time=" + time +
+                ", id='" + id + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }
