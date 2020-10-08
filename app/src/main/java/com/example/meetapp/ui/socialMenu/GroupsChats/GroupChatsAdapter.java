@@ -39,7 +39,7 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
     @NonNull
     @Override
     public ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.groupschats_adapter,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.groups_chats_adapter,parent,false);
         return new ChatsViewHolder(v);
     }
 

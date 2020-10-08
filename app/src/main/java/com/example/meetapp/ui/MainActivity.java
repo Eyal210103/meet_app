@@ -50,4 +50,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         startActivity(intent);
         this.finish();
     }
+
+
 }

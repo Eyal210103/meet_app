@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_motion_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    app:layoutDescription="@xml/home_fragment_scene"
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.gms.maps.MapView
@@ -13,29 +15,88 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/home_edit_text_all"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/main_app_design"
-        android:textColor="@color/oppBackground"
-        android:backgroundTintMode="multiply"
-        android:backgroundTint="@color/background"
-        android:textColorHint="@color/backgroundSec"
-        android:hint="@string/type_locations_or_subjects"
-        android:inputType="text"
-        android:padding="9dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="@string/places_powered_by_google" />
+        app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/home_search_icon_imageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_search_24"
+            app:tint="@color/oppBackground" />
+
+        <EditText
+            android:id="@+id/home_edit_text_all"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/places_powered_by_google"
+            android:hint="@string/type_locations_or_subjects"
+            android:inputType="text"
+            android:padding="9dp"
+            android:textColor="@color/oppBackground"
+            android:textColorHint="@color/backgroundSec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/curved_top_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/home_location_subject_circleImageView"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="8dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="@color/oppBackground"
+            app:civ_border_width="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/location_subject_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="TOPIC"
+            android:textColor="@color/oppBackground"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/home_location_subject_circleImageView"
+            app:layout_constraintTop_toTopOf="@+id/home_location_subject_circleImageView" />
+
+        <TextView
+            android:id="@+id/location_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="TextView"
+            android:textColor="@color/oppBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/home_location_subject_circleImageView"
+            app:layout_constraintStart_toStartOf="@+id/location_subject_textView"
+            app:layout_constraintTop_toBottomOf="@+id/location_subject_textView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
