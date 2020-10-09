@@ -3,14 +3,17 @@ package com.example.meetapp.model.meetings;
 public class PublicMeeting extends Meeting {
     private String description;
 
-    public PublicMeeting(int year, int month, int day, int hour, int minutes, String id, String description) {
-        super(year, month, day, hour, minutes, id);
+    public PublicMeeting(long millis, String id, String subject ,String description) {
+        super(millis, id,subject);
         this.description = description;
     }
 
     public PublicMeeting(String description) {
         super();
         this.description = description;
+    }
+
+    public PublicMeeting() {
     }
 
     public String getDescription() {
@@ -25,12 +28,9 @@ public class PublicMeeting extends Meeting {
     public String toString() {
         return "PublicMeeting{" +
                 "description='" + description + '\'' +
-                ", year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                ", hour=" + hour +
-                ", minutes=" + minutes +
+                ", millis=" + millis +
                 ", id='" + id + '\'' +
+                ", subject='" + subject + '\'' +
                 '}';
     }
 }

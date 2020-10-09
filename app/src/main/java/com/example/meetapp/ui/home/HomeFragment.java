@@ -45,12 +45,10 @@ public class HomeFragment extends Fragment {
     private static final int REQUEST_LOCATION = 103;
     private static final String TAG = "HomeFragment";
     private HomeViewModel mViewModel;
-    TextView title;
+    TextView locationTV;
 
     private MapView mapView;
     private GoogleMap mMap;
-    private double latitude = 0;
-    private double longitude = 0;
     View view;
 
     @Override
@@ -66,7 +64,7 @@ public class HomeFragment extends Fragment {
         this.mapView = view.findViewById(R.id.mapView);
         initGoogleMap(savedInstanceState);
 
-        title = view.findViewById(R.id.location_subject_textView);
+        locationTV = view.findViewById(R.id.location_textView);
 
         EditText locationName = view.findViewById(R.id.home_edit_text_all);
 
@@ -88,7 +86,7 @@ public class HomeFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
     }
 
-    private void getLocation() {
+    private LatLng getLocation() {
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(
                 requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -98,15 +96,17 @@ public class HomeFragment extends Fragment {
             assert locationManager != null;
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
-                latitude = locationGPS.getLatitude();
-                longitude = locationGPS.getLongitude();
+                double latitude = locationGPS.getLatitude();
+                double longitude = locationGPS.getLongitude();
+                return new LatLng(latitude,longitude);
             }
         }
+        return new LatLng(0,0);
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
-        getLocation();
+        LatLng latLng = getLocation();
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -115,18 +115,18 @@ public class HomeFragment extends Fragment {
                     googleMap.setMyLocationEnabled(true);
                     googleMap.setBuildingsEnabled(true);
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
-                            title.setText(getAddress(marker.getPosition()));
+                            locationTV.setText(getAddress(marker.getPosition()));
                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToEnd();
                             return false;
                         }
                     });
                 } else {
-                    Toast.makeText(getActivity(), "Map Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -159,13 +159,13 @@ public class HomeFragment extends Fragment {
             List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
             Address obj = addresses.get(0);
             String add = obj.getAddressLine(0);
-            add = add + "\n" + obj.getCountryName();
-            add = add + "\n" + obj.getCountryCode();
-            add = add + "\n" + obj.getAdminArea();
-            add = add + "\n" + obj.getPostalCode();
-            add = add + "\n" + obj.getSubAdminArea();
+            //add = add + "\n" + obj.getCountryName();
+            //add = add + "\n" + obj.getCountryCode();
+            //add = add + "\n" + obj.getAdminArea();
+            //add = add + "\n" + obj.getPostalCode();
+            //add = add + "\n" + obj.getSubAdminArea();
             //add = add + "\n" + obj.getLocality();
-           // add = add + "\n" + obj.getSubThoroughfare();
+            //add = add + "\n" + obj.getSubThoroughfare();
             return add;
         } catch (IOException e) {
             e.printStackTrace();

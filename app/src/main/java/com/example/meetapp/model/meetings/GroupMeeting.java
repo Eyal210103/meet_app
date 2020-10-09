@@ -4,8 +4,8 @@ public class GroupMeeting extends Meeting {
 
     private boolean isOpen;
 
-    public GroupMeeting(int year, int month, int day, int hour, int minutes, String id, boolean isOpen) {
-        super(year, month, day, hour, minutes, id);
+    public GroupMeeting(long millis, String id, String subject , boolean isOpen) {
+        super(millis,id, subject);
         this.isOpen = isOpen;
     }
 
@@ -26,11 +26,7 @@ public class GroupMeeting extends Meeting {
     public String toString() {
         return "GroupMeeting{" +
                 "isOpen=" + isOpen +
-                ", year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                ", hour=" + hour +
-                ", minutes=" + minutes +
+                ", millis=" + millis +
                 ", id='" + id + '\'' +
                 '}';
     }

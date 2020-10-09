@@ -46,16 +46,13 @@
             android:inputType="text"
             android:padding="9dp"
             android:textColor="@color/oppBackground"
-            android:textColorHint="@color/backgroundSec"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColorHint="@color/backgroundSec"/>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/curved_top_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,12 +76,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:text="TOPIC"
             android:textColor="@color/oppBackground"
             android:textSize="24sp"
             app:layout_constraintStart_toEndOf="@+id/home_location_subject_circleImageView"
-            app:layout_constraintTop_toTopOf="@+id/home_location_subject_circleImageView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/location_textView"

@@ -1,63 +1,33 @@
 package com.example.meetapp.model.meetings;
 
 public abstract class Meeting {
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minutes;
+    long millis;
     String id;
-
-    public Meeting(int year, int month, int day, int hour, int minutes, String id) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.hour = hour;
-        this.minutes = minutes;
-        this.id = id;
-    }
+    String subject;
 
     public Meeting() {
     }
 
-    public int getYear() {
-        return year;
+    public Meeting(long millis, String id, String subject) {
+        this.millis = millis;
+        this.id = id;
+        this.subject = subject;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public String getSubject() {
+        return subject;
     }
 
-    public int getMonth() {
-        return month;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public long getMillis() {
+        return millis;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
+    public void setMillis(long millis) {
+        this.millis = millis;
     }
 
     public String getId() {
@@ -71,11 +41,7 @@ public abstract class Meeting {
     @Override
     public String toString() {
         return "Meeting{" +
-                "year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                ", hour=" + hour +
-                ", minutes=" + minutes +
+                "millis=" + millis +
                 ", id='" + id + '\'' +
                 '}';
     }
