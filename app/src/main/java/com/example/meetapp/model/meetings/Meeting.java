@@ -1,9 +1,13 @@
 package com.example.meetapp.model.meetings;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public abstract class Meeting {
     long millis;
     String id;
     String subject;
+    double latitude;
+    double longitude;
 
     public Meeting() {
     }
@@ -36,6 +40,27 @@ public abstract class Meeting {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(long latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(long longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLocation(LatLng location){
+        this.latitude = location.latitude;
+        this.longitude = location.longitude;
     }
 
     @Override
