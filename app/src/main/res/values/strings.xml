@@ -27,4 +27,7 @@
     <string name="create_account">Create Account</string>
     <string name="no_messages">There is no messages</string>
     <string name="create_meeting">Create Meeting</string>
+    <string name="create_a_meeting">Create a Meeting</string>
+    <string name="group_meeting">Group Meeting</string>
+    <string name="public_meeting">Public Meeting</string>
 </resources>
