@@ -1,4 +1,4 @@
-package com.example.meetapp.ui;
+package com.example.meetapp.ui.createMeeting;
 
 import android.Manifest;
 import android.content.Context;

@@ -1,18 +1,17 @@
 package com.example.meetapp.ui.socialMenu.myMeetings;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import com.example.meetapp.R;
 import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBar;
@@ -36,6 +35,13 @@ public class MyMeetingsFragment extends Fragment {
         calenderBar.setRecyclerView(recyclerView);
         calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
 
+        view.findViewById(R.id.my_meetings_create_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_socialMenuFragment_to_createMeetingFragment);
+            }
+        });
         return view;
     }
 

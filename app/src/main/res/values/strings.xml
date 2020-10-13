@@ -30,4 +30,5 @@
     <string name="create_a_meeting">Create a Meeting</string>
     <string name="group_meeting">Group Meeting</string>
     <string name="public_meeting">Public Meeting</string>
+    <string name="meeting_subject">Meeting Subject</string>
 </resources>

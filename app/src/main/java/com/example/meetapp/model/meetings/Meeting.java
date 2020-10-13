@@ -9,8 +9,7 @@ public abstract class Meeting {
     double latitude;
     double longitude;
 
-    public Meeting() {
-    }
+    public Meeting() {}
 
     public Meeting(long millis, String id, String subject) {
         this.millis = millis;
