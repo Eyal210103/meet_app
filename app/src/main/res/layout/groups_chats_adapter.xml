@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginBottom="6dp"
     android:background="@drawable/main_app_design"
     android:orientation="horizontal">
 
@@ -11,7 +12,7 @@
         android:id="@+id/group_image_chats_civ"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:src="@color/colorAccent"
@@ -26,11 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/group_image_chats_civ"
         android:text="@string/app_name"
         android:textColor="@color/oppBackground"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/group_image_chats_civ"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +49,8 @@
         android:id="@+id/chat_adapter_last_message"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="2dp"
         android:text="PLACEHOLDER"
         android:textColor="@color/oppBackground"
         android:textSize="14sp"

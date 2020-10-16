@@ -39,11 +39,12 @@
 
         <EditText
             android:id="@+id/home_edit_text_all"
-            android:layout_width="250dp"
+            android:layout_width="263dp"
             android:layout_height="wrap_content"
             android:autofillHints="@string/places_powered_by_google"
             android:hint="@string/type_locations_or_subjects"
             android:inputType="text"
+            android:textSize="18sp"
             android:padding="9dp"
             android:textColor="@color/oppBackground"
             android:textColorHint="@color/backgroundSec"/>
