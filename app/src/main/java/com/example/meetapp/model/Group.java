@@ -12,16 +12,20 @@ public class Group implements Serializable {
     private String managerId;
     private String subject;
     private String photoUrl;
+    private boolean isPublic;
 
-    public Group(String name, String id, String managerId, String subject, String photoUrl) {
+    public Group(String name, String id, String managerId, String subject, String photoUrl, boolean isPublic) {
         this.name = name;
         this.id = id;
         this.managerId = managerId;
         this.subject = subject;
         this.photoUrl = photoUrl;
+        this.isPublic = isPublic;
     }
+
     public Group() {
     }
+
     public String getName() {
         return name;
     }
@@ -52,6 +56,15 @@ public class Group implements Serializable {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
     @Override
     public String toString() {
         return "Group{" +
