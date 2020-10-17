@@ -8,9 +8,11 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,6 +33,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     private static final int PICK_IMAGE = 52;
     private EditText groupNameEditText;
     private EditText groupSubjectEditText;
+    private SwitchCompat switchCompat;
     private CircleImageView groupImageCIV;
     private ProgressDialog progressDialog;
     private Uri imageUri;
@@ -45,15 +48,16 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
         groupImageCIV = view.findViewById(R.id.create_group_civ);
         groupNameEditText = view.findViewById(R.id.create_group_group_name_et);
         groupSubjectEditText = view.findViewById(R.id.create_group_group_subject);
+        switchCompat = view.findViewById(R.id.create_group_public_switch);
 
         view.findViewById(R.id.create_group_choose_img_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGalleryGroup();
+                openGallery();
             }
         });
 
-        view.findViewById(R.id.creat_group_submit_button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.create_group_submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickCreateGroup();
@@ -74,12 +78,20 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 sub = groupSubjectEditText.getText().toString();
             }
             if (isGood) {
+                final String groupImageURL = "https://www.liberaldictionary.com/wp-content/uploads/2018/11/null.png";
                 newGroup.setName(name);
                 newGroup.setSubject(sub);
-                final String groupImageURL = "https://www.liberaldictionary.com/wp-content/uploads/2018/11/null.png";
                 newGroup.setPhotoUrl(groupImageURL);
-                groupImageCIV.setDrawingCacheEnabled(true);
-                groupImageCIV.buildDrawingCache();
+
+                switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        newGroup.setPublic(isChecked);
+                    }
+                });
+//
+//                groupImageCIV.setDrawingCacheEnabled(true);
+//                groupImageCIV.buildDrawingCache();
                 String id = newGroup.addOrUpdateGroupGetID();
                 progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
@@ -92,7 +104,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
         }
     }
 
-    private void openGalleryGroup() {
+    private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }

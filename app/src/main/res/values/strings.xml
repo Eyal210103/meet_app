@@ -31,4 +31,6 @@
     <string name="group_meeting">Group Meeting</string>
     <string name="public_meeting">Public Meeting</string>
     <string name="meeting_subject">Meeting Subject</string>
+    <string name="is_public">Is Public</string>
+    <string name="waiting_requests">Waiting Requests</string>
 </resources>

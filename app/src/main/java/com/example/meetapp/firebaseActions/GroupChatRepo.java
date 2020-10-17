@@ -8,8 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.Group;
-import com.example.meetapp.model.User;
 import com.example.meetapp.model.Message;
+import com.example.meetapp.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -83,7 +83,7 @@ public class GroupChatRepo{
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:GET ChatRepo" );
+                error.toException().printStackTrace();
             }
         };
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").addChildEventListener(childEventListener);
@@ -101,6 +101,7 @@ public class GroupChatRepo{
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                error.toException().printStackTrace();
             }
         });
         return messageMLD;
@@ -117,7 +118,7 @@ public class GroupChatRepo{
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:putUserData ChatRepo" );
+                error.toException().printStackTrace();
             }
         });
         return  userMutableLiveData;
