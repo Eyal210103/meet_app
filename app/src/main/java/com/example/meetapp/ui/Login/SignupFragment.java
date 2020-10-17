@@ -4,18 +4,16 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.meetapp.R;
-import com.example.meetapp.firebaseActions.DatabaseWrite;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.ui.MainActivity;
@@ -102,7 +100,7 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                 user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        DatabaseWrite.addOrUpdateUser(CurrentUser.getInstance());
+                                        CurrentUser.addOrUpdateUser();
                                         if (imageUri != null){
                                             StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getInstance().getId(),imageUri);
                                         }

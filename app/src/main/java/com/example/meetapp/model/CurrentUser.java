@@ -2,6 +2,9 @@ package com.example.meetapp.model;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 import javax.inject.Singleton;
 
@@ -27,6 +30,16 @@ public class CurrentUser {
 
     public static void setCurrentUser(User user) {
         CurrentUser.user = user;
+    }
+
+    public static void addOrUpdateUser(){
+        getInstance();
+        HashMap<String,Object> map = new HashMap<String, Object>();
+        map.put("displayName",user.getDisplayName());
+        map.put("email",user.getEmail());
+        map.put("id",user.getId());
+        map.put("profileImageUrl",user.getProfileImageUrl());
+        FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).updateChildren(map);
     }
 
     public static void logout(){

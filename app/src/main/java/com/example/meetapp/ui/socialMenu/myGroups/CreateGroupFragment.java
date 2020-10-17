@@ -2,15 +2,8 @@ package com.example.meetapp.ui.socialMenu.myGroups;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +11,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.example.meetapp.R;
-import com.example.meetapp.firebaseActions.DatabaseWrite;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
 import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -87,7 +80,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 newGroup.setPhotoUrl(groupImageURL);
                 groupImageCIV.setDrawingCacheEnabled(true);
                 groupImageCIV.buildDrawingCache();
-                String id = DatabaseWrite.addOrUpdateGroupGetID(newGroup);
+                String id = newGroup.addOrUpdateGroupGetID();
                 progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle("Creating , Please Wait..");
