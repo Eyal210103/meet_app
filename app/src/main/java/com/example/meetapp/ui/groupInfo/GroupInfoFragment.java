@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
-import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -40,8 +41,7 @@ public class GroupInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
-        String groupId = getArguments().getString("group");
-        mViewModel.init(groupId);
+        mViewModel.init(getArguments().getString("group"));
     }
 
     @Override
@@ -95,6 +95,17 @@ public class GroupInfoFragment extends Fragment {
             @Override
             public void onChanged(Group group) {
                 updateUI(group);
+            }
+        });
+
+
+        view.findViewById(R.id.group_setting_imageView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",getArguments().getString("group"));
+                navController.navigate(R.id.action_groupInfoFragment_to_groupSettingsFragment, bundle);
             }
         });
         return view;

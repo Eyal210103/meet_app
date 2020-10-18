@@ -73,10 +73,9 @@ public class GroupSettingsRepo {
                 Log.d("observer", "onCancelled: ERROR:GET GroupsMembersRepo" );
             }
         };
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Padding").addChildEventListener(childEventListener);
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Waiting").addChildEventListener(childEventListener);
         return mutableLiveData;
     }
-
 
     private MutableLiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
@@ -93,6 +92,16 @@ public class GroupSettingsRepo {
             }
         });
         return userMutableLiveData;
+    }
+
+    public void removeUser(String id){
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Waiting").child(id).removeValue();
+    }
+
+    public void approveUser(String id){
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Members").child(id).setValue(id);
+        FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("Groups").child(groupId).setValue(groupId);
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Waiting").child(id).removeValue();
     }
 
     private void OnDetach(){

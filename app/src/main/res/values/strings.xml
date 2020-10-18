@@ -33,4 +33,5 @@
     <string name="meeting_subject">Meeting Subject</string>
     <string name="is_public">Is Public</string>
     <string name="waiting_requests">Waiting Requests</string>
+    <string name="your_request_has_sent">Your Request Has Sent!</string>
 </resources>

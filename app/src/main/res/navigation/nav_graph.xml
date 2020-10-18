@@ -84,6 +84,11 @@
         <action
             android:id="@+id/action_groupInfoFragment_to_groupChatFragment"
             app:destination="@id/groupChatFragment" />
+        <action
+            android:id="@+id/action_groupInfoFragment_to_groupSettingsFragment"
+            app:destination="@id/groupSettingsFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/groupChatFragment"
@@ -107,6 +112,9 @@
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_joinGroupFragment_to_RequestSentDialog"
+            app:destination="@id/RequestSentDialog" />
     </fragment>
     <dialog
         android:id="@+id/joinGroupDialog"
@@ -123,5 +131,20 @@
         android:name="com.example.meetapp.ui.createMeeting.CreateMeetingFragment"
         android:label="fragment_create_meeting"
         tools:layout="@layout/fragment_create_meeting" />
-
+    <fragment
+        android:id="@+id/groupSettingsFragment"
+        android:name="com.example.meetapp.ui.groupInfo.groupSettings.GroupSettingsFragment"
+        android:label="group_setting_fragment"
+        tools:layout="@layout/group_setting_fragment" >
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+    </fragment>
+    <dialog
+        android:id="@+id/RequestSentDialog"
+        android:name="com.example.meetapp.ui.RequestSentDialog"
+        android:label="RequestSentDialog" >
+    </dialog>
 </navigation>
