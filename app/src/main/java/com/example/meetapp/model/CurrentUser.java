@@ -1,7 +1,6 @@
 package com.example.meetapp.model;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -20,11 +19,10 @@ public class CurrentUser {
         if (user == null) {
             user = new User();
         }
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        user.setDisplayName(firebaseUser.getDisplayName());
-        user.setEmail(firebaseUser.getEmail());
-        user.setId(firebaseUser.getUid());
-        user.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
+        user.setDisplayName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        user.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        user.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.setProfileImageUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
         return user;
     }
 

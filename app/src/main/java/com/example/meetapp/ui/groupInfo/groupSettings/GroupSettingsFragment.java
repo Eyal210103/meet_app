@@ -51,6 +51,14 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             @Override
             public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
+                for (MutableLiveData<User> u :mutableLiveData) {
+                    u.observe(getViewLifecycleOwner(), new Observer<User>() {
+                        @Override
+                        public void onChanged(User user) {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             }
         });
         return view;

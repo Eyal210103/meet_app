@@ -39,20 +39,25 @@ public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapte
     @Override
     public void onBindViewHolder(@NonNull WaitingUsersViewHolder holder, int position) {
         User user = members.get(position).getValue();
-        Glide.with(context.requireActivity()).load(user.getProfileImageUrl()).into(holder.profile);
-        OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-        holder.approve.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickInRecyclerView.onClickInRecyclerView(position,"Approve");
-            }
-        });
-        holder.reject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickInRecyclerView.onClickInRecyclerView(position,"Reject");
-            }
-        });
+        if (members.get(position) != null && user != null) {
+            Glide.with(context.requireActivity()).load(user.getProfileImageUrl()).into(holder.profile);
+            holder.name.setText(user.getDisplayName());
+            OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView) context;
+            holder.approve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickInRecyclerView.onClickInRecyclerView(position, "Approve");
+                    notifyItemRemoved(position);
+                }
+            });
+            holder.reject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickInRecyclerView.onClickInRecyclerView(position, "Reject");
+                    notifyItemRemoved(position);
+                }
+            });
+        }
     }
 
     @Override
