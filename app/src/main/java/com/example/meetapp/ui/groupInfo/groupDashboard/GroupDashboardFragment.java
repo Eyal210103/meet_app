@@ -1,25 +1,23 @@
 package com.example.meetapp.ui.groupInfo.groupDashboard;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.meetapp.R;
-import com.example.meetapp.model.User;
 import com.example.meetapp.model.Message;
+import com.example.meetapp.model.User;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
 
 import java.util.ArrayList;
@@ -52,7 +50,7 @@ public class GroupDashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.group_dashboard_fragment, container, false);
 
         lastMessageTextView = view.findViewById(R.id.dash_last_message_textView);
-        lastMessageTextView.setText(String.valueOf(R.string.no_messages));
+        lastMessageTextView.setText(getString(R.string.no_messages));
 
         RecyclerView recyclerView = view.findViewById(R.id.group_dash_members_recycler);
         adapter = new DashMembersAdapter(this,mViewModel.getMembersMutableLiveData().getValue());

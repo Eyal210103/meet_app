@@ -5,13 +5,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.GroupSettingsRepo;
+import com.example.meetapp.firebaseActions.GroupsMembersRepo;
+import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 
 import java.util.ArrayList;
 
 public class GroupSettingsViewModel extends ViewModel {
-    MutableLiveData<ArrayList<MutableLiveData<User>>> paddingUsers;
-    GroupSettingsRepo groupSettingsRepo;
+    private LiveData<ArrayList<MutableLiveData<User>>> paddingUsers;
+    private GroupSettingsRepo groupSettingsRepo;
+    private LiveData<Group> group;
+    private LiveData<ArrayList<String>> managers;
+    private LiveData<ArrayList<MutableLiveData<User>>> members;
 
     public GroupSettingsViewModel() {
         super();
@@ -19,10 +24,26 @@ public class GroupSettingsViewModel extends ViewModel {
     public void init(String id){
         groupSettingsRepo = new GroupSettingsRepo(id);
         paddingUsers = groupSettingsRepo.getWaitingUsers();
+        group = groupSettingsRepo.getGroup();
+        managers = groupSettingsRepo.getManagers();
+        GroupsMembersRepo groupsMembersRepo = new GroupsMembersRepo(id);
+        members = groupsMembersRepo.getMembers();
     }
 
     public LiveData<ArrayList<MutableLiveData<User>>> getPaddingUsers() {
         return paddingUsers;
+    }
+
+    public LiveData<ArrayList<String>> getManagers() {
+        return managers;
+    }
+
+    public LiveData<Group> getGroup() {
+        return group;
+    }
+
+    public LiveData<ArrayList<MutableLiveData<User>>> getMembers() {
+        return members;
     }
 
     public void approveUser(int position){

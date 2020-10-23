@@ -14,24 +14,28 @@
     <string name="create" translatable="true">Create</string>
     <string name="join" translatable="true">Join</string>
     <string name="type_locations_or_subjects" translatable="true">Type Locations Or Subjects</string>
-    <string name="type_a_message">Type A Message</string>
-    <string name="next_meeting">Next Meeting</string>
-    <string name="login">Login</string>ֺ
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_here_click_here_to_sign_up">New Here? Click Here To Sign Up</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="display_name">Display Name</string>
-    <string name="create_account">Create Account</string>
-    <string name="no_messages">There is no messages</string>
-    <string name="create_meeting">Create Meeting</string>
-    <string name="create_a_meeting">Create a Meeting</string>
-    <string name="group_meeting">Group Meeting</string>
-    <string name="public_meeting">Public Meeting</string>
-    <string name="meeting_subject">Meeting Subject</string>
-    <string name="is_public">Is Public</string>
-    <string name="waiting_requests">Waiting Requests</string>
-    <string name="your_request_has_sent">Your Request Has Sent!</string>
+    <string name="type_a_message" translatable="true">Type A Message</string>
+    <string name="next_meeting" translatable="true">Next Meeting</string>
+    <string name="login" translatable="true">Login</string>ֺ
+    <string name="email" translatable="true">Email</string>
+    <string name="password" translatable="true">Password</string>
+    <string name="hello_blank_fragment" translatable="true">Hello blank fragment</string>
+    <string name="new_here_click_here_to_sign_up" translatable="true">New Here? Click Here To Sign Up</string>
+    <string name="confirm_password" translatable="true">Confirm Password</string>
+    <string name="display_name" translatable="true">Display Name</string>
+    <string name="create_account" translatable="true">Create Account</string>
+    <string name="no_messages" translatable="true">There is no messages</string>
+    <string name="create_meeting" translatable="true">Create Meeting</string>
+    <string name="create_a_meeting" translatable="true">Create a Meeting</string>
+    <string name="group_meeting" translatable="true">Group Meeting</string>
+    <string name="public_meeting" translatable="true">Public Meeting</string>
+    <string name="meeting_subject" translatable="true">Meeting Subject</string>
+    <string name="is_public" translatable="true">Is Public</string>
+    <string name="waiting_requests" translatable="true">Waiting Requests</string>
+    <string name="your_request_has_sent" translatable="true">Your Request Has Sent!</string>
+    <string name="time_and_date" translatable="true">Time And Date</string>
+    <string name="choose_time" translatable="true">Choose Time</string>
+    <string name="no_location_has_selected" translatable="true">No Location Has Selected</string>
+    <string name="choose_location" translatable="true">Choose Location</string>
+    <string name="location" translatable="true">Location</string>
 </resources>

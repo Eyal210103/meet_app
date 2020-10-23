@@ -81,7 +81,7 @@ public class GroupsMembersRepo {
     private MutableLiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userMutableLiveData.setValue(snapshot.getValue(User.class));

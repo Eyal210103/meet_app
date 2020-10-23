@@ -7,13 +7,29 @@
     android:background="@color/background"
     tools:context=".ui.groupInfo.groupSettings.GroupSettingsFragment">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/group_settings_circleImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:civ_border_color="@color/oppBackground"
+        app:civ_border_width="0.7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/group_settings_linear_waiting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintTop_toBottomOf="@+id/group_settings_circleImageView">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,12 +37,33 @@
             android:layout_marginTop="10dp"
             android:text="@string/waiting_requests"
             android:textColor="@color/oppBackground"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_settings_waiting_recycler"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
     </LinearLayout>
+
+    <TextView
+        android:textColor="@color/oppBackground"
+        android:id="@+id/group_settings_name_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/app_name"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/group_settings_circleImageView"
+        app:layout_constraintStart_toEndOf="@+id/group_settings_circleImageView"
+        app:layout_constraintTop_toTopOf="@+id/group_settings_circleImageView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_settings_members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_settings_linear_waiting" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
