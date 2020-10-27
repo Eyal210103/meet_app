@@ -35,7 +35,7 @@
     <string name="your_request_has_sent" translatable="true">Your Request Has Sent!</string>
     <string name="time_and_date" translatable="true">Time And Date</string>
     <string name="choose_time" translatable="true">Choose Time</string>
-    <string name="no_location_has_selected" translatable="true">No Location Has Selected</string>
+    <string name="no_location_has_selected" translatable="true">No Location Has Been Selected</string>
     <string name="choose_location" translatable="true">Choose Location</string>
     <string name="location" translatable="true">Location</string>
 </resources>
