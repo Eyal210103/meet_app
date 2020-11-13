@@ -89,15 +89,19 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                         newGroup.setPublic(isChecked);
                     }
                 });
-//
-//                groupImageCIV.setDrawingCacheEnabled(true);
-//                groupImageCIV.buildDrawingCache();
                 String id = newGroup.addOrUpdateGroupGetID();
                 progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle("Creating , Please Wait..");
                 progressDialog.show();
-                StorageUpload.uploadGroupImage(this,id,imageUri);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        StorageUpload.uploadGroupImage(CreateGroupFragment.this,id,imageUri);
+                    }
+                });
+                thread.start();
+                //StorageUpload.uploadGroupImage(CreateGroupFragment.this,id,imageUri);
             }
         } else {
            // errors.setText("Type");
@@ -124,7 +128,6 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     public void onPhotoUploadComplete() {
         progressDialog.dismiss();
         navController.navigate(R.id.action_createGroupFragment_to_socialMenuFragment);
-        //  "action_createGroupFragment_to_socialMenuFragment";
     }
 
     @Override

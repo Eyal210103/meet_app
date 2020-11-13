@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment {
          view = inflater.inflate(R.layout.home_fragment, container, false);
 
         this.mapView = view.findViewById(R.id.mapView);
+
         initGoogleMap(savedInstanceState);
 
         locationTV = view.findViewById(R.id.location_textView);

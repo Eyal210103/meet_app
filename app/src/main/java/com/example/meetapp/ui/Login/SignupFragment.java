@@ -102,7 +102,13 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                     public void onComplete(@NonNull Task<Void> task) {
                                         CurrentUser.addOrUpdateUser();
                                         if (imageUri != null){
-                                            StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getInstance().getId(),imageUri);
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getInstance().getId(),imageUri);
+                                                }
+                                            });
+                                            thread.start();
                                         }
                                         else {
                                             signUpComplete();

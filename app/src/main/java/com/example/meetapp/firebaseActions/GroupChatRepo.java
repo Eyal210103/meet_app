@@ -143,17 +143,23 @@ public class GroupChatRepo{
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Chat").push();
         message.setGroupName(group.getName());
         message.setId(reference.getKey());
-        StorageUpload.uploadChatImage(null,this.groupId,message.getId(), Uri.parse(message.getUrl()));
-        reference.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isComplete())
-                    Log.d("sendMessage", "onComplete: Succeed ChatRepo" );
-                else
-                    Log.d("sendMessage", "onComplete: ERROR ChatRepo" );
+            public void run() {
+                StorageUpload.uploadChatImage(null,GroupChatRepo.this.groupId,message.getId(), Uri.parse(message.getUrl()));
+                reference.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isComplete())
+                            Log.d("sendMessage", "onComplete: Succeed ChatRepo" );
+                        else
+                            Log.d("sendMessage", "onComplete: ERROR ChatRepo" );
 
+                    }
+                });
             }
         });
+        thread.start();
     }
 
 

@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
@@ -19,7 +19,7 @@ public class CreateMeetingFragment extends Fragment {
 
     MainActivityViewModel mainActivityViewModel;
     View view;
-    RecyclerView recyclerViewSelectGroup;
+    Spinner SpinnerSelectGroup;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,25 +35,25 @@ public class CreateMeetingFragment extends Fragment {
         recyclerViewSubjects.setAdapter(new SubjectAdapter(requireActivity()));
         recyclerViewSubjects.setLayoutManager(new GridLayoutManager(requireActivity(), 5));
 
-        recyclerViewSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
-        recyclerViewSelectGroup.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        SelectGroupAdapter selectGroupAdapter = new SelectGroupAdapter(mainActivityViewModel.getGroups().getValue(),requireActivity());
-        recyclerViewSelectGroup.setAdapter(selectGroupAdapter);
-//60//
+        SpinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(requireActivity(),R.layout.select_group_adapter,mainActivityViewModel.getGroups().getValue());
+
+        SpinnerSelectGroup.setAdapter(spinnerAdapter);
+
 
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radio_group){
-                    ViewGroup.LayoutParams layoutParams = recyclerViewSelectGroup.getLayoutParams();
-                    layoutParams.height = 360;
-                    recyclerViewSelectGroup.setLayoutParams(layoutParams);
+                    ViewGroup.LayoutParams layoutParams = SpinnerSelectGroup.getLayoutParams();
+                    layoutParams.height = 200;
+                    SpinnerSelectGroup.setLayoutParams(layoutParams);
 
                 }else if (checkedId == R.id.radio_meeting){
-                    ViewGroup.LayoutParams layoutParams = recyclerViewSelectGroup.getLayoutParams();
+                    ViewGroup.LayoutParams layoutParams = SpinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
-                    recyclerViewSelectGroup.setLayoutParams(layoutParams);
+                    SpinnerSelectGroup.setLayoutParams(layoutParams);
 
                 }
             }

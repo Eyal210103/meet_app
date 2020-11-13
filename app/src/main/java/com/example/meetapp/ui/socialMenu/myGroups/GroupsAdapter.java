@@ -1,6 +1,5 @@
 package com.example.meetapp.ui.socialMenu.myGroups;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +45,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
         final Group current = map.get(position).getValue();
-        if (current!= null) {
+        if (current != null) {
             holder.groupName.setText(current.getName());
             Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
             Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
@@ -64,7 +63,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                 });
             }
 
-            if (type == ConstantValues.TYPE_JOINGROUP){
+            if (type == ConstantValues.TYPE_JOINGROUP) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
