@@ -38,4 +38,6 @@
     <string name="no_location_has_selected" translatable="true">No Location Has Been Selected</string>
     <string name="choose_location" translatable="true">Choose Location</string>
     <string name="location" translatable="true">Location</string>
+    <string name="description">Description</string>
+    <string name="description_optional">Description(Optional)</string>
 </resources>

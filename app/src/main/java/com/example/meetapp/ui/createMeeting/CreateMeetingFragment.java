@@ -39,6 +39,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     DatePickerDialog datePickerDialog;
     LatLng location;
     TextView locationTV;
+    boolean isGroup;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         RecyclerView recyclerViewSubjects = view.findViewById(R.id.create_meeting_recyclerView);
         recyclerViewSubjects.setAdapter(new SubjectAdapter(requireActivity()));
         recyclerViewSubjects.setLayoutManager(new GridLayoutManager(requireActivity(), 5));
+
+        isGroup = false;
 
         SpinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(requireActivity(),R.layout.select_group_adapter,mainActivityViewModel.getGroups().getValue());
@@ -124,33 +127,48 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateDateUI(Calendar c , View view){
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getThreeLetterDay(c.get(Calendar.DAY_OF_WEEK)));
+        ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getThreeLetterMonth(c.get(Calendar.MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%2d:%2d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE)));
 
     }
-    public String getThreeLetterDay(int day){
+    public String getThreeLetterMonth(int day){
         switch (day){
-            case android.icu.util.Calendar.SUNDAY:
-                return "SUN";
+            case android.icu.util.Calendar.JANUARY:
+                return "JAN";
 
-            case android.icu.util.Calendar.MONDAY:
-                return "MON";
+            case android.icu.util.Calendar.FEBRUARY:
+                return "FEB";
 
-            case android.icu.util.Calendar.TUESDAY:
-                return "TUE";
+            case android.icu.util.Calendar.MARCH:
+                return "MAR";
 
-            case android.icu.util.Calendar.WEDNESDAY:
-                return "WED";
+            case android.icu.util.Calendar.APRIL:
+                return "APR";
 
-            case android.icu.util.Calendar.THURSDAY:
-                return "THU";
+            case android.icu.util.Calendar.MAY:
+                return "MAY";
 
-            case android.icu.util.Calendar.FRIDAY:
-                return "FRI";
+            case android.icu.util.Calendar.JUNE:
+                return "JUN";
 
-            case android.icu.util.Calendar.SATURDAY:
-                return "SAT";
+            case android.icu.util.Calendar.JULY:
+                return "JUL";
+
+            case android.icu.util.Calendar.AUGUST:
+                return "AUG";
+
+            case android.icu.util.Calendar.SEPTEMBER:
+                return "SEP";
+
+            case android.icu.util.Calendar.OCTOBER:
+                return "OCT";
+
+            case android.icu.util.Calendar.NOVEMBER:
+                return "NOV";
+
+            case android.icu.util.Calendar.DECEMBER:
+                return "DEC";
 
             default:
                 return "";

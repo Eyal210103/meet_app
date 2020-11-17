@@ -31,12 +31,12 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/time_and_date"
                 android:textColor="@color/oppBackground"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/create_meeting_recyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/create_meeting_description_et" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -112,6 +112,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/description"
+                android:textColor="@color/oppBackground"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/create_meeting_recyclerView" />
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout6"
                 android:layout_width="65dp"
@@ -143,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="sans-serif"
-                    android:text="MON"
+                    android:text="JAN"
                     android:textColor="@color/secondry"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/create_meeting_tv_day_of_month_calendar_item"
@@ -196,7 +209,6 @@
                 android:textColor="@color/oppBackground"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout6"
-                app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout6" />
 
@@ -204,7 +216,7 @@
                 android:id="@+id/create_meeting_choose_time_button"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
@@ -236,13 +248,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="205dp" />
+                app:layout_constraintGuide_begin="235dp" />
 
             <Button
                 android:id="@+id/create_meeting_choose_location_button"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
@@ -259,14 +271,30 @@
                 android:id="@+id/create_meeting_complete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:textColor="@color/oppBackground"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/main_app_design"
                 android:backgroundTint="@color/blue"
                 android:text="@string/create_meeting"
+                android:textColor="@color/oppBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/create_meeting_location_textView" />
+
+            <EditText
+                android:id="@+id/create_meeting_description_et"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/oppBackground"
+                android:background="@drawable/main_app_design"
+                android:gravity="top"
+                android:hint="@string/description_optional"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
