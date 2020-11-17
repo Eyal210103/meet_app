@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,12 +18,19 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
+import com.example.meetapp.model.CurrentUser;
+import com.example.meetapp.model.Group;
+import com.example.meetapp.model.meetings.GroupMeeting;
+import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -35,7 +43,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     MainActivityViewModel mainActivityViewModel;
     View view;
-    Spinner SpinnerSelectGroup;
+    Spinner spinnerSelectGroup;
     DatePickerDialog datePickerDialog;
     LatLng location;
     TextView locationTV;
@@ -52,14 +60,15 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_meeting, container, false);
         RecyclerView recyclerViewSubjects = view.findViewById(R.id.create_meeting_recyclerView);
-        recyclerViewSubjects.setAdapter(new SubjectAdapter(requireActivity()));
+        SubjectAdapter subjectAdapter = new SubjectAdapter(requireActivity());
+        recyclerViewSubjects.setAdapter(subjectAdapter);
         recyclerViewSubjects.setLayoutManager(new GridLayoutManager(requireActivity(), 5));
 
         isGroup = false;
 
-        SpinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
+        spinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(requireActivity(),R.layout.select_group_adapter,mainActivityViewModel.getGroups().getValue());
-        SpinnerSelectGroup.setAdapter(spinnerAdapter);
+        spinnerSelectGroup.setAdapter(spinnerAdapter);
 
         locationTV = view.findViewById(R.id.create_meeting_location_textView);
 
@@ -68,15 +77,15 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radio_group){
-                    ViewGroup.LayoutParams layoutParams = SpinnerSelectGroup.getLayoutParams();
+                    ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 200;
-                    SpinnerSelectGroup.setLayoutParams(layoutParams);
+                    spinnerSelectGroup.setLayoutParams(layoutParams);
+                    isGroup = true;
 
                 }else if (checkedId == R.id.radio_meeting){
-                    ViewGroup.LayoutParams layoutParams = SpinnerSelectGroup.getLayoutParams();
+                    ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
-                    SpinnerSelectGroup.setLayoutParams(layoutParams);
-
+                    spinnerSelectGroup.setLayoutParams(layoutParams);
                 }
             }
         });
@@ -119,6 +128,36 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             public void onClick(View v) {
                 PlacePickerDialog placePickerDialog = new PlacePickerDialog(CreateMeetingFragment.this);
                 placePickerDialog.show(getFragmentManager(),"placePicker");
+            }
+        });
+
+
+        view.findViewById(R.id.create_meeting_complete_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (isGroup){
+                    GroupMeeting meeting = new GroupMeeting();
+                    meeting.setMillis(c.getTimeInMillis());
+                    meeting.setLocation(location);
+                    meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setSubject(subjectAdapter.getSelected());
+                    meeting.setGroupId(((MutableLiveData<Group>)spinnerSelectGroup.getSelectedItem()).getValue().getId());
+                    meeting.updateOrAddReturnId();
+                    CurrentUser.joinMeeting(meeting.getId(),"Group" );
+                }else {
+                    Meeting meeting = new Meeting();
+                    meeting.setMillis(c.getTimeInMillis());
+                    meeting.setLocation(location);
+                    meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setSubject(subjectAdapter.getSelected());
+                    meeting.updateOrAddReturnId();
+                    CurrentUser.joinMeeting(meeting.getId(),"Public" );
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("action", "meetings");
+                final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment, bundle);
             }
         });
 

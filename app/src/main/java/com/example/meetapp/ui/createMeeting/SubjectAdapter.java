@@ -12,9 +12,6 @@ import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.model.Subject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,6 +20,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
     ArrayList<Subject> subjects;
     Context context;
+    int selected;
 
     public SubjectAdapter(Context context) {
         this.context = context;
@@ -47,37 +45,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return subjects.size();
     }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = context.getAssets().open("subjects.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, StandardCharsets.UTF_8);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
+    public String getSelected(){
+        return "TRY";//subjects.get(selected).name;
     }
 
     private void createArrayList(){
         this.subjects = new ArrayList<>();
-//        try {
-//            JSONObject obj = new JSONObject(loadJSONFromAsset());
-//            JSONArray m_jArray = obj.getJSONArray("subjects");
-//            for (int i = 0; i < m_jArray.length(); i++) {
-//                JSONObject jo_inside = m_jArray.getJSONObject(i);
-//                String name = jo_inside.getString("name");
-//                int res = jo_inside.getInt("resource");
-//                subjects.add(new Subject(res,name));
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
         subjects.add(new Subject(R.drawable.restaurant,"Restaurant"));
         subjects.add(new Subject(R.drawable.basketball,"Basketball"));
         subjects.add(new Subject(R.drawable.soccer,"Soccer"));

@@ -1,6 +1,10 @@
 package com.example.meetapp.model.meetings;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class Meeting {
     protected long millis;
@@ -9,6 +13,7 @@ public class Meeting {
     protected String description;
     protected double latitude;
     protected double longitude;
+
 
     public Meeting() {}
 
@@ -19,8 +24,6 @@ public class Meeting {
         this.latitude = location.latitude;
         this.longitude = location.longitude;
     }
-
-
 
     public String getSubject() {
         return subject;
@@ -83,6 +86,20 @@ public class Meeting {
         this.longitude = longitude;
     }
 
+
+    public void updateOrAddReturnId(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").push();
+        this.setId(reference.getKey());
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("millis",millis);
+        map.put("id",id);
+        map.put("subject",subject);
+        map.put("description",description);
+        map.put("latitude",latitude);
+        map.put("longitude",longitude);
+        reference.updateChildren(map);
+    }
+
     @Override
     public String toString() {
         return "Meeting{" +
@@ -90,4 +107,6 @@ public class Meeting {
                 ", id='" + id + '\'' +
                 '}';
     }
+
+
 }

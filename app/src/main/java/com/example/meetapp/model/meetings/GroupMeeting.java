@@ -1,6 +1,10 @@
 package com.example.meetapp.model.meetings;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class GroupMeeting extends Meeting {
 
@@ -40,5 +44,23 @@ public class GroupMeeting extends Meeting {
                 ", millis=" + millis +
                 ", id='" + id + '\'' +
                 '}';
+    }
+
+    @Override
+    public void updateOrAddReturnId() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Meetings").push();
+        this.setId(reference.getKey());
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("millis",millis);
+        map.put("id",id);
+        map.put("subject",subject);
+        map.put("description",description);
+        map.put("latitude",latitude);
+        map.put("longitude",longitude);
+        reference.updateChildren(map);
+        if (isOpen){
+            FirebaseDatabase.getInstance().getReference().child("Meetings").child("Group").child(this.id).setValue(this.groupId);
+        }
+
     }
 }

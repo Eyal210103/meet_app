@@ -39,6 +39,9 @@ public class CurrentUser {
         map.put("profileImageUrl",user.getProfileImageUrl());
         FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).updateChildren(map);
     }
+    public static void joinMeeting(String id,String type) {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child("Meetings").child(type).child(id).setValue(id);
+    }
 
     public static void logout(){
         FirebaseAuth.getInstance().signOut();
