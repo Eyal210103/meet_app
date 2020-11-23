@@ -25,11 +25,6 @@ public class CurrentUser {
         user.setProfileImageUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
         return user;
     }
-
-    public static void setCurrentUser(User user) {
-        CurrentUser.user = user;
-    }
-
     public static void addOrUpdateUser(){
         getInstance();
         HashMap<String,Object> map = new HashMap<String, Object>();
@@ -39,6 +34,8 @@ public class CurrentUser {
         map.put("profileImageUrl",user.getProfileImageUrl());
         FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).updateChildren(map);
     }
+
+
     public static void joinMeeting(String id,String type) {
             FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child("Meetings").child(type).child(id).setValue(id);
     }
@@ -51,4 +48,11 @@ public class CurrentUser {
     public static boolean isConnected(){
         return user != null;
     }
+
+
+
+    public static void setCurrentUser(User user) {
+        CurrentUser.user = user;
+    }
+
 }

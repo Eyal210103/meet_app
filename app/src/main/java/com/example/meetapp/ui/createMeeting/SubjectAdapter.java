@@ -1,15 +1,16 @@
 package com.example.meetapp.ui.createMeeting;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.Subject;
 
 import java.util.ArrayList;
@@ -19,12 +20,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
     ArrayList<Subject> subjects;
-    Context context;
+    Fragment context;
     int selected;
 
-    public SubjectAdapter(Context context) {
+    public SubjectAdapter(Fragment context) {
         this.context = context;
         createArrayList();
+        selected = -1;
     }
 
     @NonNull
@@ -37,7 +39,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
         Subject subject = subjects.get(position);
-        Glide.with(context).load(subject.resource).into(holder.circleImageView);
+        Glide.with(context.requireActivity()).load(subject.resource).into(holder.circleImageView);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
+                onClickInRecyclerView.onClickInRecyclerView(position,"subject");
+            }
+        });
     }
 
     @Override

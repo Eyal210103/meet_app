@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32" />
+        app:layout_constraintGuide_percent="0.39" />
 
     <EditText
         android:id="@+id/login_editTextTextPassword"
@@ -62,4 +62,14 @@
         app:layout_constraintEnd_toEndOf="@+id/login_editTextTextPassword"
         app:layout_constraintStart_toStartOf="@+id/login_editTextTextPassword"
         app:layout_constraintTop_toBottomOf="@+id/login_editTextTextPassword" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView2"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/login_editTextTextEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

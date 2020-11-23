@@ -1,4 +1,4 @@
-package com.example.meetapp.ui;
+package com.example.meetapp.ui.socialMenu.myGroups;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

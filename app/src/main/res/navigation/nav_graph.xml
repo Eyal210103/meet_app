@@ -154,7 +154,7 @@
     </fragment>
     <dialog
         android:id="@+id/RequestSentDialog"
-        android:name="com.example.meetapp.ui.RequestSentDialog"
+        android:name="com.example.meetapp.ui.socialMenu.myGroups.RequestSentDialog"
         android:label="RequestSentDialog" >
     </dialog>
 </navigation>

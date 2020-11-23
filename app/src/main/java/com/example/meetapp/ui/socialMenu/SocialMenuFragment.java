@@ -1,5 +1,6 @@
 package com.example.meetapp.ui.socialMenu;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class SocialMenuFragment extends Fragment {
     TabLayout tabLayout;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class SocialMenuFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager);
         ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(requireActivity());
         viewPager.setAdapter(adapter);
-        viewPager.setUserInputEnabled(false);
+        //viewPager.setUserInputEnabled(false);
+      //  viewPager.
         tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

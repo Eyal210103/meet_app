@@ -4,12 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_marginBottom="2dp"
+    android:background="@drawable/subject_background"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:background="@drawable/main_app_design"
         android:layout_width="wrap_content"
-        android:backgroundTint="@color/blue"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

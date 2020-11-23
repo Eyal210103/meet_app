@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
@@ -39,7 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class CreateMeetingFragment extends Fragment implements OnDismissPlacePicker {
+public class CreateMeetingFragment extends Fragment implements OnDismissPlacePicker, OnClickInRecyclerView {
 
     MainActivityViewModel mainActivityViewModel;
     View view;
@@ -48,6 +49,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     LatLng location;
     TextView locationTV;
     boolean isGroup;
+    GridLayoutManager gridLayoutManager;
+    int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +63,13 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_meeting, container, false);
         RecyclerView recyclerViewSubjects = view.findViewById(R.id.create_meeting_recyclerView);
-        SubjectAdapter subjectAdapter = new SubjectAdapter(requireActivity());
+        SubjectAdapter subjectAdapter = new SubjectAdapter(this);
         recyclerViewSubjects.setAdapter(subjectAdapter);
-        recyclerViewSubjects.setLayoutManager(new GridLayoutManager(requireActivity(), 5));
+        gridLayoutManager = new GridLayoutManager(requireActivity(), 5);
+        recyclerViewSubjects.setLayoutManager(gridLayoutManager);
 
         isGroup = false;
+        position = -1;
 
         spinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(requireActivity(),R.layout.select_group_adapter,mainActivityViewModel.getGroups().getValue());
@@ -239,4 +244,15 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         return "Null";
     }
 
+    @Override
+    public void onClickInRecyclerView(Object value, String action) {
+        if (action.equals("subject")){
+            int v = (int)value;
+            if (position != -1){
+                gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.subject_background);
+            }
+            position = v;
+            gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.selected_subject_background);
+        }
+    }
 }
