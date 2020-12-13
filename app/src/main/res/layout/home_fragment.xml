@@ -44,10 +44,10 @@
             android:autofillHints="@string/places_powered_by_google"
             android:hint="@string/type_locations_or_subjects"
             android:inputType="text"
-            android:textSize="18sp"
             android:padding="9dp"
             android:textColor="@color/oppBackground"
-            android:textColorHint="@color/backgroundSec"/>
+            android:textColorHint="@color/backgroundSec"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

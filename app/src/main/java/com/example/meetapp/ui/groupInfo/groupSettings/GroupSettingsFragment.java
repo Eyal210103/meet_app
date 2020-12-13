@@ -23,6 +23,7 @@ import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
+import com.example.meetapp.ui.MainActivityViewModel;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupSettingsViewModel.class);
-        mViewModel.init(getArguments().getString("id"));
+        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString("id")),getArguments().getString("id"));
     }
 
     @Override

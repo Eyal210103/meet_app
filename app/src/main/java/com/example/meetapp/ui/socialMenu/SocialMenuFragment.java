@@ -29,11 +29,12 @@ public class SocialMenuFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.social_menu_fragment, container, false);
         viewPager = view.findViewById(R.id.viewpager);
         ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(requireActivity());
         viewPager.setAdapter(adapter);
-        //viewPager.setUserInputEnabled(false);
+        viewPager.setUserInputEnabled(false);
       //  viewPager.
         tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {

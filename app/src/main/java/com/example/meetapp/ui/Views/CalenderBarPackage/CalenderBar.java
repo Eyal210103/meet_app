@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.meetapp.R;
 import com.example.meetapp.model.meetings.Meeting;
 
 import java.util.ArrayList;
@@ -31,8 +32,11 @@ public class CalenderBar {
     private ArrayList<Date> days;
     private MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings;
     private View.OnClickListener onClickDate;
+    private int position;
+    LinearLayoutManager llm;
 
-    public CalenderBar(Fragment context , int layout) {
+    public CalenderBar(Fragment context , int layout , View.OnClickListener onClickListener) {
+        position = 0;
         this.context = context;
         this.layout = layout;
         today = Calendar.getInstance().getTime();
@@ -44,23 +48,17 @@ public class CalenderBar {
         HashMap<String, MutableLiveData<Meeting>> hashMap = new HashMap<>();
         hashMap.put(String.valueOf((today.getDay())),null);
         meetings.setValue(hashMap);
-        this.onClickDate = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        };
+        llm = new LinearLayoutManager(context.requireActivity());
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        this.onClickDate = onClickListener;
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
         recyclerView.setNestedScrollingEnabled(true);
-        this.adapter = new CalenderBarAdapter(this.context.requireActivity(),this.days,this.meetings.getValue(), layout, onClickDate);
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager llm = new LinearLayoutManager(context.requireActivity());
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(llm);
-
+        this.adapter = new CalenderBarAdapter(this.context.requireActivity(),this.days,this.meetings.getValue(), layout, onClickDate, this);
+        recyclerView.setAdapter(adapter);
         if (nextDays != null) {
             nextDays.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,6 +88,8 @@ public class CalenderBar {
                 monthTextView.setText(getMonth(days.get(((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()).getMonth()));
             }
         });
+      //  setViewBackground(0);
+
     }
 
     public void setMeetings(MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings) {
@@ -118,10 +118,6 @@ public class CalenderBar {
 
     public void setLayout(int layout) {
         this.layout = layout;
-    }
-
-    public void setOnClickDate(View.OnClickListener onClickDate) {
-        this.onClickDate = onClickDate;
     }
 
     public String getMonth(int month){
@@ -192,5 +188,16 @@ public class CalenderBar {
 //            seekBar.setMax(adapter.getItemCount());
 //            seekBar.setProgress(30);
 //        }
+    }
+
+    public void setViewBackground(int i) {
+        try {
+            llm.findViewByPosition(position).setBackgroundResource(R.drawable.calender_item_background);
+            position = i;
+            llm.findViewByPosition(position).setBackgroundResource(R.drawable.selected_calender_item_background);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

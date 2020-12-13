@@ -21,10 +21,10 @@ public class GroupSettingsViewModel extends ViewModel {
     public GroupSettingsViewModel() {
         super();
     }
-    public void init(String id){
+    public void init(MutableLiveData<Group> group , String id){
         groupSettingsRepo = new GroupSettingsRepo(id);
         paddingUsers = groupSettingsRepo.getWaitingUsers();
-        group = groupSettingsRepo.getGroup();
+        this.group = group;
         managers = groupSettingsRepo.getManagers();
         GroupsMembersRepo groupsMembersRepo = new GroupsMembersRepo(id);
         members = groupsMembersRepo.getMembers();

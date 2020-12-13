@@ -109,7 +109,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 datePickerDialog.show();
             }
         });
-
         TimePickerDialog mTimePicker = new TimePickerDialog(CreateMeetingFragment.this.requireActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
@@ -118,7 +117,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 updateDateUI(c,view);
             }
         }, mHour, minutes, true);
-
         datePickerDialog = new DatePickerDialog(requireActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -127,7 +125,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             }
         }, mYear, mMonth, mDay);
 
-
         view.findViewById(R.id.create_meeting_choose_location_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +132,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 placePickerDialog.show(getFragmentManager(),"placePicker");
             }
         });
-
 
         view.findViewById(R.id.create_meeting_complete_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +161,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment, bundle);
             }
         });
-
         return view;
     }
 
@@ -174,8 +169,10 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getThreeLetterMonth(c.get(Calendar.MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%2d:%2d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE)));
+        ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }
+
     public String getThreeLetterMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
@@ -219,10 +216,31 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         }
     }
 
-    @Override
-    public void getSelectedLocation(LatLng latLng) {
-        location = latLng;
-        locationTV.setText(getAddress(latLng));
+    public String getDayOfWeek(int day){
+        switch (day){
+            case android.icu.util.Calendar.SUNDAY:
+                return "Sunday";
+
+            case android.icu.util.Calendar.MONDAY:
+                return "Monday";
+
+            case android.icu.util.Calendar.TUESDAY:
+                return "Tuesday";
+
+            case android.icu.util.Calendar.WEDNESDAY:
+                return "Wednesday";
+
+            case android.icu.util.Calendar.THURSDAY:
+                return "Thursday";
+
+            case android.icu.util.Calendar.FRIDAY:
+                return "Friday";
+
+            case android.icu.util.Calendar.SATURDAY:
+                return "Saturday";
+            default:
+                return "";
+        }
     }
 
     private String getAddress(LatLng location) {
@@ -242,6 +260,12 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             e.printStackTrace();
         }
         return "Null";
+    }
+
+    @Override
+    public void getSelectedLocation(LatLng latLng) {
+        location = latLng;
+        locationTV.setText(getAddress(latLng));
     }
 
     @Override

@@ -4,10 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GroupSettingsRepo {
-    MutableLiveData<Group> group;
     ArrayList<MutableLiveData<User>> membersAL = new ArrayList<>();
     HashMap<String,String> ids = new HashMap<>();
     private String groupId;
@@ -29,8 +26,6 @@ public class GroupSettingsRepo {
 
     public GroupSettingsRepo (String groupId){
         this.groupId = groupId;
-        SingleGroupRepo singleGroupRepo = new SingleGroupRepo();
-        this.group = singleGroupRepo.getGroupData(groupId);
     }
 
     public MutableLiveData<ArrayList<MutableLiveData<User>>> getWaitingUsers(){
@@ -100,9 +95,6 @@ public class GroupSettingsRepo {
         return userMutableLiveData;
     }
 
-    public LiveData<Group> getGroup() {
-        return group;
-    }
 
     public MutableLiveData<ArrayList<String>> getManagers(){
         managers= new ArrayList<>();

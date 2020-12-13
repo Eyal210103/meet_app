@@ -43,6 +43,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selected = position;
                 OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
                 onClickInRecyclerView.onClickInRecyclerView(position,"subject");
             }
@@ -55,7 +56,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     }
 
     public String getSelected(){
-        return "TRY";//subjects.get(selected).name;
+        return subjects.get(selected).name;
     }
 
     private void createArrayList(){

@@ -5,9 +5,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-import javax.inject.Singleton;
-
-@Singleton
 public class CurrentUser {
 
     private static User user = null;
@@ -35,7 +32,6 @@ public class CurrentUser {
         FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).updateChildren(map);
     }
 
-
     public static void joinMeeting(String id,String type) {
             FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child("Meetings").child(type).child(id).setValue(id);
     }
@@ -48,8 +44,6 @@ public class CurrentUser {
     public static boolean isConnected(){
         return user != null;
     }
-
-
 
     public static void setCurrentUser(User user) {
         CurrentUser.user = user;

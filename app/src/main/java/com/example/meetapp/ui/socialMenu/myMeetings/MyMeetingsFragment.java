@@ -30,7 +30,12 @@ public class MyMeetingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.my_meetings_fragment, container, false);
-        CalenderBar calenderBar = new CalenderBar(this,R.layout.speical_calender_item);
+        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
         calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
         RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);

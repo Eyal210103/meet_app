@@ -3,14 +3,12 @@ package com.example.meetapp.ui.Views.CalenderBarPackage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.icu.util.Calendar;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,13 +26,15 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private HashMap<String, MutableLiveData<Meeting>> meetings;
     private int layout;
     private View.OnClickListener onClickListener;
+    private CalenderBar calenderBar;
 
-    public CalenderBarAdapter(Context context, ArrayList<Date> days, HashMap<String, MutableLiveData<Meeting>> meetings, int layout, View.OnClickListener onClickDate) {
+    public CalenderBarAdapter(Context context, ArrayList<Date> days, HashMap<String, MutableLiveData<Meeting>> meetings, int layout, View.OnClickListener onClickDate , CalenderBar calenderBar) {
         this.context = context;
         this.days = days;
         this.meetings = meetings;
         this.layout = layout;
         this.onClickListener = onClickDate;
+        this.calenderBar = calenderBar;
     }
 
     @NonNull
@@ -60,8 +60,8 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
                 onClickListener.onClick(v);
+                calenderBar.setViewBackground(position);
             }
         });
     }

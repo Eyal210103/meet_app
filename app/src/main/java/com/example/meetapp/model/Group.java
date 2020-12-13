@@ -93,4 +93,5 @@ public class Group implements Serializable {
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.getId()).child("Waiting")
                 .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
     }
+
 }

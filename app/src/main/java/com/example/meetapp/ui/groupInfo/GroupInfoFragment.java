@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
+import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -41,7 +42,8 @@ public class GroupInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
-        mViewModel.init(getArguments().getString("group"));
+        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString("group")),getArguments().getString("group"));
     }
 
     @Override
