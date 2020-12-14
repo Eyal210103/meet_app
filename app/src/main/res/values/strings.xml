@@ -40,4 +40,8 @@
     <string name="location" translatable="true">Location</string>
     <string name="description">Description</string>
     <string name="description_optional">Description(Optional)</string>
+    <string name="my_groups">My Groups</string>
+    <string name="meetings">Meetings</string>
+    <string name="chats">Chats</string>
+    <string name="my_chats">My Chats</string>
 </resources>

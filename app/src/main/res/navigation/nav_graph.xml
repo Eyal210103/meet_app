@@ -11,41 +11,6 @@
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" />
     <fragment
-        android:id="@+id/socialMenuFragment"
-        android:name="com.example.meetapp.ui.socialMenu.SocialMenuFragment"
-        android:label="social_menu_fragment"
-        tools:layout="@layout/social_menu_fragment" >
-        <action
-            android:id="@+id/action_socialMenuFragment_to_createGroupFragment2"
-            app:destination="@id/createGroupFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/createGroupFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_socialMenuFragment_to_groupInfoFragment"
-            app:destination="@id/groupInfoFragment" />
-        <action
-            android:id="@+id/action_socialMenuFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_socialMenuFragment_to_joinGroupFragment"
-            app:destination="@id/joinGroupFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-        <action
-            android:id="@+id/action_socialMenuFragment_to_createMeetingFragment"
-            app:destination="@id/createMeetingFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit" />
-        <argument
-            android:name="action"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.meetapp.ui.settings.settingsFragment"
         android:label="settings_fragment"
@@ -54,17 +19,35 @@
         android:id="@+id/groupsChatsFragment"
         android:name="com.example.meetapp.ui.socialMenu.GroupsChats.GroupsChatsFragment"
         android:label="groups_chats_fragment"
-        tools:layout="@layout/groups_chats_fragment" />
+        tools:layout="@layout/groups_chats_fragment" >
+        <action
+            android:id="@+id/action_socialMenuFragment_to_groupChatFragment"
+            app:destination="@id/groupChatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myGroupsFragment"
         android:name="com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment"
         android:label="my_groups_fragment"
-        tools:layout="@layout/my_groups_fragment" />
+        tools:layout="@layout/my_groups_fragment" >
+        <action
+            android:id="@+id/action_socialMenuFragment_to_groupInfoFragment"
+            app:destination="@id/groupInfoFragment" />
+        <action
+            android:id="@+id/action_socialMenuFragment_to_createGroupFragment2"
+            app:destination="@id/createGroupFragment" />
+        <action
+            android:id="@+id/action_socialMenuFragment_to_joinGroupFragment"
+            app:destination="@id/joinGroupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myMeetingsFragment"
         android:name="com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment"
         android:label="my_meetings_fragment"
-        tools:layout="@layout/my_meetings_fragment" />
+        tools:layout="@layout/my_meetings_fragment" >
+        <action
+            android:id="@+id/action_socialMenuFragment_to_createMeetingFragment"
+            app:destination="@id/createMeetingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createGroupFragment"
         android:name="com.example.meetapp.ui.socialMenu.myGroups.CreateGroupFragment"
@@ -72,9 +55,7 @@
         tools:layout="@layout/fragment_create_group" >
         <action
             android:id="@+id/action_createGroupFragment_to_socialMenuFragment"
-            app:destination="@id/socialMenuFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:destination="@id/myGroupsFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupInfoFragment"
@@ -137,9 +118,7 @@
         tools:layout="@layout/fragment_create_meeting" >
         <action
             android:id="@+id/action_createMeetingFragment_to_socialMenuFragment"
-            app:destination="@id/socialMenuFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:destination="@id/myMeetingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupSettingsFragment"
