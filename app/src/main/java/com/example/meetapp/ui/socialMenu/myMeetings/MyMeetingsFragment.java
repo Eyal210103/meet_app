@@ -15,11 +15,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.ui.MainActivityViewModel;
 import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBar;
 
 public class MyMeetingsFragment extends Fragment {
 
-    private MyMeetingsViewModel mViewModel;
+    private MainActivityViewModel mViewModel;
 
     public static MyMeetingsFragment newInstance() {
         return new MyMeetingsFragment();
@@ -36,6 +37,8 @@ public class MyMeetingsFragment extends Fragment {
 
             }
         });
+        calenderBar.setMeetings(mViewModel.getMeetingsList(),mViewModel.getGroupsMeetingsList());
+
         calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
         calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
         RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
@@ -49,13 +52,14 @@ public class MyMeetingsFragment extends Fragment {
                 navController.navigate(R.id.action_socialMenuFragment_to_createMeetingFragment);
             }
         });
+
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MyMeetingsViewModel.class);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
     }
 
 }

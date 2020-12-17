@@ -8,17 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CalenderBar {
@@ -30,7 +30,8 @@ public class CalenderBar {
     private View nextDays ,previousDays;
     private int layout;
     private ArrayList<Date> days;
-    private MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings;
+    LiveData<ArrayList<LiveData<Meeting>>> meetings;
+    LiveData<ArrayList<LiveData<GroupMeeting>>> groupMeetings;
     private View.OnClickListener onClickDate;
     private int position;
     LinearLayoutManager llm;
@@ -43,11 +44,6 @@ public class CalenderBar {
         days = new ArrayList<>();
         days.add(today);
         addNextMonth();
-        //addPreviousMonth();
-        meetings = new MutableLiveData<>();
-        HashMap<String, MutableLiveData<Meeting>> hashMap = new HashMap<>();
-        hashMap.put(String.valueOf((today.getDay())),null);
-        meetings.setValue(hashMap);
         llm = new LinearLayoutManager(context.requireActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         this.onClickDate = onClickListener;
@@ -57,7 +53,6 @@ public class CalenderBar {
         this.recyclerView = recyclerView;
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setLayoutManager(llm);
-        this.adapter = new CalenderBarAdapter(this.context.requireActivity(),this.days,this.meetings.getValue(), layout, onClickDate, this);
         recyclerView.setAdapter(adapter);
         if (nextDays != null) {
             nextDays.setOnClickListener(new View.OnClickListener() {
@@ -88,19 +83,25 @@ public class CalenderBar {
                 monthTextView.setText(getMonth(days.get(((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()).getMonth()));
             }
         });
-      //  setViewBackground(0);
 
     }
 
-    public void setMeetings(MutableLiveData<HashMap<String, MutableLiveData<Meeting>>> meetings) {
+    public void setMeetings(LiveData<ArrayList<LiveData<Meeting>>> meetings , LiveData<ArrayList<LiveData<GroupMeeting>>> groupMeetings) {
+        this.groupMeetings = groupMeetings;
         this.meetings = meetings;
-        meetings.observe(context.getViewLifecycleOwner(), new Observer<HashMap<String, MutableLiveData<Meeting>>>() {
+        meetings.observe(context.getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Meeting>>>() {
             @Override
-            public void onChanged(HashMap<String, MutableLiveData<Meeting>> stringMutableLiveDataHashMap) {
+            public void onChanged(ArrayList<LiveData<Meeting>> liveData) {
                 adapter.notifyDataSetChanged();
             }
         });
-        adapter.notifyDataSetChanged();
+        groupMeetings.observe(context.getViewLifecycleOwner(), new Observer<ArrayList<LiveData<GroupMeeting>>>() {
+            @Override
+            public void onChanged(ArrayList<LiveData<GroupMeeting>> liveData) {
+                adapter.notifyDataSetChanged();
+            }
+        });
+        this.adapter = new CalenderBarAdapter(this.context.requireActivity(),this.days,this.meetings,this.groupMeetings, onClickDate, this);
     }
 
     public void setMonthTextView(TextView monthTextView) {

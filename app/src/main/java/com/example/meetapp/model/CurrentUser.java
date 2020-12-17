@@ -32,8 +32,8 @@ public class CurrentUser {
         FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).updateChildren(map);
     }
 
-    public static void joinMeeting(String id,String type) {
-            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child("Meetings").child(type).child(id).setValue(id);
+    public static void joinMeeting(String id,String type , String group) {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child("Meetings").child(type).child(id).setValue(group);
     }
 
     public static void logout(){

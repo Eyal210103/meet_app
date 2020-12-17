@@ -143,9 +143,10 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setLocation(location);
                     meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
-                    meeting.setGroupId(((MutableLiveData<Group>)spinnerSelectGroup.getSelectedItem()).getValue().getId());
+                    String gId = ((MutableLiveData<Group>)spinnerSelectGroup.getSelectedItem()).getValue().getId();
+                    meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
-                    CurrentUser.joinMeeting(meeting.getId(),"Group" );
+                    CurrentUser.joinMeeting(meeting.getId(),"Group" ,gId);
                 }else {
                     Meeting meeting = new Meeting();
                     meeting.setMillis(c.getTimeInMillis());
@@ -153,7 +154,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
-                    CurrentUser.joinMeeting(meeting.getId(),"Public" );
+                    CurrentUser.joinMeeting(meeting.getId(),"Public",meeting.getId());
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString("action", "meetings");
