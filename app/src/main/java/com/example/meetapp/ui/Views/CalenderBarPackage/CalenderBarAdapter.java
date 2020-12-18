@@ -118,7 +118,6 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             isRegular = true;
         }
 
-
         Log.d("", "onBindViewHolder: " + isGood + "   " + position + "  " + date.toString() + dateToIndexGHash.toString() + dateToIndexGHash.containsKey(position) +  "   " + dateToIndexMHash.toString() + dateToIndexMHash.containsKey(position));
 
         if (isGood){
@@ -148,6 +147,9 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         if (position != selected){
             holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
         }
+
+        if (position == days.size() - 1)
+            context.add30Days();
     }
 
     @Override
@@ -157,7 +159,11 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
 
     public void setDays(ArrayList<Date> days){
         this.days = days;
-        this.notifyDataSetChanged();
+        try {
+            this.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

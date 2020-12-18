@@ -63,7 +63,13 @@ public class CalenderBarFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         add30Days();
 
-
+        arrowNextIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add30Days();
+                recyclerView.smoothScrollToPosition(llm.findFirstVisibleItemPosition() + 30);
+            }
+        });
 
         mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Meeting>>>() {
             @Override
