@@ -39,6 +39,7 @@
         android:id="@+id/group_meetings_calender_recycler"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layoutAnimation="@anim/recycler_horizontal"
         android:nestedScrollingEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

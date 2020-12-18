@@ -25,6 +25,22 @@ public class Meeting {
         this.longitude = location.longitude;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     public String getSubject() {
         return subject;
     }
@@ -49,18 +65,15 @@ public class Meeting {
         this.id = id;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+
+    public LatLng getLocation(){
+        return new LatLng(latitude,longitude);
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public void setLocation(LatLng location){
-        this.latitude = location.latitude;
-        this.longitude = location.longitude;
-    }
+//    public void setLocation(LatLng location){
+//        this.latitude = location.latitude;
+//        this.longitude = location.longitude;
+//    }
 
     public String getDescription() {
         return description;
@@ -90,8 +103,10 @@ public class Meeting {
         return "Meeting{" +
                 "millis=" + millis +
                 ", id='" + id + '\'' +
+                ", subject='" + subject + '\'' +
+                ", description='" + description + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
-
-
 }

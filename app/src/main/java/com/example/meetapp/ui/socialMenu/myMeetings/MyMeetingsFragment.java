@@ -32,7 +32,6 @@ public class MyMeetingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.my_meetings_fragment, container, false);
 
         CalenderBarFragment calenderBarFragment = new CalenderBarFragment();
-
         getFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
 
 //        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {

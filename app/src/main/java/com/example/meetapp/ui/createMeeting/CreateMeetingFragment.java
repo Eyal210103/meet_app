@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         locationTV = view.findViewById(R.id.create_meeting_location_textView);
 
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+        radioGroup.check(R.id.radio_meeting);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -140,7 +142,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 if (isGroup){
                     GroupMeeting meeting = new GroupMeeting();
                     meeting.setMillis(c.getTimeInMillis());
-                    meeting.setLocation(location);
+                    meeting.setLatitude(location.latitude);
+                    meeting.setLongitude(location.longitude);
                     meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     String gId = ((MutableLiveData<Group>)spinnerSelectGroup.getSelectedItem()).getValue().getId();
@@ -150,7 +153,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 }else {
                     Meeting meeting = new Meeting();
                     meeting.setMillis(c.getTimeInMillis());
-                    meeting.setLocation(location);
+                    meeting.setLatitude(location.latitude);
+                    meeting.setLongitude(location.longitude);
                     meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
@@ -266,6 +270,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     @Override
     public void getSelectedLocation(LatLng latLng) {
         location = latLng;
+        Log.d("----------------------------------///////////", "getSelectedLocation: " + latLng.toString());
         locationTV.setText(getAddress(latLng));
     }
 

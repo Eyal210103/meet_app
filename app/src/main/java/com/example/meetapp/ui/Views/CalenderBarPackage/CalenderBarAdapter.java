@@ -83,7 +83,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 isGood = true;
                 isRegular = true;
                 if (dateToIndexMHash.containsKey(position)){
-                    iM = dateToIndexMHash.get(date.getTime());
+                //    iM = dateToIndexMHash.get(date.getTime());
                 }
                 else{
                     dateToIndexMHash.put(position,indexM);
@@ -122,13 +122,13 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         Log.d("", "onBindViewHolder: " + isGood + "   " + position + "  " + date.toString() + dateToIndexGHash.toString() + dateToIndexGHash.containsKey(position) +  "   " + dateToIndexMHash.toString() + dateToIndexMHash.containsKey(position));
 
         if (isGood){
-            if (isRegular && isGroup){
-                setDotsColor(3,holder);
-            }else if (isRegular){
-                setDotsColor(2,holder);
-            }else if (isGroup){
-                setDotsColor(1,holder);
-            }
+//            if (isRegular && isGroup){
+//                setDotsColor(3,holder);
+//            }else if (isRegular){
+//                setDotsColor(2,holder);
+//            }else if (isGroup){
+//                setDotsColor(1,holder);
+//            }
             visibleDots(holder);
         }else {
             invisibleDots(holder);

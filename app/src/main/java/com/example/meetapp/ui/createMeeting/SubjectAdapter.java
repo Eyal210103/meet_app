@@ -65,8 +65,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         subjects.add(new Subject(R.drawable.basketball,"Basketball"));
         subjects.add(new Subject(R.drawable.soccer,"Soccer"));
         subjects.add(new Subject(R.drawable.football,"Football"));
-        subjects.add(new Subject(R.drawable.videogame,"Video Game"));
+        subjects.add(new Subject(R.drawable.videogame,"Video Games"));
         subjects.add(new Subject(R.drawable.meetingicon,"Meeting"));
+        subjects.add(new Subject(R.drawable.groupsicon , "Other"));
     }
 
     class SubjectViewHolder extends RecyclerView.ViewHolder{

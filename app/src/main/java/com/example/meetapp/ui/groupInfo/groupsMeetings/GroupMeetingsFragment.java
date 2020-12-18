@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
+import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBarFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,9 +40,12 @@ public class GroupMeetingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.group_meetings_fragment, container, false);
-        this.mapView = view.findViewById(R.id.group_meetings_mapView);
+//        this.mapView = view.findViewById(R.id.group_meetings_mapView);
 
-        initGoogleMap(savedInstanceState);
+     //   initGoogleMap(savedInstanceState);
+
+        CalenderBarFragment calenderBarFragment = new CalenderBarFragment();
+        getFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
 
 //        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
 //            @Override
@@ -82,42 +85,42 @@ public class GroupMeetingsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(GroupMeetingsViewModel.class);
+        //mViewModel = ViewModelProviders.of(this).get(GroupMeetingsViewModel.class);
     }
 
     @Override
     public void onPause() {
-        mapView.onPause();
+        //mapView.onPause();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        mapView.onDestroy();
+        //mapView.onDestroy();
         super.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        //mapView.onLowMemory();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        //mapView.onResume();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
+        //mapView.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+      //  mapView.onStop();
     }
 }

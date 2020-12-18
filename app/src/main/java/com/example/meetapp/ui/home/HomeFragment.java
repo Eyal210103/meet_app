@@ -22,9 +22,12 @@ import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.meetings.Meeting;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,15 +40,22 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
 
     private static final int REQUEST_LOCATION = 103;
     private static final String TAG = "HomeFragment";
     private HomeViewModel mViewModel;
-    TextView locationTV;
+    TextView locationTV ,topicTV;
+    CircleImageView topicIV;
+
+    HashMap<String,String> markersHash = new HashMap<>();
+    ArrayList<MarkerOptions> markers = new ArrayList<>();
 
     private MapView mapView;
     private GoogleMap mMap;
@@ -61,37 +71,57 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.home_fragment, container, false);
 
+
         this.mapView = view.findViewById(R.id.mapView);
-
         initGoogleMap(savedInstanceState);
-
         locationTV = view.findViewById(R.id.location_textView);
-
+        topicTV = view.findViewById(R.id.location_subject_textView);
+        topicIV = view.findViewById(R.id.home_location_subject_circleImageView);
         EditText locationName = view.findViewById(R.id.home_edit_text_all);
-
         view.findViewById(R.id.home_search_icon_imageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LatLng latLng = getLocationFromAddress(locationName.getText().toString());
                 zoomToLocation(latLng);
-                addMarkerToMap(latLng);
+                //addMarkerToMap(latLng);
             }
         });
 
+        mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
+            @Override
+            public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
+                for (MutableLiveData<Meeting> m: mutableLiveData) {
+                    if (!m.hasObservers()) {
+                        m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
+                            @Override
+                            public void onChanged(Meeting meeting) {
+                                if (!markersHash.containsKey(meeting.getId())) {
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    markerOptions.title(meeting.getSubject());
+                                    markerOptions.position(meeting.getLocation());
+                                    markers.add(markerOptions);
+                                    markersHash.put(meeting.getId(),meeting.getId()); // TODO
+                                }
+                            }
+                        });
+                    }
+                    if (mapView!=null)
+                        addMarkers();
+                }
+            }
+        });
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
     }
 
     private LatLng getLocation() {
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
             assert locationManager != null;
@@ -118,14 +148,23 @@ public class HomeFragment extends Fragment {
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToStart();
+                        }
+                    });
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
                             locationTV.setText(getAddress(marker.getPosition()));
+                            topicTV.setText(marker.getTitle());
+                            topicIV.setImageResource(getTopicIcon(marker.getTitle()));
                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToEnd();
                             return false;
                         }
                     });
+                    addMarkers();
                 } else {
                     Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();
                 }
@@ -158,8 +197,14 @@ public class HomeFragment extends Fragment {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
-            Address obj = addresses.get(0);
-            String add = obj.getAddressLine(0);
+            try {
+                Address obj = addresses.get(0);
+                String add = obj.getAddressLine(0);
+                return add;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             //add = add + "\n" + obj.getCountryName();
             //add = add + "\n" + obj.getCountryCode();
             //add = add + "\n" + obj.getAdminArea();
@@ -167,7 +212,6 @@ public class HomeFragment extends Fragment {
             //add = add + "\n" + obj.getSubAdminArea();
             //add = add + "\n" + obj.getLocality();
             //add = add + "\n" + obj.getSubThoroughfare();
-            return add;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,6 +225,36 @@ public class HomeFragment extends Fragment {
             markerOptions.title(location.latitude + " : " + location.longitude);
             mMap.addMarker(markerOptions);
         }
+    }
+    private void addMarkerToMap(MarkerOptions location) {
+        if (location != null && mMap!= null) {
+            mMap.addMarker(location);
+        }
+    }
+    private void addMarkers(){
+        for (MarkerOptions m :markers) {
+            addMarkerToMap(m);
+        }
+    }
+
+    private int getTopicIcon(String subject){
+        switch (subject){
+            case "Restaurant":
+                return R.drawable.restaurant;
+            case "Basketball":
+                return R.drawable.basketball;
+            case "Soccer":
+                return R.drawable.soccer;
+            case "Football":
+                return R.drawable.football;
+            case "Video Games":
+               return R.drawable.videogame;
+            case "Meeting":
+               return R.drawable.meetingicon;
+            case "Other":
+                return R.drawable.groupsicon;
+        }
+        return R.drawable.meetingicon;
     }
 
     public void fixGoogleBug(){
