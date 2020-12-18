@@ -12,10 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -46,17 +44,17 @@ public class GroupMeetingsFragment extends Fragment {
 
         initGoogleMap(savedInstanceState);
 
-        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
-        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
-        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
-        calenderBar.setRecyclerView(recyclerView);
-        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
+//        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
+//        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
+//        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
+//        calenderBar.setRecyclerView(recyclerView);
+//        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
 
         return view;
     }

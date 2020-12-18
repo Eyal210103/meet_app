@@ -8,12 +8,13 @@
     tools:context=".ui.socialMenu.myMeetings.MyMeetingsFragment">
 
 
-    <include
-        android:id="@+id/include5"
-        layout="@layout/calender_bar_layout"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/calender_bar_fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="120dp"
+        android:layout_width="match_parent" />
 
     <Button
         android:drawableStart="@drawable/add_meeting_icon_24"

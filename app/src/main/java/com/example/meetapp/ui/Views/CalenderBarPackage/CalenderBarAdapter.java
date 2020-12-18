@@ -1,7 +1,6 @@
 package com.example.meetapp.ui.Views.CalenderBarPackage;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.icu.util.Calendar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,23 +23,22 @@ import java.util.HashMap;
 
 public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.CalenderBarViewHolder> {
 
-    private Context context;
+    private CalenderBarFragment context;
     private ArrayList<Date> days;
     private ArrayList<LiveData<Meeting>> meetings;
     private HashMap<Integer, Integer> dateToIndexMHash ;
     private HashMap<Integer, Integer> dateToIndexGHash;
     private ArrayList<LiveData<GroupMeeting>> groupMeetings;
     private View.OnClickListener onClickListener;
-    private CalenderBar calenderBar;
+    private int selected;
     private int indexM, indexG;
 
-    public CalenderBarAdapter(Context context, ArrayList<Date> days, LiveData<ArrayList<LiveData<Meeting>>> meetings, LiveData<ArrayList<LiveData<GroupMeeting>>> groupMeetings, View.OnClickListener onClickDate , CalenderBar calenderBar) {
+    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, ArrayList<LiveData<Meeting>> meetings, ArrayList<LiveData<GroupMeeting>> groupMeetings, View.OnClickListener onClickDate) {
         this.context = context;
         this.days = days;
-        this.meetings = meetings.getValue();
-        this.groupMeetings = groupMeetings.getValue();
+        this.meetings = meetings;
+        this.groupMeetings = groupMeetings;
         this.onClickListener = onClickDate;
-        this.calenderBar = calenderBar;
         indexG = 0;
         indexM = 0;
         dateToIndexMHash = new HashMap<>();
@@ -143,15 +141,25 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             public void onClick(View v) {
            //     holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
                 onClickListener.onClick(v);
-                calenderBar.setViewBackground(position);
+                selected = position;
+                context.setViewBackground(position);
             }
         });
+        if (position != selected){
+            holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
+        }
     }
 
     @Override
     public int getItemCount() {
         return days.size();
     }
+
+    public void setDays(ArrayList<Date> days){
+        this.days = days;
+        this.notifyDataSetChanged();
+    }
+
 
     private void setDotsColor(int mode ,CalenderBarViewHolder holder){
         switch (mode){

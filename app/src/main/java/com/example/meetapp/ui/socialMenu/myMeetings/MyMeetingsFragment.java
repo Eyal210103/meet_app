@@ -12,11 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.ui.MainActivityViewModel;
-import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBar;
+import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBarFragment;
 
 public class MyMeetingsFragment extends Fragment {
 
@@ -31,19 +30,24 @@ public class MyMeetingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.my_meetings_fragment, container, false);
-        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-        calenderBar.setMeetings(mViewModel.getMeetingsList(),mViewModel.getGroupsMeetingsList());
+        CalenderBarFragment calenderBarFragment = new CalenderBarFragment();
 
-        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
-        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
-        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
-        calenderBar.setRecyclerView(recyclerView);
-        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
+        getFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
+
+//        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        calenderBar.setMeetings(mViewModel.getMeetingsList(),mViewModel.getGroupsMeetingsList());
+//
+//        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
+//        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
+//        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
+//        calenderBar.setRecyclerView(recyclerView);
+//        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
 
         view.findViewById(R.id.my_meetings_create_button).setOnClickListener(new View.OnClickListener() {
             @Override
