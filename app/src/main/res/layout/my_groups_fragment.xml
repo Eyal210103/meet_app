@@ -12,7 +12,6 @@
         android:id="@+id/groups_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layoutAnimation="@anim/recycler_horizontal"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintEnd_toEndOf="parent"
