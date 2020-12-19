@@ -47,7 +47,7 @@
                 android:textColor="@color/oppBackground"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
 
             <TextView
                 android:id="@+id/textView"
@@ -126,7 +126,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout6"
+                android:id="@+id/constraintLayout8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -234,10 +234,10 @@
                 android:backgroundTint="@color/colorAccent"
                 android:text="@string/choose_time"
                 android:textColor="@color/oppBackground"
-                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout6"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout6" />
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout8" />
 
             <TextView
                 android:id="@+id/create_meeting_location_textView"
@@ -250,7 +250,7 @@
                 android:text="@string/no_location_has_selected"
                 android:textColor="@color/oppBackground"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <androidx.constraintlayout.widget.Guideline

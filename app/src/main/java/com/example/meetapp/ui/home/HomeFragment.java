@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
 import com.example.meetapp.model.meetings.Meeting;
+import com.example.meetapp.ui.meetings.MeetingsInfoDialog;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,15 +57,12 @@ public class HomeFragment extends Fragment {
 
     HashMap<String,String> markersHash = new HashMap<>();
     ArrayList<MarkerOptions> markers = new ArrayList<>();
+    ArrayList<String> ids = new ArrayList<>();
+
 
     private MapView mapView;
     private GoogleMap mMap;
     View view;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -87,6 +85,19 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.constraintLayout4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
+                int i = mViewModel.getPublicHash().get((String) v.getTag());
+                Meeting m = mViewModel.getMeetings().getValue().get(i).getValue();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("meeting",m);
+                meetingsInfoDialog.setArguments(bundle);
+                meetingsInfoDialog.show(getFragmentManager(),"Meeting Dialog");
+            }
+        });
+
         mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
@@ -99,6 +110,7 @@ public class HomeFragment extends Fragment {
                                     MarkerOptions markerOptions = new MarkerOptions();
                                     markerOptions.title(meeting.getSubject());
                                     markerOptions.position(meeting.getLocation());
+                                    ids.add(meeting.getId());
                                     markers.add(markerOptions);
                                     markersHash.put(meeting.getId(),meeting.getId()); // TODO
                                 }
@@ -144,7 +156,7 @@ public class HomeFragment extends Fragment {
                 mMap = googleMap;
                 if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     googleMap.setMyLocationEnabled(true);
-                    googleMap.setBuildingsEnabled(true);
+
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
@@ -161,6 +173,7 @@ public class HomeFragment extends Fragment {
                             topicTV.setText(marker.getTitle());
                             topicIV.setImageResource(getTopicIcon(marker.getTitle()));
                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToEnd();
+                            ((MotionLayout)view.findViewById(R.id.home_motion_layout)).setTag(marker.getTag());
                             return false;
                         }
                     });
@@ -226,14 +239,16 @@ public class HomeFragment extends Fragment {
             mMap.addMarker(markerOptions);
         }
     }
-    private void addMarkerToMap(MarkerOptions location) {
+
+    private void addMarkerToMap(MarkerOptions location , String id) {
         if (location != null && mMap!= null) {
-            mMap.addMarker(location);
+            Marker m = mMap.addMarker(location);
+            m.setTag(id);
         }
     }
     private void addMarkers(){
-        for (MarkerOptions m :markers) {
-            addMarkerToMap(m);
+        for (int i = 0; i < markers.size(); i++) {
+            addMarkerToMap(markers.get(i) , ids.get(i));
         }
     }
 

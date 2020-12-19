@@ -4,9 +4,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Meeting {
+public class Meeting implements Serializable {
     protected long millis;
     protected String id;
     protected String subject;

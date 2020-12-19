@@ -1,6 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="360dp"
+    android:background="@drawable/main_app_design"
+    android:backgroundTint="@color/background"
+    android:backgroundTintMode="src_atop"
+    android:layout_height="wrap_content">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/main_app_design"
+        android:backgroundTint="@color/backgroundSec"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/meeting_dialog_tv_day_of_month_calendar_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-black"
+            android:text="21"
+            android:textColor="@color/oppBackground"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/meeting_dialog_tv_day_calendar_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:text="JANUARY"
+            android:textColor="@color/secondry"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/meeting_dialog_tv_day_of_month_calendar_item"
+            app:layout_constraintTop_toTopOf="@+id/meeting_dialog_tv_day_of_month_calendar_item" />
+
+        <TextView
+            android:id="@+id/meeting_dialog_hour_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/main_app_design"
+            android:backgroundTint="@color/backgroundSec"
+            android:gravity="center"
+            android:text="00:00"
+            android:textColor="@color/oppBackground"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meeting_dialog_tv_day_of_week_calendar_item" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meeting_dialog_hour_textView">
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/red_dot" />
+
+            <View
+                android:layout_width="11dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/red_dot"
+                android:backgroundTint="@color/blue" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/red_dot"
+                android:backgroundTint="@color/green" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/meeting_dialog_tv_day_of_week_calendar_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Thursday"
+            android:textColor="@color/secondry"
+            app:layout_constraintBottom_toBottomOf="@+id/meeting_dialog_tv_day_of_month_calendar_item"
+            app:layout_constraintStart_toEndOf="@+id/meeting_dialog_tv_day_of_month_calendar_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/meeting_dialog_location_textView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/main_app_design"
+        android:backgroundTint="@color/backgroundSec"
+        android:gravity="center_vertical"
+        android:textColor="@color/oppBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout8" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meeting_dialog_desc_textView" />
+
+    <Button
+        android:id="@+id/meeting_info_dialog_more_info_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/main_app_design"
+        android:backgroundTint="@color/colorAccent"
+        android:paddingHorizontal="20dp"
+        android:text="@string/more_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+
+    <TextView
+        android:id="@+id/meeting_dialog_desc_textView"
+        android:layout_width="0dp"
+        android:background="@drawable/main_app_design"
+        android:backgroundTint="@color/ic_launcher_background"
+        android:textColor="@color/oppBackground"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="5dp"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Description"
+        app:layout_constraintEnd_toEndOf="@+id/meeting_dialog_location_textView"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

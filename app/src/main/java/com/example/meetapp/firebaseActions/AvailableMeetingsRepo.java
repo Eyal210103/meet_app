@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class AvailableMeetingsRepo {
 
     private ArrayList<MutableLiveData<Meeting>> publicMeetings = new ArrayList<>();
-    private HashMap<String,Integer> publicHash = new HashMap<>();
+    public HashMap<String,Integer> publicHash = new HashMap<>();
 
 
     private static AvailableMeetingsRepo instance =  null;

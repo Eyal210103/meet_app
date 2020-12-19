@@ -16,7 +16,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -115,7 +114,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH) ,selectedHour,selectedMinute);
-                Toast.makeText(requireActivity(), ""+ c.get(Calendar.MONTH) + " " + c.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
                 updateDateUI(c,view);
             }
         }, mHour, minutes, true);
