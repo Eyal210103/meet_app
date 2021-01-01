@@ -58,7 +58,7 @@ public class UserGroupsRepo {
                         public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                             String key = snapshot.getValue(String.class);
                             for (MutableLiveData<Group> g : list) {
-                                if (key.equals(g.getValue().getId())) {
+                                if (g!= null && key.equals(g.getValue().getId())) {
                                     list.remove(g);
                                     mutableLiveData.postValue(list);
                                     ids.remove(key);

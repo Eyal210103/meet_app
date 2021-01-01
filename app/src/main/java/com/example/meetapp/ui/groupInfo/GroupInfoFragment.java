@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class GroupInfoFragment extends Fragment {
     private ViewPager2 viewPager;
 
     CircleImageView groupImage;
+    ImageView groupSubject;
     TextView groupName;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class GroupInfoFragment extends Fragment {
 
         groupImage = view.findViewById(R.id.group_info_group_civ);
         groupName = view.findViewById(R.id.group_info_group_name);
-
+        groupSubject = view.findViewById(R.id.group_info_subject_imageView);
 
         RecyclerView recyclerViewMembers = view.findViewById(R.id.group_info_recyclerView_members);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -116,11 +118,31 @@ public class GroupInfoFragment extends Fragment {
     public void updateUI(Group group){
         Glide.with(requireActivity()).load(group.getPhotoUrl()).into(groupImage);
         groupName.setText(group.getName());
+        groupSubject.setImageResource(getSubjectIcon(group.getSubject()));
     }
     public void swipeToChat(){
         viewPager.setCurrentItem(1, true);
     }
     public void swipeToMeetings(){
         viewPager.setCurrentItem(2, true);
+    }
+
+    private int getSubjectIcon(String subject){
+        switch (subject){
+            case "Restaurant":
+                return R.drawable.restaurant;
+            case "Basketball":
+                return R.drawable.basketball;
+            case "Soccer":
+                return R.drawable.soccer;
+            case "Football":
+                return R.drawable.football;
+            case "Video Games":
+                return R.drawable.videogame;
+            case "Meeting":
+                return R.drawable.meetingicon;
+            default:
+                return R.drawable.groupsicon;
+        }
     }
 }

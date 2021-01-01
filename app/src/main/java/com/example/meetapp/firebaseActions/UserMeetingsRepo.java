@@ -82,13 +82,15 @@ public class UserMeetingsRepo {
                 FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(key).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Meeting meeting = snapshot.getValue(Meeting.class);
-                        MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
-                        meetingMutableLiveData.setValue(meeting);
-                        Log.d(TAG, "onDataChange: --------------------------------------------------------" + meeting.toString());
-                        int i = sortPublicMeeting(meeting);
-                        publicMeetings.add(i,meetingMutableLiveData);
-                        mutableLiveData.postValue(publicMeetings);
+                        if (snapshot.exists()) {
+                            Meeting meeting = snapshot.getValue(Meeting.class);
+                            MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
+                            meetingMutableLiveData.setValue(meeting);
+                            Log.d(TAG, "onDataChange: --------------------------------------------------------" + meeting.toString());
+                            int i = sortPublicMeeting(meeting);
+                            publicMeetings.add(i, meetingMutableLiveData);
+                            mutableLiveData.postValue(publicMeetings);
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {}

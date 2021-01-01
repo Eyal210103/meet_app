@@ -49,7 +49,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             holder.groupName.setText(current.getName());
             Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
             Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
-
+            Glide.with(context.getActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
 
             if (type == ConstantValues.TYPE_MYGROUPS) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +80,25 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     @Override
     public int getItemCount() {
         return map.size();
+    }
+
+    private int getSubjectIcon(String subject){
+        switch (subject){
+            case "Restaurant":
+                return R.drawable.restaurant;
+            case "Basketball":
+                return R.drawable.basketball;
+            case "Soccer":
+                return R.drawable.soccer;
+            case "Football":
+                return R.drawable.football;
+            case "Video Games":
+                return R.drawable.videogame;
+            case "Meeting":
+                return R.drawable.meetingicon;
+            default:
+                return R.drawable.groupsicon;
+        }
     }
 
     static class GroupsViewHolder extends RecyclerView.ViewHolder {

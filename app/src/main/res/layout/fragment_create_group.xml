@@ -67,10 +67,11 @@
                 android:id="@+id/create_group_group_name_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="5dp"
                 android:background="@drawable/main_app_design"
                 android:text=""
                 android:textColor="@color/oppBackground"
-                android:textSize="23sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -90,18 +91,48 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="@string/group_s_subject"
+                android:text="@string/group_s_description"
                 android:textColor="@color/oppBackground"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/create_group_group_subject"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:paddingVertical="5dp"
                 android:background="@drawable/main_app_design"
-                android:text=""
+                android:hint="@string/description_optional"
+                android:inputType="textMultiLine"
+                android:gravity="top"
                 android:textColor="@color/oppBackground"
-                android:textSize="23sp" />
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/group_subject"
+                android:textColor="@color/oppBackground"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/create_group_choose_subject"
+                android:background="@drawable/main_app_design"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <androidx.appcompat.widget.SwitchCompat
@@ -115,7 +146,7 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
