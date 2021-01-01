@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.socialMenu.myGroups;
+package com.example.meetapp.ui.myGroups;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

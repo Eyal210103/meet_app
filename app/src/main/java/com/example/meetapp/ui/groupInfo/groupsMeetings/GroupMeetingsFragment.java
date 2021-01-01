@@ -45,20 +45,7 @@ public class GroupMeetingsFragment extends Fragment {
      //   initGoogleMap(savedInstanceState);
 
         CalenderBarFragment calenderBarFragment = new CalenderBarFragment();
-        getFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
-
-//        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
-//        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
-//        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
-//        calenderBar.setRecyclerView(recyclerView);
-//        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
-
+        requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container_group, calenderBarFragment).commit();
         return view;
     }
 

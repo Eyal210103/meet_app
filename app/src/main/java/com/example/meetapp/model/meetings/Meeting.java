@@ -85,6 +85,10 @@ public class Meeting implements Serializable {
     }
 
 
+    public void confirmUserArrival(String Uid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(this.id).child("whoComing");
+        reference.child(Uid).setValue(Uid);
+    }
 
     public void updateOrAddReturnId(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").push();
@@ -97,6 +101,7 @@ public class Meeting implements Serializable {
         map.put("latitude",latitude);
         map.put("longitude",longitude);
         reference.updateChildren(map);
+
     }
 
     @Override

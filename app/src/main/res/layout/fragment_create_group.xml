@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.socialMenu.myGroups.CreateGroupFragment">
+    tools:context=".ui.myGroups.CreateGroupFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/create_group_civ"

@@ -1,6 +1,8 @@
-package com.example.meetapp.ui.socialMenu.myGroups;
+package com.example.meetapp.ui.myGroups;
 
-import androidx.lifecycle.*;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.SearchGroupFirebase;
 import com.example.meetapp.model.Group;

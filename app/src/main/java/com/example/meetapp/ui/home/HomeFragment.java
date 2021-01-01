@@ -89,7 +89,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
-                int i = mViewModel.getPublicHash().get((String) v.getTag());
+       //         Log.d(TAG, "onClick: " + mViewModel.getPublicHash() + view.findViewById(R.id.constraintLayout4).getTag()) ;
+                int i = mViewModel.getPublicHash().get((String)v.getTag());
                 Meeting m = mViewModel.getMeetings().getValue().get(i).getValue();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("meeting",m);
@@ -173,7 +174,7 @@ public class HomeFragment extends Fragment {
                             topicTV.setText(marker.getTitle());
                             topicIV.setImageResource(getTopicIcon(marker.getTitle()));
                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToEnd();
-                            ((MotionLayout)view.findViewById(R.id.home_motion_layout)).setTag(marker.getTag());
+                            view.findViewById(R.id.constraintLayout4).setTag(marker.getTag());
                             return false;
                         }
                     });

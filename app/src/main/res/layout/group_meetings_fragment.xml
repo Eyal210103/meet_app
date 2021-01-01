@@ -7,7 +7,7 @@
     tools:context=".ui.groupInfo.groupsMeetings.GroupMeetingsFragment">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/calender_bar_fragment_container"
+        android:id="@+id/calender_bar_fragment_container_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

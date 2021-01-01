@@ -1,10 +1,10 @@
-package com.example.meetapp.ui.socialMenu.GroupsChats;
+package com.example.meetapp.ui.GroupsChats;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.LastMessageRepo;
-import com.example.meetapp.model.*;
+import com.example.meetapp.model.Group;
 import com.example.meetapp.model.Message;
 
 import java.util.ArrayList;

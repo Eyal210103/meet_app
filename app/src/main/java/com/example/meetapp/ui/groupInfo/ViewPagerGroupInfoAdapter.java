@@ -7,11 +7,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.meetapp.firebaseActions.GroupsMembersRepo;
 import com.example.meetapp.ui.chat.GroupChatFragment;
 import com.example.meetapp.ui.groupInfo.groupDashboard.GroupDashboardFragment;
 import com.example.meetapp.ui.groupInfo.groupsMeetings.GroupMeetingsFragment;
-import com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment;
 
 class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
 

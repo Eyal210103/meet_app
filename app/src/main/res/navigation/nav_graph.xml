@@ -17,7 +17,7 @@
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/groupsChatsFragment"
-        android:name="com.example.meetapp.ui.socialMenu.GroupsChats.GroupsChatsFragment"
+        android:name="com.example.meetapp.ui.GroupsChats.GroupsChatsFragment"
         android:label="groups_chats_fragment"
         tools:layout="@layout/groups_chats_fragment" >
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/myGroupsFragment"
-        android:name="com.example.meetapp.ui.socialMenu.myGroups.MyGroupsFragment"
+        android:name="com.example.meetapp.ui.myGroups.MyGroupsFragment"
         android:label="my_groups_fragment"
         tools:layout="@layout/my_groups_fragment" >
         <action
@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/createGroupFragment"
-        android:name="com.example.meetapp.ui.socialMenu.myGroups.CreateGroupFragment"
+        android:name="com.example.meetapp.ui.myGroups.CreateGroupFragment"
         android:label="fragment_create_group"
         tools:layout="@layout/fragment_create_group" >
         <action
@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/joinGroupFragment"
-        android:name="com.example.meetapp.ui.socialMenu.myGroups.JoinGroupFragment"
+        android:name="com.example.meetapp.ui.myGroups.JoinGroupFragment"
         android:label="join_group_fragment"
         tools:layout="@layout/join_group_fragment" >
         <action
@@ -103,7 +103,7 @@
     </fragment>
     <dialog
         android:id="@+id/joinGroupDialog"
-        android:name="com.example.meetapp.ui.socialMenu.myGroups.JoinGroupDialog"
+        android:name="com.example.meetapp.ui.myGroups.JoinGroupDialog"
         android:label="JoinGroupDialog" >
         <argument
             android:name="arg_group"
@@ -133,7 +133,7 @@
     </fragment>
     <dialog
         android:id="@+id/RequestSentDialog"
-        android:name="com.example.meetapp.ui.socialMenu.myGroups.RequestSentDialog"
+        android:name="com.example.meetapp.ui.myGroups.RequestSentDialog"
         android:label="RequestSentDialog" >
     </dialog>
 </navigation>

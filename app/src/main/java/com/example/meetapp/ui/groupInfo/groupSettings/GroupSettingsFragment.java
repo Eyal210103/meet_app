@@ -35,6 +35,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private CircleImageView circleImageView;
     private TextView nameTextView;
     private LinearLayout linearLayoutWaiting;
+    View view;
 
     public static GroupSettingsFragment newInstance() {
         return new GroupSettingsFragment();
@@ -51,11 +52,13 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.group_setting_fragment, container, false);
+        view = inflater.inflate(R.layout.group_setting_fragment, container, false);
 
         this.circleImageView = view.findViewById(R.id.group_settings_circleImageView);
         this.nameTextView = view.findViewById(R.id.group_settings_name_textView);
         this.linearLayoutWaiting = view.findViewById(R.id.group_settings_linear_waiting);
+
+        setInvisible();
 
         WaitingUsersAdapter adapter = new WaitingUsersAdapter(this, mViewModel.getPaddingUsers().getValue());
         RecyclerView recyclerView = view.findViewById(R.id.group_settings_waiting_recycler);
@@ -76,13 +79,18 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             @Override
             public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
-                for (MutableLiveData<User> u : mutableLiveData) {
-                    u.observe(getViewLifecycleOwner(), new Observer<User>() {
-                        @Override
-                        public void onChanged(User user) {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
+                if (mutableLiveData.isEmpty()){
+                    setInvisible();
+                }else {
+                    for (MutableLiveData<User> u : mutableLiveData) {
+                        u.observe(getViewLifecycleOwner(), new Observer<User>() {
+                            @Override
+                            public void onChanged(User user) {
+                                setVisible();
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -138,6 +146,14 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         }
     }
 
+    private void setInvisible(){
+        linearLayoutWaiting.setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.waiting_req_tv).setVisibility(View.INVISIBLE);
+    }
+    private void setVisible(){
+        linearLayoutWaiting.setVisibility(View.VISIBLE);
+        view.findViewById(R.id.waiting_req_tv).setVisibility(View.VISIBLE);
+    }
     public void updateUI(Group group){
         Glide.with(requireActivity()).load(group.getPhotoUrl()).into(circleImageView);
         this.nameTextView.setText(group.getName());

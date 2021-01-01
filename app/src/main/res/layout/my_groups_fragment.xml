@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".ui.socialMenu.myGroups.MyGroupsFragment">
+    tools:context=".ui.myGroups.MyGroupsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groups_recycler_view"
@@ -31,6 +31,7 @@
 
         <Button
             android:id="@+id/groups_create_group_fab"
+            android:drawableLeft="@drawable/ic_baseline_add_24"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_margin="10dp"

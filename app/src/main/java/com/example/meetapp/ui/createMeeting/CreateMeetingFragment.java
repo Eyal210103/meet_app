@@ -91,6 +91,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 }else if (checkedId == R.id.radio_meeting){
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
+                    isGroup = false;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
                 }
             }
@@ -136,7 +137,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         view.findViewById(R.id.create_meeting_complete_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (isGroup){
                     GroupMeeting meeting = new GroupMeeting();
                     meeting.setMillis(c.getTimeInMillis());
@@ -156,6 +156,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
+                    meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(),"Public",meeting.getId());
                 }
                 Bundle bundle = new Bundle();
@@ -171,7 +172,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     private void updateDateUI(Calendar c , View view){
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getThreeLetterMonth(c.get(Calendar.MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
-        ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%2d:%2d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE)));
+        ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }

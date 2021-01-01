@@ -17,7 +17,7 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         meetings = AvailableMeetingsRepo.getInstance().getPublicMeetings();
-        publicHash = AvailableMeetingsRepo.getInstance().publicHash;
+        publicHash = AvailableMeetingsRepo.getInstance().getPublicHash();
     }
 
     public LiveData<ArrayList<MutableLiveData<Meeting>>> getMeetings() {

@@ -1,5 +1,8 @@
 package com.example.meetapp.ui.meetings;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -11,12 +14,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.Meeting;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,16 +33,24 @@ import java.util.Locale;
 
 public class MeetingsInfoDialog extends DialogFragment {
 
+    MeetingInfoDialogViewModel mViewModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(MeetingInfoDialogViewModel.class);
+        Meeting meeting = (Meeting) getArguments().getSerializable("meeting");
+        mViewModel.init(meeting.getId());
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.meeting_info_dialog, container, false);
+
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Meeting meeting = (Meeting) getArguments().getSerializable("meeting");
 
@@ -48,13 +65,27 @@ public class MeetingsInfoDialog extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        day.setText(calendar.get(Calendar.DAY_OF_MONTH));
+        day.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
         dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         month.setText(getThreeLetterMonth(calendar.get(Calendar.MONTH)));
-        hour.setText(String.format("%2d:%2d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
+        hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
         description.setText(meeting.getDescription());
-        location.setText(meeting.getSubject() + "\n" + getAddress(meeting.getLocation()));
+        location.setText(meeting.getSubject() + "\n\n" + getAddress(meeting.getLocation()));
 
+
+        RecyclerView recyclerView  = view.findViewById(R.id.meeting_dialog_who_coming_recycler);
+        WhoComingAdapter adapter = new WhoComingAdapter(requireActivity(),mViewModel.users.getValue());
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(adapter);
+
+        mViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(ArrayList<User> users) {
+                adapter.notifyDataSetChanged();
+            }
+        });
         return view;
     }
 
