@@ -1,7 +1,9 @@
 package com.example.meetapp.ui.chat;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -38,6 +41,8 @@ public class GroupChatFragment extends Fragment {
 
     protected static final int CAMERA_REQUEST = 0;
     protected static final int GALLERY_PICTURE = 1;
+    private static final int REQUEST_CAMERA = 103;
+
     private GroupChatViewModel mViewModel;
     ImageView imagePreview;
     private Uri imageUri = null;
@@ -57,16 +62,7 @@ public class GroupChatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.group_chat_fragment, container, false);
-        //TODO FIX BUG - IMPORTANT------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
-        //------------------------------------------------------------------------
+
         final RecyclerView recyclerView = view.findViewById(R.id.chat_recyclerView);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -155,11 +151,12 @@ public class GroupChatFragment extends Fragment {
 
         myAlertDialog.setNegativeButton("Camera",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-//                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                        startActivityForResult(intent, CAMERA_REQUEST);
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                        }else {
+                            startActivityForResult(intent, CAMERA_REQUEST);
+                        }
                     }
                 });
         myAlertDialog.show();

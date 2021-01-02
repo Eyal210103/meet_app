@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -32,9 +30,10 @@ public class SearchGroupFirebase {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 MutableLiveData<Group> gld = new MutableLiveData<>();
                 gld.setValue(snapshot.getValue(Group.class));
-                Log.d("", "onChildAdded: " + snapshot.getValue(Group.class).toString());
-                groups.add(gld);
-                mutableLiveData.postValue(groups);
+                if (!UserGroupsRepo.getInstance().ids.containsKey(gld.getValue().getId())) {
+                    groups.add(gld);
+                    mutableLiveData.postValue(groups);
+                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }

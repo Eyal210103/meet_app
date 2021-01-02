@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.User;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 public class GroupSettingsRepo {
     ArrayList<MutableLiveData<User>> membersAL = new ArrayList<>();
     HashMap<String,String> ids = new HashMap<>();
+    MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
     private String groupId;
     ArrayList<String> managers;
     ChildEventListener childEventListener;
@@ -31,7 +33,6 @@ public class GroupSettingsRepo {
     public MutableLiveData<ArrayList<MutableLiveData<User>>> getWaitingUsers(){
         ids.clear();
         membersAL.clear();
-        MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(membersAL);
         this.childEventListener = new ChildEventListener() {
             @Override
@@ -96,7 +97,7 @@ public class GroupSettingsRepo {
     }
 
 
-    public MutableLiveData<ArrayList<String>> getManagers(){
+    public LiveData<ArrayList<String>> getManagers(){
         managers= new ArrayList<>();
         MutableLiveData<ArrayList<String>> mutableLiveData = new MutableLiveData<>();
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("manager").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -118,12 +119,24 @@ public class GroupSettingsRepo {
 
     public void removeUser(String id){
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Waiting").child(id).removeValue();
+        removeFromList(id);
     }
 
     public void approveUser(String id){
         FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Members").child(id).setValue(id);
         FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("Groups").child(groupId).setValue(groupId);
         FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Waiting").child(id).removeValue();
+        removeFromList(id);
+    }
+
+    private void removeFromList(String id){
+        ids.remove(id);
+        for (MutableLiveData<User> user: membersAL) {
+            if (user.getValue() != null && user.getValue().getId().equals(id)){
+                membersAL.remove(user);
+                mutableLiveData.postValue(membersAL);
+            }
+        }
     }
 
     private void OnDetach(){

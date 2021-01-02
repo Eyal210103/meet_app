@@ -37,10 +37,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private LinearLayout linearLayoutWaiting;
     View view;
 
-    public static GroupSettingsFragment newInstance() {
-        return new GroupSettingsFragment();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,8 +137,14 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     public void onClickInRecyclerView(Object value, String action) {
         if (action.equals("Approve")){
             mViewModel.approveUser((Integer)value);
+            if (mViewModel.getPaddingUsers().getValue().size() == 0){
+                setInvisible();
+            }
         }else if(action.equals("Reject")){
             mViewModel.rejectUser((Integer)value);
+            if (mViewModel.getPaddingUsers().getValue().size() == 0){
+                setInvisible();
+            }
         }
     }
 

@@ -47,7 +47,7 @@ public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapte
                 @Override
                 public void onClick(View v) {
                     onClickInRecyclerView.onClickInRecyclerView(position, "Approve");
-                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
                 }
             });
             holder.reject.setOnClickListener(new View.OnClickListener() {
