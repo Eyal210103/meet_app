@@ -14,12 +14,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class AvailableMeetingsRepo {
 
     private ArrayList<MutableLiveData<Meeting>> publicMeetings = new ArrayList<>();
     private HashMap<String,Integer> publicHash = new HashMap<>();
+    private long todayMillis;
 
     private static AvailableMeetingsRepo instance =  null;
 
@@ -27,23 +29,27 @@ public class AvailableMeetingsRepo {
     }
 
     public static AvailableMeetingsRepo getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new AvailableMeetingsRepo();
+        }
         return instance;
     }
 
     public MutableLiveData<ArrayList<MutableLiveData<Meeting>>> getPublicMeetings(){
+        todayMillis = Calendar.getInstance().getTimeInMillis();
         MutableLiveData<ArrayList<MutableLiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(publicMeetings);
         FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Meeting meeting = snapshot.getValue(Meeting.class);
-                MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
-                meetingMutableLiveData.setValue(meeting);
-                publicHash.put(meeting.getId(),publicMeetings.size());
-                publicMeetings.add(meetingMutableLiveData);
-                mutableLiveData.postValue(publicMeetings);
+                if(meeting.getMillis() > todayMillis){
+                    MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
+                    meetingMutableLiveData.setValue(meeting);
+                    publicHash.put(meeting.getId(), publicMeetings.size());
+                    publicMeetings.add(meetingMutableLiveData);
+                    mutableLiveData.postValue(publicMeetings);
+                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -83,22 +89,17 @@ public class AvailableMeetingsRepo {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                //TODO
             }
-
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                error.toException().printStackTrace();
             }
         });
         return mutableLiveData;

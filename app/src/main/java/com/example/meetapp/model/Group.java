@@ -61,7 +61,7 @@ public class Group implements Serializable {
         return isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
+    public void setIsPublic(boolean aPublic) {
         isPublic = aPublic;
     }
 

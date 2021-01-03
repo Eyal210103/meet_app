@@ -95,4 +95,9 @@ public class UserGroupsRepo {
     public HashMap<String, MutableLiveData<Group>> getHashMapGroups() {
         return ids;
     }
+
+    public void leaveGroup(String id) {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Groups").child(id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(id).child("Members").child(CurrentUser.getInstance().getId()).removeValue();
+    }
 }

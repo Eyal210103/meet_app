@@ -19,13 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.ui.MainActivityViewModel;
 
 import java.util.ArrayList;
 
-public class MyGroupsFragment extends Fragment {
+public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView {
 
     MainActivityViewModel mViewModel;
     RecyclerView recyclerView;
@@ -98,5 +99,12 @@ public class MyGroupsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClickInRecyclerView(Object value, String action) {
+        if (action.equals("Leave")){
+            String id = (String)value;
+            mViewModel.leaveGroup(id);
+        }
+    }
 }
 

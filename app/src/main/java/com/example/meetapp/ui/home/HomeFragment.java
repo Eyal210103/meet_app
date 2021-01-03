@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -81,7 +84,6 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 LatLng latLng = getLocationFromAddress(locationName.getText().toString());
                 zoomToLocation(latLng);
-                //addMarkerToMap(latLng);
             }
         });
 
@@ -111,6 +113,9 @@ public class HomeFragment extends Fragment {
                                     MarkerOptions markerOptions = new MarkerOptions();
                                     markerOptions.title(meeting.getSubject());
                                     markerOptions.position(meeting.getLocation());
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
+                                    icon = Bitmap.createScaledBitmap(icon, 80, 80, false);
+                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
                                     ids.add(meeting.getId());
                                     markers.add(markerOptions);
                                     markersHash.put(meeting.getId(),meeting.getId()); // TODO
@@ -288,6 +293,26 @@ public class HomeFragment extends Fragment {
             CameraUpdate zoom = CameraUpdateFactory.zoomTo(20);
             mMap.moveCamera(center);
             mMap.animateCamera(zoom);
+        }
+    }
+
+
+    private int getSubjectIcon(String subject){
+        switch (subject){
+            case "Restaurant":
+                return R.drawable.restaurant;
+            case "Basketball":
+                return R.drawable.basketball;
+            case "Soccer":
+                return R.drawable.soccer;
+            case "Football":
+                return R.drawable.football;
+            case "Video Games":
+                return R.drawable.videogame;
+            case "Meeting":
+                return R.drawable.meetingicon;
+            default:
+                return R.drawable.groupsicon;
         }
     }
 

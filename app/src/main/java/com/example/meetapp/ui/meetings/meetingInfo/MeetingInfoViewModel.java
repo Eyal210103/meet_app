@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.meetingsInfoView;
+package com.example.meetapp.ui.meetings.meetingInfo;
 
 import androidx.lifecycle.ViewModel;
 

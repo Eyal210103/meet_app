@@ -1,7 +1,9 @@
 package com.example.meetapp.ui.myGroups;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 
@@ -27,11 +30,11 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     Fragment context;
     int type;
-    ArrayList<MutableLiveData<Group>> map;
+    ArrayList<MutableLiveData<Group>> groups;
 
-    public GroupsAdapter(Fragment context, ArrayList<MutableLiveData<Group>> map , int type) {
+    public GroupsAdapter(Fragment context, ArrayList<MutableLiveData<Group>> groups , int type) {
         this.context = context;
-        this.map = map;
+        this.groups = groups;
         this.type =type;
     }
 
@@ -44,7 +47,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
-        final Group current = map.get(position).getValue();
+        final Group current = groups.get(position).getValue();
         if (current != null) {
             holder.groupName.setText(current.getName());
             Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
@@ -74,12 +77,25 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                     }
                 });
             }
+            holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                    menu.add(position,0,0,"Leave Group").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
+                            onClickInRecyclerView.onClickInRecyclerView(current.getId(),"Leave");
+                            return false;
+                        }
+                    });
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
-        return map.size();
+        return groups.size();
     }
 
     private int getSubjectIcon(String subject){
@@ -101,14 +117,15 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         }
     }
 
-    static class GroupsViewHolder extends RecyclerView.ViewHolder {
+    class GroupsViewHolder extends RecyclerView.ViewHolder {
         CircleImageView groupImage;
         TextView groupName;
         ImageView subject;
+
         public GroupsViewHolder(@NonNull View itemView) {
             super(itemView);
-            groupImage =itemView.findViewById(R.id.groups_adapter_civ);
-            groupName= itemView.findViewById(R.id.groups_adapter_group_name);
+            groupImage = itemView.findViewById(R.id.groups_adapter_civ);
+            groupName = itemView.findViewById(R.id.groups_adapter_group_name);
             subject = itemView.findViewById(R.id.groups_adapter_iv);
         }
     }

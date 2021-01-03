@@ -78,7 +78,6 @@ public class GroupSettingsRepo {
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Waiting").addChildEventListener(childEventListener);
         return mutableLiveData;
     }
-
     private MutableLiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
@@ -105,8 +104,8 @@ public class GroupSettingsRepo {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s:snapshot.getChildren()){
                     managers.add(s.getValue(String.class));
+                    mutableLiveData.postValue(managers);
                 }
-                mutableLiveData.setValue(managers);
             }
 
             @Override

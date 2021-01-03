@@ -46,4 +46,8 @@ public class MainActivityViewModel extends ViewModel {
     public LiveData<ArrayList<LiveData<GroupMeeting>>> getGroupsMeetingsList() {
         return groupsMeetingsList;
     }
+
+    public void leaveGroup(String id) {
+        UserGroupsRepo.getInstance().leaveGroup(id);
+    }
 }

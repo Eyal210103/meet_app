@@ -1,7 +1,9 @@
 package com.example.meetapp.ui.groupInfo.groupSettings;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -22,10 +24,12 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
 
     private Context context;
     private  ArrayList<MutableLiveData<User>> members;
+    private boolean managers;
 
-    public MembersSettingsAdapter(Context context, ArrayList<MutableLiveData<User>> members) {
+    public MembersSettingsAdapter(Context context, ArrayList<MutableLiveData<User>> members, boolean managers) {
         this.context = context;
         this.members = members;
+        this.managers = managers;
     }
 
     @NonNull
@@ -41,6 +45,36 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
         if (user!= null){
             Glide.with(context).load(user.getProfileImageUrl()).into(holder.circleImageView);
             holder.textView.setText(user.getDisplayName());
+
+            holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                    final int index = position;
+                    menu.add(index,0,0,"View Profile").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            //Group group = groups.get(index).getValue();
+                            return false;
+                        }
+                    });
+                    if (managers){
+                        menu.add(index,1,1,"Set As Manager").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                //Group group = groups.get(index).getValue();
+                                return false;
+                            }
+                        });
+                        menu.add(index,2,2,"Remove From Group").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                //Group group = groups.get(index).getValue();
+                                return false;
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 
@@ -49,7 +83,7 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
         return members.size();
     }
 
-    class MembersSettingsViewHolder extends RecyclerView.ViewHolder {
+    class MembersSettingsViewHolder extends RecyclerView.ViewHolder  {
         TextView textView;
         CircleImageView circleImageView;
         public MembersSettingsViewHolder(@NonNull View itemView) {
@@ -57,5 +91,6 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
             circleImageView = itemView.findViewById(R.id.settings_members_circleImageView);
             textView = itemView.findViewById(R.id.settings_members_textView);
         }
+
     }
 }

@@ -100,7 +100,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        newGroup.setPublic(isChecked);
+                        newGroup.setIsPublic(isChecked);
                     }
                 });
                 String id = newGroup.addOrUpdateGroupGetID();

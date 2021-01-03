@@ -1,6 +1,7 @@
 package com.example.meetapp.ui.groupInfo.groupSettings;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private TextView nameTextView;
     private LinearLayout linearLayoutWaiting;
     View view;
+    boolean isThere = false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         recyclerView.setAdapter(adapter);
 
         RecyclerView members = view.findViewById(R.id.group_settings_members);
-        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(requireActivity(),mViewModel.getMembers().getValue());
+        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(requireActivity(),mViewModel.getMembers().getValue(),isThere);
         members.setAdapter(settingsAdapter);
         LinearLayoutManager llm2 = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -99,8 +102,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         mViewModel.getManagers().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
-                boolean isThere = false;
                 for (String s:strings) {
+                    Log.d("_______________", "onChanged: " + s+"}{}{}{}{}{}{}{}{}{}{}{}{");
                     if (s.equals(CurrentUser.getInstance().getId())){
                         isThere = true;
                         linearLayoutWaiting.setVisibility(View.VISIBLE);
@@ -113,6 +116,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
                     params.topMargin = 6;
                     linearLayoutWaiting.setLayoutParams(params);
                 }
+                adapter.notifyDataSetChanged();
             }
         });
         mViewModel.getMembers().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
