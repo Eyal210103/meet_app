@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,12 +82,30 @@ public class MeetingsInfoDialog extends DialogFragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
 
+        view.findViewById(R.id.meeting_info_dialog_more_info_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //action_homeFragment_to_meetingInfoFragment
+                dismiss();
+                final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",meeting.getId());
+                String type = meeting instanceof Meeting ? "Public": "Group";
+                bundle.putString("type",type);
+                String groupId = meeting instanceof Meeting ? "Public": meeting.getId();
+                bundle.putString("groupId",groupId);
+                navController.navigate(R.id.action_homeFragment_to_meetingInfoFragment, bundle);
+            }
+        });
+
         mViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<ArrayList<User>>() {
             @Override
             public void onChanged(ArrayList<User> users) {
                 adapter.notifyDataSetChanged();
             }
         });
+
+
         return view;
     }
 

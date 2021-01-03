@@ -13,30 +13,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
-import com.example.meetapp.ui.MainActivityViewModel;
+import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class CalenderBarFragment extends Fragment {
 
-    private CalenderBarViewModel mViewModel;
+    private MyMeetingsViewModel mViewModel;
     private CalenderBarAdapter adapter;
     private ArrayList<Date> days;
-    LinearLayoutManager llm;
+    private LinearLayoutManager llm;
     private int position;
     private RecyclerView recyclerView;
     private Date today;
+    private Fragment parent;
 
-    public static CalenderBarFragment newInstance() {
-        return new CalenderBarFragment();
+    public CalenderBarFragment(MyMeetingsViewModel mViewModel, Fragment parent) {
+        this.mViewModel = mViewModel;
+        this.parent= parent;
     }
 
     @Override
@@ -84,16 +86,15 @@ public class CalenderBarFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-
         return  view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(CalenderBarViewModel.class);
-        mViewModel.init(ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class),null); // TODO implements changes
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        mViewModel = ViewModelProviders.of(this).get(CalenderBarViewModel.class);
+//        mViewModel.init(ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class),null); // TODO implements changes
+//    }
 
 
     public void add30Days(){
@@ -113,15 +114,17 @@ public class CalenderBarFragment extends Fragment {
                 holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
                 holder = (RecyclerView.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
                 holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
+
             }
-//            Log.d("BACKGROUNGISSUE", "setViewBackground: " + position + "  " + i);
-//            llm.findViewByPosition(position).setBackgroundResource(R.drawable.calender_item_background);
             position = i;
-//            llm.findViewByPosition(position).setBackgroundResource(R.drawable.selected_calender_item_background);
         }
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public void onClickDate(int index, String type){
+        OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)parent;
+        ((OnClickInRecyclerView) parent).onClickInRecyclerView(index,type);
     }
 
 }

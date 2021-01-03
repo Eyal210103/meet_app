@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.meetapp.R;
-import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBarFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -44,8 +43,8 @@ public class GroupMeetingsFragment extends Fragment {
 
      //   initGoogleMap(savedInstanceState);
 
-        CalenderBarFragment calenderBarFragment = new CalenderBarFragment();
-        requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container_group, calenderBarFragment).commit();
+//        CalenderBarFragment calenderBarFragment = new CalenderBarFragment(mViewModel);
+//        requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container_group, calenderBarFragment).commit();
         return view;
     }
 

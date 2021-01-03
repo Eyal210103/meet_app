@@ -14,16 +14,17 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBarFragment;
+import com.example.meetapp.ui.meetings.SelectDateFragment;
+import com.example.meetapp.ui.meetings.meetingInfo.MeetingInfoFragment;
 
-public class MyMeetingsFragment extends Fragment {
+public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerView {
 
-    private MainActivityViewModel mViewModel;
+    private MyMeetingsViewModel mViewModel;
 
-    public static MyMeetingsFragment newInstance() {
-        return new MyMeetingsFragment();
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -31,22 +32,11 @@ public class MyMeetingsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.my_meetings_fragment, container, false);
 
-        CalenderBarFragment calenderBarFragment = new CalenderBarFragment();
-        getFragmentManager().beginTransaction().add(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
+        CalenderBarFragment calenderBarFragment = new CalenderBarFragment(mViewModel,this);
+        getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
 
-//        CalenderBar calenderBar = new CalenderBar(this, R.layout.speical_calender_item, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//        calenderBar.setMeetings(mViewModel.getMeetingsList(),mViewModel.getGroupsMeetingsList());
-//
-//        calenderBar.setNextDaysButton(view.findViewById(R.id.group_meetings_arrow_forward_imageView));
-//        calenderBar.setPreviousDaysButton(view.findViewById(R.id.group_meetings_arrow_back_imageView));
-//        RecyclerView recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
-//        calenderBar.setRecyclerView(recyclerView);
-//        calenderBar.setMonthTextView(view.findViewById(R.id.group_meetings_month_calender_textView));
+        SelectDateFragment selectDateFragment = new SelectDateFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container,selectDateFragment).commit();
 
         view.findViewById(R.id.my_meetings_create_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +52,41 @@ public class MyMeetingsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MyMeetingsViewModel.class);
+        mViewModel.init(mainActivityViewModel,null);
     }
 
+
+    @Override
+    public void onClickInRecyclerView(Object value, String action) {
+        if (action.equals("None")){
+            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
+        }
+        else if (action.equals("Public")) {
+            MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
+            Meeting meeting = mViewModel.getMeetings().getValue().get(((int)value)-1).getValue();
+            Bundle bundle = new Bundle();
+            bundle.putString("id",meeting.getId());
+            String type = meeting instanceof Meeting ? "Public" : "Group";
+            bundle.putString("type", type);
+            String groupId = meeting instanceof Meeting ? "Public" : meeting.getId();
+            bundle.putString("groupId", groupId);
+            meetingInfoFragment.setArguments(bundle);
+            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+        }
+        else if (action.equals("Group")){
+            MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
+            Meeting meeting = mViewModel.getGroupMeetings().getValue().get(((int)value)-1).getValue();
+            Bundle bundle = new Bundle();
+            bundle.putString("id",meeting.getId());
+            String type = meeting instanceof Meeting ? "Public" : "Group";
+            bundle.putString("type", type);
+            String groupId = meeting instanceof Meeting ? "Public" : meeting.getId();
+            bundle.putString("groupId", groupId);
+            meetingInfoFragment.setArguments(bundle);
+            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+        }
+
+    }
 }

@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginBottom="7dp"
     android:backgroundTint="@color/tilesBackground"
-    android:layoutAnimation="@anim/recycler_horizontal_fast"
+    android:layoutAnimation="@anim/recycler_horizontal"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView

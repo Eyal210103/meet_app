@@ -57,6 +57,8 @@ public class GroupMeeting extends Meeting {
         map.put("description",description);
         map.put("latitude",latitude);
         map.put("longitude",longitude);
+        map.put("isOpen",isOpen);
+        map.put("groupId",groupId);
         reference.updateChildren(map);
         if (isOpen){
             FirebaseDatabase.getInstance().getReference().child("Meetings").child("Group").child(this.id).setValue(this.groupId);

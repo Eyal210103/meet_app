@@ -83,7 +83,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 isGood = true;
                 isRegular = true;
                 if (dateToIndexMHash.containsKey(position)){
-                //    iM = dateToIndexMHash.get(date.getTime());
+                    iM = dateToIndexMHash.get(date.getTime());
                 }
                 else{
                     dateToIndexMHash.put(position,indexM);
@@ -118,22 +118,17 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             isRegular = true;
         }
 
-        Log.d("", "onBindViewHolder: " + isGood + "   " + position + "  " + date.toString() + dateToIndexGHash.toString() + dateToIndexGHash.containsKey(position) +  "   " + dateToIndexMHash.toString() + dateToIndexMHash.containsKey(position));
-
         if (isGood){
-//            if (isRegular && isGroup){
-//                setDotsColor(3,holder);
-//            }else if (isRegular){
-//                setDotsColor(2,holder);
-//            }else if (isGroup){
-//                setDotsColor(1,holder);
-//            }
             visibleDots(holder);
         }else {
             invisibleDots(holder);
         }
 
 
+        boolean finalIsGroup = isGroup;
+        boolean finalIsRegular = isRegular;
+        int finalIM = iM;
+        int finalIG = iG;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -142,6 +137,15 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 onClickListener.onClick(v);
                 selected = position;
                 context.setViewBackground(position);
+
+                if (finalIsGroup){
+                    context.onClickDate(finalIG,"Group");
+                }else if(finalIsRegular){
+                    context.onClickDate(finalIM,"Public");
+                }else {
+                    context.onClickDate(-1,"None");
+                }
+                //context.onClickDate();
             }
         });
         if (position != selected){
@@ -180,7 +184,6 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 holder.dot3.setBackgroundResource(R.drawable.red_dot);
                 return;
             case 3:
-                return;
         }
     }
 

@@ -8,6 +8,15 @@
     tools:context=".ui.socialMenu.myMeetings.MyMeetingsFragment">
 
 
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/backgroundSec"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calender_bar_fragment_container" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/calender_bar_fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,6 +24,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="130dp"
         android:layout_width="match_parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/meetingInfo_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/my_meetings_create_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+    </androidx.fragment.app.FragmentContainerView>
 
     <Button
         android:drawableStart="@drawable/add_meeting_icon_24"
