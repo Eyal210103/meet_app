@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBarFragment;
@@ -24,7 +25,7 @@ import com.example.meetapp.ui.meetings.meetingInfo.MeetingInfoFragment;
 public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerView {
 
     private MyMeetingsViewModel mViewModel;
-
+    private CalenderBarFragment calenderBarFragment;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -32,7 +33,7 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
 
         View view = inflater.inflate(R.layout.my_meetings_fragment, container, false);
 
-        CalenderBarFragment calenderBarFragment = new CalenderBarFragment(mViewModel,this);
+        calenderBarFragment = new CalenderBarFragment(mViewModel,this);
         getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
 
         SelectDateFragment selectDateFragment = new SelectDateFragment();
@@ -63,30 +64,34 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
         if (action.equals("None")){
             getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
         }
-        else if (action.equals("Public")) {
+        else {
             MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
-            Meeting meeting = mViewModel.getMeetings().getValue().get(((int)value)-1).getValue();
-            Bundle bundle = new Bundle();
-            bundle.putString("id",meeting.getId());
-            String type = meeting instanceof Meeting ? "Public" : "Group";
-            bundle.putString("type", type);
-            String groupId = meeting instanceof Meeting ? "Public" : meeting.getId();
-            bundle.putString("groupId", groupId);
-            meetingInfoFragment.setArguments(bundle);
-            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+            if (value == null) {
+                getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
+                return;
+            }
+            String key = (String) value;
+            if (action.equals("Group")) {
+                GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get(key).getValue();
+                Bundle bundle = new Bundle();
+                bundle.putString("id", meeting.getId());
+                bundle.putString("type", "Group");
+                String groupId = ((GroupMeeting) meeting).getGroupId();
+                bundle.putString("groupId", groupId);
+                meetingInfoFragment.setArguments(bundle);
+                getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+            }
+            else if (action.equals("Public")) {
+                Meeting meeting = mViewModel.getMeetings().getValue().get(key).getValue();
+                Bundle bundle = new Bundle();
+                bundle.putString("id", meeting.getId());
+                bundle.putString("type", "Public");
+                bundle.putString("groupId", "");
+                meetingInfoFragment.setArguments(bundle);
+                getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+            }
         }
-        else if (action.equals("Group")){
-            MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
-            Meeting meeting = mViewModel.getGroupMeetings().getValue().get(((int)value)-1).getValue();
-            Bundle bundle = new Bundle();
-            bundle.putString("id",meeting.getId());
-            String type = meeting instanceof Meeting ? "Public" : "Group";
-            bundle.putString("type", type);
-            String groupId = meeting instanceof Meeting ? "Public" : meeting.getId();
-            bundle.putString("groupId", groupId);
-            meetingInfoFragment.setArguments(bundle);
-            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
-        }
+
 
     }
 }

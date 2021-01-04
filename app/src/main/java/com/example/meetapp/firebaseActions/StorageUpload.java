@@ -1,14 +1,12 @@
 package com.example.meetapp.firebaseActions;
 
-import android.content.Context;
 import android.net.Uri;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
-import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
+import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
+import com.example.meetapp.callbacks.PhotoUploadErrorListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

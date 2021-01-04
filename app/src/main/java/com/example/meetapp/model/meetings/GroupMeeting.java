@@ -17,6 +17,36 @@ public class GroupMeeting extends Meeting {
         this.groupId = groupId;
     }
 
+    @Override
+    public void setLatitude(double latitude) {
+        super.setLatitude(latitude);
+    }
+
+    @Override
+    public void setLongitude(double longitude) {
+        super.setLongitude(longitude);
+    }
+
+    @Override
+    public void setSubject(String subject) {
+        super.setSubject(subject);
+    }
+
+    @Override
+    public void setMillis(long millis) {
+        super.setMillis(millis);
+    }
+
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+    }
+
+    @Override
+    public void setDescription(String description) {
+        super.setDescription(description);
+    }
+
     public GroupMeeting() {
         super();
     }
@@ -47,6 +77,12 @@ public class GroupMeeting extends Meeting {
     }
 
     @Override
+    public void confirmUserArrival(String Uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Meetings").child(this.id).child("whoComing");
+        reference.child(Uid).setValue(Uid);
+    }
+
+    @Override
     public void updateOrAddReturnId() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Meetings").push();
         this.setId(reference.getKey());
@@ -63,6 +99,5 @@ public class GroupMeeting extends Meeting {
         if (isOpen){
             FirebaseDatabase.getInstance().getReference().child("Meetings").child("Group").child(this.id).setValue(this.groupId);
         }
-
     }
 }

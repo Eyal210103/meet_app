@@ -22,9 +22,12 @@ public class MeetingInfoViewModel extends ViewModel {
         users = meetingInfoRepo.loadWhoComing();
         if (type.equals("Public")) {
             publicM = meetingInfoRepo.loadPublicMeeting();
+            users = meetingInfoRepo.loadWhoComing();
+
             groupM = null;
-        }else {
+        }else if (type.equals("Group")){
             groupM = meetingInfoRepo.loadGroupMeeting(groupId);
+            users = meetingInfoRepo.loadWhoComing(groupId);
             publicM = null;
         }
     }

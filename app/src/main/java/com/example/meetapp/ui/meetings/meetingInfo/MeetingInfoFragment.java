@@ -85,7 +85,7 @@ public class MeetingInfoFragment extends Fragment {
                     updateUI(meeting);
                 }
             });
-        }else {
+        }else if(type.equals("Group")){
             mViewModel.getGroupM().observe(getViewLifecycleOwner(), new Observer<GroupMeeting>() {
                 @Override
                 public void onChanged(GroupMeeting groupMeeting) {
@@ -115,35 +115,27 @@ public class MeetingInfoFragment extends Fragment {
     }
 
 
-    private void updateUI(Meeting meeting){
+    private void updateUI(Meeting meeting) {
         TextView day = view.findViewById(R.id.meeting_info_tv_day_of_month_calendar_item);
         TextView dayOfWeek = view.findViewById(R.id.meeting_info_tv_day_of_week_calendar_item);
         TextView month = view.findViewById(R.id.meeting_info_tv_day_calendar_item);
         TextView hour = view.findViewById(R.id.meeting_info_hour_textView);
         TextView location = view.findViewById(R.id.meeting_info_location_textView);
         TextView description = view.findViewById(R.id.meeting_info_desc_textView);
+        Date date = new Date(meeting.getMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-        try {
-            Date date = new Date(meeting.getMillis());
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-
-            day.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
-            dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
-            month.setText(getThreeLetterMonth(calendar.get(Calendar.MONTH)));
-            hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
-            description.setText(meeting.getDescription());
-            location.setText(getAddress(meeting.getLocation()));
-            mMap.getUiSettings().setAllGesturesEnabled(true);
-            mMap.addMarker(new MarkerOptions().position(new LatLng(meeting.getLatitude(),meeting.getLongitude())));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(meeting.getLatitude(),meeting.getLongitude())));
-            mMap.moveCamera(CameraUpdateFactory.zoomIn());
-            mMap.getUiSettings().setAllGesturesEnabled(false);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
+        day.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
+        dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
+        month.setText(getThreeLetterMonth(calendar.get(Calendar.MONTH)));
+        hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
+        description.setText(meeting.getDescription());
+        location.setText(getAddress(meeting.getLocation()));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
+        mMap.moveCamera(CameraUpdateFactory.zoomIn());
+        //mMap.getUiSettings().setAllGesturesEnabled(false);
 
     }
 

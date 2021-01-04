@@ -1,4 +1,4 @@
-package com.example.meetapp.uploadsListeners;
+package com.example.meetapp.callbacks;
 
 public interface PhotoUploadCompleteListener {
     void onPhotoUploadComplete();

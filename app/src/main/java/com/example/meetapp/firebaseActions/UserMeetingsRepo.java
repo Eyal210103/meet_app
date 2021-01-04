@@ -22,9 +22,12 @@ import java.util.HashMap;
 public class UserMeetingsRepo {
     private static final String TAG = "USERMREPO";
     private ArrayList<LiveData<GroupMeeting>> groupsMeetings = new ArrayList<>();
-    private ArrayList<LiveData<Meeting>> publicMeetings = new ArrayList<>();
+    private HashMap<String,LiveData<Meeting>> allMeetings = new HashMap<>();
     private HashMap<String,Integer> publicHash = new HashMap<>();
-    private HashMap<String,Integer> groupHash = new HashMap<>();
+    private HashMap<String,String> meetingToGroup = new HashMap<>();
+  //  private HashMap<String,Integer> groupHash = new HashMap<>();
+
+    MutableLiveData<HashMap<String,LiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
 
     private static UserMeetingsRepo instance =  null;
 
@@ -37,9 +40,14 @@ public class UserMeetingsRepo {
         return instance;
     }
 
-    public LiveData<ArrayList<LiveData<GroupMeeting>>> getGroupsMeetings(){
-        MutableLiveData<ArrayList<LiveData<GroupMeeting>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(groupsMeetings);
+    public LiveData<HashMap<String,LiveData<Meeting>>> getAllMeetings(){
+        mutableLiveData.setValue(allMeetings);
+        getPublicMeetings();
+        getGroupsMeetings();
+        return  mutableLiveData;
+    }
+
+    private void getGroupsMeetings(){
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Meetings").child("Group").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -49,11 +57,10 @@ public class UserMeetingsRepo {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
-                        MutableLiveData<GroupMeeting> meetingMutableLiveData = new MutableLiveData<>();
+                        MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                         meetingMutableLiveData.setValue(meeting);
-                        int i = sortGroupMeeting(meeting);
-                        groupsMeetings.add(i,meetingMutableLiveData);
-                        mutableLiveData.postValue(groupsMeetings);
+                        allMeetings.put(meeting.getDateString(),meetingMutableLiveData);
+                        mutableLiveData.postValue(allMeetings);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {}
@@ -68,13 +75,9 @@ public class UserMeetingsRepo {
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
-       // mutableLiveData.
-        return mutableLiveData;
     }
 
-    public LiveData<ArrayList<LiveData<Meeting>>> getPublicMeetings(){
-        MutableLiveData<ArrayList<LiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(publicMeetings);
+    private void getPublicMeetings(){
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Meetings").child("Public").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -87,9 +90,9 @@ public class UserMeetingsRepo {
                             MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                             meetingMutableLiveData.setValue(meeting);
                             Log.d(TAG, "onDataChange: --------------------------------------------------------" + meeting.toString());
-                            int i = sortPublicMeeting(meeting);
-                            publicMeetings.add(i, meetingMutableLiveData);
-                            mutableLiveData.postValue(publicMeetings);
+                            //int i = sortMeetings(meeting);
+                            allMeetings.put(meeting.getDateString(),meetingMutableLiveData);
+                            mutableLiveData.postValue(allMeetings);
                         }
                     }
                     @Override
@@ -106,39 +109,37 @@ public class UserMeetingsRepo {
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
-        // mutableLiveData.
-        return mutableLiveData;
     }
 
-    private int sortPublicMeeting(Meeting m){
+    private int sortMeetings(Meeting m){
         if (publicHash.containsKey(m.getId())) {
-            publicMeetings.remove(publicHash.get(m.getId()));
+            allMeetings.remove(publicHash.get(m.getId()));
         }
-        if (publicMeetings.isEmpty()){
+        if (allMeetings.isEmpty()){
             return 0;
         }
-        for (int i = 0; i < publicMeetings.size(); i++) {
-            if (publicMeetings.get(i).getValue().getMillis() > m.getMillis()){
+        for (int i = 0; i < allMeetings.size(); i++) {
+            if (allMeetings.get(i).getValue().getMillis() > m.getMillis()){
                 publicHash.put(m.getId(),i);
                return i;
             }
         }
-        return publicMeetings.size();
+        return allMeetings.size();
     }
 
-    private int sortGroupMeeting(GroupMeeting m){
-        if (groupHash.containsKey(m.getId())) {
-            groupsMeetings.remove(groupHash.get(m.getId()));
-        }
-        if (groupsMeetings.isEmpty()){
-            return 0;
-        }
-        for (int i = 0; i < groupsMeetings.size(); i++) {
-            if (groupsMeetings.get(i).getValue().getMillis() > m.getMillis()){
-                groupHash.put(m.getId(),i);
-                return i;
-            }
-        }
-        return groupsMeetings.size();
-    }
+//    private int sortGroupMeeting(GroupMeeting m){
+//        if (groupHash.containsKey(m.getId())) {
+//            groupsMeetings.remove(groupHash.get(m.getId()));
+//        }
+//        if (groupsMeetings.isEmpty()){
+//            return 0;
+//        }
+//        for (int i = 0; i < groupsMeetings.size(); i++) {
+//            if (groupsMeetings.get(i).getValue().getMillis() > m.getMillis()){
+//                groupHash.put(m.getId(),i);
+//                return i;
+//            }
+//        }
+//        return groupsMeetings.size();
+//    }
 }

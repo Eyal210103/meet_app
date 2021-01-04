@@ -147,6 +147,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     String gId = ((MutableLiveData<Group>)spinnerSelectGroup.getSelectedItem()).getValue().getId();
                     meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
+                    meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(),"Group" ,gId);
                 }else {
                     Meeting meeting = new Meeting();

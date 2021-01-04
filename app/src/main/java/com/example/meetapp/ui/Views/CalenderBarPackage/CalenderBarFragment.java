@@ -18,12 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class CalenderBarFragment extends Fragment {
 
@@ -52,12 +52,7 @@ public class CalenderBarFragment extends Fragment {
         ImageView arrowPrevIV = view.findViewById(R.id.group_meetings_arrow_back_imageView);
         ImageView arrowNextIV = view.findViewById(R.id.group_meetings_arrow_forward_imageView);
 
-        this.adapter = new CalenderBarAdapter(this, this.days, mViewModel.getMeetings().getValue(), mViewModel.getGroupMeetings().getValue(), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        this.adapter = new CalenderBarAdapter(this, this.days, mViewModel.getMeetings().getValue());
         llm = new LinearLayoutManager(this.requireActivity());
         llm.setOrientation(RecyclerView.HORIZONTAL);
 
@@ -73,19 +68,19 @@ public class CalenderBarFragment extends Fragment {
             }
         });
 
-        mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Meeting>>>() {
+        mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, LiveData<Meeting>>>() {
             @Override
-            public void onChanged(ArrayList<LiveData<Meeting>> liveData) {
+            public void onChanged(HashMap<String, LiveData<Meeting>> stringLiveDataHashMap) {
                 adapter.notifyDataSetChanged();
             }
         });
 
-        mViewModel.getGroupMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<GroupMeeting>>>() {
-            @Override
-            public void onChanged(ArrayList<LiveData<GroupMeeting>> liveData) {
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        mViewModel.getGroupMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<GroupMeeting>>>() {
+//            @Override
+//            public void onChanged(ArrayList<LiveData<GroupMeeting>> liveData) {
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
         return  view;
     }
 
@@ -122,7 +117,7 @@ public class CalenderBarFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    public void onClickDate(int index, String type){
+    public void onClickDate(String index, String type){
         OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)parent;
         ((OnClickInRecyclerView) parent).onClickInRecyclerView(index,type);
     }

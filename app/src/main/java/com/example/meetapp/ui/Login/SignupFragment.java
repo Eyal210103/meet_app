@@ -14,11 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
+import com.example.meetapp.callbacks.PhotoUploadErrorListener;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.ui.MainActivity;
-import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
-import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;

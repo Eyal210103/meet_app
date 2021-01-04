@@ -5,6 +5,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Meeting implements Serializable {
@@ -15,6 +17,10 @@ public class Meeting implements Serializable {
     protected double latitude;
     protected double longitude;
 
+
+    public static String dateToString(Date date){
+        return "" + date.getYear() + date.getMonth() + date.getDay();
+    }
 
     public Meeting() {}
 
@@ -75,6 +81,15 @@ public class Meeting implements Serializable {
 //        this.latitude = location.latitude;
 //        this.longitude = location.longitude;
 //    }
+
+
+    public String getDateString(){
+        Date date = new Date(this.millis);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return "" + calendar.get(Calendar.YEAR) +  calendar.get(Calendar.MONTH) +  calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
 
     public String getDescription() {
         return description;

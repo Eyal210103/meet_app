@@ -25,24 +25,14 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
 
     private CalenderBarFragment context;
     private ArrayList<Date> days;
-    private ArrayList<LiveData<Meeting>> meetings;
-    private HashMap<Integer, Integer> dateToIndexMHash ;
-    private HashMap<Integer, Integer> dateToIndexGHash;
-    private ArrayList<LiveData<GroupMeeting>> groupMeetings;
-    private View.OnClickListener onClickListener;
-    private int selected;
-    private int indexM, indexG;
+    private HashMap<String, LiveData<Meeting>> meetings;
 
-    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, ArrayList<LiveData<Meeting>> meetings, ArrayList<LiveData<GroupMeeting>> groupMeetings, View.OnClickListener onClickDate) {
+    private int selected;
+
+    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String ,LiveData<Meeting>> meetings) {
         this.context = context;
         this.days = days;
         this.meetings = meetings;
-        this.groupMeetings = groupMeetings;
-        this.onClickListener = onClickDate;
-        indexG = 0;
-        indexM = 0;
-        dateToIndexMHash = new HashMap<>();
-        dateToIndexGHash = new HashMap<>();
     }
 
     @NonNull
@@ -56,99 +46,63 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     @Override
     public void onBindViewHolder(@NonNull CalenderBarViewHolder holder, int position) {
 
+        Date date = days.get(position);
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        holder.day.setText(getThreeLetterDay(calendar.get(Calendar.DAY_OF_WEEK)));
+        holder.date.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
+        holder.invisibleDots();
+
+        String key = "" + calendar.get(java.util.Calendar.YEAR) +  calendar.get(java.util.Calendar.MONTH) +  calendar.get(java.util.Calendar.DAY_OF_MONTH);
+
+
         boolean isGood = false;
         boolean isRegular = false;
         boolean isGroup =false;
-        int iM = indexM;
-        int iG = indexG;
 
-        Date date = days.get(position);
+        if (!meetings.isEmpty()){
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(date.getYear(),date.getMonth(),date.getDate());
-        holder.day.setText(getThreeLetterDay(calendar.get(Calendar.DAY_OF_WEEK)));
-        holder.date.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
-        invisibleDots(holder);
-
-        if (!meetings.isEmpty() && meetings.size() > indexM) {
-            Date mDate = new Date(meetings.get(indexM).getValue().getMillis());
-
-            Log.d("", "onBindViewHolder: " + mDate.toString() + "  " + date.toString());
-            Log.d("TAG", "onBindViewHolder: " + (date.getYear() == mDate.getYear() && date.getMonth() == mDate.getMonth() && date.getDay() == mDate.getDay()));
-
-            if (date.compareTo(mDate) > 0) { //It returns a value greater than 0 if this Date is after the Date argument
-                indexM++;
-            }
-            if (date.getYear() == mDate.getYear() && date.getMonth() == mDate.getMonth() && date.getDay() == mDate.getDay()) {
+            if (meetings.containsKey(key)){
                 isGood = true;
-                isRegular = true;
-                if (dateToIndexMHash.containsKey(position)){
-                    iM = dateToIndexMHash.get(date.getTime());
+                if (meetings.get(key).getValue() instanceof GroupMeeting) {
+                    isGroup = true;
+                }else {
+                    isRegular = true;
                 }
-                else{
-                    dateToIndexMHash.put(position,indexM);
-                    iM = indexM;
-                }
+                Log.d("CalenderAdapter", "onBindViewHolder: " + key + "   "+ position  + "    "+ meetings.get(key).getValue().getDateString());
             }
         }
 
-        if (!groupMeetings.isEmpty() && groupMeetings.size() > indexG) {
-            Date gDate = new Date(groupMeetings.get(indexG).getValue().getMillis());
-            if (date.compareTo(gDate) > 0) {
-                indexG++;
-            }
-            if (date.getYear() == gDate.getYear() && date.getMonth() == gDate.getMonth() && date.getDay() == gDate.getDay()) {
-                isGood = true;
-                isGroup = true;
-                if (dateToIndexGHash.containsKey(date.getTime())){
-                    iG = dateToIndexGHash.get(date.getTime());
-                }else{
-                    dateToIndexGHash.put(position,indexG);
-                    iG = indexG;
-                }
-            }
-        }
-
-        if (dateToIndexGHash.containsKey(position)) {
-            isGood = true;
-            isGroup = true;
-        }
-        if (dateToIndexMHash.containsKey(position)) {
-            isGood = true;
-            isRegular = true;
-        }
 
         if (isGood){
-            visibleDots(holder);
+            holder.visibleDots();
         }else {
-            invisibleDots(holder);
+            holder.invisibleDots();
         }
-
 
         boolean finalIsGroup = isGroup;
         boolean finalIsRegular = isRegular;
-        int finalIM = iM;
-        int finalIG = iG;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
            //     holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
-                onClickListener.onClick(v);
                 selected = position;
                 context.setViewBackground(position);
-
                 if (finalIsGroup){
-                    context.onClickDate(finalIG,"Group");
+                    context.onClickDate(key,"Group");
                 }else if(finalIsRegular){
-                    context.onClickDate(finalIM,"Public");
+                    context.onClickDate(key,"Public");
                 }else {
-                    context.onClickDate(-1,"None");
+                    context.onClickDate("","None");
                 }
                 //context.onClickDate();
             }
         });
-        if (position != selected){
+
+        if (position != selected) {
             holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
         }
 
@@ -187,17 +141,6 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         }
     }
 
-    private void visibleDots(CalenderBarViewHolder holder){
-        holder.linearLayout.setVisibility(View.VISIBLE);
-        holder.dot1.setVisibility(View.VISIBLE);
-        holder.dot2.setVisibility(View.VISIBLE);
-        holder.dot3.setVisibility(View.VISIBLE);
-    }
-    private void invisibleDots(CalenderBarViewHolder holder){
-        holder.dot1.setVisibility(View.INVISIBLE);
-        holder.dot2.setVisibility(View.INVISIBLE);
-        holder.dot3.setVisibility(View.INVISIBLE);
-    }
 
     public String getThreeLetterDay(int day){
         switch (day){
@@ -240,6 +183,18 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             dot1 = itemView.findViewById(R.id.dot1);
             dot2 = itemView.findViewById(R.id.dot2);
             dot3 = itemView.findViewById(R.id.dot3);
+        }
+
+        private void visibleDots(){
+            this.linearLayout.setVisibility(View.VISIBLE);
+            this.dot1.setVisibility(View.VISIBLE);
+            this.dot2.setVisibility(View.VISIBLE);
+            this.dot3.setVisibility(View.VISIBLE);
+        }
+        private void invisibleDots(){
+            this.dot1.setVisibility(View.INVISIBLE);
+            this.dot2.setVisibility(View.INVISIBLE);
+            this.dot3.setVisibility(View.INVISIBLE);
         }
     }
 }

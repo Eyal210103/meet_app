@@ -21,11 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
+import com.example.meetapp.callbacks.PhotoUploadErrorListener;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.ui.createMeeting.SubjectAdapter;
-import com.example.meetapp.uploadsListeners.PhotoUploadCompleteListener;
-import com.example.meetapp.uploadsListeners.PhotoUploadErrorListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
