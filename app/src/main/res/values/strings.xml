@@ -1,23 +1,23 @@
 <resources>
-    <string name="app_name">MeetApp</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="home" translatable="true">Home</string>
-    <string name="groups" translatable="true">Groups</string>
-    <string name="settings" translatable="true">Settings</string>
-    <string name="choose_image" translatable="true">Choose Image</string>
-    <string name="group_name" translatable="true">Group Name</string>
-    <string name="group_s_subject">Group\'s Subject</string>
-    <string name="create_group" translatable="true">Create Group</string>
-    <string name="create" translatable="true">Create</string>
-    <string name="join" translatable="true">Join</string>
-    <string name="type_locations_or_subjects" translatable="true">Type Locations Or Subjects</string>
-    <string name="type_a_message" translatable="true">Type A Message</string>
-    <string name="next_meeting" translatable="true">Next Meeting</string>
-    <string name="login" translatable="true">Login</string>ֺ
-    <string name="email" translatable="true">Email</string>
+    <string name="app_name" translatable="false">MeetApp</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="home" translatable="false">Home</string>
+    <string name="groups" translatable="false">Groups</string>
+    <string name="settings" translatable="false">Settings</string>
+    <string name="choose_image" translatable="false">Choose Image</string>
+    <string name="group_name" translatable="false">Group Name</string>
+    <string name="group_s_subject" translatable="false">Group\'s Subject</string>
+    <string name="create_group" translatable="false">Create Group</string>
+    <string name="create" translatable="false">Create</string>
+    <string name="join" translatable="false">Join</string>
+    <string name="type_locations_or_subjects" translatable="false">Type Locations Or Subjects</string>
+    <string name="type_a_message" translatable="false">Type A Message</string>
+    <string name="next_meeting" translatable="false">Next Meeting</string>
+    <string name="login" translatable="false">Login</string>ֺ
+    <string name="email" translatable="false">Email</string>
     <string name="password" translatable="true">Password</string>
     <string name="hello_blank_fragment" translatable="true">Hello blank fragment</string>
     <string name="new_here_click_here_to_sign_up" translatable="true">New Here? Click Here To Sign Up</string>

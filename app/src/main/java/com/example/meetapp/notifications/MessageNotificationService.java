@@ -49,7 +49,6 @@ public class MessageNotificationService {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
     }
 
     public void notificationListener(String groupId){
@@ -112,5 +111,6 @@ public class MessageNotificationService {
         });
 
     }
+
 
 }

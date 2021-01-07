@@ -1,5 +1,6 @@
 package com.example.meetapp.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,7 +21,10 @@ import com.example.meetapp.ui.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class FirebaseMessaging extends FirebaseMessagingService {
+
+    Intent intent;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -45,7 +49,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
-        Intent intent = new Intent(this, MainActivity.class);
+        intent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userId", user);
         intent.putExtras(bundle);
@@ -92,5 +96,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         notificationManager.notify(0, builder.build());
 
     }
+
+
 
 }
