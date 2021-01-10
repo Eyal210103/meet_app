@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.User;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                     final int index = position;
-                    menu.add(index,0,0,"View Profile").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    menu.add(index,0,0, ConstantValues.MENU_OPTION_VIEW_PROFILE).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             //Group group = groups.get(index).getValue();
@@ -58,14 +59,14 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
                         }
                     });
                     if (managers){
-                        menu.add(index,1,1,"Set As Manager").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        menu.add(index,1,1,ConstantValues.MENU_OPTION_SET_AS_MANAGER).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 //Group group = groups.get(index).getValue();
                                 return false;
                             }
                         });
-                        menu.add(index,2,2,"Remove From Group").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        menu.add(index,2,2,ConstantValues.MENU_OPTION_REMOVE_FROM_GROUP).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 //Group group = groups.get(index).getValue();

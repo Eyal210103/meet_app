@@ -1,5 +1,6 @@
 package com.example.meetapp.ui.meetings.meetingInfo;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
@@ -50,10 +52,11 @@ public class MeetingInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MeetingInfoViewModel.class);
-        String id  = getArguments().getString("id");
-        type = getArguments().getString("type");
-        String groupId = getArguments().getString("groupId","");
+        String id  = getArguments().getString(ConstantValues.BUNDLE_ID);
+        type = getArguments().getString(ConstantValues.BUNDLE_TYPE);
+        String groupId = getArguments().getString(ConstantValues.BUNDLE_GROUP_ID,"");
         mViewModel.init(id,groupId,type);
+
     }
 
     @Override
@@ -78,14 +81,14 @@ public class MeetingInfoFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-        if (type.equals("Public")){
+        if (type.equals(ConstantValues.MEETING_TYPE_PUBLIC)){
             mViewModel.getPublicM().observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                 @Override
                 public void onChanged(Meeting meeting) {
                     updateUI(meeting);
                 }
             });
-        }else if(type.equals("Group")){
+        }else if(type.equals(ConstantValues.MEETING_TYPE_GROUP)){
             mViewModel.getGroupM().observe(getViewLifecycleOwner(), new Observer<GroupMeeting>() {
                 @Override
                 public void onChanged(GroupMeeting groupMeeting) {
@@ -115,6 +118,7 @@ public class MeetingInfoFragment extends Fragment {
     }
 
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void updateUI(Meeting meeting) {
         TextView day = view.findViewById(R.id.meeting_info_tv_day_of_month_calendar_item);
         TextView dayOfWeek = view.findViewById(R.id.meeting_info_tv_day_of_week_calendar_item);
@@ -139,6 +143,8 @@ public class MeetingInfoFragment extends Fragment {
 
     }
 
+
+    //TODO
     public String getDayOfWeek(int day){
         switch (day){
             case android.icu.util.Calendar.SUNDAY:

@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.ui.MainActivityViewModel;
@@ -45,7 +46,8 @@ public class GroupInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString("group")),getArguments().getString("group"));
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString(ConstantValues.BUNDLE_GROUP_ID))
+                ,getArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
     }
 
     @Override
@@ -70,7 +72,10 @@ public class GroupInfoFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
 
-        String[] titles = {"Dashboard" , "Chat" , "Meetings"};
+        String[] titles = {getResources().getString(R.string.title_dashboard)
+                , getResources().getString(R.string.chats)
+                , getResources().getString(R.string.meetings)};
+
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -108,7 +113,7 @@ public class GroupInfoFragment extends Fragment {
             public void onClick(View v) {
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 Bundle bundle = new Bundle();
-                bundle.putString("id",getArguments().getString("group"));
+                bundle.putString(ConstantValues.BUNDLE_GROUP_ID,getArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
                 navController.navigate(R.id.action_groupInfoFragment_to_groupSettingsFragment, bundle);
             }
         });
@@ -129,17 +134,17 @@ public class GroupInfoFragment extends Fragment {
 
     private int getSubjectIcon(String subject){
         switch (subject){
-            case "Restaurant":
+            case ConstantValues.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
-            case "Basketball":
+            case ConstantValues.SUBJECT_BASKETBALL:
                 return R.drawable.basketball;
-            case "Soccer":
+            case ConstantValues.SUBJECT_SOCCER:
                 return R.drawable.soccer;
-            case "Football":
+            case ConstantValues.SUBJECT_FOOTBALL:
                 return R.drawable.football;
-            case "Video Games":
+            case ConstantValues.SUBJECT_VIDEO_GAMES:
                 return R.drawable.videogame;
-            case "Meeting":
+            case ConstantValues.SUBJECT_MEETING:
                 return R.drawable.meetingicon;
             default:
                 return R.drawable.groupsicon;

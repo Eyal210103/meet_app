@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.MeetingInfoRepo;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
@@ -20,12 +21,12 @@ public class MeetingInfoViewModel extends ViewModel {
     public void init(String id, String groupId,  String type){
         MeetingInfoRepo meetingInfoRepo = new MeetingInfoRepo(id);
         users = meetingInfoRepo.loadWhoComing();
-        if (type.equals("Public")) {
+        if (type.equals(ConstantValues.MEETING_TYPE_PUBLIC)) {
             publicM = meetingInfoRepo.loadPublicMeeting();
             users = meetingInfoRepo.loadWhoComing();
 
             groupM = null;
-        }else if (type.equals("Group")){
+        }else if (type.equals(ConstantValues.MEETING_TYPE_GROUP)){
             groupM = meetingInfoRepo.loadGroupMeeting(groupId);
             users = meetingInfoRepo.loadWhoComing(groupId);
             publicM = null;

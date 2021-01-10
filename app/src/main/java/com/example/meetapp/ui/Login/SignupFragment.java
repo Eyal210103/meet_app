@@ -38,7 +38,6 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
     View view;
     ProgressDialog progressDialog;
 
-    //https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +104,9 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                             Thread thread = new Thread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    StorageUpload.uploadProfileImage(SignupFragment.this,CurrentUser.getInstance().getId(),imageUri);
+                                                    StorageUpload.uploadProfileImage(SignupFragment.this
+                                                                    ,CurrentUser.getInstance().getId()
+                                                                    ,imageUri);
                                                 }
                                             });
                                             thread.start();
@@ -126,25 +127,25 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
     private boolean validateSignUp(String display , String email, String pass , String passConfirm){
         if (display.matches("")){
             Snackbar snackbar = Snackbar
-                    .make(view, "Please Choose A Display Name", Snackbar.LENGTH_LONG);
+                    .make(view, getString(R.string.display_name_error), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }
         else if (email.matches("") || email.indexOf('@') == -1 || email.indexOf('.') == -1 || email.charAt(0) == '@' ){
             Snackbar snackbar = Snackbar
-                    .make(view, "Invalid Email Address", Snackbar.LENGTH_LONG);
+                    .make(view, getString(R.string.invalid_email_message), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }
         else if (pass.length() < 6){
             Snackbar snackbar = Snackbar
-                    .make(view, "A Password Needs To Contained At Least 6 Characters", Snackbar.LENGTH_LONG);
+                    .make(view, getString(R.string.short_password_message), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }
         else if (!pass.equals(passConfirm)){
             Snackbar snackbar = Snackbar
-                    .make(view, "Passwords Are Not Identical", Snackbar.LENGTH_LONG);
+                    .make(view, getString(R.string.not_same_password_message), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }

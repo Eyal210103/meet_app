@@ -2,7 +2,6 @@ package com.example.meetapp.ui.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +32,10 @@ import com.google.firebase.database.annotations.NotNull;
 
 public class LoginOptionsFragment extends Fragment {
 
-    private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "LoginActivity";
     private static final int GOOGLE = 101;
+
+    private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     View view;
 
@@ -54,7 +54,8 @@ public class LoginOptionsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.login_options_fragment, container, false);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         this.mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         view.findViewById(R.id.google_sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,11 +95,10 @@ public class LoginOptionsFragment extends Fragment {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 Snackbar snackbar = Snackbar
-                        .make(view, "Authentication failed, Try Again", Snackbar.LENGTH_LONG);
+                        .make(view, getString(R.string.auth_failed_message), Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         }
@@ -114,7 +114,7 @@ public class LoginOptionsFragment extends Fragment {
                             CurrentUser.addOrUpdateUser();
                             openMainAppScreen();
                         } else {
-                            Toast.makeText(requireActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireActivity(), getString(R.string.invalid_inputs), Toast.LENGTH_SHORT).show();
                             LoginOptionsFragment.this.requireActivity().finish();
                         }
                     }

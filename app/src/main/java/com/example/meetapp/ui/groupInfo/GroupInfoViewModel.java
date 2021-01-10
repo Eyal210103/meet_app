@@ -23,13 +23,10 @@ public class GroupInfoViewModel extends ViewModel {
         membersMutableLiveData = groupsMembersRepo.getMembers();
     }
 
-    public MutableLiveData<Group> getGroup() {
+    public LiveData<Group> getGroup() {
         return groupMutableLiveData;
     }
 
-    public LiveData<Group> getGroupMutableLiveData() {
-        return groupMutableLiveData;
-    }
 
     public LiveData<ArrayList<MutableLiveData<User>>> getMembersMutableLiveData() {
         return membersMutableLiveData;

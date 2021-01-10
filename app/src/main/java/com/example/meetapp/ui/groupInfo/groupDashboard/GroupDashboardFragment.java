@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Message;
 import com.example.meetapp.model.User;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
@@ -41,7 +42,7 @@ public class GroupDashboardFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupDashboardViewModel.class);
-        mViewModel.init((String) getArguments().get("id"));
+        mViewModel.init((String) getArguments().get(ConstantValues.BUNDLE_GROUP_ID));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class GroupDashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.group_dashboard_fragment, container, false);
 
         lastMessageTextView = view.findViewById(R.id.dash_last_message_textView);
-        lastMessageTextView.setText(getString(R.string.no_messages));
+        lastMessageTextView.setText(getResources().getString(R.string.no_messages_alert));
 
         RecyclerView recyclerView = view.findViewById(R.id.group_dash_members_recycler);
         adapter = new DashMembersAdapter(this,mViewModel.getMembersMutableLiveData().getValue());

@@ -2,17 +2,15 @@ package com.example.meetapp.ui.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.meetapp.R;
-import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,7 +45,7 @@ public class LoginFragment extends Fragment {
                     singInWithEmail(email,pass);
                 else{
                     Snackbar snackbar = Snackbar
-                            .make(view, "Email Or Password Are Invalid", Snackbar.LENGTH_LONG);
+                            .make(view, getResources().getString(R.string.invalid_inputs), Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
             }
@@ -66,7 +64,7 @@ public class LoginFragment extends Fragment {
                             openMainAppScreen();
                         } else {
                             Snackbar snackbar = Snackbar
-                                    .make(view, "Authentication failed, Try Again", Snackbar.LENGTH_LONG);
+                                    .make(view, getResources().getString(R.string.auth_failed_message), Snackbar.LENGTH_LONG);
                             snackbar.show();
                         }
                     }

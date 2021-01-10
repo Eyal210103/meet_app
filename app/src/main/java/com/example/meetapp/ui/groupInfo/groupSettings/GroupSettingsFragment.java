@@ -1,7 +1,6 @@
 package com.example.meetapp.ui.groupInfo.groupSettings;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
@@ -45,7 +45,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupSettingsViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString("id")),getArguments().getString("id"));
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString(ConstantValues.BUNDLE_GROUP_ID)),getArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
     }
 
     @Override
@@ -103,7 +103,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             @Override
             public void onChanged(ArrayList<String> strings) {
                 for (String s:strings) {
-                    Log.d("_______________", "onChanged: " + s+"}{}{}{}{}{}{}{}{}{}{}{}{");
                     if (s.equals(CurrentUser.getInstance().getId())){
                         isThere = true;
                         linearLayoutWaiting.setVisibility(View.VISIBLE);
@@ -139,12 +138,12 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
 
     @Override
     public void onClickInRecyclerView(Object value, String action) {
-        if (action.equals("Approve")){
+        if (action.equals(ConstantValues.ACTION_APPROVE)){
             mViewModel.approveUser((Integer)value);
             if (mViewModel.getPaddingUsers().getValue().size() == 0){
                 setInvisible();
             }
-        }else if(action.equals("Reject")){
+        }else if(action.equals(ConstantValues.ACTION_REJECT)){
             mViewModel.rejectUser((Integer)value);
             if (mViewModel.getPaddingUsers().getValue().size() == 0){
                 setInvisible();

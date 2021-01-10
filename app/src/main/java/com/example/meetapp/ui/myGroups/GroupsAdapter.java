@@ -59,7 +59,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("group", current.getId());
+                        bundle.putString(ConstantValues.BUNDLE_GROUP_ID, current.getId());
                         final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                         navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment, bundle);
                     }
@@ -71,7 +71,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("group", current);
+                        bundle.putSerializable(ConstantValues.BUNDLE_GROUP_ID, current);
                         final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                         navController.navigate(R.id.action_joinGroupFragment_to_joinGroupDialog, bundle);
                     }
@@ -80,11 +80,11 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    menu.add(position,0,0,"Leave Group").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    menu.add(position,0,0,ConstantValues.MENU_OPTION_LEAVE_GROUP).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                            onClickInRecyclerView.onClickInRecyclerView(current.getId(),"Leave");
+                            onClickInRecyclerView.onClickInRecyclerView(current.getId(),ConstantValues.ACTION_LEAVE);
                             return false;
                         }
                     });
@@ -100,17 +100,17 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     private int getSubjectIcon(String subject){
         switch (subject){
-            case "Restaurant":
+            case ConstantValues.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
-            case "Basketball":
+            case ConstantValues.SUBJECT_BASKETBALL:
                 return R.drawable.basketball;
-            case "Soccer":
+            case ConstantValues.SUBJECT_SOCCER:
                 return R.drawable.soccer;
-            case "Football":
+            case ConstantValues.SUBJECT_FOOTBALL:
                 return R.drawable.football;
-            case "Video Games":
+            case ConstantValues.SUBJECT_VIDEO_GAMES:
                 return R.drawable.videogame;
-            case "Meeting":
+            case ConstantValues.SUBJECT_MEETING:
                 return R.drawable.meetingicon;
             default:
                 return R.drawable.groupsicon;

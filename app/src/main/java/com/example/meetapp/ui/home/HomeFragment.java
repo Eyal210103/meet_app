@@ -29,6 +29,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.meetings.MeetingsInfoDialog;
 import com.google.android.gms.maps.CameraUpdate;
@@ -52,20 +53,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
 
+    public static final int BITMAP_SIZE = 80;
     private static final int REQUEST_LOCATION = 103;
     private static final String TAG = "HomeFragment";
+
+    private final HashMap<String,String> markersHash = new HashMap<>();
+    private final ArrayList<MarkerOptions> markers = new ArrayList<>();
+    private final ArrayList<String> ids = new ArrayList<>();
+
     private HomeViewModel mViewModel;
-    TextView locationTV ,topicTV;
-    CircleImageView topicIV;
 
-    HashMap<String,String> markersHash = new HashMap<>();
-    ArrayList<MarkerOptions> markers = new ArrayList<>();
-    ArrayList<String> ids = new ArrayList<>();
-
-
+    private TextView locationTV ,topicTV;
+    private CircleImageView topicIV;
     private MapView mapView;
     private GoogleMap mMap;
-    View view;
+    private View view;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,6 +81,7 @@ public class HomeFragment extends Fragment {
         topicTV = view.findViewById(R.id.location_subject_textView);
         topicIV = view.findViewById(R.id.home_location_subject_circleImageView);
         EditText locationName = view.findViewById(R.id.home_edit_text_all);
+
         view.findViewById(R.id.home_search_icon_imageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,11 +94,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
-       //         Log.d(TAG, "onClick: " + mViewModel.getPublicHash() + view.findViewById(R.id.constraintLayout4).getTag()) ;
                 int i = mViewModel.getPublicHash().get((String)v.getTag());
                 Meeting m = mViewModel.getMeetings().getValue().get(i).getValue();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("meeting",m);
+                bundle.putSerializable(ConstantValues.BUNDLE_MEETING,m);
                 meetingsInfoDialog.setArguments(bundle);
                 meetingsInfoDialog.show(getFragmentManager(),"Meeting Dialog");
             }
@@ -114,7 +116,7 @@ public class HomeFragment extends Fragment {
                                     markerOptions.title(meeting.getSubject());
                                     markerOptions.position(meeting.getLocation());
                                     Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
-                                    icon = Bitmap.createScaledBitmap(icon, 80, 80, false);
+                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
                                     ids.add(meeting.getId());
                                     markers.add(markerOptions);
@@ -139,7 +141,9 @@ public class HomeFragment extends Fragment {
 
     private LatLng getLocation() {
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
             assert locationManager != null;
@@ -177,7 +181,7 @@ public class HomeFragment extends Fragment {
                         public boolean onMarkerClick(Marker marker) {
                             locationTV.setText(getAddress(marker.getPosition()));
                             topicTV.setText(marker.getTitle());
-                            topicIV.setImageResource(getTopicIcon(marker.getTitle()));
+                            topicIV.setImageResource(getSubjectIcon(marker.getTitle()));
                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToEnd();
                             view.findViewById(R.id.constraintLayout4).setTag(marker.getTag());
                             return false;
@@ -185,7 +189,7 @@ public class HomeFragment extends Fragment {
                     });
                     addMarkers();
                 } else {
-                    Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();//TODO
                 }
             }
         });
@@ -223,7 +227,6 @@ public class HomeFragment extends Fragment {
             }catch (Exception e){
                 e.printStackTrace();
             }
-
             //add = add + "\n" + obj.getCountryName();
             //add = add + "\n" + obj.getCountryCode();
             //add = add + "\n" + obj.getAdminArea();
@@ -258,24 +261,23 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private int getTopicIcon(String subject){
+    private int getSubjectIcon(String subject){
         switch (subject){
-            case "Restaurant":
+            case ConstantValues.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
-            case "Basketball":
+            case ConstantValues.SUBJECT_BASKETBALL:
                 return R.drawable.basketball;
-            case "Soccer":
+            case ConstantValues.SUBJECT_SOCCER:
                 return R.drawable.soccer;
-            case "Football":
+            case ConstantValues.SUBJECT_FOOTBALL:
                 return R.drawable.football;
-            case "Video Games":
-               return R.drawable.videogame;
-            case "Meeting":
-               return R.drawable.meetingicon;
-            case "Other":
+            case ConstantValues.SUBJECT_VIDEO_GAMES:
+                return R.drawable.videogame;
+            case ConstantValues.SUBJECT_MEETING:
+                return R.drawable.meetingicon;
+            default:
                 return R.drawable.groupsicon;
         }
-        return R.drawable.meetingicon;
     }
 
     public void fixGoogleBug(){
@@ -297,24 +299,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private int getSubjectIcon(String subject){
-        switch (subject){
-            case "Restaurant":
-                return R.drawable.restaurant;
-            case "Basketball":
-                return R.drawable.basketball;
-            case "Soccer":
-                return R.drawable.soccer;
-            case "Football":
-                return R.drawable.football;
-            case "Video Games":
-                return R.drawable.videogame;
-            case "Meeting":
-                return R.drawable.meetingicon;
-            default:
-                return R.drawable.groupsicon;
-        }
-    }
 
     @Override
     public void onPause() {

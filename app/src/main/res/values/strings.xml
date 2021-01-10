@@ -1,53 +1,57 @@
 <resources>
-    <string name="app_name" translatable="false">MeetApp</string>
+    <string name="app_name">MeetApp</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
-    <string name="title_home" translatable="false">Home</string>
+    <string name="title_home">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
-    <string name="home" translatable="false">Home</string>
-    <string name="groups" translatable="false">Groups</string>
-    <string name="settings" translatable="false">Settings</string>
-    <string name="choose_image" translatable="false">Choose Image</string>
-    <string name="group_name" translatable="false">Group Name</string>
-    <string name="group_s_subject" translatable="false">Group\'s Subject</string>
-    <string name="create_group" translatable="false">Create Group</string>
-    <string name="create" translatable="false">Create</string>
-    <string name="join" translatable="false">Join</string>
-    <string name="type_locations_or_subjects" translatable="false">Type Locations Or Subjects</string>
-    <string name="type_a_message" translatable="false">Type A Message</string>
-    <string name="next_meeting" translatable="false">Next Meeting</string>
-    <string name="login" translatable="false">Login</string>ֺ
-    <string name="email" translatable="false">Email</string>
-    <string name="password" translatable="true">Password</string>
-    <string name="hello_blank_fragment" translatable="true">Hello blank fragment</string>
-    <string name="new_here_click_here_to_sign_up" translatable="true">New Here? Click Here To Sign Up</string>
-    <string name="confirm_password" translatable="true">Confirm Password</string>
-    <string name="display_name" translatable="true">Display Name</string>
+    <string name="groups">Groups</string>
+    <string name="settings">Settings</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_s_subject">Group\'s Subject</string>
+    <string name="create_group">Create Group</string>
+    <string name="create">Create</string>
+    <string name="join">Join</string>
+    <string name="type_locations_or_subjects">Type Locations Or Subjects</string>
+    <string name="type_a_message_hint">Type A Message</string>
+    <string name="next_meeting">Next Meeting</string>
+    <string name="login_field">Login</string>ֺ
+    <string name="email_field">Email</string>
+    <string name="password_field" translatable="true">Password</string>
+    <string name="sign_up_invite" translatable="true">New Here? Click Here To Sign Up</string>
+    <string name="confirm_password_field" translatable="true">Confirm Password</string>
+    <string name="display_name_field" translatable="true">Display Name</string>
     <string name="create_account" translatable="true">Create Account</string>
-    <string name="no_messages" translatable="true">There is no messages</string>
-    <string name="create_meeting" translatable="true">Create Meeting</string>
+    <string name="no_messages_alert" translatable="true">There is no messages</string>
     <string name="create_a_meeting" translatable="true">Create a Meeting</string>
-    <string name="group_meeting" translatable="true">Group Meeting</string>
-    <string name="public_meeting" translatable="true">Public Meeting</string>
-    <string name="meeting_subject" translatable="true">Meeting Subject</string>
-    <string name="is_public" translatable="true">Is Public</string>
+    <string name="meeting_type_group" translatable="true">Group Meeting</string>
+    <string name="meeting_type_public" translatable="true">Public Meeting</string>
+    <string name="meeting_subject_field" translatable="true">Meeting Subject</string>
+    <string name="is_public_switch" translatable="true">Is Public</string>
     <string name="waiting_requests" translatable="true">Waiting Requests</string>
-    <string name="your_request_has_sent" translatable="true">Your Request Has Sent!</string>
-    <string name="time_and_date" translatable="true">Time And Date</string>
-    <string name="choose_time" translatable="true">Choose Time</string>
-    <string name="no_location_has_selected" translatable="true">No Location Has Been Selected</string>
-    <string name="choose_location" translatable="true">Choose Location</string>
+    <string name="request_succeed_message" translatable="true">Your Request Has Sent!</string>
+    <string name="time_and_date_field" translatable="true">Time And Date</string>
+    <string name="choose_time_field" translatable="true">Choose Time</string>
+    <string name="no_location_message" translatable="true">No Location Has Been Selected</string>
+    <string name="choose_location_field" translatable="true">Choose Location</string>
     <string name="location" translatable="true">Location</string>
-    <string name="description">Description</string>
-    <string name="description_optional">Description(Optional)</string>
-    <string name="my_groups">My Groups</string>
+    <string name="description">Description(Optional)</string>
+    <string name="my_groups_header">My Groups</string>
     <string name="meetings">Meetings</string>
-    <string name="chats">Chats</string>
-    <string name="my_chats">My Chats</string>
+    <string name="my_chats_header">My Chats</string>
     <string name="more_info">More Info</string>
     <string name="group_s_description">Group Description</string>
     <string name="group_subject">Group Subject</string>
-    <string name="im_coming">Im Coming</string>
-    <string name="no_date_has_been_selected">No Date Has Been Selected</string>
-    <string name="you_have_no_meeting_on_this_date">You Have No Meetings In This Date</string>
+    <string name="confirm_arrival">Im Coming</string>
+    <string name="no_date_message">No Date Has Been Selected</string>
+    <string name="no_meetings_alert">You Have No Meetings In This Date</string>
+    <string name="chats">Chats</string>
+    <string name="invalid_inputs">Email Or Password Are Invalid</string>
+    <string name="auth_failed_message">Authentication failed, Try Again</string>
+    <string name="display_name_error" translatable="false">Please Choose A Display Name</string>
+    <string name="invalid_email_message" translatable="false">Invalid Email Address</string>
+    <string name="short_password_message" translatable="false">A Password Needs To Contained At Least 6 Characters</string>
+    <string name="not_same_password_message" translatable="false">Passwords Are Not Identical</string>
+    <string name="create_group_message" translatable="false">Creating , Please Wait..</string>
+    <string name="upload_error" translatable="false">Photo Wont Upload… /n Try Again Later</string>
 </resources>

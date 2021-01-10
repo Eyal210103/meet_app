@@ -11,6 +11,8 @@ import com.example.meetapp.ui.Login.LoginActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
+    public static final int DELAY = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1000);
+        }, DELAY);
     }
 }

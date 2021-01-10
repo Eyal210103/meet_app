@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MeetApp</string>
+    <string name="logoutAction" translatable="false">התנתק/י</string>
+    <string name="title_home" translatable="false">בית</string>
+    <string name="groups" translatable="false">קבוצות</string>
+    <string name="settings" translatable="false">הגדרות</string>
+    <string name="choose_image" translatable="false">בחר תמונה</string>
+    <string name="group_name" translatable="false">שם הקבוצה</string>
+    <string name="group_s_subject" translatable="false">נושא הקבוצה</string>
+    <string name="create_group" translatable="false">צור קבוצה</string>
+    <string name="create" translatable="false">ליצור</string>
+    <string name="join" translatable="false">הצטרף</string>
+    <string name="type_locations_or_subjects" translatable="false">חפש מקומות או נושאים</string>
+    <string name="type_a_message_hint" translatable="false">הקלד הודעה</string>
+    <string name="next_meeting" translatable="false">הפגישה הבאה</string>
+    <string name="login_field" translatable="false">התחבר</string>
+    <string name="email_field" translatable="false">אימייל</string>
+    <string name="password_field">סיסמא</string>
+    <string name="sign_up_invite">חדש כאן? לחץ כאן כדי להירשם</string>
+    <string name="confirm_password_field">" אשר סיסמא"</string>
+    <string name="display_name_field">שם משתמש</string>
+    <string name="create_account">צור משתמש</string>
+    <string name="no_messages_alert">אין הודעות חדשות</string>
+    <string name="create_a_meeting">צור מפגש</string>
+    <string name="meeting_type_group">מפגש קבוצתי</string>
+    <string name="meeting_type_public">מפגש ציבורי</string>
+    <string name="meeting_subject_field">נושא המפגש</string>
+    <string name="is_public_switch">האם ציבורי</string>
+    <string name="waiting_requests">בקשות בהמתנה</string>
+    <string name="request_succeed_message">הבקשה נשלחה</string>
+    <string name="time_and_date_field">זמן ותאריך</string>
+    <string name="choose_time_field">בחר זמן</string>
+    <string name="no_location_message">לא נבחר מיקום</string>
+    <string name="choose_location_field">בחר מיקום</string>
+    <string name="location">מיקום</string>
+    <string name="description">תיאור (אופציונלי)</string>
+    <string name="my_groups_header">הקבוצות שלי</string>
+    <string name="meetings">מפגשים</string>
+    <string name="my_chats_header">הצ\'אטים שלי</string>
+    <string name="more_info">עוד מידע</string>
+    <string name="group_s_description">תיאור הקבוצה</string>
+    <string name="group_subject">נושא הקבוצה</string>
+    <string name="confirm_arrival">אני אגיע</string>
+    <string name="no_date_message">לא נבחר תאריך וזמן</string>
+    <string name="no_meetings_alert">אין מפגשים בתאריך שנבחר</string>
+    <string name="chats">צ\'אטים</string>
+    <string name="invalid_inputs">אימייל או סיסמא אינם תקינים</string>
+    <string name="auth_failed_message">התנחברות נכשלה, נסה שוב</string>
+
+</resources>

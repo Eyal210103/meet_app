@@ -1,7 +1,6 @@
 package com.example.meetapp.ui.GroupsChats;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 public class GroupsChatsFragment extends Fragment {
 
@@ -70,7 +67,6 @@ public class GroupsChatsFragment extends Fragment {
                 @Override
                 public void onChanged(Group group) {
                     groupChatsAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "onChanged: CALLED OBSERVER CHAT");
                 }
             });
         }

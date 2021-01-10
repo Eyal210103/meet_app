@@ -169,7 +169,7 @@
         android:textColor="@color/oppBackground"
         android:backgroundTint="@color/colorAccent"
         android:paddingHorizontal="20dp"
-        android:text="@string/im_coming"
+        android:text="@string/confirm_arrival"
         app:layout_constraintBottom_toBottomOf="@+id/meeting_participants_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/meeting_participants_recyclerView" />

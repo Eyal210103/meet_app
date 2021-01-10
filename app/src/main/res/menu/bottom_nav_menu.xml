@@ -5,7 +5,7 @@
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:visible="true"
-        android:title="@string/home"
+        android:title="@string/title_home"
         android:icon="@drawable/home"/>
 
     <item

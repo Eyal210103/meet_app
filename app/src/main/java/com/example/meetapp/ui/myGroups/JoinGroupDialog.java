@@ -3,7 +3,6 @@ package com.example.meetapp.ui.myGroups;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class JoinGroupDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(JoinGroupDialogViewModel.class);
-        group = (Group) getArguments().getSerializable("group");
+        group = (Group) getArguments().getSerializable(ConstantValues.BUNDLE_GROUP_ID);
         mViewModel.init(group.getId());
     }
 
@@ -60,7 +60,7 @@ public class JoinGroupDialog extends DialogFragment {
                 if (group.isPublic()) {
                     group.addUserToGroup();
                     Bundle bundle = new Bundle();
-                    bundle.putString("group", group.getId());
+                    bundle.putString(ConstantValues.BUNDLE_GROUP_ID, group.getId());
                     final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.groupInfoFragment, bundle);
                 }else {
@@ -79,7 +79,6 @@ public class JoinGroupDialog extends DialogFragment {
             public void onChanged(ArrayList<String> strings) {
                 for (int i = 0; i < strings.size(); i++) {
                     Glide.with(requireActivity()).load(strings.get(i)).into(circleImageViews[i]);
-                    Log.d("___________", "onChanged: " + strings.get(i));
                 }
             }
         });

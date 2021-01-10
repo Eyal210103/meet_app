@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
 
     @Override
     public void onClickInFragment(String action) {
-        if (action.equals(String.valueOf(R.string.logoutAction)))
+        if (action.equals(getString(R.string.logoutAction)))
             CurrentUser.logout();
 
         Intent intent = new Intent(this, LoginActivity.class);

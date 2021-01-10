@@ -54,15 +54,16 @@ public class GroupMeetingsFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                                == PackageManager.PERMISSION_GRANTED) {
                     googleMap.setMyLocationEnabled(true);
                     googleMap.setBuildingsEnabled(false);
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude,longitude)));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
-                    //seekBar.setProgress((int) (mMap.getCameraPosition().zoom*5));
                 } else {
-                    Toast.makeText(getActivity(), "Map Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Map Error", Toast.LENGTH_LONG).show(); //TODO
                 }
             }
         });

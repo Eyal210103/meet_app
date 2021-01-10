@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.ui.chat.GroupChatFragment;
 import com.example.meetapp.ui.groupInfo.groupDashboard.GroupDashboardFragment;
 import com.example.meetapp.ui.groupInfo.groupsMeetings.GroupMeetingsFragment;
@@ -26,7 +27,7 @@ class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("id",groupId);
+        bundle.putString(ConstantValues.BUNDLE_GROUP_ID,groupId);
         switch (position) {
             case 0:
                 GroupDashboardFragment groupDashboardFragment =  new GroupDashboardFragment();

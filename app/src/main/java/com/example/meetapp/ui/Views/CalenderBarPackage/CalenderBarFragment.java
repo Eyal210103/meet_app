@@ -75,22 +75,8 @@ public class CalenderBarFragment extends Fragment {
             }
         });
 
-//        mViewModel.getGroupMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<GroupMeeting>>>() {
-//            @Override
-//            public void onChanged(ArrayList<LiveData<GroupMeeting>> liveData) {
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
         return  view;
     }
-
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        mViewModel = ViewModelProviders.of(this).get(CalenderBarViewModel.class);
-//        mViewModel.init(ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class),null); // TODO implements changes
-//    }
-
 
     public void add30Days(){
         for (int i = 0; i < 30; i++) {

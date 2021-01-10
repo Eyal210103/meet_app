@@ -2,7 +2,6 @@ package com.example.meetapp.ui.Views.CalenderBarPackage;
 
 import android.annotation.SuppressLint;
 import android.icu.util.Calendar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 
@@ -71,7 +71,6 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 }else {
                     isRegular = true;
                 }
-                Log.d("CalenderAdapter", "onBindViewHolder: " + key + "   "+ position  + "    "+ meetings.get(key).getValue().getDateString());
             }
         }
 
@@ -92,9 +91,9 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 selected = position;
                 context.setViewBackground(position);
                 if (finalIsGroup){
-                    context.onClickDate(key,"Group");
+                    context.onClickDate(key, ConstantValues.MEETING_TYPE_GROUP);
                 }else if(finalIsRegular){
-                    context.onClickDate(key,"Public");
+                    context.onClickDate(key,ConstantValues.MEETING_TYPE_PUBLIC);
                 }else {
                     context.onClickDate("","None");
                 }
@@ -141,6 +140,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         }
     }
 
+    //TODO
 
     public String getThreeLetterDay(int day){
         switch (day){
