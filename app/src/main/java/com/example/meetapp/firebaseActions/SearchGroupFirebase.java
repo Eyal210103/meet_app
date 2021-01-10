@@ -17,14 +17,13 @@ import javax.inject.Singleton;
 
 @Singleton
 public class SearchGroupFirebase {
-    private static MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
-    private static MutableLiveData<ArrayList<String>> imgUrls  = new MutableLiveData<>();
+    private static final MutableLiveData<ArrayList<MutableLiveData<Group>>> groupMutableLiveData = new MutableLiveData<>();
 
     public static MutableLiveData<ArrayList<MutableLiveData<Group>>> searchGroups(String name){
         ArrayList<MutableLiveData<Group>> groups = new ArrayList<>();
-        mutableLiveData.setValue(groups);
-        mutableLiveData.getValue().clear();
-        Query query = FirebaseDatabase.getInstance().getReference("Groups").orderByChild("name").startAt(name).endAt(name + "\uf8ff");
+        groupMutableLiveData.setValue(groups);
+        groupMutableLiveData.getValue().clear();
+        Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES).orderByChild("name").startAt(name).endAt(name + "\uf8ff");
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -32,7 +31,7 @@ public class SearchGroupFirebase {
                 gld.setValue(snapshot.getValue(Group.class));
                 if (!UserGroupsRepo.getInstance().ids.containsKey(gld.getValue().getId())) {
                     groups.add(gld);
-                    mutableLiveData.postValue(groups);
+                    groupMutableLiveData.postValue(groups);
                 }
             }
             @Override
@@ -44,7 +43,7 @@ public class SearchGroupFirebase {
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
-        return mutableLiveData;
+        return groupMutableLiveData;
     }
 
 }

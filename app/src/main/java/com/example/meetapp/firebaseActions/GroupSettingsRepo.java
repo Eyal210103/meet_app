@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -22,7 +20,7 @@ public class GroupSettingsRepo {
     ArrayList<MutableLiveData<User>> membersAL = new ArrayList<>();
     HashMap<String,String> ids = new HashMap<>();
     MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
-    private String groupId;
+    private final String groupId;
     ArrayList<String> managers;
     ChildEventListener childEventListener;
 
@@ -72,10 +70,9 @@ public class GroupSettingsRepo {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:GET GroupsMembersRepo" );
             }
         };
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Waiting").addChildEventListener(childEventListener);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.WAITING_CHILDES).addChildEventListener(childEventListener);
         return mutableLiveData;
     }
     private MutableLiveData<User> putUserData(String key){
@@ -89,7 +86,6 @@ public class GroupSettingsRepo {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:putUserData GroupsMembersRepo" );
             }
         });
         return userMutableLiveData;
@@ -99,7 +95,7 @@ public class GroupSettingsRepo {
     public LiveData<ArrayList<String>> getManagers(){
         managers= new ArrayList<>();
         MutableLiveData<ArrayList<String>> mutableLiveData = new MutableLiveData<>();
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("manager").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MANAGER_CHILDES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s:snapshot.getChildren()){
@@ -117,14 +113,14 @@ public class GroupSettingsRepo {
     }
 
     public void removeUser(String id){
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Waiting").child(id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.WAITING_CHILDES).child(id).removeValue();
         removeFromList(id);
     }
 
     public void approveUser(String id){
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Members").child(id).setValue(id);
-        FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("Groups").child(groupId).setValue(groupId);
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Waiting").child(id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEMBERS_CHILDES).child(id).setValue(id);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(id).child(FirebaseTags.GROUPS_CHILDES).child(groupId).setValue(groupId);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.WAITING_CHILDES).child(id).removeValue();
         removeFromList(id);
     }
 
@@ -136,9 +132,5 @@ public class GroupSettingsRepo {
                 mutableLiveData.postValue(membersAL);
             }
         }
-    }
-
-    private void OnDetach(){
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").removeEventListener(childEventListener);
     }
 }

@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -70,16 +68,15 @@ public class GroupsMembersRepo {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Log.d("observer", "onCancelled: ERROR:GET GroupsMembersRepo" );
                     }
                 };
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").addChildEventListener(childEventListener);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MEMBERS_CHILDES).addChildEventListener(childEventListener);
         return mutableLiveData;
     }
 
 
     private MutableLiveData<User> putUserData(String key){
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -89,14 +86,9 @@ public class GroupsMembersRepo {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("observer", "onCancelled: ERROR:putUserData GroupsMembersRepo" );
             }
         });
         return  userMutableLiveData;
-    }
-
-    private void OnDetach(){
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Members").removeEventListener(childEventListener);
     }
 
 }

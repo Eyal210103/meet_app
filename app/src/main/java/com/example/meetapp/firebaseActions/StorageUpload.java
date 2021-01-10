@@ -25,19 +25,19 @@ public class StorageUpload {
 
 
     public static void uploadGroupImage(final Fragment context, final String groupId , Uri data){
-                reference.child("Groups Images").child(groupId).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                reference.child(FirebaseTags.STORAGE_GROUP_IMAGE).child(groupId).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()){
-                            reference.child("Groups Images").child(groupId).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            reference.child(FirebaseTags.STORAGE_GROUP_IMAGE).child(groupId).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
                                     if (task.isSuccessful()){
-                                        database.getReference().child("Groups").child(groupId).child("photoUrl").setValue(task.getResult().toString());
+                                        database.getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child("photoUrl").setValue(task.getResult().toString());
                                         PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
                                         photoUploadCompleteListener.onPhotoUploadComplete();
                                     }else {
-                                        reference.child("Groups Images").child(groupId).delete();
+                                        reference.child(FirebaseTags.STORAGE_GROUP_IMAGE).child(groupId).delete();
                                         PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
                                         photoUploadErrorListener.onPhotoUploadError();
                                     }
@@ -58,7 +58,7 @@ public class StorageUpload {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()){
                                 database.getReference().child("Groups").child(groupId).child("Chat").child(messageId).child("url").setValue(task.getResult().toString());
-//                                PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
+//                                PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context; TODO
 //                                photoUploadCompleteListener.onPhotoUploadComplete();
                             }else {
                                 reference.child("Chat Images").child(groupId).child(messageId).delete();

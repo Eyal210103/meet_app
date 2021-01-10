@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -21,16 +19,17 @@ import java.util.ArrayList;
 
 public class MeetingInfoRepo {
 
-    private MutableLiveData<Meeting> meetingLiveData = new MutableLiveData<>();
-    private MutableLiveData<GroupMeeting> gMeetingLiveData = new MutableLiveData<>();
-    private String id;
+    private final MutableLiveData<Meeting> meetingLiveData = new MutableLiveData<>();
+    private final MutableLiveData<GroupMeeting> gMeetingLiveData = new MutableLiveData<>();
+    private final String meetingId;
 
     public MeetingInfoRepo(String id) {
-        this.id = id;
+        this.meetingId = id;
     }
 
     public LiveData<Meeting> loadPublicMeeting() {
-        FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(this.id).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES)
+                .child(this.meetingId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Meeting meeting = snapshot.getValue(Meeting.class);
@@ -46,11 +45,12 @@ public class MeetingInfoRepo {
     }
 
     public LiveData<GroupMeeting> loadGroupMeeting(String groupId) {
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Meetings").child(this.id).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
+                .child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.meetingId)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
-                //        Log.d("MeetingInfoRepo", "onDataChange: " + meeting);
                 gMeetingLiveData.postValue(meeting);
             }
 
@@ -65,15 +65,17 @@ public class MeetingInfoRepo {
         ArrayList<User> arrayList = new ArrayList<User>();
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(arrayList);
-        FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(id).child("whoComing").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(meetingId)
+                .child(FirebaseTags.WHO_COMING_CHILDES)
+                .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getKey();
-                FirebaseDatabase.getInstance().getReference().child("Users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         arrayList.add(snapshot.getValue(User.class));
-                        Log.d("TAG", "onDataChange: " + snapshot.getValue(User.class));
                         mutableLiveData.postValue(arrayList);
                     }
 
@@ -82,20 +84,16 @@ public class MeetingInfoRepo {
                     }
                 });
             }
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
             }
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 //TODO
             }
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 error.toException().printStackTrace();
@@ -108,15 +106,17 @@ public class MeetingInfoRepo {
         ArrayList<User> arrayList = new ArrayList<User>();
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(arrayList);
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Meetings").child(this.id).child("whoComing").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId)
+                .child(FirebaseTags.MEETINGS_CHILDES).child(this.meetingId)
+                .child(FirebaseTags.WHO_COMING_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getKey();
-                FirebaseDatabase.getInstance().getReference().child("Users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         arrayList.add(snapshot.getValue(User.class));
-                        Log.d("TAG", "onDataChange: " + snapshot.getValue(User.class));
                         mutableLiveData.postValue(arrayList);
                     }
 
