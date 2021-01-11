@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
-import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.User;
 
 import java.util.ArrayList;
@@ -25,12 +24,12 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
 
     private Context context;
     private  ArrayList<MutableLiveData<User>> members;
-    private boolean managers;
+    private boolean isManager;
 
-    public MembersSettingsAdapter(Context context, ArrayList<MutableLiveData<User>> members, boolean managers) {
+    public MembersSettingsAdapter(Context context, ArrayList<MutableLiveData<User>> members, boolean isManager) {
         this.context = context;
         this.members = members;
-        this.managers = managers;
+        this.isManager = isManager;
     }
 
     @NonNull
@@ -51,22 +50,22 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                     final int index = position;
-                    menu.add(index,0,0, ConstantValues.MENU_OPTION_VIEW_PROFILE).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    menu.add(index,0,0, context.getString(R.string.menu_option_view_profile)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             //Group group = groups.get(index).getValue();
                             return false;
                         }
                     });
-                    if (managers){
-                        menu.add(index,1,1,ConstantValues.MENU_OPTION_SET_AS_MANAGER).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    if (isManager){
+                        menu.add(index,1,1,context.getString(R.string.menu_option_set_manager)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 //Group group = groups.get(index).getValue();
                                 return false;
                             }
                         });
-                        menu.add(index,2,2,ConstantValues.MENU_OPTION_REMOVE_FROM_GROUP).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        menu.add(index,2,2,context.getString(R.string.menu_option_remove_from_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 //Group group = groups.get(index).getValue();

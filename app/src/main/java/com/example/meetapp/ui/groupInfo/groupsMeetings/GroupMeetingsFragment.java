@@ -63,7 +63,7 @@ public class GroupMeetingsFragment extends Fragment {
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
                 } else {
-                    Toast.makeText(getActivity(), "Map Error", Toast.LENGTH_LONG).show(); //TODO
+                    Toast.makeText(getActivity(), "Map Error", Toast.LENGTH_LONG).show();
                 }
             }
         });

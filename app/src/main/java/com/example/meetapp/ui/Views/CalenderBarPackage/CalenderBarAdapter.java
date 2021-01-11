@@ -51,7 +51,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        holder.day.setText(getThreeLetterDay(calendar.get(Calendar.DAY_OF_WEEK)));
+        holder.day.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         holder.date.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
         holder.invisibleDots();
 
@@ -140,35 +140,34 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         }
     }
 
-    //TODO
 
-    public String getThreeLetterDay(int day){
+    public String getDayOfWeek(int day){
         switch (day){
-            case Calendar.SUNDAY:
-                return "SUN";
+            case android.icu.util.Calendar.SUNDAY:
+                return context.getString(R.string.days_sunday);
 
-            case Calendar.MONDAY:
-                return "MON";
+            case android.icu.util.Calendar.MONDAY:
+                return context.getString(R.string.days_monday);
 
-            case Calendar.TUESDAY:
-                return "TUE";
+            case android.icu.util.Calendar.TUESDAY:
+                return context.getString(R.string.days_tuesday);
 
-            case Calendar.WEDNESDAY:
-                return "WED";
+            case android.icu.util.Calendar.WEDNESDAY:
+                return context.getString(R.string.days_wednesday);
 
-            case Calendar.THURSDAY:
-                return "THU";
+            case android.icu.util.Calendar.THURSDAY:
+                return context.getString(R.string.days_thursday);
 
-            case Calendar.FRIDAY:
-                return "FRI";
+            case android.icu.util.Calendar.FRIDAY:
+                return context.getString(R.string.days_friday);
 
-            case Calendar.SATURDAY:
-                return "SAT";
-
+            case android.icu.util.Calendar.SATURDAY:
+                return context.getString(R.string.days_saturday);
             default:
                 return "";
         }
     }
+
 
     static class CalenderBarViewHolder extends RecyclerView.ViewHolder{
         TextView day;

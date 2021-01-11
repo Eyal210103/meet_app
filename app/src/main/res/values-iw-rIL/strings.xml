@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MeetApp</string>
-    <string name="logoutAction" translatable="false">התנתק/י</string>
-    <string name="title_home" translatable="false">בית</string>
-    <string name="groups" translatable="false">קבוצות</string>
-    <string name="settings" translatable="false">הגדרות</string>
-    <string name="choose_image" translatable="false">בחר תמונה</string>
-    <string name="group_name" translatable="false">שם הקבוצה</string>
-    <string name="group_s_subject" translatable="false">נושא הקבוצה</string>
-    <string name="create_group" translatable="false">צור קבוצה</string>
-    <string name="create" translatable="false">ליצור</string>
-    <string name="join" translatable="false">הצטרף</string>
-    <string name="type_locations_or_subjects" translatable="false">חפש מקומות או נושאים</string>
-    <string name="type_a_message_hint" translatable="false">הקלד הודעה</string>
-    <string name="next_meeting" translatable="false">הפגישה הבאה</string>
-    <string name="login_field" translatable="false">התחבר</string>
-    <string name="email_field" translatable="false">אימייל</string>
+    <string name="logoutAction" >התנתק/י</string>
+    <string name="title_home" >בית</string>
+    <string name="groups" >קבוצות</string>
+    <string name="settings" >הגדרות</string>
+    <string name="choose_image" >בחר תמונה</string>
+    <string name="group_name">שם הקבוצה</string>
+    <string name="group_s_subject" >נושא הקבוצה</string>
+    <string name="create_group" >צור קבוצה</string>
+    <string name="create" >ליצור</string>
+    <string name="join" >הצטרף</string>
+    <string name="type_locations_or_subjects" >חפש מקומות או נושאים</string>
+    <string name="type_a_message_hint">הקלד הודעה</string>
+    <string name="next_meeting">">הפגישה הבאה</string>
+    <string name="login_field" >התחבר</string>
+    <string name="email_field">אימייל</string>
     <string name="password_field">סיסמא</string>
     <string name="sign_up_invite">חדש כאן? לחץ כאן כדי להירשם</string>
     <string name="confirm_password_field">" אשר סיסמא"</string>
@@ -47,5 +47,38 @@
     <string name="chats">צ\'אטים</string>
     <string name="invalid_inputs">אימייל או סיסמא אינם תקינים</string>
     <string name="auth_failed_message">התנחברות נכשלה, נסה שוב</string>
+    <string name="title_dashboard">לוח מידע</string>
+    <string name="display_name_error">בחר שם משתמש</string>
+    <string name="invalid_email_message">כתובת האימייל אינה תקינה</string>
+    <string name="short_password_message">סיסמא צריכה להכיל 6 תווים לפחות</string>
+    <string name="not_same_password_message">הסיסמאות אינן תואמות</string>
+    <string name="create_group_message">יוצר, בבקשה להמתין..</string>
+    <string name="upload_error">התמונה לא עלתה, נסה שוב מאוחר יותר</string>
+
+    <string name="menu_option_leave_group">עזוב קבוצה</string>
+    <string name="menu_option_set_manager">הגדר כמנהל</string>
+    <string name="menu_option_remove_from_group">הסר מהקבוצה</string>
+    <string name="menu_option_view_profile">ראה פרופיל</string>
+
+    <string name="days_sunday">ראשון</string>
+    <string name="days_monday">שני</string>
+    <string name="days_tuesday">שלישי</string>
+    <string name="days_wednesday">רביעי</string>
+    <string name="days_thursday">חמישי</string>
+    <string name="days_friday">שישי</string>
+    <string name="days_saturday">שבת</string>
+
+    <string name="months_january">ינואר</string>
+    <string name="months_february">פברואר</string>
+    <string name="months_march">מרץ</string>
+    <string name="months_april">אפריל</string>
+    <string name="months_may">מאי</string>
+    <string name="months_june">יוני</string>
+    <string name="months_july">יולי</string>
+    <string name="months_august">אוגוסט</string>
+    <string name="months_september">ספטמבר</string>
+    <string name="months_october">אוקטובר</string>
+    <string name="months_november">נובמבר</string>
+    <string name="months_december">דצמבר</string>
 
 </resources>

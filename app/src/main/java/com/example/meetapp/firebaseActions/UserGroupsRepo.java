@@ -18,8 +18,8 @@ import java.util.HashMap;
 
 public class UserGroupsRepo {
 
-    ArrayList<MutableLiveData<Group>> list = new ArrayList<MutableLiveData<Group>>();
-    HashMap<String,MutableLiveData<Group>> ids = new HashMap<>();
+    ArrayList<MutableLiveData<Group>> groupList = new ArrayList<MutableLiveData<Group>>();
+    HashMap<String,MutableLiveData<Group>> groupMap = new HashMap<>();
 
     static UserGroupsRepo instance = null;
 
@@ -30,22 +30,20 @@ public class UserGroupsRepo {
     }
 
     public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
-        ids.clear();
-        list.clear();
         MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(list);
-        if (list.isEmpty()) {
+        mutableLiveData.setValue(groupList);
+        if (groupList.isEmpty()) {
             FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Groups")
                     .addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                             String key = snapshot.getValue(String.class);
-                            if (!ids.containsKey(key)) {
+                            if (!groupMap.containsKey(key)) {
                                 MutableLiveData<Group> groupMutableLiveData = new MutableLiveData<>();
-                                list.add(groupMutableLiveData);
+                                groupList.add(groupMutableLiveData);
                                 putGroupsData(key, groupMutableLiveData);
-                                mutableLiveData.postValue(list);
-                                ids.put(key, groupMutableLiveData);
+                                mutableLiveData.postValue(groupList);
+                                groupMap.put(key, groupMutableLiveData);
                             }
 
                         }
@@ -57,11 +55,11 @@ public class UserGroupsRepo {
                         @Override
                         public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                             String key = snapshot.getValue(String.class);
-                            for (MutableLiveData<Group> g : list) {
+                            for (MutableLiveData<Group> g : groupList) {
                                 if (g!= null && key.equals(g.getValue().getId())) {
-                                    list.remove(g);
-                                    mutableLiveData.postValue(list);
-                                    ids.remove(key);
+                                    groupList.remove(g);
+                                    mutableLiveData.postValue(groupList);
+                                    groupMap.remove(key);
                                     break;
                                 }
                             }
@@ -93,7 +91,7 @@ public class UserGroupsRepo {
     }
 
     public HashMap<String, MutableLiveData<Group>> getHashMapGroups() {
-        return ids;
+        return groupMap;
     }
 
     public void leaveGroup(String id) {

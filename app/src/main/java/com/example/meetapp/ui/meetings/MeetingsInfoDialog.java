@@ -111,70 +111,72 @@ public class MeetingsInfoDialog extends DialogFragment {
     }
 
 
-     //TODO
+
     public String getDayOfWeek(int day){
         switch (day){
             case android.icu.util.Calendar.SUNDAY:
-                return "Sunday";
+                return getString(R.string.days_sunday);
 
             case android.icu.util.Calendar.MONDAY:
-                return "Monday";
+                return getString(R.string.days_monday);
 
             case android.icu.util.Calendar.TUESDAY:
-                return "Tuesday";
+                return getString(R.string.days_tuesday);
 
             case android.icu.util.Calendar.WEDNESDAY:
-                return "Wednesday";
+                return getString(R.string.days_wednesday);
 
             case android.icu.util.Calendar.THURSDAY:
-                return "Thursday";
+                return getString(R.string.days_thursday);
 
             case android.icu.util.Calendar.FRIDAY:
-                return "Friday";
+                return getString(R.string.days_friday);
 
             case android.icu.util.Calendar.SATURDAY:
-                return "Saturday";
+                return getString(R.string.days_saturday);
             default:
                 return "";
         }
     }
+
+
     public String getThreeLetterMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
-                return "JAN";
+                return getString(R.string.months_january);
 
             case android.icu.util.Calendar.FEBRUARY:
-                return "FEB";
+                return getString(R.string.months_february);
 
             case android.icu.util.Calendar.MARCH:
-                return "MAR";
+                return getString(R.string.months_march);
 
             case android.icu.util.Calendar.APRIL:
-                return "APR";
+                return getString(R.string.months_april);
 
             case android.icu.util.Calendar.MAY:
-                return "MAY";
+                return getString(R.string.months_may);
 
             case android.icu.util.Calendar.JUNE:
-                return "JUN";
+                return getString(R.string.months_june);
 
             case android.icu.util.Calendar.JULY:
-                return "JUL";
+                return getString(R.string.months_july);
 
             case android.icu.util.Calendar.AUGUST:
-                return "AUG";
+                return getString(R.string.months_august);
 
             case android.icu.util.Calendar.SEPTEMBER:
-                return "SEP";
+                return getString(R.string.months_september);
 
             case android.icu.util.Calendar.OCTOBER:
-                return "OCT";
+                return getString(R.string.months_october);
 
             case android.icu.util.Calendar.NOVEMBER:
-                return "NOV";
+                return getString(R.string.months_november);
 
             case android.icu.util.Calendar.DECEMBER:
-                return "DEC";
+                return getString(R.string.months_december);
 
             default:
                 return "";

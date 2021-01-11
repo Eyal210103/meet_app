@@ -2,7 +2,7 @@
     <string name="app_name">MeetApp</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
     <string name="groups">Groups</string>
     <string name="settings">Settings</string>
@@ -48,10 +48,37 @@
     <string name="chats">Chats</string>
     <string name="invalid_inputs">Email Or Password Are Invalid</string>
     <string name="auth_failed_message">Authentication failed, Try Again</string>
-    <string name="display_name_error" translatable="false">Please Choose A Display Name</string>
-    <string name="invalid_email_message" translatable="false">Invalid Email Address</string>
-    <string name="short_password_message" translatable="false">A Password Needs To Contained At Least 6 Characters</string>
-    <string name="not_same_password_message" translatable="false">Passwords Are Not Identical</string>
-    <string name="create_group_message" translatable="false">Creating , Please Wait..</string>
-    <string name="upload_error" translatable="false">Photo Wont Upload… /n Try Again Later</string>
+    <string name="display_name_error">Please Choose A Display Name</string>
+    <string name="invalid_email_message">Invalid Email Address</string>
+    <string name="short_password_message">A Password Needs To Contained At Least 6 Characters</string>
+    <string name="not_same_password_message">Passwords Are Not Identical</string>
+    <string name="create_group_message">Creating , Please Wait..</string>
+    <string name="upload_error">Photo Wont Upload… /n Try Again Later</string>
+    
+    <string name="menu_option_leave_group">Leave Group</string>
+    <string name="menu_option_set_manager">Set As Manager</string>
+    <string name="menu_option_remove_from_group">Remove From Group</string>
+    <string name="menu_option_view_profile">View Profile</string>
+
+    <string name="days_sunday">Sunday</string>
+    <string name="days_monday">Monday</string>
+    <string name="days_tuesday">Tuesday</string>
+    <string name="days_wednesday">Wednesday</string>
+    <string name="days_thursday">Thursday</string>
+    <string name="days_friday">Friday</string>
+    <string name="days_saturday">Saturday</string>
+
+    <string name="months_january">January</string>
+    <string name="months_february">February</string>
+    <string name="months_march">March</string>
+    <string name="months_april">April</string>
+    <string name="months_may">May</string>
+    <string name="months_june">June</string>
+    <string name="months_july">July</string>
+    <string name="months_august">August</string>
+    <string name="months_september">September</string>
+    <string name="months_october">October</string>
+    <string name="months_november">November</string>
+    <string name="months_december">December</string>
+
 </resources>

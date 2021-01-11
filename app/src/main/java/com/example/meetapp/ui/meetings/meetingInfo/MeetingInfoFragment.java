@@ -132,7 +132,7 @@ public class MeetingInfoFragment extends Fragment {
 
         day.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
         dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
-        month.setText(getThreeLetterMonth(calendar.get(Calendar.MONTH)));
+        month.setText(getMonth(calendar.get(Calendar.MONTH)));
         hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
         description.setText(meeting.getDescription());
         location.setText(getAddress(meeting.getLocation()));
@@ -144,34 +144,34 @@ public class MeetingInfoFragment extends Fragment {
     }
 
 
-    //TODO
     public String getDayOfWeek(int day){
         switch (day){
             case android.icu.util.Calendar.SUNDAY:
-                return "Sunday";
+                return getString(R.string.days_sunday);
 
             case android.icu.util.Calendar.MONDAY:
-                return "Monday";
+                return getString(R.string.days_monday);
 
             case android.icu.util.Calendar.TUESDAY:
-                return "Tuesday";
+                return getString(R.string.days_tuesday);
 
             case android.icu.util.Calendar.WEDNESDAY:
-                return "Wednesday";
+                return getString(R.string.days_wednesday);
 
             case android.icu.util.Calendar.THURSDAY:
-                return "Thursday";
+                return getString(R.string.days_thursday);
 
             case android.icu.util.Calendar.FRIDAY:
-                return "Friday";
+                return getString(R.string.days_friday);
 
             case android.icu.util.Calendar.SATURDAY:
-                return "Saturday";
+                return getString(R.string.days_saturday);
             default:
                 return "";
         }
     }
-    public String getThreeLetterMonth(int day){
+
+    public String getMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
                 return "JAN";
@@ -213,6 +213,7 @@ public class MeetingInfoFragment extends Fragment {
                 return "";
         }
     }
+
     public String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {

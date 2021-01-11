@@ -29,7 +29,7 @@ public class SearchGroupFirebase {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 MutableLiveData<Group> gld = new MutableLiveData<>();
                 gld.setValue(snapshot.getValue(Group.class));
-                if (!UserGroupsRepo.getInstance().ids.containsKey(gld.getValue().getId())) {
+                if (!UserGroupsRepo.getInstance().groupMap.containsKey(gld.getValue().getId())) {
                     groups.add(gld);
                     groupMutableLiveData.postValue(groups);
                 }

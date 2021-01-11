@@ -16,17 +16,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserMeetingsRepo {
     private static final String TAG = "USERMREPO";
-    private ArrayList<LiveData<GroupMeeting>> groupsMeetings = new ArrayList<>();
-    private HashMap<String,LiveData<Meeting>> allMeetings = new HashMap<>();
-    private HashMap<String,Integer> publicHash = new HashMap<>();
-    private HashMap<String,String> meetingToGroup = new HashMap<>();
-  //  private HashMap<String,Integer> groupHash = new HashMap<>();
 
+    private final HashMap<String,LiveData<Meeting>> allMeetings = new HashMap<>();
     MutableLiveData<HashMap<String,LiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
 
     private static UserMeetingsRepo instance =  null;
@@ -42,12 +37,12 @@ public class UserMeetingsRepo {
 
     public LiveData<HashMap<String,LiveData<Meeting>>> getAllMeetings(){
         mutableLiveData.setValue(allMeetings);
-        getPublicMeetings();
-        getGroupsMeetings();
+        loadPublicMeetings();
+        loadGroupsMeetings();
         return  mutableLiveData;
     }
 
-    private void getGroupsMeetings(){
+    private void loadGroupsMeetings(){
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Meetings").child("Group").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -77,7 +72,7 @@ public class UserMeetingsRepo {
         });
     }
 
-    private void getPublicMeetings(){
+    private void loadPublicMeetings(){
         FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Meetings").child("Public").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -111,21 +106,21 @@ public class UserMeetingsRepo {
         });
     }
 
-    private int sortMeetings(Meeting m){
-        if (publicHash.containsKey(m.getId())) {
-            allMeetings.remove(publicHash.get(m.getId()));
-        }
-        if (allMeetings.isEmpty()){
-            return 0;
-        }
-        for (int i = 0; i < allMeetings.size(); i++) {
-            if (allMeetings.get(i).getValue().getMillis() > m.getMillis()){
-                publicHash.put(m.getId(),i);
-               return i;
-            }
-        }
-        return allMeetings.size();
-    }
+//    private int sortMeetings(Meeting m){
+//        if (publicHash.containsKey(m.getId())) {
+//            allMeetings.remove(publicHash.get(m.getId()));
+//        }
+//        if (allMeetings.isEmpty()){
+//            return 0;
+//        }
+//        for (int i = 0; i < allMeetings.size(); i++) {
+//            if (allMeetings.get(i).getValue().getMillis() > m.getMillis()){
+//                publicHash.put(m.getId(),i);
+//               return i;
+//            }
+//        }
+//        return allMeetings.size();
+//    }
 
 //    private int sortGroupMeeting(GroupMeeting m){
 //        if (groupHash.containsKey(m.getId())) {

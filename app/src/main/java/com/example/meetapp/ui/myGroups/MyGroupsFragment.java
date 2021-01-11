@@ -49,7 +49,7 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
         View view = inflater.inflate(R.layout.my_groups_fragment, container, false);
 
         final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue(), ConstantValues.TYPE_MYGROUPS);
+        adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue(), ConstantValues.TYPE_MY_GROUPS);
 
         Button buttonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         Button buttonJoinGroup = view.findViewById(R.id.groups_join_group_fab);

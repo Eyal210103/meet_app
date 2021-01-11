@@ -61,7 +61,7 @@ public class JoinGroupFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
 
-        GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getResult().getValue(), ConstantValues.TYPE_JOINGROUP);
+        GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getResult().getValue(), ConstantValues.TYPE_JOIN_GROUP);
         recyclerView.setAdapter(adapter);
 
         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Group>>>() {

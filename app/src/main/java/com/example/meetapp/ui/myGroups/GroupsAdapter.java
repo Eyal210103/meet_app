@@ -54,7 +54,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
             Glide.with(context.getActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
 
-            if (type == ConstantValues.TYPE_MYGROUPS) {
+            if (type == ConstantValues.TYPE_MY_GROUPS) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -66,7 +66,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                 });
             }
 
-            if (type == ConstantValues.TYPE_JOINGROUP) {
+            if (type == ConstantValues.TYPE_JOIN_GROUP) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -80,7 +80,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    menu.add(position,0,0,ConstantValues.MENU_OPTION_LEAVE_GROUP).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    menu.add(position,0,0,context.getString(R.string.menu_option_leave_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;

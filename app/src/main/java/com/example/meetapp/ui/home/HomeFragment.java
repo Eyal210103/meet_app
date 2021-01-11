@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
                                     ids.add(meeting.getId());
                                     markers.add(markerOptions);
-                                    markersHash.put(meeting.getId(),meeting.getId()); // TODO
+                                    markersHash.put(meeting.getId(),meeting.getId());
                                 }
                             }
                         });
@@ -189,7 +189,7 @@ public class HomeFragment extends Fragment {
                     });
                     addMarkers();
                 } else {
-                    Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();//TODO
+                    Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();
                 }
             }
         });
