@@ -18,22 +18,27 @@ import java.util.HashMap;
 
 public class UserGroupsRepo {
 
-    ArrayList<MutableLiveData<Group>> groupList = new ArrayList<MutableLiveData<Group>>();
-    HashMap<String,MutableLiveData<Group>> groupMap = new HashMap<>();
+    private final ArrayList<MutableLiveData<Group>> groupList = new ArrayList<MutableLiveData<Group>>();
+    private final HashMap<String,MutableLiveData<Group>> groupMap = new HashMap<>();
+    MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
 
     static UserGroupsRepo instance = null;
 
+    private UserGroupsRepo() {
+    }
+
     public static UserGroupsRepo getInstance(){
-        if (instance == null)
+        if (instance == null) {
             instance = new UserGroupsRepo();
+            instance.loadGroups();
+        }
         return instance;
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
-        MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
+    private void loadGroups(){
         mutableLiveData.setValue(groupList);
         if (groupList.isEmpty()) {
-            FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Groups")
+            FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES)
                     .addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -74,11 +79,14 @@ public class UserGroupsRepo {
                         }
                     });
         }
+    }
+
+    public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
         return mutableLiveData;
     }
 
     private void putGroupsData(String key , MutableLiveData<Group> mutableLiveData){
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(key);
+        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(key);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -95,7 +103,7 @@ public class UserGroupsRepo {
     }
 
     public void leaveGroup(String id) {
-        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Groups").child(id).removeValue();
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(id).child("Members").child(CurrentUser.getInstance().getId()).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES).child(id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(id).child(FirebaseTags.MEMBERS_CHILDES).child(CurrentUser.getInstance().getId()).removeValue();
     }
 }

@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 public class AvailableMeetingsRepo {
 
-    private ArrayList<MutableLiveData<Meeting>> publicMeetings = new ArrayList<>();
-    private HashMap<String,Integer> publicHash = new HashMap<>();
+    private final ArrayList<MutableLiveData<Meeting>> publicMeetings = new ArrayList<>();
+    private final HashMap<String,Integer> publicHash = new HashMap<>();
     private long todayMillis;
 
     private static AvailableMeetingsRepo instance =  null;
@@ -39,11 +39,11 @@ public class AvailableMeetingsRepo {
         todayMillis = Calendar.getInstance().getTimeInMillis();
         MutableLiveData<ArrayList<MutableLiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(publicMeetings);
-        FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Meeting meeting = snapshot.getValue(Meeting.class);
-                if(meeting.getMillis() > todayMillis){
+                if (meeting != null && meeting.getMillis() > todayMillis) {
                     MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
                     publicHash.put(meeting.getId(), publicMeetings.size());
@@ -72,11 +72,13 @@ public class AvailableMeetingsRepo {
         ArrayList<User> arrayList = new ArrayList<User>();
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(arrayList);
-        FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(mId).child("whoComing").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(mId)
+                .child(FirebaseTags.WHO_COMING_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getKey();
-                FirebaseDatabase.getInstance().getReference().child("Users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         arrayList.add(snapshot.getValue(User.class));

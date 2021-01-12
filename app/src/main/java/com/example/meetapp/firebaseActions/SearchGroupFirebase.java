@@ -23,13 +23,13 @@ public class SearchGroupFirebase {
         ArrayList<MutableLiveData<Group>> groups = new ArrayList<>();
         groupMutableLiveData.setValue(groups);
         groupMutableLiveData.getValue().clear();
-        Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES).orderByChild("name").startAt(name).endAt(name + "\uf8ff");
+        Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES).orderByChild(FirebaseTags.SORT_GROUPS_NAME).startAt(name).endAt(name + "\uf8ff");
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 MutableLiveData<Group> gld = new MutableLiveData<>();
                 gld.setValue(snapshot.getValue(Group.class));
-                if (!UserGroupsRepo.getInstance().groupMap.containsKey(gld.getValue().getId())) {
+                if (!UserGroupsRepo.getInstance().getHashMapGroups().containsKey(gld.getValue().getId())) {
                     groups.add(gld);
                     groupMutableLiveData.postValue(groups);
                 }

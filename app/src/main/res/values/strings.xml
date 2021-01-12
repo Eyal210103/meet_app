@@ -60,13 +60,13 @@
     <string name="menu_option_remove_from_group">Remove From Group</string>
     <string name="menu_option_view_profile">View Profile</string>
 
-    <string name="days_sunday">Sunday</string>
-    <string name="days_monday">Monday</string>
-    <string name="days_tuesday">Tuesday</string>
-    <string name="days_wednesday">Wednesday</string>
-    <string name="days_thursday">Thursday</string>
-    <string name="days_friday">Friday</string>
-    <string name="days_saturday">Saturday</string>
+    <string name="days_sunday">SUN</string>
+    <string name="days_monday">MON</string>
+    <string name="days_tuesday">TUE</string>
+    <string name="days_wednesday">WED</string>
+    <string name="days_thursday">THU</string>
+    <string name="days_friday">FRI</string>
+    <string name="days_saturday">SAT</string>
 
     <string name="months_january">January</string>
     <string name="months_february">February</string>

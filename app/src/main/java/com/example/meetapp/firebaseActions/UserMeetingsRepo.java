@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -19,122 +17,112 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 
 public class UserMeetingsRepo {
-    private static final String TAG = "USERMREPO";
 
-    private final HashMap<String,LiveData<Meeting>> allMeetings = new HashMap<>();
-    MutableLiveData<HashMap<String,LiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
+    private final HashMap<String, LiveData<Meeting>> allMeetings;
+    private final MutableLiveData<HashMap<String, LiveData<Meeting>>> mutableLiveData;
 
-    private static UserMeetingsRepo instance =  null;
+    private static UserMeetingsRepo instance = null;
 
     private UserMeetingsRepo() {
+        allMeetings = new HashMap<>();
+        mutableLiveData = new MutableLiveData<>();
     }
 
     public static UserMeetingsRepo getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new UserMeetingsRepo();
+            instance.loadPublicMeetings();
+            instance.loadGroupsMeetings();
+        }
         return instance;
     }
 
-    public LiveData<HashMap<String,LiveData<Meeting>>> getAllMeetings(){
+    public LiveData<HashMap<String, LiveData<Meeting>>> getAllMeetings() {
         mutableLiveData.setValue(allMeetings);
-        loadPublicMeetings();
-        loadGroupsMeetings();
-        return  mutableLiveData;
+        return mutableLiveData;
     }
 
-    private void loadGroupsMeetings(){
-        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Meetings").child("Group").addChildEventListener(new ChildEventListener() {
+
+    private void loadGroupsMeetings() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId())
+                .child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getKey();
                 String group = snapshot.getValue(String.class);
-                FirebaseDatabase.getInstance().getReference().child("Groups").child(group).child("Meetings").child(key).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(group).child(FirebaseTags.MEETINGS_CHILDES).child(key).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
                         MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                         meetingMutableLiveData.setValue(meeting);
-                        allMeetings.put(meeting.getDateString(),meetingMutableLiveData);
+                        allMeetings.put(meeting.getDateString(), meetingMutableLiveData);
                         mutableLiveData.postValue(allMeetings);
                     }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
                 });
             }
+
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) { }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
 
-    private void loadPublicMeetings(){
-        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Meetings").child("Public").addChildEventListener(new ChildEventListener() {
+    private void loadPublicMeetings() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getKey();
-                FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(key).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(key).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             Meeting meeting = snapshot.getValue(Meeting.class);
                             MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                             meetingMutableLiveData.setValue(meeting);
-                            Log.d(TAG, "onDataChange: --------------------------------------------------------" + meeting.toString());
-                            //int i = sortMeetings(meeting);
-                            allMeetings.put(meeting.getDateString(),meetingMutableLiveData);
+                            allMeetings.put(meeting.getDateString(), meetingMutableLiveData);
                             mutableLiveData.postValue(allMeetings);
                         }
                     }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
                 });
 
             }
+
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) { }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
-
-//    private int sortMeetings(Meeting m){
-//        if (publicHash.containsKey(m.getId())) {
-//            allMeetings.remove(publicHash.get(m.getId()));
-//        }
-//        if (allMeetings.isEmpty()){
-//            return 0;
-//        }
-//        for (int i = 0; i < allMeetings.size(); i++) {
-//            if (allMeetings.get(i).getValue().getMillis() > m.getMillis()){
-//                publicHash.put(m.getId(),i);
-//               return i;
-//            }
-//        }
-//        return allMeetings.size();
-//    }
-
-//    private int sortGroupMeeting(GroupMeeting m){
-//        if (groupHash.containsKey(m.getId())) {
-//            groupsMeetings.remove(groupHash.get(m.getId()));
-//        }
-//        if (groupsMeetings.isEmpty()){
-//            return 0;
-//        }
-//        for (int i = 0; i < groupsMeetings.size(); i++) {
-//            if (groupsMeetings.get(i).getValue().getMillis() > m.getMillis()){
-//                groupHash.put(m.getId(),i);
-//                return i;
-//            }
-//        }
-//        return groupsMeetings.size();
-//    }
 }

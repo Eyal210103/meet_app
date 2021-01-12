@@ -17,35 +17,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GroupSettingsRepo {
-    ArrayList<MutableLiveData<User>> membersAL = new ArrayList<>();
-    HashMap<String,String> ids = new HashMap<>();
-    MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData = new MutableLiveData<>();
+    private final ArrayList<MutableLiveData<User>> membersAL;
+    private final HashMap<String, String> idsHashMap;
+    private final MutableLiveData<ArrayList<MutableLiveData<User>>> usersListMutableLiveData;
+    private final MutableLiveData<ArrayList<String>> managersIdsMutableLiveData;
     private final String groupId;
-    ArrayList<String> managers;
-    ChildEventListener childEventListener;
 
-    public GroupSettingsRepo (String groupId){
+    public GroupSettingsRepo(String groupId) {
         this.groupId = groupId;
+        membersAL = new ArrayList<>();
+        idsHashMap = new HashMap<>();
+        usersListMutableLiveData = new MutableLiveData<>();
+        managersIdsMutableLiveData = new MutableLiveData<>();
+
+        this.loadWaitingUsers();
+        this.loadManagers();
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<User>>> getWaitingUsers(){
-        ids.clear();
+    private void loadWaitingUsers(){
+        idsHashMap.clear();
         membersAL.clear();
-        mutableLiveData.setValue(membersAL);
-        this.childEventListener = new ChildEventListener() {
+        usersListMutableLiveData.setValue(membersAL);
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getValue(String.class);
                 boolean isThere = false;
-                if (ids.containsKey(key)){
-                    isThere= true;
-                }else {
-                    ids.put(key,key);
+                if (idsHashMap.containsKey(key)) {
+                    isThere = true;
+                } else {
+                    idsHashMap.put(key, key);
                 }
                 if (!isThere) {
                     MutableLiveData<User> userMutableLiveData = putUserData(key);
                     membersAL.add(userMutableLiveData);
-                    mutableLiveData.setValue(membersAL);
+                    usersListMutableLiveData.setValue(membersAL);
                 }
             }
 
@@ -59,11 +65,12 @@ public class GroupSettingsRepo {
                 for (MutableLiveData<User> u : membersAL) {
                     if (key.equals(u.getValue().getId())) {
                         membersAL.remove(u);
-                        ids.remove(key);
+                        idsHashMap.remove(key);
                         break;
                     }
                 }
             }
+
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
             }
@@ -73,10 +80,14 @@ public class GroupSettingsRepo {
             }
         };
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.WAITING_CHILDES).addChildEventListener(childEventListener);
-        return mutableLiveData;
     }
-    private MutableLiveData<User> putUserData(String key){
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+
+    public MutableLiveData<ArrayList<MutableLiveData<User>>> getWaitingUsers() {
+        return usersListMutableLiveData;
+    }
+
+    private MutableLiveData<User> putUserData(String key) {
+        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -91,16 +102,15 @@ public class GroupSettingsRepo {
         return userMutableLiveData;
     }
 
-
-    public LiveData<ArrayList<String>> getManagers(){
-        managers= new ArrayList<>();
-        MutableLiveData<ArrayList<String>> mutableLiveData = new MutableLiveData<>();
+    private void loadManagers(){
+        ArrayList<String> managers = new ArrayList<>();
+        managersIdsMutableLiveData.setValue(managers);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MANAGER_CHILDES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot s:snapshot.getChildren()){
+                for (DataSnapshot s : snapshot.getChildren()) {
                     managers.add(s.getValue(String.class));
-                    mutableLiveData.postValue(managers);
+                    managersIdsMutableLiveData.postValue(managers);
                 }
             }
 
@@ -109,27 +119,33 @@ public class GroupSettingsRepo {
 
             }
         });
-        return mutableLiveData;
     }
 
-    public void removeUser(String id){
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.WAITING_CHILDES).child(id).removeValue();
-        removeFromList(id);
+    public LiveData<ArrayList<String>> getManagers() {
+        return managersIdsMutableLiveData;
     }
 
-    public void approveUser(String id){
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEMBERS_CHILDES).child(id).setValue(id);
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(id).child(FirebaseTags.GROUPS_CHILDES).child(groupId).setValue(groupId);
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.WAITING_CHILDES).child(id).removeValue();
-        removeFromList(id);
+    public void removeUser(String userId) {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.WAITING_CHILDES).child(userId).removeValue();
+        removeFromList(userId);
     }
 
-    private void removeFromList(String id){
-        ids.remove(id);
-        for (MutableLiveData<User> user: membersAL) {
-            if (user.getValue() != null && user.getValue().getId().equals(id)){
+    public void approveUser(String userId) {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId)
+                .child(FirebaseTags.MEMBERS_CHILDES).child(userId).setValue(userId);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(userId)
+                .child(FirebaseTags.GROUPS_CHILDES).child(groupId).setValue(groupId);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
+                .child(groupId).child(FirebaseTags.WAITING_CHILDES).child(userId).removeValue();
+        removeFromList(userId);
+    }
+
+    private void removeFromList(String userId) {
+        idsHashMap.remove(userId);
+        for (MutableLiveData<User> user : membersAL) {
+            if (user.getValue() != null && user.getValue().getId().equals(userId)) {
                 membersAL.remove(user);
-                mutableLiveData.postValue(membersAL);
+                usersListMutableLiveData.postValue(membersAL);
             }
         }
     }

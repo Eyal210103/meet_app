@@ -16,15 +16,18 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LastMessageRepo {
 
-    String groupId;
-    MutableLiveData<String> displayName;
+    private final String groupId;
+    private MutableLiveData<String> displayName;
+    private final MutableLiveData<Message> messageMutableLiveData ;
+
 
     public LastMessageRepo(String id) {
         this.groupId = id;
+        messageMutableLiveData = new MutableLiveData<>();
+        this.loadMessage();
     }
 
-    public MutableLiveData<Message> getMessage(){
-        final MutableLiveData<Message> messageMutableLiveData = new MutableLiveData<>();
+    private void loadMessage(){
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -52,6 +55,9 @@ public class LastMessageRepo {
         };
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
                 .child(this.groupId).child(FirebaseTags.CHAT_CHILDES).addChildEventListener(childEventListener);
+    }
+
+    public MutableLiveData<Message> getMessage(){
         return messageMutableLiveData;
     }
 

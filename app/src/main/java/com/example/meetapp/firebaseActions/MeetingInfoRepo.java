@@ -23,6 +23,8 @@ public class MeetingInfoRepo {
     private final MutableLiveData<GroupMeeting> gMeetingLiveData = new MutableLiveData<>();
     private final String meetingId;
 
+    //TODO - Move to constructor
+
     public MeetingInfoRepo(String id) {
         this.meetingId = id;
     }
