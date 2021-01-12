@@ -101,7 +101,7 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
 
     @Override
     public void onClickInRecyclerView(Object value, String action) {
-        if (action.equals("Leave")){
+        if (action.equals(ConstantValues.ACTION_LEAVE)){
             String id = (String)value;
             mViewModel.leaveGroup(id);
         }
