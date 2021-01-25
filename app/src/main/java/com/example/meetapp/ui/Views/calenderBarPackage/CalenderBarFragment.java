@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.Views.CalenderBarPackage;
+package com.example.meetapp.ui.Views.calenderBarPackage;
 
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -13,12 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.meetings.Meeting;
+import com.example.meetapp.ui.groupInfo.groupsMeetings.GroupMeetingsViewModel;
 import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsViewModel;
 
 import java.util.ArrayList;
@@ -27,19 +29,25 @@ import java.util.HashMap;
 
 public class CalenderBarFragment extends Fragment {
 
-    private MyMeetingsViewModel mViewModel;
+    private final ViewModel mViewModel;
     private CalenderBarAdapter adapter;
     private ArrayList<Date> days;
     private LinearLayoutManager llm;
     private int position;
     private RecyclerView recyclerView;
     private Date today;
-    private Fragment parent;
+    private final Fragment parent;
 
     public CalenderBarFragment(MyMeetingsViewModel mViewModel, Fragment parent) {
         this.mViewModel = mViewModel;
         this.parent= parent;
     }
+    public CalenderBarFragment(GroupMeetingsViewModel mViewModel, Fragment parent) {
+        this.mViewModel = mViewModel;
+        this.parent= parent;
+    }
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -52,7 +60,27 @@ public class CalenderBarFragment extends Fragment {
         ImageView arrowPrevIV = view.findViewById(R.id.group_meetings_arrow_back_imageView);
         ImageView arrowNextIV = view.findViewById(R.id.group_meetings_arrow_forward_imageView);
 
-        this.adapter = new CalenderBarAdapter(this, this.days, mViewModel.getMeetings().getValue());
+
+        if (mViewModel instanceof MyMeetingsViewModel) {
+            this.adapter = new CalenderBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
+
+            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, LiveData<Meeting>>>() {
+                @Override
+                public void onChanged(HashMap<String, LiveData<Meeting>> stringLiveDataHashMap) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }else {
+            this.adapter = new CalenderBarAdapter(this, this.days, null,"group");
+
+//            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, LiveData<Meeting>>>() {
+//                @Override
+//                public void onChanged(HashMap<String, LiveData<Meeting>> stringLiveDataHashMap) {
+//                    adapter.notifyDataSetChanged();
+//                }
+//            });
+        }
+
         llm = new LinearLayoutManager(this.requireActivity());
         llm.setOrientation(RecyclerView.HORIZONTAL);
 
@@ -68,12 +96,7 @@ public class CalenderBarFragment extends Fragment {
             }
         });
 
-        mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, LiveData<Meeting>>>() {
-            @Override
-            public void onChanged(HashMap<String, LiveData<Meeting>> stringLiveDataHashMap) {
-                adapter.notifyDataSetChanged();
-            }
-        });
+
 
         return  view;
     }
@@ -90,10 +113,10 @@ public class CalenderBarFragment extends Fragment {
 
     public void setViewBackground(int i) {
         try {
-            RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+            RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
             if (null != holder) {
                 holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
-                holder = (RecyclerView.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                holder = recyclerView.findViewHolderForAdapterPosition(i);
                 holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
 
             }

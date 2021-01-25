@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.Login;
+package com.example.meetapp.ui.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

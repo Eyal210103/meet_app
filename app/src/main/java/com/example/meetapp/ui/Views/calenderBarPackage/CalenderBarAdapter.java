@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.Views.CalenderBarPackage;
+package com.example.meetapp.ui.Views.calenderBarPackage;
 
 import android.annotation.SuppressLint;
 import android.icu.util.Calendar;
@@ -25,14 +25,21 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
 
     private CalenderBarFragment context;
     private ArrayList<Date> days;
-    private HashMap<String, LiveData<Meeting>> meetings;
+    private HashMap<String, LiveData<Meeting>> publicMeetings;
+    private HashMap<String, LiveData<GroupMeeting>> groupMeetings;
 
     private int selected;
 
     public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String ,LiveData<Meeting>> meetings) {
         this.context = context;
         this.days = days;
-        this.meetings = meetings;
+        this.publicMeetings = meetings;
+    }
+
+    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String ,LiveData<GroupMeeting>> meetings, String group) {
+        this.context = context;
+        this.days = days;
+        this.groupMeetings = meetings;
     }
 
     @NonNull
@@ -62,11 +69,11 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         boolean isRegular = false;
         boolean isGroup =false;
 
-        if (!meetings.isEmpty()){
+        if (publicMeetings!= null &&!publicMeetings.isEmpty()){
 
-            if (meetings.containsKey(key)){
+            if (publicMeetings.containsKey(key)){
                 isGood = true;
-                if (meetings.get(key).getValue() instanceof GroupMeeting) {
+                if (publicMeetings.get(key).getValue() instanceof GroupMeeting) {
                     isGroup = true;
                 }else {
                     isRegular = true;

@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.GroupsChats;
+package com.example.meetapp.ui.groupsChats;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import com.example.meetapp.R;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.Message;
-import com.example.meetapp.notifications.Token;
+import com.example.meetapp.notifications2.Token;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

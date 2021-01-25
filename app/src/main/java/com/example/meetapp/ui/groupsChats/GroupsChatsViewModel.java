@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.GroupsChats;
+package com.example.meetapp.ui.groupsChats;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

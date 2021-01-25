@@ -1,4 +1,4 @@
-package com.example.meetapp.notifications;
+package com.example.meetapp.notifications2;
 
 import android.util.Log;
 
@@ -21,12 +21,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MessageNotificationService {
+public class FirebaseDatabaseListening {
+
+    private static FirebaseDatabaseListening instance = null;
 
     private APIService apiService;
     private boolean first;
 
-    public MessageNotificationService() {
+    public static FirebaseDatabaseListening getInstance() {
+        if (instance == null){
+            instance = new FirebaseDatabaseListening();
+        }
+        return instance;
+    }
+
+    private FirebaseDatabaseListening() {
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         first = true;
     }
@@ -51,7 +60,7 @@ public class MessageNotificationService {
         });
     }
 
-    public void notificationListener(String groupId){
+    private void notificationListener(String groupId){
         FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Chat").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

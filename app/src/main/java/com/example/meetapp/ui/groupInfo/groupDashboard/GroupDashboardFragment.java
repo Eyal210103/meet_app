@@ -34,7 +34,7 @@ public class GroupDashboardFragment extends Fragment {
         return new GroupDashboardFragment();
     }
 
-    public void setParent(Fragment fragment){
+    public void setParent(Fragment fragment) {
         parent = (GroupInfoFragment) fragment;
     }
 
@@ -54,17 +54,18 @@ public class GroupDashboardFragment extends Fragment {
         lastMessageTextView.setText(getResources().getString(R.string.no_messages_alert));
 
         RecyclerView recyclerView = view.findViewById(R.id.group_dash_members_recycler);
-        adapter = new DashMembersAdapter(this,mViewModel.getMembersMutableLiveData().getValue());
+        adapter = new DashMembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setAdapter(adapter);
-        GridLayoutManager glm = new GridLayoutManager(requireActivity(),3);
+        GridLayoutManager glm = new GridLayoutManager(requireActivity(), 3);
         recyclerView.setLayoutManager(glm);
 
         View message = view.findViewById(R.id.include2);
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parent.swipeToChat();
+                if (parent != null)
+                    parent.swipeToChat();
             }
         });
 
@@ -72,7 +73,8 @@ public class GroupDashboardFragment extends Fragment {
         meeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parent.swipeToMeetings();
+                if (parent != null)
+                    parent.swipeToMeetings();
             }
         });
 
@@ -96,9 +98,9 @@ public class GroupDashboardFragment extends Fragment {
             public void onChanged(Message message) {
                 String m;
                 if (message.getContext().length() > 15)
-                    m = message.getSenderDisplayName() +":\n" + message.getContext().substring(0,15)+"...";
+                    m = message.getSenderDisplayName() + ":\n" + message.getContext().substring(0, 15) + "...";
                 else
-                    m = message.getSenderDisplayName() +":\n" + message.getContext();
+                    m = message.getSenderDisplayName() + ":\n" + message.getContext();
                 lastMessageTextView.setText(m);
             }
         });

@@ -80,7 +80,6 @@ public class GroupsMembersRepo {
     public MutableLiveData<ArrayList<MutableLiveData<User>>> getMembers(){
         return mutableLiveData;
     }
-
     private MutableLiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();

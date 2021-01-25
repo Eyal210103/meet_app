@@ -7,7 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meetapp.R;
-import com.example.meetapp.ui.Login.LoginActivity;
+import com.example.meetapp.ui.login.LoginActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

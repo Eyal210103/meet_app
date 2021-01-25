@@ -14,8 +14,7 @@ import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.example.meetapp.model.CurrentUser;
-import com.example.meetapp.notifications.MessageNotificationService;
-import com.example.meetapp.ui.Login.LoginActivity;
+import com.example.meetapp.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements OnClickInFragment  {
@@ -35,9 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         NavigationUI.setupWithNavController(navView,navController);
 
         UserGroupsRepo.getInstance().getGroups();
-
-        MessageNotificationService messageNotificationService = new MessageNotificationService();
-        messageNotificationService.startService();
+        //FirebaseDatabaseListening.getInstance().startService();
     }
 
     @Override

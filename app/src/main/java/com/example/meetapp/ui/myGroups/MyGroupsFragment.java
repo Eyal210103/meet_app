@@ -39,11 +39,6 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_groups_fragment, container, false);
@@ -74,9 +69,7 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
                 navController.navigate(R.id.action_socialMenuFragment_to_joinGroupFragment);
             }
         });
-
         recyclerView.setAdapter(adapter);
-
 
         mViewModel.getGroups().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Group>>>() {
             @Override
@@ -92,8 +85,6 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
                 }
             }
         });
-
-
 
         return view;
     }

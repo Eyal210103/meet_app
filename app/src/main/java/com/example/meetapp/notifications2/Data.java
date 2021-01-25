@@ -1,4 +1,4 @@
-package com.example.meetapp.notifications;
+package com.example.meetapp.notifications2;
 
 public class Data {
     private String user;
@@ -7,15 +7,15 @@ public class Data {
     private String title;
     private String sented;
 
-    public Data() {
-    }
-
-    public Data(String user, int icon, String body, String title, String sent) {
+    public Data(String user, int icon, String body, String title, String sented) {
         this.user = user;
         this.icon = icon;
         this.body = body;
         this.title = title;
-        this.sented = sent;
+        this.sented = sented;
+    }
+
+    public Data() {
     }
 
     public String getUser() {
@@ -52,17 +52,6 @@ public class Data {
 
     public String getSented() {
         return sented;
-    }
-
-    @Override
-    public String toString() {
-        return "Data{" +
-                "user='" + user + '\'' +
-                ", icon=" + icon +
-                ", body='" + body + '\'' +
-                ", title='" + title + '\'' +
-                ", sented='" + sented + '\'' +
-                '}';
     }
 
     public void setSented(String sented) {

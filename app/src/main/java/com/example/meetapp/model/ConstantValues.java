@@ -15,7 +15,7 @@ public class ConstantValues {
     public static final String ACTION_SUBJECT = "subject";
     public static final String ACTION_APPROVE = "approve";
     public static final String ACTION_REJECT = "reject";
-    public static final String ACTION_LEAVE = "Leave";
+    public static final String ACTION_LEAVE = "leave";
 
     public static final String SUBJECT_RESTAURANT ="Restaurant";
     public static final String SUBJECT_BASKETBALL ="Basketball";

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -110,7 +109,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
                     }
                 }
                 if (!isThere){
-                    ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(linearLayoutWaiting.getLayoutParams());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(linearLayoutWaiting.getLayoutParams());
                     params.height= 0;
                     params.topMargin = 6;
                     linearLayoutWaiting.setLayoutParams(params);

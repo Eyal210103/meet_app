@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginOptionsFragment"
-        android:name="com.example.meetapp.ui.Login.LoginOptionsFragment"
+        android:name="com.example.meetapp.ui.login.LoginOptionsFragment"
         android:label="LoginOptionsFragment" >
         <action
             android:id="@+id/action_loginOptionsFragment_to_loginFragment"
@@ -22,12 +22,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.meetapp.ui.Login.LoginFragment"
+        android:name="com.example.meetapp.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.example.meetapp.ui.Login.SignupFragment"
+        android:name="com.example.meetapp.ui.login.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
 </navigation>

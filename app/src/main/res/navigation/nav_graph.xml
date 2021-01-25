@@ -23,7 +23,7 @@
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/groupsChatsFragment"
-        android:name="com.example.meetapp.ui.GroupsChats.GroupsChatsFragment"
+        android:name="com.example.meetapp.ui.groupsChats.GroupsChatsFragment"
         android:label="groups_chats_fragment"
         tools:layout="@layout/groups_chats_fragment" >
         <action

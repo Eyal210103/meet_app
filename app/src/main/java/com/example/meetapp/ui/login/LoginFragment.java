@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.Login;
+package com.example.meetapp.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;

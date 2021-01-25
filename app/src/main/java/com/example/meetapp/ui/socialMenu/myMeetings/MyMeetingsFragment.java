@@ -19,7 +19,7 @@ import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
-import com.example.meetapp.ui.Views.CalenderBarPackage.CalenderBarFragment;
+import com.example.meetapp.ui.Views.calenderBarPackage.CalenderBarFragment;
 import com.example.meetapp.ui.meetings.SelectDateFragment;
 import com.example.meetapp.ui.meetings.meetingInfo.MeetingInfoFragment;
 

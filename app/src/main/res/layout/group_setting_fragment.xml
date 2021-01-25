@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:orientation="vertical"
     tools:context=".ui.groupInfo.groupSettings.GroupSettingsFragment">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/group_settings_circleImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_launcher"
-        app:civ_border_color="@color/oppBackground"
-        app:civ_border_width="0.7dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/group_settings_circleImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/group_settings_name_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/app_name"
+            android:textColor="@color/oppBackground"
+            android:textSize="36sp" />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/group_settings_linear_waiting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_settings_circleImageView">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/waiting_req_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="@string/waiting_requests"
             android:textColor="@color/oppBackground"
             android:textSize="18sp" />
@@ -47,25 +57,23 @@
             android:layout_marginTop="5dp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/group_settings_name_textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/app_name"
-        android:textColor="@color/oppBackground"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="@+id/group_settings_circleImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/group_settings_circleImageView"
-        app:layout_constraintTop_toTopOf="@+id/group_settings_circleImageView" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/group_settings_members"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_settings_linear_waiting" />
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/members"
+            android:textColor="@color/oppBackground"
+            android:textSize="18sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/group_settings_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

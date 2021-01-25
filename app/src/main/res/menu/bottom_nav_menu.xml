@@ -14,12 +14,12 @@
         android:enabled="true"
         android:title="@string/groups"
         android:icon="@drawable/groupsicon" />
-    <item
-        android:id="@+id/groupsChatsFragment"
-        android:visible="true"
-        android:enabled="true"
-        android:title="@string/chats"
-        android:icon="@drawable/ic_baseline_chat_24" />
+<!--    <item-->
+<!--        android:id="@+id/groupsChatsFragment"-->
+<!--        android:visible="true"-->
+<!--        android:enabled="true"-->
+<!--        android:title="@string/chats"-->
+<!--        android:icon="@drawable/ic_baseline_chat_24" />-->
 
     <item
         android:id="@+id/myMeetingsFragment"

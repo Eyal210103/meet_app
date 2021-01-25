@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/group_header_greadient"
-    tools:context=".ui.Login.LoginFragment">
+    tools:context=".ui.login.LoginFragment">
 
 
     <EditText

@@ -45,7 +45,7 @@
     <string name="confirm_arrival">Im Coming</string>
     <string name="no_date_message">No Date Has Been Selected</string>
     <string name="no_meetings_alert">You Have No Meetings In This Date</string>
-    <string name="chats">Chats</string>
+    <string name="chats">Chat</string>
     <string name="invalid_inputs">Email Or Password Are Invalid</string>
     <string name="auth_failed_message">Authentication failed, Try Again</string>
     <string name="display_name_error">Please Choose A Display Name</string>
@@ -80,5 +80,6 @@
     <string name="months_october">October</string>
     <string name="months_november">November</string>
     <string name="months_december">December</string>
+    <string name="members">Members</string>
 
 </resources>
