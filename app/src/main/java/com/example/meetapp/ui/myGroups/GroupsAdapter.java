@@ -84,7 +84,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                            onClickInRecyclerView.onClickInRecyclerView(current.getId(),ConstantValues.ACTION_LEAVE);
+                            onClickInRecyclerView.onClickInRecyclerView(current.getId(),ConstantValues.ACTION_LEAVE,0);
                             return false;
                         }
                     });

@@ -42,7 +42,6 @@ public class FirebaseDatabaseListening {
 
     public void startService(){
         String id = CurrentUser.getInstance().getId();
-
         FirebaseDatabase.getInstance().getReference("Users/"+id+"/Groups").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

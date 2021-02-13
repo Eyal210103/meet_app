@@ -136,7 +136,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     }
 
     @Override
-    public void onClickInRecyclerView(Object value, String action) {
+    public void onClickInRecyclerView(Object value, String action, int i) {
         if (action.equals(ConstantValues.ACTION_APPROVE)){
             mViewModel.approveUser((Integer)value);
             if (mViewModel.getPaddingUsers().getValue().size() == 0){

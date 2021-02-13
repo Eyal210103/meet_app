@@ -6,7 +6,6 @@ import android.app.TimePickerDialog;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,6 +125,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             }
         }, mYear, mMonth, mDay);
 
+        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+
         view.findViewById(R.id.create_meeting_choose_location_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +178,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }
+
+    //TODO חיחיחיחיי
 
     public String getThreeLetterMonth(int day){
         switch (day){
@@ -270,12 +273,11 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     @Override
     public void getSelectedLocation(LatLng latLng) {
         location = latLng;
-        Log.d("----------------------------------///////////", "getSelectedLocation: " + latLng.toString());
         locationTV.setText(getAddress(latLng));
     }
 
     @Override
-    public void onClickInRecyclerView(Object value, String action) {
+    public void onClickInRecyclerView(Object value, String action, int i) {
         if (action.equals("subject")){
             int v = (int)value;
             if (position != -1){

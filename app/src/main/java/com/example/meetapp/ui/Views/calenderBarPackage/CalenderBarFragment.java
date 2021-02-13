@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class CalenderBarFragment extends Fragment {
+public class CalenderBarFragment extends Fragment implements MonthListener{
 
     private final ViewModel mViewModel;
     private CalenderBarAdapter adapter;
@@ -35,8 +35,9 @@ public class CalenderBarFragment extends Fragment {
     private LinearLayoutManager llm;
     private int position;
     private RecyclerView recyclerView;
-    private Date today;
     private final Fragment parent;
+
+    TextView monthTextView;
 
     public CalenderBarFragment(MyMeetingsViewModel mViewModel, Fragment parent) {
         this.mViewModel = mViewModel;
@@ -56,7 +57,7 @@ public class CalenderBarFragment extends Fragment {
         days = new ArrayList<>();
         days.add(Calendar.getInstance().getTime());
         recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
-        TextView monthTextView = view.findViewById(R.id.group_meetings_month_calender_textView);
+        monthTextView = view.findViewById(R.id.group_meetings_month_calender_textView);
         ImageView arrowPrevIV = view.findViewById(R.id.group_meetings_arrow_back_imageView);
         ImageView arrowNextIV = view.findViewById(R.id.group_meetings_arrow_forward_imageView);
 
@@ -64,9 +65,9 @@ public class CalenderBarFragment extends Fragment {
         if (mViewModel instanceof MyMeetingsViewModel) {
             this.adapter = new CalenderBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
 
-            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, LiveData<Meeting>>>() {
+            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<Meeting>>>>() {
                 @Override
-                public void onChanged(HashMap<String, LiveData<Meeting>> stringLiveDataHashMap) {
+                public void onChanged(HashMap<String, ArrayList<LiveData<Meeting>>> stringArrayListHashMap) {
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -96,7 +97,16 @@ public class CalenderBarFragment extends Fragment {
             }
         });
 
-
+        arrowPrevIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (llm.findFirstVisibleItemPosition()>30) {
+                    recyclerView.smoothScrollToPosition(llm.findFirstVisibleItemPosition() - 30);
+                }else {
+                    recyclerView.smoothScrollToPosition(0);
+                }
+            }
+        });
 
         return  view;
     }
@@ -117,7 +127,9 @@ public class CalenderBarFragment extends Fragment {
             if (null != holder) {
                 holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
                 holder = recyclerView.findViewHolderForAdapterPosition(i);
-                holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
+                if (holder != null) {
+                    holder.itemView.setBackgroundResource(R.drawable.selected_calender_item_background);
+                }
 
             }
             position = i;
@@ -126,9 +138,56 @@ public class CalenderBarFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    public void onClickDate(String index, String type){
-        OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)parent;
-        ((OnClickInRecyclerView) parent).onClickInRecyclerView(index,type);
+    public void onClickDate(String index, String type , int i){
+        ((OnClickInRecyclerView) parent).onClickInRecyclerView(index,type,i);
+    }
+
+    @Override
+    public void OnDateChanged(int month) {
+        monthTextView.setText(getMonth(month));
+    }
+
+    public String getMonth(int month){
+        switch (month){
+            case android.icu.util.Calendar.JANUARY:
+                return getString(R.string.months_january);
+
+            case android.icu.util.Calendar.FEBRUARY:
+                return getString(R.string.months_february);
+
+            case android.icu.util.Calendar.MARCH:
+                return getString(R.string.months_march);
+
+            case android.icu.util.Calendar.APRIL:
+                return getString(R.string.months_april);
+
+            case android.icu.util.Calendar.MAY:
+                return getString(R.string.months_may);
+
+            case android.icu.util.Calendar.JUNE:
+                return getString(R.string.months_june);
+
+            case android.icu.util.Calendar.JULY:
+                return getString(R.string.months_july);
+
+            case android.icu.util.Calendar.AUGUST:
+                return getString(R.string.months_august);
+
+            case android.icu.util.Calendar.SEPTEMBER:
+                return getString(R.string.months_september);
+
+            case android.icu.util.Calendar.OCTOBER:
+                return getString(R.string.months_october);
+
+            case android.icu.util.Calendar.NOVEMBER:
+                return getString(R.string.months_november);
+
+            case android.icu.util.Calendar.DECEMBER:
+                return getString(R.string.months_december);
+
+            default:
+                return "";
+        }
     }
 
 }

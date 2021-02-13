@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:layoutAnimation="@anim/recycler_horizontal_fast"
     tools:context=".ui.meetings.meetingInfo.MeetingInfoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -197,6 +196,8 @@
         android:clickable="true"
         android:src="@drawable/ic_baseline_chat_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

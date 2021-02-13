@@ -15,14 +15,14 @@ import java.util.HashMap;
 public class MainActivityViewModel extends ViewModel {
     MutableLiveData<ArrayList<MutableLiveData<Group>>> groupsList = null;
     HashMap<String, MutableLiveData<Group>> groupsMap = null;
-    LiveData<HashMap<String,LiveData<Meeting>>> meetingsList = null;
+    LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> meetingsMap = null;
     //LiveData<ArrayList<LiveData<GroupMeeting>>> groupsMeetingsList = null;
 
     public MainActivityViewModel() {
         super();
         groupsList = UserGroupsRepo.getInstance().getGroups();
         groupsMap = UserGroupsRepo.getInstance().getHashMapGroups();
-        meetingsList = UserMeetingsRepo.getInstance().getAllMeetings();
+        meetingsMap = UserMeetingsRepo.getInstance().getAllMeetings();
     }
 
     public LiveData<ArrayList<MutableLiveData<Group>>> getGroups() {
@@ -37,8 +37,8 @@ public class MainActivityViewModel extends ViewModel {
         return groupsList;
     }
 
-    public LiveData<HashMap<String, LiveData<Meeting>>> getMeetingsList() {
-        return meetingsList;
+    public LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> getMeetingsMap() {
+        return meetingsMap;
     }
 
 //    public LiveData<ArrayList<LiveData<GroupMeeting>>> getGroupsMeetingsList() {

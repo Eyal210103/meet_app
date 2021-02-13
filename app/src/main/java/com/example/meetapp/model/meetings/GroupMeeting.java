@@ -1,5 +1,6 @@
 package com.example.meetapp.model.meetings;
 
+import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -78,13 +79,13 @@ public class GroupMeeting extends Meeting {
 
     @Override
     public void confirmUserArrival(String Uid) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Meetings").child(this.id).child("whoComing");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.id).child("whoComing");
         reference.child(Uid).setValue(Uid);
     }
 
     @Override
     public void updateOrAddReturnId() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").child(this.groupId).child("Meetings").push();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).push();
         this.setId(reference.getKey());
         HashMap<String,Object> map = new HashMap<>();
         map.put("millis",millis);
@@ -97,7 +98,7 @@ public class GroupMeeting extends Meeting {
         map.put("groupId",groupId);
         reference.updateChildren(map);
         if (isOpen){
-            FirebaseDatabase.getInstance().getReference().child("Meetings").child("Group").child(this.id).setValue(this.groupId);
+            FirebaseDatabase.getInstance().getReference().child(FirebaseTags.MEETINGS_CHILDES).child(FirebaseTags.GROUP_TYPE_CHILDES).child(this.id).setValue(this.groupId);
         }
     }
 }

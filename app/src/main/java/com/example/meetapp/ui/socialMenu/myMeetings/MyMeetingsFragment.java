@@ -61,7 +61,7 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
 
 
     @Override
-    public void onClickInRecyclerView(Object value, String action) {
+    public void onClickInRecyclerView(Object value, String action, int i) {
         if (action.equals("None")){
             getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
         }
@@ -73,7 +73,7 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
             }
             String key = (String) value;
             if (action.equals(ConstantValues.MEETING_TYPE_GROUP)) {
-                GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get(key).getValue();
+                GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get(key).get(i).getValue();
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantValues.BUNDLE_ID, meeting.getId());
                 bundle.putString(ConstantValues.BUNDLE_TYPE, ConstantValues.MEETING_TYPE_GROUP);
@@ -83,7 +83,7 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
                 getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
             }
             else if (action.equals(ConstantValues.MEETING_TYPE_PUBLIC)) {
-                Meeting meeting = mViewModel.getMeetings().getValue().get(key).getValue();
+                Meeting meeting = mViewModel.getMeetings().getValue().get(key).get(i).getValue();
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantValues.BUNDLE_ID, meeting.getId());
                 bundle.putString(ConstantValues.BUNDLE_TYPE, ConstantValues.MEETING_TYPE_PUBLIC);

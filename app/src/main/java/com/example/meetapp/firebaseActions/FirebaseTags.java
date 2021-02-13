@@ -4,15 +4,16 @@ public class FirebaseTags {
 
     //Database Related
     public static final String GROUPS_CHILDES = "Groups";
+    public static final String GROUP_TYPE_CHILDES = "Group";
     public static final String CHAT_CHILDES = "Chat";
     public static final String USER_CHILDES = "Users";
     public static final String WAITING_CHILDES = "Waiting";
     public static final String MANAGER_CHILDES = "Waiting";
     public static final String MEMBERS_CHILDES = "Members";
     public static final String MEETINGS_CHILDES = "Meetings";
+
     public static final String PUBLIC_MEETINGS_CHILDES = "Meetings/Public";
     public static final String GROUP_MEETINGS_CHILDES = "Meetings/Group";
-
     public static final String WHO_COMING_CHILDES = "whoComing";
 
     //Query Related

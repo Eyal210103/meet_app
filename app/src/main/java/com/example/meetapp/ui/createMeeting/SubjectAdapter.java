@@ -46,7 +46,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             public void onClick(View v) {
                 selected = position;
                 OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_SUBJECT);
+                onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_SUBJECT,0);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.meetapp.model.meetings;
 
+import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -82,7 +83,6 @@ public class Meeting implements Serializable {
 //        this.longitude = location.longitude;
 //    }
 
-
     public String getDateString(){
         Date date = new Date(this.millis);
         Calendar calendar = Calendar.getInstance();
@@ -101,12 +101,12 @@ public class Meeting implements Serializable {
 
 
     public void confirmUserArrival(String Uid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").child(this.id).child("whoComing");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(this.id).child(FirebaseTags.WHO_COMING_CHILDES);
         reference.child(Uid).setValue(Uid);
     }
 
     public void updateOrAddReturnId(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Meetings").child("Public").push();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).push();
         this.setId(reference.getKey());
         HashMap<String,Object> map = new HashMap<>();
         map.put("millis",millis);

@@ -7,6 +7,9 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meetapp.R;
+import com.example.meetapp.firebaseActions.UserGroupsRepo;
+import com.example.meetapp.firebaseActions.UserMeetingsRepo;
+import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.ui.login.LoginActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -17,6 +20,11 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        if (CurrentUser.isConnected()){
+            UserGroupsRepo.getInstance();
+            UserMeetingsRepo.getInstance();
+        }
 
         Intent intent = new Intent(this, LoginActivity.class);
 

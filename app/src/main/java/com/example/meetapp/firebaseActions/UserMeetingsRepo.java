@@ -14,12 +14,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserMeetingsRepo {
 
-    private final HashMap<String, LiveData<Meeting>> allMeetings;
-    private final MutableLiveData<HashMap<String, LiveData<Meeting>>> mutableLiveData;
+    private final HashMap<String, ArrayList<LiveData<Meeting>>> allMeetings;
+    private final MutableLiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> mutableLiveData;
 
     private static UserMeetingsRepo instance = null;
 
@@ -37,7 +38,7 @@ public class UserMeetingsRepo {
         return instance;
     }
 
-    public LiveData<HashMap<String, LiveData<Meeting>>> getAllMeetings() {
+    public LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> getAllMeetings() {
         mutableLiveData.setValue(allMeetings);
         return mutableLiveData;
     }
@@ -56,7 +57,23 @@ public class UserMeetingsRepo {
                         GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
                         MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                         meetingMutableLiveData.setValue(meeting);
-                        allMeetings.put(meeting.getDateString(), meetingMutableLiveData);
+
+                        if (!allMeetings.containsKey(meeting.getDateString())){
+                            allMeetings.put(meeting.getDateString(),new ArrayList<>());
+                        }
+                        ArrayList<LiveData<Meeting>> temp = allMeetings.get(meeting.getDateString());
+                        boolean inserted = false;
+                        for (int i = 0; i < temp.size(); i++) {
+                            if (temp.get(i).getValue().getId().equals(meeting.getId())){
+                                temp.set(i,meetingMutableLiveData);
+                                inserted = true;
+                                break;
+                            }
+                        }
+                        if (!inserted){
+                            temp.add(meetingMutableLiveData);
+                        }
+                        allMeetings.put(meeting.getDateString(),temp);
                         mutableLiveData.postValue(allMeetings);
                     }
 
@@ -96,7 +113,22 @@ public class UserMeetingsRepo {
                             Meeting meeting = snapshot.getValue(Meeting.class);
                             MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                             meetingMutableLiveData.setValue(meeting);
-                            allMeetings.put(meeting.getDateString(), meetingMutableLiveData);
+                            if (!allMeetings.containsKey(meeting.getDateString())){
+                                allMeetings.put(meeting.getDateString(),new ArrayList<>());
+                            }
+                            ArrayList<LiveData<Meeting>> temp = allMeetings.get(meeting.getDateString());
+                            boolean inserted = false;
+                            for (int i = 0; i < temp.size(); i++) {
+                                if (temp.get(i).getValue().getId().equals(meeting.getId())){
+                                    temp.set(i,meetingMutableLiveData);
+                                    inserted = true;
+                                    break;
+                                }
+                            }
+                            if (!inserted){
+                                temp.add(meetingMutableLiveData);
+                            }
+                            allMeetings.put(meeting.getDateString(),temp);
                             mutableLiveData.postValue(allMeetings);
                         }
                     }
@@ -125,4 +157,5 @@ public class UserMeetingsRepo {
             }
         });
     }
+
 }

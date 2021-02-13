@@ -70,7 +70,7 @@ public class MeetingsInfoDialog extends DialogFragment {
 
         day.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
         dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
-        month.setText(getThreeLetterMonth(calendar.get(Calendar.MONTH)));
+        month.setText(getMonth(calendar.get(Calendar.MONTH)));
         hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
         description.setText(meeting.getDescription());
         location.setText(meeting.getSubject() + "\n\n" + getAddress(meeting.getLocation()));
@@ -139,8 +139,7 @@ public class MeetingsInfoDialog extends DialogFragment {
         }
     }
 
-
-    public String getThreeLetterMonth(int day){
+    public String getMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
                 return getString(R.string.months_january);
@@ -182,6 +181,7 @@ public class MeetingsInfoDialog extends DialogFragment {
                 return "";
         }
     }
+
     public String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {

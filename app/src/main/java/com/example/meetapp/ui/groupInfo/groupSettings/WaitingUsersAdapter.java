@@ -47,14 +47,14 @@ public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapte
             holder.approve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_APPROVE);
+                    onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_APPROVE,0);
                     notifyDataSetChanged();
                 }
             });
             holder.reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_REJECT);
+                    onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_REJECT,0);
                     notifyItemRemoved(position);
                 }
             });

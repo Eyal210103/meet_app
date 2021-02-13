@@ -6,20 +6,21 @@ import androidx.lifecycle.ViewModel;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MyMeetingsViewModel extends ViewModel {
-    private LiveData<HashMap<String, LiveData<Meeting>>> meetings;
+    private LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> meetings;
    // private LiveData<ArrayList<LiveData<GroupMeeting>>> groupMeetings;
 
     public void init(MainActivityViewModel mainActivityViewModel , String id) {
         if (mainActivityViewModel != null){
             //this.groupMeetings = mainActivityViewModel.getGroupsMeetingsList();
-            this.meetings = mainActivityViewModel.getMeetingsList();
+            this.meetings = mainActivityViewModel.getMeetingsMap();
         }
     }
 
-    public LiveData<HashMap<String, LiveData<Meeting>>> getMeetings() {
+    public LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> getMeetings() {
         return meetings;
     }
 

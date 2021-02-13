@@ -42,7 +42,7 @@ public class CurrentUser {
     }
 
     public static boolean isConnected(){
-        return user != null;
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
     public static void setCurrentUser(User user) {
