@@ -3,6 +3,8 @@ package com.example.meetapp.ui.Views.calenderBarPackage;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,7 @@ public class SpinnerAdapter extends ArrayAdapter<LiveData<Meeting>> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Meeting meeting = meetings.get(position).getValue();
         @SuppressLint("ViewHolder") View holder = layoutInflater.inflate(resource,parent,false);
+        holder.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (meeting!= null){
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date(meeting.getMillis()));

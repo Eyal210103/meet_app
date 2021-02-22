@@ -3,6 +3,8 @@ package com.example.meetapp.ui.createMeeting;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +55,7 @@ public class SpinnerAdapter extends ArrayAdapter<LiveData<Group>> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Group group = groups.get(position).getValue();
         @SuppressLint("ViewHolder") View holder = layoutInflater.inflate(resource,parent,false);
+        holder.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (group!= null){
             ((TextView)holder.findViewById(R.id.select_group_adapter_group_name)).setText(group.getName());
             Glide.with(context).load(group.getPhotoUrl()).into((CircleImageView)holder.findViewById(R.id.select_group_adapter_civ));
