@@ -28,7 +28,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private final CalenderBarFragment context;
     private ArrayList<Date> days;
     private HashMap<String, ArrayList<LiveData<Meeting>>> publicMeetings;
-    private HashMap<String, LiveData<GroupMeeting>> groupMeetings;
+    private LiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> groupMeetings;
 
     private int selected;
     private int selectedIndex;
@@ -40,7 +40,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         this.publicMeetings = meetings;
     }
 
-    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String ,LiveData<GroupMeeting>> meetings, String group) {
+    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, LiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> meetings, String group) {
         this.context = context;
         this.days = days;
         this.groupMeetings = meetings;

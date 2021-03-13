@@ -59,7 +59,7 @@ public class GroupsMembersRepo {
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 String key = snapshot.getValue(String.class);
                 for (MutableLiveData<User> u : membersAL) {
-                    if (key.equals(u.getValue().getId())) {
+                    if (key != null && key.equals(u.getValue().getId())) {
                         membersAL.remove(u);
                         usersIdsMap.remove(key);
                         break;
@@ -94,5 +94,10 @@ public class GroupsMembersRepo {
             }
         });
         return  userMutableLiveData;
+    }
+
+    public void detachListener(){
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MEMBERS_CHILDES).removeEventListener(childEventListener);
+
     }
 }

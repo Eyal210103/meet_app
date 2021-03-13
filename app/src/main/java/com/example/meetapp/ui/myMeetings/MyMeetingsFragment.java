@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.socialMenu.myMeetings;
+package com.example.meetapp.ui.myMeetings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

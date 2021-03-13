@@ -1,114 +1,68 @@
 package com.example.meetapp.ui.groupInfo.groupsMeetings;
 
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.ui.Views.calenderBarPackage.CalenderBarFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
+import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
+import com.example.meetapp.ui.meetings.SelectDateFragment;
+import com.example.meetapp.ui.meetings.meetingInfo.MeetingInfoFragment;
 
-import java.util.Calendar;
+public class GroupMeetingsFragment extends Fragment implements OnClickInRecyclerView {
 
-public class GroupMeetingsFragment extends Fragment {
+    private GroupInfoViewModel mViewModel;
 
-    private GroupMeetingsViewModel mViewModel;
 
-    private MapView mapView;
-    private GoogleMap mMap;
-//    private final double latitude = 0;
-//    private final double longitude = 0;
-    Calendar calendar = Calendar.getInstance();
+    private GroupInfoFragment parent;
+    public void setParent(GroupInfoFragment parent) {
+        this.parent = parent;
+        mViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mViewModel == null){
+            mViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.group_meetings_fragment, container, false);
-//        this.mapView = view.findViewById(R.id.group_meetings_mapView);
-
-     //   initGoogleMap(savedInstanceState);
 
         CalenderBarFragment calenderBarFragment = new CalenderBarFragment(mViewModel, this);
         getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container_group, calenderBarFragment).commit();
         return view;
     }
 
-    private void initGoogleMap(Bundle savedInstanceState) {
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                                == PackageManager.PERMISSION_GRANTED) {
-                    googleMap.setMyLocationEnabled(true);
-                    googleMap.setBuildingsEnabled(false);
-                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
-                } else {
-                    Toast.makeText(getActivity(), "Map Error", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //mViewModel = ViewModelProviders.of(this).get(GroupMeetingsViewModel.class);
-    }
-
-    @Override
-    public void onPause() {
-        //mapView.onPause();
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        //mapView.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        //mapView.onLowMemory();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //mapView.onResume();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //mapView.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-      //  mapView.onStop();
+    public void onClickInRecyclerView(Object value, String action, int i) {
+        if (value == null){
+            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
+        }else {
+            MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
+            GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get((String)value).get(i).getValue();
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantValues.BUNDLE_ID, meeting.getId());
+            bundle.putString(ConstantValues.BUNDLE_TYPE, ConstantValues.MEETING_TYPE_GROUP);
+            String groupId = ((GroupMeeting) meeting).getGroupId();
+            bundle.putString(ConstantValues.BUNDLE_GROUP_ID, groupId);
+            meetingInfoFragment.setArguments(bundle);
+       //     getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+        }
     }
 }

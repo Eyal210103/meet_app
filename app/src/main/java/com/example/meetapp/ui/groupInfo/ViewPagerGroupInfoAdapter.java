@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.meetapp.model.ConstantValues;
@@ -16,11 +15,27 @@ class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
 
     String groupId;
     GroupInfoFragment groupInfoFragment;
+    private final GroupDashboardFragment groupDashboardFragment;
+    private final GroupChatFragment groupChatFragment;
+    private final GroupMeetingsFragment groupMeetingsFragment;
 
-    public ViewPagerGroupInfoAdapter(FragmentActivity fragmentActivity, GroupInfoFragment groupInfoFragment, String groupId) {
-        super((FragmentActivity) fragmentActivity);
+    public ViewPagerGroupInfoAdapter(GroupInfoFragment groupInfoFragment, String groupId) {
+        super(groupInfoFragment.requireActivity());
         this.groupId = groupId;
         this.groupInfoFragment = groupInfoFragment;
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantValues.BUNDLE_GROUP_ID,groupId);
+        groupDashboardFragment =  new GroupDashboardFragment();
+        groupDashboardFragment.setArguments(bundle);
+        groupDashboardFragment.setParent(groupInfoFragment);
+
+        groupChatFragment = new GroupChatFragment();
+        groupChatFragment.setArguments(bundle);
+
+        groupMeetingsFragment= new GroupMeetingsFragment();
+        groupMeetingsFragment.setArguments(bundle);
+        groupMeetingsFragment.setParent(groupInfoFragment);
     }
 
     @NonNull
@@ -30,17 +45,10 @@ class ViewPagerGroupInfoAdapter extends FragmentStateAdapter {
         bundle.putString(ConstantValues.BUNDLE_GROUP_ID,groupId);
         switch (position) {
             case 0:
-                GroupDashboardFragment groupDashboardFragment =  new GroupDashboardFragment();
-                groupDashboardFragment.setArguments(bundle);
-                groupDashboardFragment.setParent(groupInfoFragment);
                 return groupDashboardFragment;
             case 1:
-                GroupChatFragment groupChatFragment = new GroupChatFragment();
-                groupChatFragment.setArguments(bundle);
                 return groupChatFragment;
             case 2:
-                GroupMeetingsFragment groupMeetingsFragment= new GroupMeetingsFragment();
-                groupMeetingsFragment.setArguments(bundle);
                 return groupMeetingsFragment;
         }
         return null;

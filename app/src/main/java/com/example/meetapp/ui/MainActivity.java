@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.meetapp.R;
@@ -20,8 +19,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements OnClickInFragment  {
 
-    private NavController navController;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +27,9 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         MainActivityViewModel mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(navView,navController);
+        //AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(navView, navController);
 
         UserGroupsRepo.getInstance().getGroups();
         FirebaseDatabaseListening.getInstance().startService();

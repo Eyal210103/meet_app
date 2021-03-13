@@ -24,10 +24,12 @@ public class GroupMeetingsRepo {
     private final MutableLiveData<HashMap<String, LiveData<HashMap<String,LiveData<User>>>>> mutableLiveWhoComing;
     GroupsMembersRepo groupsMembersRepo;
     private final String id;
+    private final MutableLiveData<GroupMeeting> closesMeeting;
 
     ChildEventListener listener;
 
-    private GroupMeetingsRepo(String id, GroupsMembersRepo groupsMembersRepo) {
+    public GroupMeetingsRepo(String id, GroupsMembersRepo groupsMembersRepo) {
+        this.closesMeeting = new MutableLiveData<>();
         this.allMeetings = new HashMap<>();
         this.mutableLiveData = new MutableLiveData<>();
         this.whoComing = new HashMap<>();
@@ -152,5 +154,4 @@ public class GroupMeetingsRepo {
             FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.id).child(FirebaseTags.MEETINGS_CHILDES).removeEventListener(this.listener);
         }
     }
-
 }

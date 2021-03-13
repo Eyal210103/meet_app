@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.socialMenu.myMeetings;
+package com.example.meetapp.ui.myMeetings;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;

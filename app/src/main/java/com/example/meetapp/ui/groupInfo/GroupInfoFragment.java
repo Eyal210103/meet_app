@@ -46,8 +46,8 @@ public class GroupInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupInfoViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString(ConstantValues.BUNDLE_GROUP_ID))
-                ,getArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(requireArguments().getString(ConstantValues.BUNDLE_GROUP_ID))
+                ,requireArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
     }
 
     @Override
@@ -63,18 +63,16 @@ public class GroupInfoFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewMembers.setLayoutManager(llm);
         recyclerViewMembers.setHasFixedSize(true);
-        membersAdapter = new MembersAdapter(this, mViewModel.getMembersMutableLiveData().getValue());
+        membersAdapter = new MembersAdapter(this, mViewModel.getMembersLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
         
         viewPager = view.findViewById(R.id.viewPager_group);
         viewPager.setNestedScrollingEnabled(true);
-        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(requireActivity(),this,mViewModel.getGroupId());
+        ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(this,mViewModel.getGroupId());
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
 
-        String[] titles = {getResources().getString(R.string.title_dashboard)
-                , getResources().getString(R.string.chats)
-                , getResources().getString(R.string.meetings)};
+        String[] titles = {getResources().getString(R.string.title_dashboard), getResources().getString(R.string.chats), getResources().getString(R.string.meetings)};
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -83,11 +81,12 @@ public class GroupInfoFragment extends Fragment {
                 tab.setText(titles[position]);
             }}).attach();
 
-        mViewModel.getMembersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+
+        mViewModel.getMembersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
                 membersAdapter.notifyDataSetChanged();
-                for (MutableLiveData<User> u : mViewModel.getMembersMutableLiveData().getValue()) {
+                for (MutableLiveData<User> u : mViewModel.getMembersLiveData().getValue()) {
                     if (!u.hasObservers()) {
                         u.observe(getViewLifecycleOwner(), new Observer<User>() {
                             @Override
@@ -117,6 +116,7 @@ public class GroupInfoFragment extends Fragment {
                 navController.navigate(R.id.action_groupInfoFragment_to_groupSettingsFragment, bundle);
             }
         });
+
         return view;
     }
 
@@ -149,5 +149,11 @@ public class GroupInfoFragment extends Fragment {
             default:
                 return R.drawable.groupsicon;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mViewModel.detach();
     }
 }

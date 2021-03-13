@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.GroupsMembersRepo;
 import com.example.meetapp.firebaseActions.LastMessageRepo;
-import com.example.meetapp.model.User;
 import com.example.meetapp.model.Message;
+import com.example.meetapp.model.User;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class GroupDashboardViewModel extends ViewModel {
     public void init(String groupId){
         LastMessageRepo lastMessageRepo =new LastMessageRepo(groupId);
         lastMessage = lastMessageRepo.getMessage();
-        GroupsMembersRepo groupsMembersRepo = new GroupsMembersRepo(groupId);
+        GroupsMembersRepo groupsMembersRepo = new GroupsMembersRepo(groupId); // TODO change to group info vm
         membersMutableLiveData = groupsMembersRepo.getMembers();
     }
 

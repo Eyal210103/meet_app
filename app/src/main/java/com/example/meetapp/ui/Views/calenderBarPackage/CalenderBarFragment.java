@@ -19,9 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
-import com.example.meetapp.ui.groupInfo.groupsMeetings.GroupMeetingsViewModel;
-import com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsViewModel;
+import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
+import com.example.meetapp.ui.myMeetings.MyMeetingsViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
         this.mViewModel = mViewModel;
         this.parent= parent;
     }
-    public CalenderBarFragment(GroupMeetingsViewModel mViewModel, Fragment parent) {
+    public CalenderBarFragment(GroupInfoViewModel mViewModel, Fragment parent) {
         this.mViewModel = mViewModel;
         this.parent= parent;
     }
@@ -72,14 +73,14 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
                 }
             });
         }else {
-            this.adapter = new CalenderBarAdapter(this, this.days, null,"group");
 
-//            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, LiveData<Meeting>>>() {
-//                @Override
-//                public void onChanged(HashMap<String, LiveData<Meeting>> stringLiveDataHashMap) {
-//                    adapter.notifyDataSetChanged();
-//                }
-//            });
+            this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings(),"group");
+            ((GroupInfoViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<GroupMeeting>>>>() {
+                @Override
+                public void onChanged(HashMap<String, ArrayList<LiveData<GroupMeeting>>> stringArrayListHashMap) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
 
         llm = new LinearLayoutManager(this.requireActivity());
