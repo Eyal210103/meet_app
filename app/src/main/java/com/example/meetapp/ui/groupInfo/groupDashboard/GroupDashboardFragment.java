@@ -59,8 +59,9 @@ public class GroupDashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        this.id = requireArguments().getString(ConstantValues.BUNDLE_GROUP_ID);
         mViewModel.init(mainActivityViewModel.getGroupsMap().get(requireArguments().getString(ConstantValues.BUNDLE_GROUP_ID))
-                ,requireArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
+                ,id);
     }
 
     @Override
