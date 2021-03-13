@@ -44,7 +44,7 @@
     <string name="group_subject">Group Subject</string>
     <string name="confirm_arrival">Im Coming</string>
     <string name="no_date_message">No Date Has Been Selected</string>
-    <string name="no_meetings_alert">You Have No Meetings In This Date</string>
+    <string name="no_meetings_alert">You Have No Meetings On This Date</string>
     <string name="chats">Chat</string>
     <string name="invalid_inputs">Email Or Password Are Invalid</string>
     <string name="auth_failed_message">Authentication failed, Try Again</string>

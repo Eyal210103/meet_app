@@ -24,7 +24,7 @@ public class GroupMeetingsRepo {
     private final MutableLiveData<HashMap<String, LiveData<HashMap<String,LiveData<User>>>>> mutableLiveWhoComing;
     GroupsMembersRepo groupsMembersRepo;
     private final String id;
-    private final MutableLiveData<GroupMeeting> closesMeeting;
+    private final MutableLiveData<GroupMeeting> closesMeeting; //TODO imp
 
     ChildEventListener listener;
 
@@ -147,6 +147,10 @@ public class GroupMeetingsRepo {
             }
         });
         return userMutableLiveData;
+    }
+
+    public MutableLiveData<GroupMeeting> getClosesMeeting() {
+        return closesMeeting;
     }
 
     public void detachListener(){

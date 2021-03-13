@@ -28,7 +28,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private final CalenderBarFragment context;
     private ArrayList<Date> days;
     private HashMap<String, ArrayList<LiveData<Meeting>>> publicMeetings;
-    private LiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> groupMeetings;
+    private HashMap<String, ArrayList<LiveData<GroupMeeting>>> groupMeetings;
 
     private int selected;
     private int selectedIndex;
@@ -40,7 +40,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         this.publicMeetings = meetings;
     }
 
-    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, LiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> meetings, String group) {
+    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String, ArrayList<LiveData<GroupMeeting>>> meetings, String group) {
         this.context = context;
         this.days = days;
         this.groupMeetings = meetings;
@@ -80,6 +80,15 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                     } else {
                         isRegular = true;
                     }
+                    meetingCount++;
+                }
+            }
+        }
+
+        if (groupMeetings != null && !groupMeetings.isEmpty()){
+            if (groupMeetings.containsKey(key)) {
+                isGood = true;
+                for (LiveData<GroupMeeting> meeting : groupMeetings.get(key)) {
                     meetingCount++;
                 }
             }
@@ -150,8 +159,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     }
 
     private void sendMonth(int month){
-        MonthListener monthListener = context;
-        monthListener.OnDateChanged(month);
+        ((MonthListener) context).OnDateChanged(month);
     }
 
     private void setData(int position, boolean finalIsGroup, boolean finalIsRegular, String key){

@@ -37,6 +37,8 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInRecycler
         if (mViewModel == null){
             mViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
         }
+        getChildFragmentManager().beginTransaction().replace(R.id.meeting_info_fragment_container_group, new SelectDateFragment()).commit();
+
     }
 
     @Override
@@ -54,15 +56,19 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInRecycler
         if (value == null){
             getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
         }else {
-            MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
-            GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get((String)value).get(i).getValue();
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantValues.BUNDLE_ID, meeting.getId());
-            bundle.putString(ConstantValues.BUNDLE_TYPE, ConstantValues.MEETING_TYPE_GROUP);
-            String groupId = ((GroupMeeting) meeting).getGroupId();
-            bundle.putString(ConstantValues.BUNDLE_GROUP_ID, groupId);
-            meetingInfoFragment.setArguments(bundle);
-       //     getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+            if (action.equals("None")) {
+               getChildFragmentManager().beginTransaction().replace(R.id.meeting_info_fragment_container_group, new SelectDateFragment()).commit();
+            } else {
+                MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
+                GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get((String) value).get(i).getValue();
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantValues.BUNDLE_ID, meeting.getId());
+                bundle.putString(ConstantValues.BUNDLE_TYPE, ConstantValues.MEETING_TYPE_GROUP);
+                String groupId = ((GroupMeeting) meeting).getGroupId();
+                bundle.putString(ConstantValues.BUNDLE_GROUP_ID, groupId);
+                meetingInfoFragment.setArguments(bundle);
+                getChildFragmentManager().beginTransaction().replace(R.id.meeting_info_fragment_container_group, meetingInfoFragment).commit();
+            }
         }
     }
 }

@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/myMeetingsFragment"
-        android:name="com.example.meetapp.ui.socialMenu.myMeetings.MyMeetingsFragment"
+        android:name="com.example.meetapp.ui.myMeetings.MyMeetingsFragment"
         android:label="my_meetings_fragment"
         tools:layout="@layout/my_meetings_fragment" >
         <action
