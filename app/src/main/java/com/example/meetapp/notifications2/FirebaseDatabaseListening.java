@@ -1,7 +1,5 @@
 package com.example.meetapp.notifications2;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -93,7 +91,6 @@ public class FirebaseDatabaseListening {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds:snapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Log.d("sendNotification", "onResponse: "+token.getToken());
                     Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.mipmap.ic_launcher_round , key.getSenderDisplayName() + ": " + key.getContext(),key.getGroupName(),id);
                     Sender sender = new Sender(data,token.getToken());
                     apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
@@ -102,7 +99,6 @@ public class FirebaseDatabaseListening {
                             if (response.code() == 200){
                                 assert response.body() != null;
                                 if (response.body().success == 1){
-                                    Log.d("sendNotification", "onResponse: failed");
                                 }
                             }
                         }

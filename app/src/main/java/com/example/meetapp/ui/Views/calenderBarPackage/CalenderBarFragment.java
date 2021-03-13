@@ -49,8 +49,6 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
         this.parent= parent;
     }
 
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

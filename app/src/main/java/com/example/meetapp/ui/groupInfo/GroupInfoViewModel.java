@@ -21,6 +21,7 @@ public class GroupInfoViewModel extends ViewModel {
     private String groupId;
     private GroupsMembersRepo groupsMembersRepo;
     private GroupMeetingsRepo groupMeetingsRepo;
+    private LiveData<GroupMeeting> closesMeeting;
 
     public void init(MutableLiveData<Group> groupMutableLiveData , String id){
         this.groupId = id;
@@ -29,6 +30,7 @@ public class GroupInfoViewModel extends ViewModel {
         membersMutableLiveData = groupsMembersRepo.getMembers();
         groupMeetingsRepo = new GroupMeetingsRepo(groupId, groupsMembersRepo);
         meetingsLiveData = groupMeetingsRepo.getMeeting();
+        closesMeeting = groupMeetingsRepo.getClosesMeeting();
     }
 
     public LiveData<Group> getGroup() {
@@ -37,6 +39,10 @@ public class GroupInfoViewModel extends ViewModel {
 
     public LiveData<ArrayList<MutableLiveData<User>>> getMembersLiveData() {
         return membersMutableLiveData;
+    }
+
+    public LiveData<GroupMeeting> getClosesMeeting() {
+        return closesMeeting;
     }
 
     public String getGroupId() {

@@ -88,6 +88,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         if (groupMeetings != null && !groupMeetings.isEmpty()){
             if (groupMeetings.containsKey(key)) {
                 isGood = true;
+                isGroup= true;
                 for (LiveData<GroupMeeting> meeting : groupMeetings.get(key)) {
                     meetingCount++;
                 }

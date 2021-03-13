@@ -24,7 +24,7 @@ public class GroupMeetingsRepo {
     private final MutableLiveData<HashMap<String, LiveData<HashMap<String,LiveData<User>>>>> mutableLiveWhoComing;
     GroupsMembersRepo groupsMembersRepo;
     private final String id;
-    private final MutableLiveData<GroupMeeting> closesMeeting; //TODO imp
+    private final MutableLiveData<GroupMeeting> closesMeeting;
 
     ChildEventListener listener;
 
@@ -66,6 +66,13 @@ public class GroupMeetingsRepo {
                 }
                 allMeetings.put(meeting.getDateString(),temp);
                 mutableLiveData.postValue(allMeetings);
+
+                if (closesMeeting.getValue() == null){
+                    closesMeeting.postValue(meetingMutableLiveData.getValue());
+                }
+                else if(isBefore(meeting.getMillis())) {
+                    closesMeeting.postValue(meeting);
+                }
             }
 
             @Override
@@ -93,6 +100,10 @@ public class GroupMeetingsRepo {
                 mutableLiveData.postValue(allMeetings);
 
                 loadWhoComing(snapshot.child(FirebaseTags.WHO_COMING_CHILDES).getValue(HashMap.class),meeting.getId());
+
+                if (closesMeeting.getValue().getId().equals(meeting.getId())){
+                    closesMeeting.postValue(meeting);
+                }
             }
 
             @Override
@@ -149,7 +160,7 @@ public class GroupMeetingsRepo {
         return userMutableLiveData;
     }
 
-    public MutableLiveData<GroupMeeting> getClosesMeeting() {
+    public LiveData<GroupMeeting> getClosesMeeting() {
         return closesMeeting;
     }
 
@@ -157,5 +168,9 @@ public class GroupMeetingsRepo {
         if (this.listener != null) {
             FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.id).child(FirebaseTags.MEETINGS_CHILDES).removeEventListener(this.listener);
         }
+    }
+
+    public boolean isBefore(long millis){
+        return closesMeeting.getValue().getMillis() > millis;
     }
 }

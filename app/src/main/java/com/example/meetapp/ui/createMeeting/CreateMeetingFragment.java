@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
+import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.meetings.GroupMeeting;
@@ -71,7 +72,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         position = -1;
 
         spinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(requireActivity(),R.layout.select_group_adapter,mainActivityViewModel.getGroups().getValue());
+        SpinnerGroupAdapter spinnerAdapter = new SpinnerGroupAdapter(requireActivity(), R.layout.select_group_adapter, mainActivityViewModel.getGroups().getValue());
         spinnerSelectGroup.setAdapter(spinnerAdapter);
 
         locationTV = view.findViewById(R.id.create_meeting_location_textView);
@@ -81,13 +82,13 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.radio_group){
+                if (checkedId == R.id.radio_group) {
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 200;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
                     isGroup = true;
 
-                }else if (checkedId == R.id.radio_meeting){
+                } else if (checkedId == R.id.radio_meeting) {
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
                     isGroup = false;
@@ -96,7 +97,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             }
         });
 
-
         final Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
@@ -104,19 +104,23 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         int mHour = c.get(Calendar.HOUR);
         int minutes = c.get(Calendar.MINUTE);
 
+        updateDateUI(c, view);
+
         view.findViewById(R.id.create_meeting_choose_time_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePickerDialog.show();
             }
         });
+
         TimePickerDialog mTimePicker = new TimePickerDialog(CreateMeetingFragment.this.requireActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH) ,selectedHour,selectedMinute);
-                updateDateUI(c,view);
+                c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), selectedHour, selectedMinute);
+                updateDateUI(c, view);
             }
         }, mHour, minutes, true);
+
         datePickerDialog = new DatePickerDialog(requireActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -131,35 +135,35 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             @Override
             public void onClick(View v) {
                 PlacePickerDialog placePickerDialog = new PlacePickerDialog(CreateMeetingFragment.this);
-                placePickerDialog.show(getFragmentManager(),"placePicker");
+                placePickerDialog.show(getFragmentManager(), "placePicker");
             }
         });
 
         view.findViewById(R.id.create_meeting_complete_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isGroup){
+                if (isGroup) {
                     GroupMeeting meeting = new GroupMeeting();
                     meeting.setMillis(c.getTimeInMillis());
                     meeting.setLatitude(location.latitude);
                     meeting.setLongitude(location.longitude);
-                    meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
-                    String gId = ((MutableLiveData<Group>)spinnerSelectGroup.getSelectedItem()).getValue().getId();
+                    String gId = ((MutableLiveData<Group>) spinnerSelectGroup.getSelectedItem()).getValue().getId();
                     meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
-                    CurrentUser.joinMeeting(meeting.getId(),"Group" ,gId);
-                }else {
+                    CurrentUser.joinMeeting(meeting.getId(), "Group", gId);
+                } else {
                     Meeting meeting = new Meeting();
                     meeting.setMillis(c.getTimeInMillis());
                     meeting.setLatitude(location.latitude);
                     meeting.setLongitude(location.longitude);
-                    meeting.setDescription(((EditText)view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
-                    CurrentUser.joinMeeting(meeting.getId(),"Public",meeting.getId());
+                    CurrentUser.joinMeeting(meeting.getId(), "Public", meeting.getId());
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString("action", "meetings");
@@ -167,6 +171,18 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment, bundle);
             }
         });
+
+        if (getArguments() != null && getArguments().getString(ConstantValues.BUNDLE_GROUP_ID) != null) {
+            String groupId = getArguments().getString(ConstantValues.BUNDLE_GROUP_ID);
+            int index = spinnerAdapter.getIndex(groupId);
+            if (index != -1) {
+                spinnerSelectGroup.setSelection(index);
+                radioGroup.check(R.id.radio_group);
+                spinnerSelectGroup.setEnabled(false);
+                radioGroup.setEnabled(false);
+            }
+        }
+
         return view;
     }
 
@@ -278,7 +294,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
-        if (action.equals("subject")){
+        if (action.equals(ConstantValues.ACTION_SUBJECT)){
             int v = (int)value;
             if (position != -1){
                 gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.subject_background);

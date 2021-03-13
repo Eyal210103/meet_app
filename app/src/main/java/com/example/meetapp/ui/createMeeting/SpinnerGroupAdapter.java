@@ -24,14 +24,14 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SpinnerAdapter extends ArrayAdapter<LiveData<Group>> {
+public class SpinnerGroupAdapter extends ArrayAdapter<LiveData<Group>> {
 
     ArrayList<MutableLiveData<Group>> groups;
     LayoutInflater layoutInflater;
     int resource;
     Context context;
 
-    public SpinnerAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<MutableLiveData<Group>> objects) {
+    public SpinnerGroupAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<MutableLiveData<Group>> objects) {
         super(context, resource);
         groups = objects;
         this.resource = resource;
@@ -62,6 +62,15 @@ public class SpinnerAdapter extends ArrayAdapter<LiveData<Group>> {
         }
         return holder;
     }
+
+    public int getIndex(String id){
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).getValue().getId().equals(id))
+                return i;
+        }
+        return -1;
+    }
+
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
