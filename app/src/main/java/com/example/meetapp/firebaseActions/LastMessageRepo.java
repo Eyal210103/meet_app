@@ -19,7 +19,7 @@ public class LastMessageRepo {
     private final String groupId;
     private MutableLiveData<String> displayName;
     private final MutableLiveData<Message> messageMutableLiveData ;
-
+    private ChildEventListener childEventListener;
 
     public LastMessageRepo(String id) {
         this.groupId = id;
@@ -28,7 +28,7 @@ public class LastMessageRepo {
     }
 
     private void loadMessage(){
-        ChildEventListener childEventListener = new ChildEventListener() {
+        childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message key = snapshot.getValue(Message.class);
@@ -68,17 +68,21 @@ public class LastMessageRepo {
     private  MutableLiveData<String> getUserDisplayName(String key){
         final MutableLiveData<String> userName = new MutableLiveData<>();
         Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.getValue(User.class).getDisplayName();
                 userName.setValue(name);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
         return userName;
+    }
+
+    public void detachListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
+                .child(this.groupId).child(FirebaseTags.CHAT_CHILDES).removeEventListener(childEventListener);
     }
 }

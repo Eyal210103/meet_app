@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Message;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
@@ -131,17 +132,17 @@ public class GroupDashboardFragment extends Fragment {
             }
         });
 
-//        mViewModel.get().observe(getViewLifecycleOwner(), new Observer<Message>() {
-//            @Override
-//            public void onChanged(Message message) {
-//                String m;
-//                if (message.getContext().length() > 15)
-//                    m = message.getSenderDisplayName() + ":\n" + message.getContext().substring(0, 15) + "...";
-//                else
-//                    m = message.getSenderDisplayName() + ":\n" + message.getContext();
-//                lastMessageTextView.setText(m);
-//            }
-//        }); // TODO
+        mViewModel.getLastMessage().observe(getViewLifecycleOwner(), new Observer<Message>() {
+            @Override
+            public void onChanged(Message message) {
+                String m;
+                if (message.getContext().length() > 15)
+                    m = message.getSenderDisplayName() + ":\n" + message.getContext().substring(0, 15) + "...";
+                else
+                    m = message.getSenderDisplayName() + ":\n" + message.getContext();
+                lastMessageTextView.setText(m);
+            }
+        });
         return view;
     }
 

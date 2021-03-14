@@ -1,6 +1,8 @@
 package com.example.meetapp.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.meetapp.NetworkChangeReceiver;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
@@ -19,12 +22,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements OnClickInFragment  {
 
+    private NetworkChangeReceiver networkChangeReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         MainActivityViewModel mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        networkChangeReceiver = new NetworkChangeReceiver();
+        registerReceiver(networkChangeReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
 
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         //AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
@@ -45,5 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         this.finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
+    }
 }
