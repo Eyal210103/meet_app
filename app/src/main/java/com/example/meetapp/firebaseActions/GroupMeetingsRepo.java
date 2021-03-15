@@ -1,5 +1,7 @@
 package com.example.meetapp.firebaseActions;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -15,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class GroupMeetingsRepo {
@@ -46,32 +49,35 @@ public class GroupMeetingsRepo {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
-                MutableLiveData<GroupMeeting> meetingMutableLiveData = new MutableLiveData<>();
-                meetingMutableLiveData.setValue(meeting);
-                assert meeting != null;
-                if (!allMeetings.containsKey(meeting.getDateString())) {
-                    allMeetings.put(meeting.getDateString(),new ArrayList<>());
-                }
-                ArrayList<LiveData<GroupMeeting>> temp = allMeetings.get(meeting.getDateString());
-                boolean inserted = false;
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getValue().getId().equals(meeting.getId())){
-                        temp.set(i,meetingMutableLiveData);
-                        inserted = true;
-                        break;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis((long) (calendar.getTimeInMillis() + 3.6e+6 * 3));
+                if (calendar.getTimeInMillis() < meeting.getMillis()) {
+                    MutableLiveData<GroupMeeting> meetingMutableLiveData = new MutableLiveData<>();
+                    meetingMutableLiveData.setValue(meeting);
+                    assert meeting != null;
+                    if (!allMeetings.containsKey(meeting.getDateString())) {
+                        allMeetings.put(meeting.getDateString(), new ArrayList<>());
                     }
-                }
-                if (!inserted){
-                    temp.add(meetingMutableLiveData);
-                }
-                allMeetings.put(meeting.getDateString(),temp);
-                mutableLiveData.postValue(allMeetings);
+                    ArrayList<LiveData<GroupMeeting>> temp = allMeetings.get(meeting.getDateString());
+                    boolean inserted = false;
+                    for (int i = 0; i < temp.size(); i++) {
+                        if (temp.get(i).getValue().getId().equals(meeting.getId())) {
+                            temp.set(i, meetingMutableLiveData);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if (!inserted) {
+                        temp.add(meetingMutableLiveData);
+                    }
+                    allMeetings.put(meeting.getDateString(), temp);
+                    mutableLiveData.postValue(allMeetings);
 
-                if (closesMeeting.getValue() == null){
-                    closesMeeting.postValue(meetingMutableLiveData.getValue());
-                }
-                else if(isBefore(meeting.getMillis())) {
-                    closesMeeting.postValue(meeting);
+                    if (closesMeeting.getValue() == null) {
+                        closesMeeting.postValue(meetingMutableLiveData.getValue());
+                    } else if (isBefore(meeting.getMillis())) {
+                        closesMeeting.postValue(meeting);
+                    }
                 }
             }
 
