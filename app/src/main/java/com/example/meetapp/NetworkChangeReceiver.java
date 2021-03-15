@@ -19,7 +19,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.no_connection_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-       // dialog.setCancelable(false);
         try{
             if (isOnline(context)) {
                 dialog.dismiss();

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
@@ -71,21 +72,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                 @Override
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                     Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
-//                int pixel = bitmap.getPixel(groupImage.getWidth()/3,groupImage.getHeight()/2);
-//                int redValue = Color.red(pixel);
-//                int blueValue = Color.blue(pixel);
-//                int greenValue = Color.green(pixel);
-                    int[] colors = new int[3];
-
                     int colorFromImg = getDominantColor(bitmap);
-                    colors[0] = colorFromImg;
-                    colors[1] = colorFromImg;//Color.rgb(redValue,greenValue,blueValue);
-                    colors[2] = context.requireActivity().getColor(R.color.background);
-
+                    int[] colors = {colorFromImg,colorFromImg,context.requireActivity().getColor(R.color.backgroundSec)};
                     GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
                     gd.setCornerRadius(0f);
 
-                    holder.itemView.setBackground(gd);
+                     holder.cardView.setBackground(gd);
+//                    holder.itemView.setBackgroundTintMode(PorterDuff.Mode.OVERLAY);
+//                    holder.itemView.setBackgroundTintList(gd.getColor());
                     return false;
                 }
             }).into(holder.groupImage);
@@ -159,12 +153,15 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         CircleImageView groupImage;
         TextView groupName;
         ImageView subject;
+        CardView cardView;
 
         public GroupsViewHolder(@NonNull View itemView) {
             super(itemView);
             groupImage = itemView.findViewById(R.id.groups_adapter_civ);
             groupName = itemView.findViewById(R.id.groups_adapter_group_name);
             subject = itemView.findViewById(R.id.groups_adapter_iv);
+            cardView = itemView.findViewById(R.id.card_view_groups);
+            cardView.setPreventCornerOverlap(true);
         }
     }
 }

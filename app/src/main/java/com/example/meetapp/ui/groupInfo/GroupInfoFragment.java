@@ -150,7 +150,7 @@ public class GroupInfoFragment extends Fragment {
                 int colorFromImg = getDominantColor(bitmap);
                 colors[0] = colorFromImg;
                 colors[1] = colorFromImg;//Color.rgb(redValue,greenValue,blueValue);
-                colors[2] = requireActivity().getColor(R.color.background);
+                colors[2] = requireActivity().getColor(R.color.backgroundSec);
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
                 gd.setCornerRadius(0f);
