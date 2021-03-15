@@ -141,16 +141,8 @@ public class GroupInfoFragment extends Fragment {
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                 Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
-//                int pixel = bitmap.getPixel(groupImage.getWidth()/3,groupImage.getHeight()/2);
-//                int redValue = Color.red(pixel);
-//                int blueValue = Color.blue(pixel);
-//                int greenValue = Color.green(pixel);
-                int[] colors = new int[3];
-
                 int colorFromImg = getDominantColor(bitmap);
-                colors[0] = colorFromImg;
-                colors[1] = colorFromImg;//Color.rgb(redValue,greenValue,blueValue);
-                colors[2] = requireActivity().getColor(R.color.backgroundSec);
+                int[] colors = {requireActivity().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
                 gd.setCornerRadius(0f);
