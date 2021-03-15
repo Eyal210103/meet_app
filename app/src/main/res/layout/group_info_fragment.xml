@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/group_info_main"
     android:background="@color/ic_launcher_background">
 <!--    app:layoutDescription="@xml/group_info_fragment_scene">-->
 
@@ -60,7 +61,6 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/curved_top"
-        android:backgroundTint="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -1,5 +1,9 @@
 package com.example.meetapp.ui.myGroups;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -10,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
@@ -17,6 +22,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.ConstantValues;
@@ -25,6 +34,8 @@ import com.example.meetapp.model.Group;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
 
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder> {
 
@@ -50,9 +61,36 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         final Group current = groups.get(position).getValue();
         if (current != null) {
             holder.groupName.setText(current.getName());
-            Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
-            Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
-            Glide.with(context.getActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
+            //Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
+
+            Glide.with(context.requireActivity()).load(current.getPhotoUrl()).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    return false;
+                }
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+//                int pixel = bitmap.getPixel(groupImage.getWidth()/3,groupImage.getHeight()/2);
+//                int redValue = Color.red(pixel);
+//                int blueValue = Color.blue(pixel);
+//                int greenValue = Color.green(pixel);
+                    int[] colors = new int[3];
+
+                    int colorFromImg = getDominantColor(bitmap);
+                    colors[0] = colorFromImg;
+                    colors[1] = colorFromImg;//Color.rgb(redValue,greenValue,blueValue);
+                    colors[2] = context.requireActivity().getColor(R.color.background);
+
+                    GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+                    gd.setCornerRadius(0f);
+
+                    holder.itemView.setBackground(gd);
+                    return false;
+                }
+            }).into(holder.groupImage);
+         //   Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
+            Glide.with(context.requireActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
 
             if (type == ConstantValues.TYPE_MY_GROUPS) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {

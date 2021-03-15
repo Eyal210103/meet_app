@@ -1,5 +1,9 @@
 package com.example.meetapp.ui.groupInfo;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -20,6 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.model.ConstantValues;
 import com.example.meetapp.model.Group;
@@ -41,6 +50,8 @@ public class GroupInfoFragment extends Fragment {
     CircleImageView groupImage;
     ImageView groupSubject;
     TextView groupName;
+    ConstraintLayout constraintLayout;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,7 @@ public class GroupInfoFragment extends Fragment {
         groupImage = view.findViewById(R.id.group_info_group_civ);
         groupName = view.findViewById(R.id.group_info_group_name);
         groupSubject = view.findViewById(R.id.group_info_subject_imageView);
+        constraintLayout = view.findViewById(R.id.group_info_main);
 
         RecyclerView recyclerViewMembers = view.findViewById(R.id.group_info_recyclerView_members);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -121,10 +133,44 @@ public class GroupInfoFragment extends Fragment {
     }
 
     public void updateUI(Group group){
-        Glide.with(requireActivity()).load(group.getPhotoUrl()).into(groupImage);
+        Glide.with(requireActivity()).load(group.getPhotoUrl()).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+//                int pixel = bitmap.getPixel(groupImage.getWidth()/3,groupImage.getHeight()/2);
+//                int redValue = Color.red(pixel);
+//                int blueValue = Color.blue(pixel);
+//                int greenValue = Color.green(pixel);
+                int[] colors = new int[3];
+
+                int colorFromImg = getDominantColor(bitmap);
+                colors[0] = colorFromImg;
+                colors[1] = colorFromImg;//Color.rgb(redValue,greenValue,blueValue);
+                colors[2] = requireActivity().getColor(R.color.background);
+
+                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+                gd.setCornerRadius(0f);
+
+                constraintLayout.setBackground(gd);
+                return false;
+            }
+        }).into(groupImage);
+
         groupName.setText(group.getName());
         groupSubject.setImageResource(getSubjectIcon(group.getSubject()));
     }
+
+    public static int getDominantColor(Bitmap bitmap) {
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, 2, 2, true);
+        final int color = newBitmap.getPixel( 1,1);
+        newBitmap.recycle();
+        return color;
+    }
+
     public void swipeToChat(){
         viewPager.setCurrentItem(1, true);
     }
