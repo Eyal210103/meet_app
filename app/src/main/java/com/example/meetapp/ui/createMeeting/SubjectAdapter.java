@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.Subject;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             public void onClick(View v) {
                 selected = position;
                 OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                onClickInRecyclerView.onClickInRecyclerView(position, ConstantValues.ACTION_SUBJECT,0);
+                onClickInRecyclerView.onClickInRecyclerView(position, Consts.ACTION_SUBJECT,0);
             }
         });
     }
@@ -62,13 +62,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
     private void createArrayList(){
         this.subjects = new ArrayList<>();
-        subjects.add(new Subject(R.drawable.restaurant,ConstantValues.SUBJECT_RESTAURANT));
-        subjects.add(new Subject(R.drawable.basketball,ConstantValues.SUBJECT_BASKETBALL));
-        subjects.add(new Subject(R.drawable.soccer,ConstantValues.SUBJECT_SOCCER));
-        subjects.add(new Subject(R.drawable.football,ConstantValues.SUBJECT_FOOTBALL));
-        subjects.add(new Subject(R.drawable.videogame,ConstantValues.SUBJECT_VIDEO_GAMES));
-        subjects.add(new Subject(R.drawable.meetingicon,ConstantValues.SUBJECT_MEETING));
-        subjects.add(new Subject(R.drawable.groupsicon , ConstantValues.SUBJECT_OTHER));
+        subjects.add(new Subject(R.drawable.restaurant, Consts.SUBJECT_RESTAURANT));
+        subjects.add(new Subject(R.drawable.basketball, Consts.SUBJECT_BASKETBALL));
+        subjects.add(new Subject(R.drawable.soccer, Consts.SUBJECT_SOCCER));
+        subjects.add(new Subject(R.drawable.football, Consts.SUBJECT_FOOTBALL));
+        subjects.add(new Subject(R.drawable.videogame, Consts.SUBJECT_VIDEO_GAMES));
+        subjects.add(new Subject(R.drawable.meetingicon, Consts.SUBJECT_MEETING));
+        subjects.add(new Subject(R.drawable.groupsicon , Consts.SUBJECT_OTHER));
     }
 
     class SubjectViewHolder extends RecyclerView.ViewHolder{

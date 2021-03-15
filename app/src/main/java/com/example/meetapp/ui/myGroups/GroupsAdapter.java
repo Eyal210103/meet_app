@@ -29,7 +29,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.Group;
 
 import java.util.ArrayList;
@@ -87,24 +87,24 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
          //   Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
             Glide.with(context.requireActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
 
-            if (type == ConstantValues.TYPE_MY_GROUPS) {
+            if (type == Consts.TYPE_MY_GROUPS) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putString(ConstantValues.BUNDLE_GROUP_ID, current.getId());
+                        bundle.putString(Consts.BUNDLE_GROUP_ID, current.getId());
                         final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                         navController.navigate(R.id.action_socialMenuFragment_to_groupInfoFragment, bundle);
                     }
                 });
             }
 
-            if (type == ConstantValues.TYPE_JOIN_GROUP) {
+            if (type == Consts.TYPE_JOIN_GROUP) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable(ConstantValues.BUNDLE_GROUP_ID, current);
+                        bundle.putSerializable(Consts.BUNDLE_GROUP_ID, current);
                         final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                         navController.navigate(R.id.action_joinGroupFragment_to_joinGroupDialog, bundle);
                     }
@@ -117,7 +117,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                            onClickInRecyclerView.onClickInRecyclerView(current.getId(),ConstantValues.ACTION_LEAVE,0);
+                            onClickInRecyclerView.onClickInRecyclerView(current.getId(), Consts.ACTION_LEAVE,0);
                             return false;
                         }
                     });
@@ -133,17 +133,17 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     private int getSubjectIcon(String subject){
         switch (subject){
-            case ConstantValues.SUBJECT_RESTAURANT:
+            case Consts.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
-            case ConstantValues.SUBJECT_BASKETBALL:
+            case Consts.SUBJECT_BASKETBALL:
                 return R.drawable.basketball;
-            case ConstantValues.SUBJECT_SOCCER:
+            case Consts.SUBJECT_SOCCER:
                 return R.drawable.soccer;
-            case ConstantValues.SUBJECT_FOOTBALL:
+            case Consts.SUBJECT_FOOTBALL:
                 return R.drawable.football;
-            case ConstantValues.SUBJECT_VIDEO_GAMES:
+            case Consts.SUBJECT_VIDEO_GAMES:
                 return R.drawable.videogame;
-            case ConstantValues.SUBJECT_MEETING:
+            case Consts.SUBJECT_MEETING:
                 return R.drawable.meetingicon;
             default:
                 return R.drawable.groupsicon;

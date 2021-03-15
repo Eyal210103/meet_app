@@ -29,7 +29,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.meetings.MeetingsInfoDialog;
 import com.google.android.gms.maps.CameraUpdate;
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
                 int i = mViewModel.getPublicHash().get((String)v.getTag());
                 Meeting m = mViewModel.getMeetings().getValue().get(i).getValue();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ConstantValues.BUNDLE_MEETING,m);
+                bundle.putSerializable(Consts.BUNDLE_MEETING,m);
                 meetingsInfoDialog.setArguments(bundle);
                 meetingsInfoDialog.show(getFragmentManager(),"Meeting Dialog");
             }
@@ -263,17 +263,17 @@ public class HomeFragment extends Fragment {
 
     private int getSubjectIcon(String subject){
         switch (subject){
-            case ConstantValues.SUBJECT_RESTAURANT:
+            case Consts.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
-            case ConstantValues.SUBJECT_BASKETBALL:
+            case Consts.SUBJECT_BASKETBALL:
                 return R.drawable.basketball;
-            case ConstantValues.SUBJECT_SOCCER:
+            case Consts.SUBJECT_SOCCER:
                 return R.drawable.soccer;
-            case ConstantValues.SUBJECT_FOOTBALL:
+            case Consts.SUBJECT_FOOTBALL:
                 return R.drawable.football;
-            case ConstantValues.SUBJECT_VIDEO_GAMES:
+            case Consts.SUBJECT_VIDEO_GAMES:
                 return R.drawable.videogame;
-            case ConstantValues.SUBJECT_MEETING:
+            case Consts.SUBJECT_MEETING:
                 return R.drawable.meetingicon;
             default:
                 return R.drawable.groupsicon;

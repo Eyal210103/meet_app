@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.meetings.GroupMeeting;
@@ -172,8 +172,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             }
         });
 
-        if (getArguments() != null && getArguments().getString(ConstantValues.BUNDLE_GROUP_ID) != null) {
-            String groupId = getArguments().getString(ConstantValues.BUNDLE_GROUP_ID);
+        if (getArguments() != null && getArguments().getString(Consts.BUNDLE_GROUP_ID) != null) {
+            String groupId = getArguments().getString(Consts.BUNDLE_GROUP_ID);
             int index = spinnerAdapter.getIndex(groupId);
             if (index != -1) {
                 spinnerSelectGroup.setSelection(index);
@@ -294,7 +294,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
-        if (action.equals(ConstantValues.ACTION_SUBJECT)){
+        if (action.equals(Consts.ACTION_SUBJECT)){
             int v = (int)value;
             if (position != -1){
                 gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.subject_background);

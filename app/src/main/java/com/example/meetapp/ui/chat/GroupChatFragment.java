@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Message;
 
@@ -56,7 +56,7 @@ public class GroupChatFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupChatViewModel.class);
-        mViewModel.init(getArguments().getString(ConstantValues.BUNDLE_GROUP_ID));
+        mViewModel.init(getArguments().getString(Consts.BUNDLE_GROUP_ID));
     }
 
     @Override

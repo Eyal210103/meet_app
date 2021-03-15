@@ -15,7 +15,7 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 
@@ -166,9 +166,9 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private void setData(int position, boolean finalIsGroup, boolean finalIsRegular, String key){
         context.setViewBackground(position);
         if (finalIsGroup){
-            context.onClickDate(key, ConstantValues.MEETING_TYPE_GROUP,selectedIndex);
+            context.onClickDate(key, Consts.MEETING_TYPE_GROUP,selectedIndex);
         }else if(finalIsRegular){
-            context.onClickDate(key,ConstantValues.MEETING_TYPE_PUBLIC,selectedIndex);
+            context.onClickDate(key, Consts.MEETING_TYPE_PUBLIC,selectedIndex);
         }else {
             context.onClickDate("","None",0);
         }

@@ -1,6 +1,6 @@
 package com.example.meetapp.model;
 
-public class ConstantValues {
+public class Consts {
     public static final int TYPE_MY_GROUPS = 0;
     public static final int TYPE_JOIN_GROUP = 1;
 

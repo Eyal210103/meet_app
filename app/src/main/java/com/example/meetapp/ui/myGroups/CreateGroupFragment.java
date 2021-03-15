@@ -24,7 +24,7 @@ import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
 import com.example.meetapp.callbacks.PhotoUploadErrorListener;
 import com.example.meetapp.firebaseActions.StorageUpload;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.ui.createMeeting.SubjectAdapter;
 
@@ -153,7 +153,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
 
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
-        if (action.equals(ConstantValues.ACTION_SUBJECT)){
+        if (action.equals(Consts.ACTION_SUBJECT)){
             int v = (int)value;
             if (position != -1){
                 gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.subject_background);

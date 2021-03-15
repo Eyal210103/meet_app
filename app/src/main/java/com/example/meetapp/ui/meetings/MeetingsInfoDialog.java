@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.ConstantValues;
+import com.example.meetapp.model.Consts;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.Meeting;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,7 +42,7 @@ public class MeetingsInfoDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MeetingInfoDialogViewModel.class);
-        Meeting meeting = (Meeting) getArguments().getSerializable(ConstantValues.BUNDLE_MEETING);
+        Meeting meeting = (Meeting) getArguments().getSerializable(Consts.BUNDLE_MEETING);
         mViewModel.init(meeting.getId());
     }
 
@@ -55,7 +55,7 @@ public class MeetingsInfoDialog extends DialogFragment {
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Meeting meeting = (Meeting) getArguments().getSerializable(ConstantValues.BUNDLE_MEETING);
+        Meeting meeting = (Meeting) getArguments().getSerializable(Consts.BUNDLE_MEETING);
 
         TextView day = view.findViewById(R.id.meeting_dialog_tv_day_of_month_calendar_item);
         TextView dayOfWeek = view.findViewById(R.id.meeting_dialog_tv_day_of_week_calendar_item);
@@ -90,11 +90,11 @@ public class MeetingsInfoDialog extends DialogFragment {
                 dismiss();
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 Bundle bundle = new Bundle();
-                bundle.putString(ConstantValues.BUNDLE_ID,meeting.getId());
-                String type = meeting instanceof Meeting ? ConstantValues.MEETING_TYPE_PUBLIC: ConstantValues.MEETING_TYPE_GROUP;
-                bundle.putString(ConstantValues.BUNDLE_TYPE,type);
-                String groupId = meeting instanceof Meeting ? ConstantValues.MEETING_TYPE_PUBLIC: meeting.getId();
-                bundle.putString(ConstantValues.BUNDLE_GROUP_ID,groupId);
+                bundle.putString(Consts.BUNDLE_ID,meeting.getId());
+                String type = meeting instanceof Meeting ? Consts.MEETING_TYPE_PUBLIC: Consts.MEETING_TYPE_GROUP;
+                bundle.putString(Consts.BUNDLE_TYPE,type);
+                String groupId = meeting instanceof Meeting ? Consts.MEETING_TYPE_PUBLIC: meeting.getId();
+                bundle.putString(Consts.BUNDLE_GROUP_ID,groupId);
                 navController.navigate(R.id.action_homeFragment_to_meetingInfoFragment, bundle);
             }
         });
