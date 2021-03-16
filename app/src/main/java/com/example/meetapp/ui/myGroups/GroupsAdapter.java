@@ -76,17 +76,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                     int[] colors = {context.requireActivity().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
 
                     GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
-                    gd.setCornerRadius(0f);
+                    gd.setCornerRadius(60);
+                    holder.cardView.setBackground(gd);
 
-                     holder.cardView.setBackground(gd);
-//                    holder.itemView.setBackgroundTintMode(PorterDuff.Mode.OVERLAY);
-//                    holder.itemView.setBackgroundTintList(gd.getColor());
                     return false;
                 }
             }).into(holder.groupImage);
-         //   Glide.with(context.requireActivity()).load(R.drawable.groups_subjects).into(holder.subject);
-            Glide.with(context.requireActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
 
+            Glide.with(context.requireActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
             if (type == Consts.TYPE_MY_GROUPS) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -162,7 +159,6 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             groupName = itemView.findViewById(R.id.groups_adapter_group_name);
             subject = itemView.findViewById(R.id.groups_adapter_iv);
             cardView = itemView.findViewById(R.id.card_view_groups);
-            cardView.setPreventCornerOverlap(true);
         }
     }
 }

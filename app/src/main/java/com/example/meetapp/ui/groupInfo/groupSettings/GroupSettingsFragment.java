@@ -1,5 +1,9 @@
 package com.example.meetapp.ui.groupInfo.groupSettings;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.Consts;
@@ -29,12 +37,15 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
+
 public class GroupSettingsFragment extends Fragment implements OnClickInRecyclerView {
 
     private GroupSettingsViewModel mViewModel;
     private CircleImageView circleImageView;
     private TextView nameTextView;
     private LinearLayout linearLayoutWaiting;
+    private LinearLayout themeLinearLayout;
     View view;
     boolean isThere = false;
 
@@ -55,6 +66,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         this.circleImageView = view.findViewById(R.id.group_settings_circleImageView);
         this.nameTextView = view.findViewById(R.id.group_settings_name_textView);
         this.linearLayoutWaiting = view.findViewById(R.id.group_settings_linear_waiting);
+        this.themeLinearLayout = view.findViewById(R.id.group_settings_group_theme_layout);
 
         setInvisible();
 
@@ -158,8 +170,26 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         linearLayoutWaiting.setVisibility(View.VISIBLE);
         view.findViewById(R.id.waiting_req_tv).setVisibility(View.VISIBLE);
     }
+
     public void updateUI(Group group){
-        Glide.with(requireActivity()).load(group.getPhotoUrl()).into(circleImageView);
+        Glide.with(requireActivity()).load(group.getPhotoUrl()).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                int colorFromImg = getDominantColor(bitmap);
+                int[] colors = {requireActivity().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
+
+                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+                gd.setCornerRadius(0f);
+                themeLinearLayout.setBackground(gd);
+
+                return false;
+            }
+        }).into(circleImageView);
         this.nameTextView.setText(group.getName());
     }
 }

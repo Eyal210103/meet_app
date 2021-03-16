@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/group_settings_group_theme_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,17 +12,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:paddingTop="20dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/group_settings_circleImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="@color/oppBackground"
+            app:civ_border_width="0.5dp" />
 
         <TextView
             android:id="@+id/group_settings_name_textView"
@@ -29,51 +34,63 @@
             android:layout_marginStart="8dp"
             android:text="@string/app_name"
             android:textColor="@color/oppBackground"
-            android:textSize="36sp" />
-
+            android:textSize="32sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/group_settings_linear_waiting"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="match_parent"
+        android:background="@drawable/curved_top"
+        android:backgroundTint="@color/background"
+        android:paddingTop="5dp"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/waiting_req_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/waiting_requests"
-            android:textColor="@color/oppBackground"
-            android:textSize="18sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/group_settings_waiting_recycler"
+        <LinearLayout
+            android:id="@+id/group_settings_linear_waiting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
-    </LinearLayout>
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dp"
+            android:visibility="visible">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:visibility="visible">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/members"
-            android:textColor="@color/oppBackground"
-            android:textSize="18sp" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/group_settings_members"
+            <TextView
+                android:id="@+id/waiting_req_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/waiting_requests"
+                android:textColor="@color/oppBackground"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_settings_waiting_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="15dp"
+            android:orientation="vertical"
+            android:visibility="visible">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/members"
+                android:textColor="@color/oppBackground"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_settings_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.meetapp;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,17 +12,19 @@ import android.net.NetworkInfo;
 public class NetworkChangeReceiver extends BroadcastReceiver {
     Dialog dialog;
 
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.no_connection_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (dialog == null) {
+            dialog = new Dialog(context);
+            dialog.setContentView(R.layout.no_connection_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+        }
         try{
             if (isOnline(context)) {
                 dialog.dismiss();
             }
-            if (!isOnline(context)){
+            else {
                 dialog.show();
             }
         }catch (Exception e){

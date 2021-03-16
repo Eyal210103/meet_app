@@ -2,6 +2,9 @@ package com.example.meetapp.ui.myGroups;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,6 +35,7 @@ import com.example.meetapp.ui.createMeeting.SubjectAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
 
 
 public class CreateGroupFragment extends Fragment implements PhotoUploadCompleteListener, PhotoUploadErrorListener, OnClickInRecyclerView {
@@ -41,6 +46,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     private SwitchCompat switchCompat;
     private CircleImageView groupImageCIV;
     private ProgressDialog progressDialog;
+    private ConstraintLayout layout;
     private Uri imageUri;
     private NavController navController;
     private int position;
@@ -58,6 +64,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
         groupNameEditText = view.findViewById(R.id.create_group_group_name_et);
         groupSubjectEditText = view.findViewById(R.id.create_group_group_subject);
         switchCompat = view.findViewById(R.id.create_group_public_switch);
+        layout = view.findViewById(R.id.create_group_layout);
 
         RecyclerView recyclerView = view.findViewById(R.id.create_group_choose_subject);
         subjectAdapter = new SubjectAdapter(this);
@@ -135,6 +142,12 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
             if (data != null) {
                 imageUri = data.getData();
                 groupImageCIV.setImageURI(imageUri);
+                Bitmap bitmap = ((BitmapDrawable)groupImageCIV.getDrawable()).getBitmap();
+                int colorFromImg = getDominantColor(bitmap);
+                int[] colors = {colorFromImg,requireActivity().getColor(R.color.background)};
+                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
+                gd.setCornerRadius(0f);
+                layout.setBackground(gd);
             }
         }
     }
@@ -148,7 +161,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     @Override
     public void onPhotoUploadError() {
         progressDialog.dismiss();
-        Toast.makeText(getActivity(), "Photo Wont Upload... \n Try Again Later", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), requireActivity().getString(R.string.upload_error), Toast.LENGTH_SHORT).show();
     }
 
     @Override
