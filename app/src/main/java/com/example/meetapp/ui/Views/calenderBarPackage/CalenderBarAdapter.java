@@ -30,6 +30,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private HashMap<String, ArrayList<LiveData<Meeting>>> publicMeetings;
     private HashMap<String, ArrayList<LiveData<GroupMeeting>>> groupMeetings;
 
+    private String selectedDateString;
     private int selected;
     private int selectedIndex;
 
@@ -68,6 +69,10 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         boolean isGood = false;
         boolean isRegular = false;
         boolean isGroup =false;
+
+        if (key.equals(selectedDateString)){
+            context.setViewBackground(position);
+        }
 
         int meetingCount = 0;
 
@@ -109,6 +114,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             @Override
             public void onClick(View v) {
                 selected = position;
+                selectedDateString = key;
                 if (finalMeetingCount <= 1){
                     selectedIndex = 0;
                     setData(position,finalIsGroup,finalIsRegular,key);
