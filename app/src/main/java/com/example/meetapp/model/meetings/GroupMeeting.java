@@ -5,9 +5,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class GroupMeeting extends Meeting {
+public class GroupMeeting extends Meeting implements Serializable {
 
     private boolean isOpen;
     private String groupId;

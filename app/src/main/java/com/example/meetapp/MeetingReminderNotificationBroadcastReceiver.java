@@ -1,10 +1,12 @@
 package com.example.meetapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -20,6 +22,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MeetingReminderNotificationBroadcastReceiver extends BroadcastReceiver {
+
+    Meeting meeting;
+
+    public MeetingReminderNotificationBroadcastReceiver(Meeting meeting) {
+        this.meeting = meeting;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -56,5 +64,19 @@ public class MeetingReminderNotificationBroadcastReceiver extends BroadcastRecei
         notificationManager.notify(52, builder.build());
     }
 
+    public void setAlarm(Context context,Meeting meeting) {
+        AlarmManager am =(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent i = new Intent(context, MeetingReminderNotificationBroadcastReceiver.class);
+        i.putExtra(Consts.BUNDLE_MEETING,meeting);
+        PendingIntent pi = PendingIntent.getBroadcast(context,0, i, 0);
+        am.set(AlarmManager.RTC_WAKEUP, meeting.getMillis(), pi);
+    }
+
+    public void cancelAlarm(Context context,long millis) {
+        Intent intent = new Intent(context, MeetingReminderNotificationBroadcastReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context,0 , intent, 0); //TODO individual meeting numbering
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(sender);
+    }
 
 }

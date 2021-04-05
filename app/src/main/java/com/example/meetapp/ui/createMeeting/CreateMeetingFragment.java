@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.meetapp.MeetingReminderNotificationBroadcastReceiver;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
@@ -70,6 +71,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
         isGroup = false;
         position = -1;
+
 
         spinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
         SpinnerGroupAdapter spinnerAdapter = new SpinnerGroupAdapter(requireActivity(), R.layout.select_group_adapter, mainActivityViewModel.getGroups().getValue());
@@ -154,6 +156,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(), "Group", gId);
+                    MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
+                    meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
                 } else {
                     Meeting meeting = new Meeting();
                     meeting.setMillis(c.getTimeInMillis());
@@ -164,9 +168,12 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(), "Public", meeting.getId());
+                    MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
+                    meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
+
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString("action", "meetings");
+                bundle.putString("action", "meetings"); // TODO
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment, bundle);
             }
