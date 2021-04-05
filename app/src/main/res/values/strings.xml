@@ -82,4 +82,7 @@
     <string name="months_december">December</string>
     <string name="members">Members</string>
 
+    <string name="meeting_remainder">A Little Reminder For A Meeting You Have Today At </string>
+    <string name="group_meeting_remainder">A Little Reminder For A Group Meeting You Have Today At </string>
+
 </resources>

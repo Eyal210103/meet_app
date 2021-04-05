@@ -82,4 +82,7 @@
     <string name="months_december">דצמבר</string>
     <string name="members">חברי הקבוצה</string>
 
+    <string name="meeting_remainder">תזכורת קטנה שיש לך פגישה היום ב </string>
+    <string name="group_meeting_remainder">תזכורת קטנה שיש לך פגישה קבוצתית היום ב  </string>
+
 </resources>
