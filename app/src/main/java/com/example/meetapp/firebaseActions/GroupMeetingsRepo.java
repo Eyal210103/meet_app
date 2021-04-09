@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -13,12 +11,14 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GroupMeetingsRepo {
     private final HashMap<String, ArrayList<LiveData<GroupMeeting>>> allMeetings;
@@ -51,7 +51,7 @@ public class GroupMeetingsRepo {
                 GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis((long) (calendar.getTimeInMillis() + 3.6e+6 * 3));
-                if (calendar.getTimeInMillis() < meeting.getMillis()) {
+//                if (calendar.getTimeInMillis() < meeting.getMillis()) {
                     MutableLiveData<GroupMeeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
                     assert meeting != null;
@@ -78,7 +78,10 @@ public class GroupMeetingsRepo {
                     } else if (isBefore(meeting.getMillis())) {
                         closesMeeting.postValue(meeting);
                     }
-                }
+                //}
+//                else {
+////                    snapshot.getRef().removeValue();
+//                }
             }
 
             @Override
@@ -105,9 +108,14 @@ public class GroupMeetingsRepo {
                 allMeetings.put(meeting.getDateString(),temp);
                 mutableLiveData.postValue(allMeetings);
 
-                loadWhoComing(snapshot.child(FirebaseTags.WHO_COMING_CHILDES).getValue(HashMap.class),meeting.getId());
+                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
+                HashMap<String,String> hashMap = (HashMap<String, String>) snapshot.child(FirebaseTags.WHO_COMING_CHILDES).getValue(genericTypeIndicator);
+                loadWhoComing(hashMap,meeting.getId());
 
-                if (closesMeeting.getValue().getId().equals(meeting.getId())){
+                if (closesMeeting.getValue() == null) {
+                    closesMeeting.postValue(meetingMutableLiveData.getValue());
+                }
+                else if (closesMeeting.getValue().getId().equals(meeting.getId())){
                     closesMeeting.postValue(meeting);
                 }
             }

@@ -1,5 +1,7 @@
 package com.example.meetapp.model.meetings;
 
+import androidx.annotation.NonNull;
+
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
@@ -69,6 +71,7 @@ public class GroupMeeting extends Meeting implements Serializable {
         isOpen = open;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GroupMeeting{" +

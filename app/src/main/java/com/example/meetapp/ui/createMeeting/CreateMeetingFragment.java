@@ -28,7 +28,8 @@ import com.example.meetapp.MeetingReminderNotificationBroadcastReceiver;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.firebaseActions.FirebaseTags;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.meetings.GroupMeeting;
@@ -155,7 +156,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
-                    CurrentUser.joinMeeting(meeting.getId(), "Group", gId);
+                    CurrentUser.joinMeeting(meeting.getId(), Const.BUNDLE_GROUP_ID, gId);
                     MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
                     meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
                 } else {
@@ -167,20 +168,19 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
-                    CurrentUser.joinMeeting(meeting.getId(), "Public", meeting.getId());
+                    CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES, meeting.getId());
                     MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
                     meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
-
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString("action", "meetings"); // TODO
+                bundle.putString(Const.ACTION, Const.BUNDLE_MEETING);
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment, bundle);
             }
         });
 
-        if (getArguments() != null && getArguments().getString(Consts.BUNDLE_GROUP_ID) != null) {
-            String groupId = getArguments().getString(Consts.BUNDLE_GROUP_ID);
+        if (getArguments() != null && getArguments().getString(Const.BUNDLE_GROUP_ID) != null) {
+            String groupId = getArguments().getString(Const.BUNDLE_GROUP_ID);
             int index = spinnerAdapter.getIndex(groupId);
             if (index != -1) {
                 spinnerSelectGroup.setSelection(index);
@@ -202,45 +202,43 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     }
 
-    //TODO חיחיחיחיי
-
     public String getThreeLetterMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
-                return "JAN";
+                return getString(R.string.months_january);
 
             case android.icu.util.Calendar.FEBRUARY:
-                return "FEB";
+                return getString(R.string.months_february);
 
             case android.icu.util.Calendar.MARCH:
-                return "MAR";
+                return getString(R.string.months_march);
 
             case android.icu.util.Calendar.APRIL:
-                return "APR";
+                return getString(R.string.months_april);
 
             case android.icu.util.Calendar.MAY:
-                return "MAY";
+                return getString(R.string.months_may);
 
             case android.icu.util.Calendar.JUNE:
-                return "JUN";
+                return getString(R.string.months_june);
 
             case android.icu.util.Calendar.JULY:
-                return "JUL";
+                return getString(R.string.months_july);
 
             case android.icu.util.Calendar.AUGUST:
-                return "AUG";
+                return getString(R.string.months_august);
 
             case android.icu.util.Calendar.SEPTEMBER:
-                return "SEP";
+                return getString(R.string.months_september);
 
             case android.icu.util.Calendar.OCTOBER:
-                return "OCT";
+                return getString(R.string.months_october);
 
             case android.icu.util.Calendar.NOVEMBER:
-                return "NOV";
+                return getString(R.string.months_november);
 
             case android.icu.util.Calendar.DECEMBER:
-                return "DEC";
+                return getString(R.string.months_december);
 
             default:
                 return "";
@@ -250,25 +248,25 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     public String getDayOfWeek(int day){
         switch (day){
             case android.icu.util.Calendar.SUNDAY:
-                return "Sunday";
+                return getString(R.string.days_sunday);
 
             case android.icu.util.Calendar.MONDAY:
-                return "Monday";
+                return getString(R.string.days_monday);
 
             case android.icu.util.Calendar.TUESDAY:
-                return "Tuesday";
+                return getString(R.string.days_tuesday);
 
             case android.icu.util.Calendar.WEDNESDAY:
-                return "Wednesday";
+                return getString(R.string.days_wednesday);
 
             case android.icu.util.Calendar.THURSDAY:
-                return "Thursday";
+                return getString(R.string.days_thursday);
 
             case android.icu.util.Calendar.FRIDAY:
-                return "Friday";
+                return getString(R.string.days_friday);
 
             case android.icu.util.Calendar.SATURDAY:
-                return "Saturday";
+                return getString(R.string.days_saturday);
             default:
                 return "";
         }
@@ -279,13 +277,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         try {
             List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
             Address obj = addresses.get(0);
-            //add = add + "\n" + obj.getCountryName();
-            //add = add + "\n" + obj.getCountryCode();
-            //add = add + "\n" + obj.getAdminArea();
-            //add = add + "\n" + obj.getPostalCode();
-            //add = add + "\n" + obj.getSubAdminArea();
-            //add = add + "\n" + obj.getLocality();
-            //add = add + "\n" + obj.getSubThoroughfare();
             return obj.getAddressLine(0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -301,7 +292,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
-        if (action.equals(Consts.ACTION_SUBJECT)){
+        if (action.equals(Const.ACTION_SUBJECT)){
             int v = (int)value;
             if (position != -1){
                 gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.subject_background);

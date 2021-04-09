@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.User;
 
 import java.util.ArrayList;
@@ -47,14 +47,14 @@ public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapte
             holder.approve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickInRecyclerView.onClickInRecyclerView(position, Consts.ACTION_APPROVE,0);
+                    onClickInRecyclerView.onClickInRecyclerView(position, Const.ACTION_APPROVE,0);
                     notifyDataSetChanged();
                 }
             });
             holder.reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickInRecyclerView.onClickInRecyclerView(position, Consts.ACTION_REJECT,0);
+                    onClickInRecyclerView.onClickInRecyclerView(position, Const.ACTION_REJECT,0);
                     notifyItemRemoved(position);
                 }
             });

@@ -33,7 +33,7 @@ public class CurrentUser {
     }
 
     public static void joinMeeting(String id,String type , String group) {
-            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child("Meetings").child(type).child(id).setValue(group);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child(type).child(id).setValue(group);
     }
 
     public static void logout(){

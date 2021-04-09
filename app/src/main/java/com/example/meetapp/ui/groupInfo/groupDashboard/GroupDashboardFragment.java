@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Message;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
@@ -60,8 +60,8 @@ public class GroupDashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        this.id = requireArguments().getString(Consts.BUNDLE_GROUP_ID);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(requireArguments().getString(Consts.BUNDLE_GROUP_ID))
+        this.id = requireArguments().getString(Const.BUNDLE_GROUP_ID);
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(requireArguments().getString(Const.BUNDLE_GROUP_ID))
                 ,id);
     }
 
@@ -86,7 +86,7 @@ public class GroupDashboardFragment extends Fragment {
             public void onClick(View v) {
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 Bundle bundle = new Bundle();
-                bundle.putString(Consts.BUNDLE_GROUP_ID,id);
+                bundle.putString(Const.BUNDLE_GROUP_ID,id);
                 navController.navigate(R.id.action_groupInfoFragment_to_createMeetingFragment,bundle);
             }
         });
@@ -223,17 +223,17 @@ public class GroupDashboardFragment extends Fragment {
 
     private int getSubjectIcon(String subject){
         switch (subject){
-            case Consts.SUBJECT_RESTAURANT:
+            case Const.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
-            case Consts.SUBJECT_BASKETBALL:
+            case Const.SUBJECT_BASKETBALL:
                 return R.drawable.basketball;
-            case Consts.SUBJECT_SOCCER:
+            case Const.SUBJECT_SOCCER:
                 return R.drawable.soccer;
-            case Consts.SUBJECT_FOOTBALL:
+            case Const.SUBJECT_FOOTBALL:
                 return R.drawable.football;
-            case Consts.SUBJECT_VIDEO_GAMES:
+            case Const.SUBJECT_VIDEO_GAMES:
                 return R.drawable.videogame;
-            case Consts.SUBJECT_MEETING:
+            case Const.SUBJECT_MEETING:
                 return R.drawable.meetingicon;
             default:
                 return R.drawable.groupsicon;

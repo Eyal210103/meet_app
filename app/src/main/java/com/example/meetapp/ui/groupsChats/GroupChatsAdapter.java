@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.Message;
 
@@ -60,7 +60,7 @@ public class GroupChatsAdapter extends RecyclerView.Adapter<GroupChatsAdapter.Ch
             @Override
             public void onClick(View v) {
                 Bundle bundle =new Bundle();
-                bundle.putString(Consts.BUNDLE_GROUP_ID, curr.getId());
+                bundle.putString(Const.BUNDLE_GROUP_ID, curr.getId());
                 final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_socialMenuFragment_to_groupChatFragment, bundle);
             }

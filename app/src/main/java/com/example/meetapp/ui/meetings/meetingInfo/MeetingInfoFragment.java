@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
@@ -52,9 +52,9 @@ public class MeetingInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MeetingInfoViewModel.class);
-        String id  = getArguments().getString(Consts.BUNDLE_ID);
-        type = getArguments().getString(Consts.BUNDLE_TYPE);
-        String groupId = getArguments().getString(Consts.BUNDLE_GROUP_ID,"");
+        String id  = getArguments().getString(Const.BUNDLE_ID);
+        type = getArguments().getString(Const.BUNDLE_TYPE);
+        String groupId = getArguments().getString(Const.BUNDLE_GROUP_ID,"");
         mViewModel.init(id,groupId,type);
 
     }
@@ -81,14 +81,14 @@ public class MeetingInfoFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-        if (type.equals(Consts.MEETING_TYPE_PUBLIC)){
+        if (type.equals(Const.MEETING_TYPE_PUBLIC)){
             mViewModel.getPublicM().observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                 @Override
                 public void onChanged(Meeting meeting) {
                     updateUI(meeting);
                 }
             });
-        }else if(type.equals(Consts.MEETING_TYPE_GROUP)){
+        }else if(type.equals(Const.MEETING_TYPE_GROUP)){
             mViewModel.getGroupM().observe(getViewLifecycleOwner(), new Observer<GroupMeeting>() {
                 @Override
                 public void onChanged(GroupMeeting groupMeeting) {

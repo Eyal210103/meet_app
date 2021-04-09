@@ -1,6 +1,6 @@
 package com.example.meetapp.model;
 
-public class Consts {
+public class Const {
     public static final int TYPE_MY_GROUPS = 0;
     public static final int TYPE_JOIN_GROUP = 1;
 
@@ -12,6 +12,7 @@ public class Consts {
     public static final String MEETING_TYPE_PUBLIC = "publicMeeting";
     public static final String MEETING_TYPE_GROUP = "groupMeeting";
 
+    public static final String ACTION = "action";
     public static final String ACTION_SUBJECT = "subject";
     public static final String ACTION_APPROVE = "approve";
     public static final String ACTION_REJECT = "reject";

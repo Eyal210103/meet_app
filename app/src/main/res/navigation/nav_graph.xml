@@ -37,13 +37,16 @@
         tools:layout="@layout/my_groups_fragment" >
         <action
             android:id="@+id/action_socialMenuFragment_to_groupInfoFragment"
-            app:destination="@id/groupInfoFragment" />
+            app:destination="@id/groupInfoFragment"
+            app:enterAnim="@anim/page_transition_slide_rtl" />
         <action
             android:id="@+id/action_socialMenuFragment_to_createGroupFragment2"
-            app:destination="@id/createGroupFragment" />
+            app:destination="@id/createGroupFragment"
+            app:enterAnim="@anim/page_transition_from_corner" />
         <action
             android:id="@+id/action_socialMenuFragment_to_joinGroupFragment"
-            app:destination="@id/joinGroupFragment" />
+            app:destination="@id/joinGroupFragment"
+            app:enterAnim="@anim/page_transition_from_corner" />
     </fragment>
     <fragment
         android:id="@+id/myMeetingsFragment"
@@ -83,8 +86,7 @@
         <action
             android:id="@+id/action_groupInfoFragment_to_createMeetingFragment"
             app:destination="@id/createMeetingFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+            app:enterAnim="@anim/page_transition_from_corner" />
     </fragment>
     <fragment
         android:id="@+id/groupChatFragment"

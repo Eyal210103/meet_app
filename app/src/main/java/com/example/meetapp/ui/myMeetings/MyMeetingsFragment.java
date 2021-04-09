@@ -15,7 +15,7 @@ import androidx.navigation.Navigation;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.example.meetapp.ui.Views.calenderBarPackage.CalenderBarFragment;
@@ -84,9 +84,9 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
   //          else if (action.equals(ConstantValues.MEETING_TYPE_PUBLIC)) {
                 Meeting meeting = mViewModel.getMeetings().getValue().get(key).get(i).getValue();
                 Bundle bundle = new Bundle();
-                bundle.putString(Consts.BUNDLE_ID, meeting.getId());
-                bundle.putString(Consts.BUNDLE_TYPE, Consts.MEETING_TYPE_PUBLIC);
-                bundle.putString(Consts.BUNDLE_GROUP_ID, "");
+                bundle.putString(Const.BUNDLE_ID, meeting.getId());
+                bundle.putString(Const.BUNDLE_TYPE, Const.MEETING_TYPE_PUBLIC);
+                bundle.putString(Const.BUNDLE_GROUP_ID, "");
                 meetingInfoFragment.setArguments(bundle);
                 getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
         //    } TODO TODO TODO

@@ -27,7 +27,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
@@ -55,7 +55,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupSettingsViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString(Consts.BUNDLE_GROUP_ID)),getArguments().getString(Consts.BUNDLE_GROUP_ID));
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString(Const.BUNDLE_GROUP_ID)),getArguments().getString(Const.BUNDLE_GROUP_ID));
     }
 
     @Override
@@ -149,12 +149,12 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
 
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
-        if (action.equals(Consts.ACTION_APPROVE)){
+        if (action.equals(Const.ACTION_APPROVE)){
             mViewModel.approveUser((Integer)value);
             if (mViewModel.getPaddingUsers().getValue().size() == 0){
                 setInvisible();
             }
-        }else if(action.equals(Consts.ACTION_REJECT)){
+        }else if(action.equals(Const.ACTION_REJECT)){
             mViewModel.rejectUser((Integer)value);
             if (mViewModel.getPaddingUsers().getValue().size() == 0){
                 setInvisible();

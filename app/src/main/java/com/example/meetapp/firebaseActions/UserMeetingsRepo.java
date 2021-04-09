@@ -89,6 +89,8 @@ public class UserMeetingsRepo {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                //TODO 2121212121212121
             }
 
             @Override
@@ -132,7 +134,7 @@ public class UserMeetingsRepo {
                             mutableLiveData.postValue(allMeetings);
                         }
                     }
-
+//TODO                     snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }

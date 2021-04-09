@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.ui.Views.calenderBarPackage.CalenderBarFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
@@ -64,10 +64,10 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInRecycler
                 MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
                 GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get((String) value).get(i).getValue();
                 Bundle bundle = new Bundle();
-                bundle.putString(Consts.BUNDLE_ID, meeting.getId());
-                bundle.putString(Consts.BUNDLE_TYPE, Consts.MEETING_TYPE_GROUP);
+                bundle.putString(Const.BUNDLE_ID, meeting.getId());
+                bundle.putString(Const.BUNDLE_TYPE, Const.MEETING_TYPE_GROUP);
                 String groupId = ((GroupMeeting) meeting).getGroupId();
-                bundle.putString(Consts.BUNDLE_GROUP_ID, groupId);
+                bundle.putString(Const.BUNDLE_GROUP_ID, groupId);
                 meetingInfoFragment.setArguments(bundle);
                 getChildFragmentManager().beginTransaction().replace(R.id.meeting_info_fragment_container_group, meetingInfoFragment).commit();
             }

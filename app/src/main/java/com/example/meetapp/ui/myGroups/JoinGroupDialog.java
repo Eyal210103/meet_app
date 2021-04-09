@@ -18,7 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
-import com.example.meetapp.model.Consts;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class JoinGroupDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(JoinGroupDialogViewModel.class);
-        group = (Group) getArguments().getSerializable(Consts.BUNDLE_GROUP_ID);
+        group = (Group) getArguments().getSerializable(Const.BUNDLE_GROUP_ID);
         mViewModel.init(group.getId());
     }
 
@@ -60,7 +60,7 @@ public class JoinGroupDialog extends DialogFragment {
                 if (group.isPublic()) {
                     group.addUserToGroup();
                     Bundle bundle = new Bundle();
-                    bundle.putString(Consts.BUNDLE_GROUP_ID, group.getId());
+                    bundle.putString(Const.BUNDLE_GROUP_ID, group.getId());
                     final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.groupInfoFragment, bundle);
                 }else {
