@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.meetapp.notifications2.FirebaseDatabaseListening;
-import com.example.meetapp.notifications2.MyFirebaseMessaging;
+import com.example.meetapp.notifications.FirebaseDatabaseListening;
+import com.example.meetapp.notifications.MyFirebaseMessaging;
 
 public class ServiceStarter extends BroadcastReceiver {
 

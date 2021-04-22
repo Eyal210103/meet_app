@@ -1,4 +1,4 @@
-package com.example.meetapp.notifications2;
+package com.example.meetapp.notifications;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

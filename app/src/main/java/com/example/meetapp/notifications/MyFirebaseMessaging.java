@@ -1,4 +1,4 @@
-package com.example.meetapp.notifications2;
+package com.example.meetapp.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;

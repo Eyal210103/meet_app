@@ -1,4 +1,4 @@
-package com.example.meetapp.notifications2;
+package com.example.meetapp.notifications;
 
 public class Token {
     private String token;
