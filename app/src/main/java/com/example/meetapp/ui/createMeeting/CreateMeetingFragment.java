@@ -24,7 +24,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.meetapp.MeetingReminderNotificationBroadcastReceiver;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
@@ -34,6 +33,7 @@ import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
+import com.example.meetapp.receivers.MeetingReminderNotificationBroadcastReceiver;
 import com.example.meetapp.ui.MainActivityViewModel;
 import com.google.android.gms.maps.model.LatLng;
 

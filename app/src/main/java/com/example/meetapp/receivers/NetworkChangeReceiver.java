@@ -1,4 +1,4 @@
-package com.example.meetapp;
+package com.example.meetapp.receivers;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.example.meetapp.R;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
     Dialog dialog;

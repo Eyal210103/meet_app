@@ -1,4 +1,4 @@
-package com.example.meetapp;
+package com.example.meetapp.receivers;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.meetapp.R;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivity;
