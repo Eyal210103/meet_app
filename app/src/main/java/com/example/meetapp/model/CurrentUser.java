@@ -1,5 +1,6 @@
 package com.example.meetapp.model;
 
+import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,11 +30,14 @@ public class CurrentUser {
         map.put("email",user.getEmail());
         map.put("id",user.getId());
         map.put("profileImageUrl",user.getProfileImageUrl());
-        FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).updateChildren(map);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(user.getId()).updateChildren(map);
     }
 
     public static void joinMeeting(String id,String type , String group) {
-            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getId()).child(type).child(id).setValue(group);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(user.getId()).child(type).child(id).setValue(group);
+    }
+    public static void quitMeeting(String id,String type) {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(user.getId()).child(type).child(id).removeValue();
     }
 
     public static void logout(){

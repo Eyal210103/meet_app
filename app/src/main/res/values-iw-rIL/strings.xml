@@ -84,5 +84,8 @@
 
     <string name="meeting_remainder">תזכורת קטנה שיש לך פגישה היום ב </string>
     <string name="group_meeting_remainder">תזכורת קטנה שיש לך פגישה קבוצתית היום ב  </string>
+    <string name="is_public">Is Public?</string>
+
+    <string name="user_participaiting">לא אגיע</string>
 
 </resources>

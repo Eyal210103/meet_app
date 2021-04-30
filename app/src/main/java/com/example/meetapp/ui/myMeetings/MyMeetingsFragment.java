@@ -2,6 +2,7 @@ package com.example.meetapp.ui.myMeetings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,25 +72,26 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
                 return;
             }
             String key = (String) value;
-//            if (action.equals(ConstantValues.MEETING_TYPE_GROUP)) {
-//                GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get(key).get(i).getValue();
-//                Bundle bundle = new Bundle();
-//                bundle.putString(ConstantValues.BUNDLE_ID, meeting.getId());
-//                bundle.putString(ConstantValues.BUNDLE_TYPE, ConstantValues.MEETING_TYPE_GROUP);
-//                String groupId = ((GroupMeeting) meeting).getGroupId();
-//                bundle.putString(ConstantValues.BUNDLE_GROUP_ID, groupId);
-//                meetingInfoFragment.setArguments(bundle);
-//                getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
-//            }
-  //          else if (action.equals(ConstantValues.MEETING_TYPE_PUBLIC)) {
-                Meeting meeting = mViewModel.getMeetings().getValue().get(key).get(i).getValue();
+            Meeting meeting = mViewModel.getMeetings().getValue().get(key).get(i).getValue();
+            Log.d("logicH", "onClickInRecyclerView: " + meeting.getId() + "   " + mViewModel.getIdsOfGroupMeetingsToGroup());
+
+            assert meeting != null;
+            if (mViewModel.getIdsOfGroupMeetingsToGroup().containsKey(meeting.getId())){
+                Bundle bundle = new Bundle();
+                bundle.putString(Const.BUNDLE_ID, meeting.getId());
+                bundle.putString(Const.BUNDLE_TYPE, Const.MEETING_TYPE_GROUP);
+                String groupId = mViewModel.getIdsOfGroupMeetingsToGroup().get(meeting.getId());
+                bundle.putString(Const.BUNDLE_GROUP_ID, groupId);
+                meetingInfoFragment.setArguments(bundle);
+            }
+           else {
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.BUNDLE_ID, meeting.getId());
                 bundle.putString(Const.BUNDLE_TYPE, Const.MEETING_TYPE_PUBLIC);
                 bundle.putString(Const.BUNDLE_GROUP_ID, "");
                 meetingInfoFragment.setArguments(bundle);
-                getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
-        //    } TODO TODO TODO
+            }
+            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
         }
 
 

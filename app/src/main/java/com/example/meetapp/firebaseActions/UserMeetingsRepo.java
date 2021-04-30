@@ -1,5 +1,7 @@
 package com.example.meetapp.firebaseActions;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -21,12 +23,16 @@ public class UserMeetingsRepo {
 
     private final HashMap<String, ArrayList<LiveData<Meeting>>> allMeetings;
     private final MutableLiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> mutableLiveData;
+    private final HashMap<String,String> idsOfGroupMeetingsToGroup;
+    private final HashMap<String,String> meetingIdToStringDate;
 
     private static UserMeetingsRepo instance = null;
 
     private UserMeetingsRepo() {
         allMeetings = new HashMap<>();
         mutableLiveData = new MutableLiveData<>();
+        idsOfGroupMeetingsToGroup = new HashMap<>();
+        meetingIdToStringDate = new HashMap<>();
     }
 
     public static UserMeetingsRepo getInstance() {
@@ -43,44 +49,51 @@ public class UserMeetingsRepo {
         return mutableLiveData;
     }
 
-
     private void loadGroupsMeetings() {
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId())
-                .child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String key = snapshot.getKey();
-                String group = snapshot.getValue(String.class);
-                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(group).child(FirebaseTags.MEETINGS_CHILDES).child(key).addValueEventListener(new ValueEventListener() {
+                String meetingId = snapshot.getKey();
+                String groupId = snapshot.getValue(String.class);
+                Log.d("logic", "onDataChange: ________________" + meetingId + "    " + groupId);
+
+                FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(meetingId)
+                        .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
-                        MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
-                        meetingMutableLiveData.setValue(meeting);
+                        if (snapshot.exists()) {
+                            GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
 
-                        if (!allMeetings.containsKey(meeting.getDateString())){
-                            allMeetings.put(meeting.getDateString(),new ArrayList<>());
-                        }
-                        ArrayList<LiveData<Meeting>> temp = allMeetings.get(meeting.getDateString());
-                        boolean inserted = false;
-                        for (int i = 0; i < temp.size(); i++) {
-                            if (temp.get(i).getValue().getId().equals(meeting.getId())){
-                                temp.set(i,meetingMutableLiveData);
-                                inserted = true;
-                                break;
+                            Log.d("logic", "onDataChange: ________________" + meeting.toString());
+
+                            MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
+                            meetingMutableLiveData.setValue(meeting);
+                            if (!allMeetings.containsKey(meeting.getDateString())){
+                                allMeetings.put(meeting.getDateString(),new ArrayList<>());
                             }
+                            ArrayList<LiveData<Meeting>> temp = allMeetings.get(meeting.getDateString());
+                            boolean inserted = false;
+                            for (int i = 0; i < temp.size(); i++) {
+                                if (temp.get(i).getValue().getId().equals(meeting.getId())){
+                                    temp.set(i,meetingMutableLiveData);
+                                    inserted = true;
+                                    break;
+                                }
+                            }
+                            if (!inserted){
+                                temp.add(meetingMutableLiveData);
+                                idsOfGroupMeetingsToGroup.put(meetingId,groupId);
+                            }
+                            meetingIdToStringDate.replace(meetingId,meeting.getDateString());
+                            allMeetings.put(meeting.getDateString(),temp);
+                            mutableLiveData.postValue(allMeetings);
                         }
-                        if (!inserted){
-                            temp.add(meetingMutableLiveData);
-                        }
-                        allMeetings.put(meeting.getDateString(),temp);
-                        mutableLiveData.postValue(allMeetings);
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
+
             }
 
             @Override
@@ -89,8 +102,17 @@ public class UserMeetingsRepo {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                //TODO 2121212121212121
+                String meetingId = snapshot.getKey();
+                if (meetingIdToStringDate.containsKey(meetingId)){
+                    String date = meetingIdToStringDate.get(meetingId);
+                    for (LiveData<Meeting> liveData:allMeetings.get(date)) {
+                        if (liveData.getValue().getId().equals(meetingId)){
+                            allMeetings.get(date).remove(liveData);
+                            mutableLiveData.postValue(allMeetings);
+                            idsOfGroupMeetingsToGroup.remove(meetingId);
+                        }
+                    }
+                }
             }
 
             @Override
@@ -130,11 +152,11 @@ public class UserMeetingsRepo {
                             if (!inserted){
                                 temp.add(meetingMutableLiveData);
                             }
+                            meetingIdToStringDate.replace(meeting.getId(),meeting.getDateString());
                             allMeetings.put(meeting.getDateString(),temp);
                             mutableLiveData.postValue(allMeetings);
                         }
                     }
-//TODO                     snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();                    snapshot.getRef().removeValue();
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
@@ -148,6 +170,16 @@ public class UserMeetingsRepo {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                String meetingId = snapshot.getKey();
+                if (meetingIdToStringDate.containsKey(meetingId)){
+                    String date = meetingIdToStringDate.get(meetingId);
+                    for (LiveData<Meeting> liveData:allMeetings.get(date)) {
+                        if (liveData.getValue().getId().equals(meetingId)){
+                            allMeetings.get(date).remove(liveData);
+                            mutableLiveData.postValue(allMeetings);
+                        }
+                    }
+                }
             }
 
             @Override
@@ -160,4 +192,7 @@ public class UserMeetingsRepo {
         });
     }
 
+    public HashMap<String, String> getIdsOfGroupMeetingsToGroup() {
+        return idsOfGroupMeetingsToGroup;
+    }
 }

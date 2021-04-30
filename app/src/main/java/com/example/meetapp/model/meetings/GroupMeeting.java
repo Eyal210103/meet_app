@@ -74,10 +74,9 @@ public class GroupMeeting extends Meeting implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "GroupMeeting{" +
-                "isOpen=" + isOpen +
-                ", millis=" + millis +
-                ", id='" + id + '\'' +
+        return "GroupMeeting{" + super.toString()
+                + "isOpen=" + isOpen +
+                ", id='" + groupId + '\'' +
                 '}';
     }
 
@@ -85,6 +84,12 @@ public class GroupMeeting extends Meeting implements Serializable {
     public void confirmUserArrival(String Uid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.id).child("whoComing");
         reference.child(Uid).setValue(Uid);
+    }
+
+    @Override
+    public void deleteUserArrival(String Uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.id).child("whoComing");
+        reference.child(Uid).removeValue();
     }
 
     @Override

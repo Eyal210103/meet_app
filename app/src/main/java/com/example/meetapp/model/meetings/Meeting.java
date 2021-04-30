@@ -104,6 +104,10 @@ public class Meeting implements Serializable {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(this.id).child(FirebaseTags.WHO_COMING_CHILDES);
         reference.child(Uid).setValue(Uid);
     }
+    public void deleteUserArrival(String Uid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(this.id).child(FirebaseTags.WHO_COMING_CHILDES);
+        reference.child(Uid).removeValue();
+    }
 
     public void updateOrAddReturnId(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).push();

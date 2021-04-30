@@ -16,21 +16,26 @@ public class MeetingInfoViewModel extends ViewModel {
     private LiveData<ArrayList<User>> users;
     private LiveData<Meeting> publicM;
     private LiveData<GroupMeeting> groupM;
+    private String groupId;
 
 
-    public void init(String id, String groupId,  String type){
+    public void init(String id, String groupId, String type) {
+        this.groupId = groupId;
         MeetingInfoRepo meetingInfoRepo = new MeetingInfoRepo(id);
         users = meetingInfoRepo.loadWhoComing();
         if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
             publicM = meetingInfoRepo.loadPublicMeeting();
             users = meetingInfoRepo.loadWhoComing();
-
             groupM = null;
-        }else if (type.equals(Const.MEETING_TYPE_GROUP)){
+        } else if (type.equals(Const.MEETING_TYPE_GROUP)) {
             groupM = meetingInfoRepo.loadGroupMeeting(groupId);
             users = meetingInfoRepo.loadWhoComing(groupId);
             publicM = null;
         }
+    }
+
+    public String getGroupId() {
+        return groupId;
     }
 
     public LiveData<ArrayList<User>> getUsers() {

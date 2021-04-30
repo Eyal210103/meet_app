@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -89,11 +90,14 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 200;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
+                    view.findViewById(R.id.is_public_group_meeting_switch).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.is_public_textView).setVisibility(View.VISIBLE);
                     isGroup = true;
-
                 } else if (checkedId == R.id.radio_meeting) {
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
+                    view.findViewById(R.id.is_public_group_meeting_switch).setVisibility(View.INVISIBLE);
+                    view.findViewById(R.id.is_public_textView).setVisibility(View.INVISIBLE);
                     isGroup = false;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
                 }
@@ -153,10 +157,12 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     String gId = ((MutableLiveData<Group>) spinnerSelectGroup.getSelectedItem()).getValue().getId();
+                    boolean isOpen = ((Switch)view.findViewById(R.id.is_public_group_meeting_switch)).isChecked();
+                    meeting.setOpen(isOpen);
                     meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
-                    CurrentUser.joinMeeting(meeting.getId(), Const.BUNDLE_GROUP_ID, gId);
+                    CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES, gId);
                     MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
                     meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
                 } else {
@@ -195,14 +201,14 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateDateUI(Calendar c , View view){
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getThreeLetterMonth(c.get(Calendar.MONTH)));
+        ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getMonth(c.get(Calendar.MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }
 
-    public String getThreeLetterMonth(int day){
+    public String getMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
                 return getString(R.string.months_january);

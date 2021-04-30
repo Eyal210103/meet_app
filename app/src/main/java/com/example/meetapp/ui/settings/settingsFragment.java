@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,7 +43,7 @@ public class settingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 OnClickInFragment onClickInFragment = (OnClickInFragment) requireActivity();
-                onClickInFragment.onClickInFragment(getString(R.string.logoutAction));
+                onClickInFragment.onClickInFragment(Const.ACTION_LOGOUT);
             }
         });
         return view;

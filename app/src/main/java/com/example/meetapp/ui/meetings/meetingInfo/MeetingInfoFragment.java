@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.example.meetapp.model.Const;
+import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
@@ -47,6 +50,7 @@ public class MeetingInfoFragment extends Fragment {
     private View view;
     private MapView mapView;
     private GoogleMap mMap;
+    private boolean isUserAlreadyIn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,12 +79,24 @@ public class MeetingInfoFragment extends Fragment {
 
         initGoogleMap(savedInstanceState);
 
+
+
         mViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<ArrayList<User>>() {
             @Override
             public void onChanged(ArrayList<User> users) {
                 adapter.notifyDataSetChanged();
+                for (User u:users) {
+                    if (u.getId().equals(CurrentUser.getInstance().getId())){
+                        isUserAlreadyIn = true;
+                        toggleIsUserIn();
+                        return;
+                    }
+                }
+                isUserAlreadyIn = false;
             }
         });
+
+
         if (type.equals(Const.MEETING_TYPE_PUBLIC)){
             mViewModel.getPublicM().observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                 @Override
@@ -96,6 +112,34 @@ public class MeetingInfoFragment extends Fragment {
                 }
             });
         }
+
+        view.findViewById(R.id.im_coming_button_meeting_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isUserAlreadyIn){
+                    if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
+                        Meeting meeting = mViewModel.getPublicM().getValue();
+                        CurrentUser.quitMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES);
+                        meeting.deleteUserArrival(CurrentUser.getInstance().getId());
+                    } else if (type.equals(Const.MEETING_TYPE_GROUP)) {
+                        GroupMeeting meeting = mViewModel.getGroupM().getValue();
+                        CurrentUser.quitMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES);
+                        meeting.deleteUserArrival(CurrentUser.getInstance().getId());
+                    }
+                }else {
+                    if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
+                        Meeting meeting = mViewModel.getPublicM().getValue();
+                        CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES, meeting.getId());
+                        meeting.confirmUserArrival(CurrentUser.getInstance().getId());
+                    } else if (type.equals(Const.MEETING_TYPE_GROUP)) {
+                        GroupMeeting meeting = mViewModel.getGroupM().getValue();
+                        CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES, mViewModel.getGroupId());
+                        meeting.confirmUserArrival(CurrentUser.getInstance().getId());
+                    }
+                }
+            }
+        });
+
         return view;
     }
 
@@ -120,6 +164,7 @@ public class MeetingInfoFragment extends Fragment {
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void updateUI(Meeting meeting) {
+
         TextView day = view.findViewById(R.id.meeting_info_tv_day_of_month_calendar_item);
         TextView dayOfWeek = view.findViewById(R.id.meeting_info_tv_day_of_week_calendar_item);
         TextView month = view.findViewById(R.id.meeting_info_tv_day_calendar_item);
@@ -129,7 +174,6 @@ public class MeetingInfoFragment extends Fragment {
         Date date = new Date(meeting.getMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-
         day.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
         dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         month.setText(getMonth(calendar.get(Calendar.MONTH)));
@@ -140,8 +184,16 @@ public class MeetingInfoFragment extends Fragment {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
         mMap.moveCamera(CameraUpdateFactory.zoomIn());
         //mMap.getUiSettings().setAllGesturesEnabled(false);
-
     }
+
+    private void toggleIsUserIn(){
+        Button button =view.findViewById(R.id.im_coming_button_meeting_info);
+        if (isUserAlreadyIn)
+            button.setText(getString(R.string.user_participaiting));
+        else
+            button.setText(getString(R.string.confirm_arrival));
+    }
+
 
 
     public String getDayOfWeek(int day){
@@ -174,46 +226,45 @@ public class MeetingInfoFragment extends Fragment {
     public String getMonth(int day){
         switch (day){
             case android.icu.util.Calendar.JANUARY:
-                return "JAN";
+                return getString(R.string.months_january);
 
             case android.icu.util.Calendar.FEBRUARY:
-                return "FEB";
+                return getString(R.string.months_february);
 
             case android.icu.util.Calendar.MARCH:
-                return "MAR";
+                return getString(R.string.months_march);
 
             case android.icu.util.Calendar.APRIL:
-                return "APR";
+                return getString(R.string.months_april);
 
             case android.icu.util.Calendar.MAY:
-                return "MAY";
+                return getString(R.string.months_may);
 
             case android.icu.util.Calendar.JUNE:
-                return "JUN";
+                return getString(R.string.months_june);
 
             case android.icu.util.Calendar.JULY:
-                return "JUL";
+                return getString(R.string.months_july);
 
             case android.icu.util.Calendar.AUGUST:
-                return "AUG";
+                return getString(R.string.months_august);
 
             case android.icu.util.Calendar.SEPTEMBER:
-                return "SEP";
+                return getString(R.string.months_september);
 
             case android.icu.util.Calendar.OCTOBER:
-                return "OCT";
+                return getString(R.string.months_october);
 
             case android.icu.util.Calendar.NOVEMBER:
-                return "NOV";
+                return getString(R.string.months_november);
 
             case android.icu.util.Calendar.DECEMBER:
-                return "DEC";
+                return getString(R.string.months_december);
 
             default:
                 return "";
         }
     }
-
     public String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {
@@ -238,7 +289,6 @@ public class MeetingInfoFragment extends Fragment {
         }
         return "Null";
     }
-
 
 
     @Override

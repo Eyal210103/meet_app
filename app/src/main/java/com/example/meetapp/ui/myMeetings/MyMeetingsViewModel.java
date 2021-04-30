@@ -11,12 +11,13 @@ import java.util.HashMap;
 
 public class MyMeetingsViewModel extends ViewModel {
     private LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> meetings;
-   // private LiveData<ArrayList<LiveData<GroupMeeting>>> groupMeetings;
+    private HashMap<String,String> idsOfGroupMeetingsToGroup = null;
 
-    public void init(MainActivityViewModel mainActivityViewModel , String id) {
-        if (mainActivityViewModel != null){
-            //this.groupMeetings = mainActivityViewModel.getGroupsMeetingsList();
+
+    public void init(MainActivityViewModel mainActivityViewModel, String id) {
+        if (mainActivityViewModel != null) {
             this.meetings = mainActivityViewModel.getMeetingsMap();
+            this.idsOfGroupMeetingsToGroup = mainActivityViewModel.getIdsOfGroupMeetingsToGroup();
         }
     }
 
@@ -24,7 +25,7 @@ public class MyMeetingsViewModel extends ViewModel {
         return meetings;
     }
 
-//    public LiveData<ArrayList<LiveData<GroupMeeting>>> getGroupMeetings() {
-//        return groupMeetings;
-//    }
+    public HashMap<String, String> getIdsOfGroupMeetingsToGroup() {
+        return idsOfGroupMeetingsToGroup;
+    }
 }

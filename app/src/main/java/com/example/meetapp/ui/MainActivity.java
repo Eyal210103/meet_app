@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.notifications.FirebaseDatabaseListening;
 import com.example.meetapp.receivers.NetworkChangeReceiver;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         networkChangeReceiver = new NetworkChangeReceiver();
         registerReceiver(networkChangeReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         //AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
 
     @Override
     public void onClickInFragment(String action) {
-        if (action.equals(getString(R.string.logoutAction)))
+        if (action.equals(Const.ACTION_LOGOUT))
             CurrentUser.logout();
 
         Intent intent = new Intent(this, LoginActivity.class);
