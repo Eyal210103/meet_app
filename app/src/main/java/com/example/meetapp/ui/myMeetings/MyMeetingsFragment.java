@@ -2,7 +2,6 @@ package com.example.meetapp.ui.myMeetings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,6 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
             }
             String key = (String) value;
             Meeting meeting = mViewModel.getMeetings().getValue().get(key).get(i).getValue();
-            Log.d("logicH", "onClickInRecyclerView: " + meeting.getId() + "   " + mViewModel.getIdsOfGroupMeetingsToGroup());
 
             assert meeting != null;
             if (mViewModel.getIdsOfGroupMeetingsToGroup().containsKey(meeting.getId())){

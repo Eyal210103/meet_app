@@ -177,7 +177,7 @@ public class MeetingInfoFragment extends Fragment {
         day.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
         dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         month.setText(getMonth(calendar.get(Calendar.MONTH)));
-        hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
+        hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
         description.setText(meeting.getDescription());
         location.setText(getAddress(meeting.getLocation()));
         mMap.addMarker(new MarkerOptions().position(new LatLng(meeting.getLatitude(), meeting.getLongitude())));

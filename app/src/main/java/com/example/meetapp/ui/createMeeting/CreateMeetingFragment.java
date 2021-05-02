@@ -65,6 +65,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_meeting, container, false);
+      //  FragmentCreateMeetingBinding.inflate(inflater).;
+
         RecyclerView recyclerViewSubjects = view.findViewById(R.id.create_meeting_recyclerView);
         SubjectAdapter subjectAdapter = new SubjectAdapter(this);
         recyclerViewSubjects.setAdapter(subjectAdapter);
@@ -203,7 +205,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     private void updateDateUI(Calendar c , View view){
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getMonth(c.get(Calendar.MONTH)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
-        ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE)));
+        ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE)));
         ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }
