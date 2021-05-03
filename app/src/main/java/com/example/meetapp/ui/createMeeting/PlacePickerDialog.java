@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
+import com.example.meetapp.databinding.FragmentPlacePickerBinding;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,7 +44,7 @@ public class PlacePickerDialog extends DialogFragment {
     private GoogleMap mMap;
     LatLng location;
     Fragment context;
-
+    FragmentPlacePickerBinding binding;
     TextView textView;
 
     public PlacePickerDialog(Fragment context) {
@@ -58,11 +59,12 @@ public class PlacePickerDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_place_picker, container, false);
-        this.mapView = view.findViewById(R.id.mapView_placer_picker);
-        EditText editText = view.findViewById(R.id.place_picker_edit_text_all);
-        textView = view.findViewById(R.id.place_picker_selected_textView);
-        view.findViewById(R.id.place_picker_search_icon_imageView).setOnClickListener(new View.OnClickListener() {
+        binding = FragmentPlacePickerBinding.inflate(inflater);
+        View view= binding.getRoot();
+        this.mapView = binding.mapViewPlacerPicker;
+        EditText editText = binding.placePickerEditTextAll;
+        textView = binding.placePickerSelectedTextView;
+        binding.placePickerSearchIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!editText.getText().toString().matches("")) {

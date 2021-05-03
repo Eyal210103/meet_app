@@ -30,6 +30,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.GroupInfoFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
@@ -62,15 +63,17 @@ public class GroupInfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.group_info_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        GroupInfoFragmentBinding binding = GroupInfoFragmentBinding.inflate(inflater);
+        View view = binding.getRoot();
 
-        groupImage = view.findViewById(R.id.group_info_group_civ);
-        groupName = view.findViewById(R.id.group_info_group_name);
-        groupSubject = view.findViewById(R.id.group_info_subject_imageView);
-        constraintLayout = view.findViewById(R.id.group_info_main);
+        groupImage = binding.groupInfoGroupCiv;//view.findViewById(R.id.group_info_group_civ);
+        groupName = binding.groupInfoGroupName;//view.findViewById(R.id.group_info_group_name);
+        groupSubject = binding.groupInfoSubjectImageView;//view.findViewById(R.id.group_info_subject_imageView);
+        constraintLayout = binding.groupInfoMain;//view.findViewById(R.id.group_info_main);
 
-        RecyclerView recyclerViewMembers = view.findViewById(R.id.group_info_recyclerView_members);
+        RecyclerView recyclerViewMembers = binding.groupInfoRecyclerViewMembers; //view.findViewById(R.id.group_info_recyclerView_members);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewMembers.setLayoutManager(llm);
@@ -86,7 +89,7 @@ public class GroupInfoFragment extends Fragment {
 
         String[] titles = {getResources().getString(R.string.title_dashboard), getResources().getString(R.string.chats), getResources().getString(R.string.meetings)};
 
-        TabLayout tabLayout = view.findViewById(R.id.tab_layout_group);
+        TabLayout tabLayout = binding.tabLayoutGroup;//view.findViewById(R.id.tab_layout_group);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -119,7 +122,7 @@ public class GroupInfoFragment extends Fragment {
         });
 
 
-        view.findViewById(R.id.group_setting_imageView).setOnClickListener(new View.OnClickListener() {
+        binding.groupSettingImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);

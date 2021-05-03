@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
+import com.example.meetapp.databinding.FragmentCreateMeetingBinding;
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
@@ -55,6 +56,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     GridLayoutManager gridLayoutManager;
     int position;
 
+    FragmentCreateMeetingBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +66,10 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_create_meeting, container, false);
-      //  FragmentCreateMeetingBinding.inflate(inflater).;
+        binding = FragmentCreateMeetingBinding.inflate(inflater);
+        view = binding.getRoot();
 
-        RecyclerView recyclerViewSubjects = view.findViewById(R.id.create_meeting_recyclerView);
+        RecyclerView recyclerViewSubjects = binding.createMeetingRecyclerView;
         SubjectAdapter subjectAdapter = new SubjectAdapter(this);
         recyclerViewSubjects.setAdapter(subjectAdapter);
         gridLayoutManager = new GridLayoutManager(requireActivity(), 5);
@@ -77,13 +79,13 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         position = -1;
 
 
-        spinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
+        spinnerSelectGroup =binding.createSelectGroupRecyclerView;
         SpinnerGroupAdapter spinnerAdapter = new SpinnerGroupAdapter(requireActivity(), R.layout.select_group_adapter, mainActivityViewModel.getGroups().getValue());
         spinnerSelectGroup.setAdapter(spinnerAdapter);
 
-        locationTV = view.findViewById(R.id.create_meeting_location_textView);
+        locationTV = binding.createMeetingLocationTextView;//view.findViewById(R.id.create_meeting_location_textView);
 
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+        RadioGroup radioGroup = binding.radioGroup;
         radioGroup.check(R.id.radio_meeting);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -98,8 +100,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                 } else if (checkedId == R.id.radio_meeting) {
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
-                    view.findViewById(R.id.is_public_group_meeting_switch).setVisibility(View.INVISIBLE);
-                    view.findViewById(R.id.is_public_textView).setVisibility(View.INVISIBLE);
+                    binding.isPublicGroupMeetingSwitch.setVisibility(View.INVISIBLE);
+                    binding.isPublicTextView.setVisibility(View.INVISIBLE);
                     isGroup = false;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
                 }
@@ -148,7 +150,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             }
         });
 
-        view.findViewById(R.id.create_meeting_complete_button).setOnClickListener(new View.OnClickListener() {
+        binding.createMeetingCompleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isGroup) {
@@ -156,10 +158,10 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setMillis(c.getTimeInMillis());
                     meeting.setLatitude(location.latitude);
                     meeting.setLongitude(location.longitude);
-                    meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setDescription(binding.createMeetingDescriptionEt.getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     String gId = ((MutableLiveData<Group>) spinnerSelectGroup.getSelectedItem()).getValue().getId();
-                    boolean isOpen = ((Switch)view.findViewById(R.id.is_public_group_meeting_switch)).isChecked();
+                    boolean isOpen = (binding.isPublicGroupMeetingSwitch).isChecked();
                     meeting.setOpen(isOpen);
                     meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
@@ -172,7 +174,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setMillis(c.getTimeInMillis());
                     meeting.setLatitude(location.latitude);
                     meeting.setLongitude(location.longitude);
-                    meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setDescription(binding.createMeetingDescriptionEt.getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
@@ -203,10 +205,11 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateDateUI(Calendar c , View view){
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getMonth(c.get(Calendar.MONTH)));
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
-        ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE)));
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
+        binding.createMeetingTvDayCalendarItem.setText(getMonth(c.get(Calendar.MONTH)));
+        binding.createMeetingTvDayOfMonthCalendarItem.setText("" + (c.get(Calendar.DAY_OF_MONTH)));
+        binding.createMeetingHourTextView.setText(String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE)));
+        binding.createMeetingTvDayOfWeekCalendarItem
+                .setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }
 

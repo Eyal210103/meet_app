@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.GroupChatFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Message;
@@ -48,9 +49,6 @@ public class GroupChatFragment extends Fragment {
     ImageView imagePreview;
     private Uri imageUri = null;
 
-    public static GroupChatFragment newInstance() {
-        return new GroupChatFragment();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,9 +60,10 @@ public class GroupChatFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.group_chat_fragment, container, false);
+        GroupChatFragmentBinding binding = GroupChatFragmentBinding.inflate(inflater);
+        View view =binding.getRoot();
 
-        final RecyclerView recyclerView = view.findViewById(R.id.chat_recyclerView);
+        final RecyclerView recyclerView = binding.chatRecyclerView;
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -74,9 +73,9 @@ public class GroupChatFragment extends Fragment {
         final ChatAdapter adapter = new ChatAdapter(this,mViewModel.getMessages().getValue());
         recyclerView.setAdapter(adapter);
 
-        final EditText contextET = view.findViewById(R.id.chat_context_et);
-        ImageView cameraIV = view.findViewById(R.id.chat_camera_iv);
-        imagePreview = view.findViewById(R.id.selected_image_chat_iv);
+        final EditText contextET = binding.chatContextEt;
+        ImageView cameraIV = binding.chatCameraIv;
+        imagePreview = binding.selectedImageChatIv;
 
         view.findViewById(R.id.chat_send_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +137,10 @@ public class GroupChatFragment extends Fragment {
 
 
     private void startDialog() {
+
+        //TODO change to string res
+
+
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(requireActivity());
         myAlertDialog.setTitle("Upload Pictures Option");
         myAlertDialog.setMessage("How do you want to set your picture?");

@@ -27,6 +27,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.databinding.GroupSettingFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
@@ -46,6 +47,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private TextView nameTextView;
     private LinearLayout linearLayoutWaiting;
     private LinearLayout themeLinearLayout;
+    GroupSettingFragmentBinding binding;
     View view;
     boolean isThere = false;
 
@@ -61,12 +63,13 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.group_setting_fragment, container, false);
+        binding = GroupSettingFragmentBinding.inflate(inflater);
+        view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
 
-        this.circleImageView = view.findViewById(R.id.group_settings_circleImageView);
-        this.nameTextView = view.findViewById(R.id.group_settings_name_textView);
-        this.linearLayoutWaiting = view.findViewById(R.id.group_settings_linear_waiting);
-        this.themeLinearLayout = view.findViewById(R.id.group_settings_group_theme_layout);
+        this.circleImageView = binding.groupSettingsCircleImageView;//view.findViewById(R.id.group_settings_circleImageView);
+        this.nameTextView = binding.groupSettingsNameTextView;//view.findViewById(R.id.group_settings_name_textView);
+        this.linearLayoutWaiting = binding.groupSettingsLinearWaiting;//view.findViewById(R.id.group_settings_linear_waiting);
+        this.themeLinearLayout = binding.groupSettingsGroupThemeLayout;//view.findViewById(R.id.group_settings_group_theme_layout);
 
         setInvisible();
 
@@ -77,7 +80,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
 
-        RecyclerView members = view.findViewById(R.id.group_settings_members);
+        RecyclerView members = binding.groupSettingsMembers;//view.findViewById(R.id.group_settings_members);
         MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(requireActivity(),mViewModel.getMembers().getValue(),isThere);
         members.setAdapter(settingsAdapter);
         LinearLayoutManager llm2 = new LinearLayoutManager(requireActivity());
@@ -164,11 +167,11 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
 
     private void setInvisible(){
         linearLayoutWaiting.setVisibility(View.INVISIBLE);
-        view.findViewById(R.id.waiting_req_tv).setVisibility(View.INVISIBLE);
+        binding.waitingReqTv.setVisibility(View.INVISIBLE);
     }
     private void setVisible(){
         linearLayoutWaiting.setVisibility(View.VISIBLE);
-        view.findViewById(R.id.waiting_req_tv).setVisibility(View.VISIBLE);
+        binding.waitingReqTv.setVisibility(View.VISIBLE);
     }
 
     public void updateUI(Group group){
