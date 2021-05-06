@@ -15,7 +15,7 @@ import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
-import com.example.meetapp.ui.Views.calenderBarPackage.CalenderBarFragment;
+import com.example.meetapp.ui.calenderBarPackage.CalenderBarFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
 import com.example.meetapp.ui.meetings.SelectDateFragment;

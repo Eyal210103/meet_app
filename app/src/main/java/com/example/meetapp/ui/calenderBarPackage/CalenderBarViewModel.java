@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.Views.calenderBarPackage;
+package com.example.meetapp.ui.calenderBarPackage;
 
 import androidx.lifecycle.ViewModel;
 

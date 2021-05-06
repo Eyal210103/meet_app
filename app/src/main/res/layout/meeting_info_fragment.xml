@@ -187,7 +187,7 @@
         app:layout_constraintStart_toStartOf="@+id/constraintLayout9"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.example.meetapp.ui.views.MovableFloatingActionButton
         android:id="@+id/floatingActionButton_meeting_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
