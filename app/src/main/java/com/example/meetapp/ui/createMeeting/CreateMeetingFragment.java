@@ -56,6 +56,8 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     GridLayoutManager gridLayoutManager;
     int position;
 
+
+
     FragmentCreateMeetingBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
