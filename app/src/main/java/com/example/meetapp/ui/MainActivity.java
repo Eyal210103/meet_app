@@ -33,15 +33,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         networkChangeReceiver = new NetworkChangeReceiver();
         registerReceiver(networkChangeReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-
-
-
-        overridePendingTransition(R.anim.fragment_close_enter,R.anim.fragment_fade_exit);
-
-
-
-
-
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
         //AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
