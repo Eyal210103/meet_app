@@ -63,7 +63,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = GroupSettingFragmentBinding.inflate(inflater);
+        binding = GroupSettingFragmentBinding.inflate(inflater,container,false);
         view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
 
         this.circleImageView = binding.groupSettingsCircleImageView;//view.findViewById(R.id.group_settings_circleImageView);
@@ -74,7 +74,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         setInvisible();
 
         WaitingUsersAdapter adapter = new WaitingUsersAdapter(this, mViewModel.getPaddingUsers().getValue());
-        RecyclerView recyclerView = view.findViewById(R.id.group_settings_waiting_recycler);
+        RecyclerView recyclerView = binding.groupSettingsWaitingRecycler;
         LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);

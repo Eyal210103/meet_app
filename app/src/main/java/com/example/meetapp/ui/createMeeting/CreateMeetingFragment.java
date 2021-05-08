@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
+import com.example.meetapp.databinding.FragmentCreateMeetingBinding;
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
@@ -45,15 +46,16 @@ import java.util.Locale;
 
 public class CreateMeetingFragment extends Fragment implements OnDismissPlacePicker, OnClickInRecyclerView {
 
-    MainActivityViewModel mainActivityViewModel;
-    View view;
-    Spinner spinnerSelectGroup;
-    DatePickerDialog datePickerDialog;
-    LatLng location;
-    TextView locationTV;
-    boolean isGroup;
-    GridLayoutManager gridLayoutManager;
-    int position;
+    private MainActivityViewModel mainActivityViewModel;
+    private View view;
+    private Spinner spinnerSelectGroup;
+    private DatePickerDialog datePickerDialog;
+    private LatLng location;
+    private TextView locationTV;
+    private boolean isGroup;
+    private GridLayoutManager gridLayoutManager;
+    private int position;
+    private FragmentCreateMeetingBinding binding;
 
 
 
@@ -66,10 +68,11 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_create_meeting, container, false);
-      //  FragmentCreateMeetingBinding.inflate(inflater).;
+        binding = FragmentCreateMeetingBinding.inflate(inflater,container,false);
+        view = binding.getRoot();
 
-        RecyclerView recyclerViewSubjects = view.findViewById(R.id.create_meeting_recyclerView);
+
+        RecyclerView recyclerViewSubjects = binding.createMeetingRecyclerView;
         SubjectAdapter subjectAdapter = new SubjectAdapter(this);
         recyclerViewSubjects.setAdapter(subjectAdapter);
         gridLayoutManager = new GridLayoutManager(requireActivity(), 5);
@@ -79,13 +82,13 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         position = -1;
 
 
-        spinnerSelectGroup = view.findViewById(R.id.create_select_group_recyclerView);
+        spinnerSelectGroup = binding.createSelectGroupSpinner;
         SpinnerGroupAdapter spinnerAdapter = new SpinnerGroupAdapter(requireActivity(), R.layout.select_group_adapter, mainActivityViewModel.getGroups().getValue());
         spinnerSelectGroup.setAdapter(spinnerAdapter);
 
-        locationTV = view.findViewById(R.id.create_meeting_location_textView);
+        locationTV = binding.createMeetingLocationTextView;
 
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+        RadioGroup radioGroup = binding.radioGroup;
         radioGroup.check(R.id.radio_meeting);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -94,14 +97,14 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 200;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
-                    view.findViewById(R.id.is_public_group_meeting_switch).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.is_public_textView).setVisibility(View.VISIBLE);
+                    binding.isPublicGroupMeetingSwitch.setVisibility(View.VISIBLE);
+                    binding.isPublicTextView.setVisibility(View.VISIBLE);
                     isGroup = true;
                 } else if (checkedId == R.id.radio_meeting) {
                     ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
                     layoutParams.height = 0;
-                    view.findViewById(R.id.is_public_group_meeting_switch).setVisibility(View.INVISIBLE);
-                    view.findViewById(R.id.is_public_textView).setVisibility(View.INVISIBLE);
+                    binding.isPublicGroupMeetingSwitch.setVisibility(View.INVISIBLE);
+                    binding.isPublicTextView.setVisibility(View.INVISIBLE);
                     isGroup = false;
                     spinnerSelectGroup.setLayoutParams(layoutParams);
                 }
@@ -117,7 +120,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
         updateDateUI(c, view);
 
-        view.findViewById(R.id.create_meeting_choose_time_button).setOnClickListener(new View.OnClickListener() {
+        binding.createMeetingChooseTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePickerDialog.show();
@@ -142,7 +145,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
         datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
 
-        view.findViewById(R.id.create_meeting_choose_location_button).setOnClickListener(new View.OnClickListener() {
+        binding.createMeetingChooseLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PlacePickerDialog placePickerDialog = new PlacePickerDialog(CreateMeetingFragment.this);
@@ -150,7 +153,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             }
         });
 
-        view.findViewById(R.id.create_meeting_complete_button).setOnClickListener(new View.OnClickListener() {
+        binding.createMeetingCompleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isGroup) {
@@ -205,10 +208,10 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateDateUI(Calendar c , View view){
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_calendar_item)).setText(getMonth(c.get(Calendar.MONTH)));
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_month_calendar_item)).setText("" + (c.get(Calendar.DAY_OF_MONTH)));
-        ((TextView)view.findViewById(R.id.create_meeting_hour_textView)).setText(String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE)));
-        ((TextView)view.findViewById(R.id.create_meeting_tv_day_of_week_calendar_item)).setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
+        binding.createMeetingTvDayCalendarItem.setText(getMonth(c.get(Calendar.MONTH)));
+        binding.createMeetingTvDayOfMonthCalendarItem.setText("" + (c.get(Calendar.DAY_OF_MONTH)));
+        binding.createMeetingHourTextView.setText(String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE)));
+        binding.createMeetingTvDayOfWeekCalendarItem.setText(getDayOfWeek(c.get(Calendar.DAY_OF_WEEK)));
 
     }
 

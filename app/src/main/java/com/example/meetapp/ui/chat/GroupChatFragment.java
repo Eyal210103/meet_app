@@ -60,7 +60,7 @@ public class GroupChatFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        GroupChatFragmentBinding binding = GroupChatFragmentBinding.inflate(inflater);
+        GroupChatFragmentBinding binding = GroupChatFragmentBinding.inflate(inflater,container,false);
         View view =binding.getRoot();
 
         final RecyclerView recyclerView = binding.chatRecyclerView;

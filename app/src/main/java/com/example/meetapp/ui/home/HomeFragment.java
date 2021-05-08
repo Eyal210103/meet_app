@@ -29,6 +29,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.HomeFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.meetings.MeetingsInfoDialog;
@@ -55,7 +56,6 @@ public class HomeFragment extends Fragment {
 
     public static final int BITMAP_SIZE = 80;
     private static final int REQUEST_LOCATION = 103;
-    private static final String TAG = "HomeFragment";
 
     private final HashMap<String,String> markersHash = new HashMap<>();
     private final ArrayList<MarkerOptions> markers = new ArrayList<>();
@@ -68,21 +68,22 @@ public class HomeFragment extends Fragment {
     private MapView mapView;
     private GoogleMap mMap;
     private View view;
+    private HomeFragmentBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.home_fragment, container, false);
+         view = binding.getRoot();
 
 
-        this.mapView = view.findViewById(R.id.mapView);
+        this.mapView = binding.mapView;
         initGoogleMap(savedInstanceState);
-        locationTV = view.findViewById(R.id.location_textView);
-        topicTV = view.findViewById(R.id.location_subject_textView);
-        topicIV = view.findViewById(R.id.home_location_subject_circleImageView);
-        EditText locationName = view.findViewById(R.id.home_edit_text_all);
+        locationTV = binding.locationTextView;
+        topicTV = binding.locationSubjectTextView;
+        topicIV = binding.homeLocationSubjectCircleImageView;
+        EditText locationName = binding.homeEditTextAll;
 
-        view.findViewById(R.id.home_search_icon_imageView).setOnClickListener(new View.OnClickListener() {
+        binding.homeSearchIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LatLng latLng = getLocationFromAddress(locationName.getText().toString());

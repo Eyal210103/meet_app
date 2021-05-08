@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.LoginOptionsFragmentBinding;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.ui.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -38,6 +39,7 @@ public class LoginOptionsFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     View view;
+    LoginOptionsFragmentBinding binding;
 
     public static LoginOptionsFragment newInstance() {
         return new LoginOptionsFragment();
@@ -52,19 +54,20 @@ public class LoginOptionsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view =  inflater.inflate(R.layout.login_options_fragment, container, false);
+        binding = LoginOptionsFragmentBinding.inflate(inflater,container,false);
+        view =  binding.getRoot();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         this.mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-        view.findViewById(R.id.google_sign_in_button).setOnClickListener(new View.OnClickListener() {
+        binding.googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickSignInWithGoogle();
             }
         });
 
-        view.findViewById(R.id.login_activity_login_Button).setOnClickListener(new View.OnClickListener() {
+       binding.loginActivityLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_login);
@@ -72,7 +75,7 @@ public class LoginOptionsFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.login_options_sign_up_textView).setOnClickListener(new View.OnClickListener() {
+        binding.loginOptionsSignUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_login);

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.GroupDashboardFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Message;
 import com.example.meetapp.model.User;
@@ -46,6 +46,7 @@ public class GroupDashboardFragment extends Fragment {
     private TextView lastMessageTextView;
     private DashMembersAdapter adapter;
     private String id;
+    private GroupDashboardFragmentBinding binding;
 
     public static GroupDashboardFragment newInstance() {
         return new GroupDashboardFragment();
@@ -68,12 +69,13 @@ public class GroupDashboardFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.group_dashboard_fragment, container, false);
+        binding = GroupDashboardFragmentBinding.inflate(inflater,container,false);
+        View view = binding.getRoot();
 
-        lastMessageTextView = view.findViewById(R.id.dash_last_message_textView);
+        lastMessageTextView = binding.include2.dashLastMessageTextView;
         lastMessageTextView.setText(getResources().getString(R.string.no_messages_alert));
 
-        RecyclerView recyclerView = view.findViewById(R.id.group_dash_members_recycler);
+        RecyclerView recyclerView = binding.include3.groupDashMembersRecycler;
         adapter = new DashMembersAdapter(this, mViewModel.getMembersLiveData().getValue());
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setAdapter(adapter);
@@ -150,13 +152,13 @@ public class GroupDashboardFragment extends Fragment {
     private void updateClosesMeetingUI(Meeting meeting,View view){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(meeting.getMillis()));
-        ((TextView)view.findViewById(R.id.group_dash_day_of_month_textView)).setText(String.format("%d", calendar.get(Calendar.DAY_OF_MONTH)));
-        ((TextView)view.findViewById(R.id.group_dash_hour_textView)).setText(String.format("%02d:%02d",
+        binding.include.groupDashDayOfMonthTextView.setText(String.format("%d", calendar.get(Calendar.DAY_OF_MONTH)));
+        binding.include.groupDashHourTextView.setText(String.format("%02d:%02d",
                 calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
-        ((TextView)view.findViewById(R.id.group_dash_month_textView)).setText(getMonth(calendar.get(Calendar.MONTH)));
+        binding.include.groupDashMonthTextView.setText(getMonth(calendar.get(Calendar.MONTH)));
         LatLng latLng = new LatLng(meeting.getLatitude(),meeting.getLongitude());
-        ((TextView)view.findViewById(R.id.group_dash_meeting_location_textView)).setText(getAddress(latLng));
-        ((ImageView)view.findViewById(R.id.group_dash_subject_imageView)).setImageResource(getSubjectIcon(meeting.getSubject()));
+        binding.include.groupDashMeetingLocationTextView.setText(getAddress(latLng));
+        binding.include.groupDashSubjectImageView.setImageResource(getSubjectIcon(meeting.getSubject()));
     }
 
     public String getMonth(int month) {

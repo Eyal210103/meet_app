@@ -65,7 +65,7 @@ public class GroupInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        GroupInfoFragmentBinding binding = GroupInfoFragmentBinding.inflate(inflater);
+        GroupInfoFragmentBinding binding = GroupInfoFragmentBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
 
         groupImage = binding.groupInfoGroupCiv;//view.findViewById(R.id.group_info_group_civ);

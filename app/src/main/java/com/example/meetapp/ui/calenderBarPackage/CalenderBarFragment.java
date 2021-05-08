@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.databinding.CalenderBarFragmentBinding;
+import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
@@ -52,13 +54,14 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.calender_bar_fragment, container, false);
+        CalenderBarFragmentBinding binding = CalenderBarFragmentBinding.inflate(inflater,container,false);
+        View view = binding.getRoot();
         days = new ArrayList<>();
         days.add(Calendar.getInstance().getTime());
-        recyclerView = view.findViewById(R.id.group_meetings_calender_recycler);
-        monthTextView = view.findViewById(R.id.group_meetings_month_calender_textView);
-        ImageView arrowPrevIV = view.findViewById(R.id.group_meetings_arrow_back_imageView);
-        ImageView arrowNextIV = view.findViewById(R.id.group_meetings_arrow_forward_imageView);
+        recyclerView = binding.groupMeetingsCalenderRecycler;
+        monthTextView = binding.groupMeetingsMonthCalenderTextView;
+        ImageView arrowPrevIV = binding.groupMeetingsArrowBackImageView;
+        ImageView arrowNextIV = binding.groupMeetingsArrowForwardImageView;
 
 
         if (mViewModel instanceof MyMeetingsViewModel) {
@@ -72,7 +75,7 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
             });
         }else {
 
-            this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(),"group");
+            this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(), Const.BUNDLE_GROUP_ID);
             ((GroupInfoViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<GroupMeeting>>>>() {
                 @Override
                 public void onChanged(HashMap<String, ArrayList<LiveData<GroupMeeting>>> stringArrayListHashMap) {

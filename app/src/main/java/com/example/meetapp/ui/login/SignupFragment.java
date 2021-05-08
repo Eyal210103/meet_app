@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
 import com.example.meetapp.callbacks.PhotoUploadErrorListener;
+import com.example.meetapp.databinding.FragmentSignupBinding;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.ui.MainActivity;
@@ -36,6 +37,7 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
     private static final int PICK_IMAGE = 50;
     Uri imageUri;
     View view;
+    FragmentSignupBinding binding;
     ProgressDialog progressDialog;
 
 
@@ -48,16 +50,17 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_signup, container, false);
+        binding = FragmentSignupBinding.inflate(inflater,container,false);
+        view = binding.getRoot();
 
         progressDialog = new ProgressDialog(requireActivity());
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Creating Your Account, Please Wait...");
 
-        EditText displayET = view.findViewById(R.id.signup_editTextTextDisplayName);
-        EditText emailET = view.findViewById(R.id.signup_editTextTextEmailAddress);
-        EditText passET = view.findViewById(R.id.signup_editTextTextPassword);
-        EditText passConfirmET = view.findViewById(R.id.signup_editTextTextPasswordConfirm);
+        EditText displayET = binding.signupEditTextTextDisplayName;
+        EditText emailET = binding.signupEditTextTextEmailAddress;
+        EditText passET = binding.signupEditTextTextPassword;
+        EditText passConfirmET = binding.signupEditTextTextPasswordConfirm;
 
         view.findViewById(R.id.signup_profilepic_civ).setOnClickListener(new View.OnClickListener() {
             @Override

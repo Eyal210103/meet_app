@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.DialogJoinGroupBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 
@@ -42,19 +42,19 @@ public class JoinGroupDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.dialog_join_group, container, false);
-
+        DialogJoinGroupBinding binding = DialogJoinGroupBinding.inflate(inflater,container,false);
+        View view =  binding.getRoot();
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         CircleImageView[] circleImageViews = new CircleImageView[3];
-        circleImageViews[0] = view.findViewById(R.id.join_dialog_img_1);
-        circleImageViews[1] = view.findViewById(R.id.join_dialog_img_2);
-        circleImageViews[2] = view.findViewById(R.id.join_dialog_img_3);
+        circleImageViews[0] = binding.joinDialogImg1;
+        circleImageViews[1] = binding.joinDialogImg2;
+        circleImageViews[2] = binding.joinDialogImg3;
 
 
-        Glide.with(requireActivity()).load(group.getPhotoUrl()).into((CircleImageView)view.findViewById(R.id.join_group_dialog_civ));
-        ((TextView)view.findViewById(R.id.join_group_dialog_name_textView)).setText(group.getName());
-        view.findViewById(R.id.join_group_dialog_join_button).setOnClickListener(new View.OnClickListener() {
+        Glide.with(requireActivity()).load(group.getPhotoUrl()).into(binding.joinGroupDialogCiv);
+        binding.joinGroupDialogNameTextView.setText(group.getName());
+        binding.joinGroupDialogJoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (group.isPublic()) {

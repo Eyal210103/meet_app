@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.FragmentLoginBinding;
 import com.example.meetapp.ui.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginFragment extends Fragment {
 
     View view;
+    FragmentLoginBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,11 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_login, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
 
-        EditText emailET = view.findViewById(R.id.login_editTextTextEmailAddress);
-        EditText passwordET = view.findViewById(R.id.login_editTextTextPassword);
+        EditText emailET = binding.loginEditTextTextEmailAddress;
+        EditText passwordET = binding.loginEditTextTextPassword;
 
         view.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
