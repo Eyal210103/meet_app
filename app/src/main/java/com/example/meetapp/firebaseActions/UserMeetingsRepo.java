@@ -1,7 +1,5 @@
 package com.example.meetapp.firebaseActions;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -50,12 +48,12 @@ public class UserMeetingsRepo {
     }
 
     private void loadGroupsMeetings() {
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUP_MEETINGS_CHILDES)
+                .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String meetingId = snapshot.getKey();
                 String groupId = snapshot.getValue(String.class);
-                Log.d("logic", "onDataChange: ________________" + meetingId + "    " + groupId);
 
                 FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(meetingId)
                         .addValueEventListener(new ValueEventListener() {
@@ -64,7 +62,6 @@ public class UserMeetingsRepo {
                         if (snapshot.exists()) {
                             GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
 
-                            Log.d("logic", "onDataChange: ________________" + meeting.toString());
 
                             MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                             meetingMutableLiveData.setValue(meeting);
@@ -87,6 +84,10 @@ public class UserMeetingsRepo {
                             meetingIdToStringDate.replace(meetingId,meeting.getDateString());
                             allMeetings.put(meeting.getDateString(),temp);
                             mutableLiveData.postValue(allMeetings);
+                        }
+                        else {
+                            FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance()
+                                    .getId()).child(FirebaseTags.GROUP_MEETINGS_CHILDES).child(meetingId).removeValue();
                         }
                     }
                     @Override

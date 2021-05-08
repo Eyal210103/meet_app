@@ -152,7 +152,7 @@ public class GroupDashboardFragment extends Fragment {
         calendar.setTime(new Date(meeting.getMillis()));
         ((TextView)view.findViewById(R.id.group_dash_day_of_month_textView)).setText(String.format("%d", calendar.get(Calendar.DAY_OF_MONTH)));
         ((TextView)view.findViewById(R.id.group_dash_hour_textView)).setText(String.format("%02d:%02d",
-                calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)));
+                calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
         ((TextView)view.findViewById(R.id.group_dash_month_textView)).setText(getMonth(calendar.get(Calendar.MONTH)));
         LatLng latLng = new LatLng(meeting.getLatitude(),meeting.getLongitude());
         ((TextView)view.findViewById(R.id.group_dash_meeting_location_textView)).setText(getAddress(latLng));

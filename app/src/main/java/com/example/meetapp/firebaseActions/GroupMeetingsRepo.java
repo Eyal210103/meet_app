@@ -51,7 +51,7 @@ public class GroupMeetingsRepo {
                 GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis((long) (calendar.getTimeInMillis() + 3.6e+6 * 3));
-//                if (calendar.getTimeInMillis() < meeting.getMillis()) {
+                if (calendar.getTimeInMillis() < meeting.getMillis()) {
                     MutableLiveData<GroupMeeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
                     assert meeting != null;
@@ -78,10 +78,10 @@ public class GroupMeetingsRepo {
                     } else if (isBefore(meeting.getMillis())) {
                         closesMeeting.postValue(meeting);
                     }
-                //}
-//                else {
-////                    snapshot.getRef().removeValue();
-//                }
+                }
+                else {
+                    snapshot.getRef().removeValue();
+                }
             }
 
             @Override
