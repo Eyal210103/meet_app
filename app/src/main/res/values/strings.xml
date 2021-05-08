@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MeetApp</string>
+
+    <string name="default_notification_channel_id" translatable="false">com.example.meetapp</string>
+
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

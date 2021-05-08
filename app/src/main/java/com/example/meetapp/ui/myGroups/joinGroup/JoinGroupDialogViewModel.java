@@ -1,10 +1,11 @@
-package com.example.meetapp.ui.myGroups;
+package com.example.meetapp.ui.myGroups.joinGroup;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,7 +27,8 @@ public class JoinGroupDialogViewModel extends ViewModel {
     }
 
     private LiveData<ArrayList<String>> getImgUrls(String id){
-        Query query = FirebaseDatabase.getInstance().getReference("Groups").child(id).child("Members").limitToFirst(3);
+        Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES).child(id)
+                .child(FirebaseTags.MEMBERS_CHILDES).limitToFirst(3);
         MutableLiveData<ArrayList<String>> arrayListMutableLiveData = new MutableLiveData<>();
         ArrayList<String> strings = new ArrayList<>();
         arrayListMutableLiveData.setValue(strings);
@@ -34,7 +36,7 @@ public class JoinGroupDialogViewModel extends ViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds:snapshot.getChildren()) {
-                    FirebaseDatabase.getInstance().getReference("Users").child(ds.getKey()).child("profileImageUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+                    FirebaseDatabase.getInstance().getReference(FirebaseTags.USER_CHILDES).child(ds.getKey()).child("profileImageUrl").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             strings.add(snapshot.getValue(String.class));

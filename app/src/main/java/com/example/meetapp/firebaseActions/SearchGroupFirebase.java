@@ -17,20 +17,22 @@ import javax.inject.Singleton;
 
 @Singleton
 public class SearchGroupFirebase {
-    private static final MutableLiveData<ArrayList<MutableLiveData<Group>>> groupMutableLiveData = new MutableLiveData<>();
+    private static final MutableLiveData<ArrayList<Group>> groupMutableLiveData = new MutableLiveData<>();
 
-    public static MutableLiveData<ArrayList<MutableLiveData<Group>>> searchGroups(String name){
-        ArrayList<MutableLiveData<Group>> groups = new ArrayList<>();
+    public static MutableLiveData<ArrayList<Group>> searchGroups(String name){
+        ArrayList<Group> groups = new ArrayList<>();
         groupMutableLiveData.setValue(groups);
         groupMutableLiveData.getValue().clear();
-        Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES).orderByChild(FirebaseTags.SORT_GROUPS_NAME).startAt(name).endAt(name + "\uf8ff");
+        Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES)
+                .orderByChild(FirebaseTags.SORT_GROUPS_NAME).startAt(name).endAt(name + "\uf8ff");
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                MutableLiveData<Group> gld = new MutableLiveData<>();
-                gld.setValue(snapshot.getValue(Group.class));
-                if (!UserGroupsRepo.getInstance().getHashMapGroups().containsKey(gld.getValue().getId())) {
-                    groups.add(gld);
+                Group group = snapshot.getValue(Group.class);
+                Boolean isPublic = snapshot.child("isPublic").getValue(Boolean.class);
+                group.setIsPublic(isPublic);
+                if (!UserGroupsRepo.getInstance().getHashMapGroups().containsKey(group.getId())) {
+                    groups.add(group);
                     groupMutableLiveData.postValue(groups);
                 }
             }

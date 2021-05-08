@@ -92,8 +92,10 @@ public class Group implements Serializable {
         return reference.getKey();
     }
     public void addUserToGroup(){
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.id).child("Members").child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
-        FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUser.getInstance().getId()).child("Groups").child(this.id).setValue(this.id);
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(this.id).child("Members")
+                .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
+        FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(CurrentUser.getInstance().getId()).child("Groups").child(this.id).setValue(this.id);
     }
     public void requestToJoin(){
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.getId()).child("Waiting")

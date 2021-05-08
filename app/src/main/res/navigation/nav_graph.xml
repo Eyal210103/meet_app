@@ -101,7 +101,7 @@
     </fragment>
     <fragment
         android:id="@+id/joinGroupFragment"
-        android:name="com.example.meetapp.ui.myGroups.JoinGroupFragment"
+        android:name="com.example.meetapp.ui.myGroups.joinGroup.JoinGroupFragment"
         android:label="join_group_fragment"
         tools:layout="@layout/join_group_fragment" >
         <action
@@ -116,7 +116,7 @@
     </fragment>
     <dialog
         android:id="@+id/joinGroupDialog"
-        android:name="com.example.meetapp.ui.myGroups.JoinGroupDialog"
+        android:name="com.example.meetapp.ui.myGroups.joinGroup.JoinGroupDialog"
         android:label="JoinGroupDialog" >
         <argument
             android:name="arg_group"

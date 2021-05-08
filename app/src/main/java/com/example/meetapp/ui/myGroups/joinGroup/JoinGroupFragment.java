@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.myGroups;
+package com.example.meetapp.ui.myGroups.joinGroup;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,7 +11,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,9 +63,9 @@ public class JoinGroupFragment extends Fragment {
         GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getResult().getValue(), Const.TYPE_JOIN_GROUP);
         recyclerView.setAdapter(adapter);
 
-        mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Group>>>() {
+        mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<ArrayList<Group>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<Group>> mutableLiveData) {
+            public void onChanged(ArrayList<Group> groups) {
                 adapter.notifyDataSetChanged();
             }
         });
