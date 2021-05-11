@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -73,7 +72,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-         view = binding.getRoot();
+        binding = HomeFragmentBinding.inflate(inflater,container,false);
+        view = binding.getRoot();
 
 
         this.mapView = binding.mapView;
@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment {
                     googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
-                             ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToStart();
+                             binding.homeMotionLayout.transitionToStart();
                         }
                     });
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -183,8 +183,8 @@ public class HomeFragment extends Fragment {
                             locationTV.setText(getAddress(marker.getPosition()));
                             topicTV.setText(marker.getTitle());
                             topicIV.setImageResource(getSubjectIcon(marker.getTitle()));
-                            ((MotionLayout)view.findViewById(R.id.home_motion_layout)).transitionToEnd();
-                            view.findViewById(R.id.constraintLayout4).setTag(marker.getTag());
+                            binding.homeMotionLayout.transitionToEnd();
+                            binding.constraintLayout4.setTag(marker.getTag());
                             return false;
                         }
                     });

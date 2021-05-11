@@ -49,6 +49,7 @@ public class CurrentUser {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
+
     public static void setCurrentUser(User user) {
         CurrentUser.user = user;
     }

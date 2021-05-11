@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         setContentView(R.layout.activity_main);
 
         MainActivityViewModel mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-
         networkChangeReceiver = new NetworkChangeReceiver();
         registerReceiver(networkChangeReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 

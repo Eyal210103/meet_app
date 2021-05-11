@@ -48,9 +48,6 @@ public class GroupDashboardFragment extends Fragment {
     private String id;
     private GroupDashboardFragmentBinding binding;
 
-    public static GroupDashboardFragment newInstance() {
-        return new GroupDashboardFragment();
-    }
 
     public void setParent(Fragment fragment) {
         parent = (GroupInfoFragment) fragment;
@@ -71,6 +68,7 @@ public class GroupDashboardFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = GroupDashboardFragmentBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
+
 
         lastMessageTextView = binding.include2.dashLastMessageTextView;
         lastMessageTextView.setText(getResources().getString(R.string.no_messages_alert));
@@ -150,6 +148,7 @@ public class GroupDashboardFragment extends Fragment {
 
     @SuppressLint("DefaultLocale")
     private void updateClosesMeetingUI(Meeting meeting,View view){
+        binding.include.getRoot().setVisibility(View.VISIBLE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(meeting.getMillis()));
         binding.include.groupDashDayOfMonthTextView.setText(String.format("%d", calendar.get(Calendar.DAY_OF_MONTH)));
