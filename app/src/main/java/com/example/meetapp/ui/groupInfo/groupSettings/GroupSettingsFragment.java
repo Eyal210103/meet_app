@@ -45,6 +45,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private GroupSettingsViewModel mViewModel;
     private CircleImageView circleImageView;
     private TextView nameTextView;
+    private TextView descriptionTextView;
     private LinearLayout linearLayoutWaiting;
     private LinearLayout themeLinearLayout;
     GroupSettingFragmentBinding binding;
@@ -68,8 +69,20 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
 
         this.circleImageView = binding.groupSettingsCircleImageView;//view.findViewById(R.id.group_settings_circleImageView);
         this.nameTextView = binding.groupSettingsNameTextView;//view.findViewById(R.id.group_settings_name_textView);
+        this.descriptionTextView = binding.groupSettingsDescriptionTextView;
         this.linearLayoutWaiting = binding.groupSettingsLinearWaiting;//view.findViewById(R.id.group_settings_linear_waiting);
         this.themeLinearLayout = binding.groupSettingsGroupThemeLayout;//view.findViewById(R.id.group_settings_group_theme_layout);
+
+        binding.groupSettingsEditImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditGroupDialog editGroupDialog = new EditGroupDialog();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Const.BUNDLE_GROUP_ID,mViewModel.getGroup().getValue());
+                editGroupDialog.setArguments(bundle);
+                editGroupDialog.show(getChildFragmentManager(),"Edit Group");
+            }
+        });
 
         setInvisible();
 
@@ -194,5 +207,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             }
         }).into(circleImageView);
         this.nameTextView.setText(group.getName());
+        this.descriptionTextView.setText(group.getDescription());
     }
 }

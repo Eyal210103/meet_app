@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/group_settings_group_theme_layout"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/group_settings_group_theme_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
     tools:context=".ui.groupInfo.groupSettings.GroupSettingsFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -22,29 +22,71 @@
             android:layout_height="90dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="24dp"
             android:src="@mipmap/ic_launcher"
             app:civ_border_color="@color/oppBackground"
-            app:civ_border_width="0.5dp" />
+            app:civ_border_width="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/group_settings_name_textView"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/app_name"
-            android:textColor="@color/oppBackground"
-            android:textSize="32sp" />
+            app:layout_constraintBottom_toBottomOf="@+id/group_settings_circleImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/group_settings_circleImageView"
+            app:layout_constraintTop_toTopOf="@+id/group_settings_circleImageView">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/group_settings_name_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/app_name"
+                android:textColor="@color/oppBackground"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/group_settings_description_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/app_name"
+                android:textColor="@color/oppBackground"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/group_settings_name_textView"
+                app:layout_constraintTop_toBottomOf="@+id/group_settings_name_textView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/group_settings_edit_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_create_24"
+            app:tint="@color/oppBackground"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/curved_top"
         android:backgroundTint="@color/background"
-        android:paddingTop="5dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:id="@+id/group_settings_linear_waiting"
@@ -74,8 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingHorizontal="15dp"
             android:orientation="vertical"
+            android:paddingHorizontal="15dp"
             android:visibility="visible">
 
             <TextView

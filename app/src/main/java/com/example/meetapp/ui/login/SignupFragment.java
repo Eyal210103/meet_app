@@ -28,8 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static android.app.Activity.RESULT_OK;
 
 public class SignupFragment extends Fragment implements PhotoUploadErrorListener, PhotoUploadCompleteListener {
@@ -165,7 +163,7 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imageUri = data.getData();
-            ((CircleImageView)view.findViewById(R.id.signup_profilepic_civ)).setImageURI(imageUri);
+            binding.signupProfilepicCiv.setImageURI(imageUri);
         }
     }
 

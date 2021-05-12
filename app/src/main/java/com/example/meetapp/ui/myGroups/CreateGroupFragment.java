@@ -111,7 +111,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                         newGroup.setIsPublic(isChecked);
                     }
                 });
-                String id = newGroup.addOrUpdateGroupGetID();
+                String id = newGroup.addGroup();
                 progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle(getString(R.string.create_group_message));

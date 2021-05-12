@@ -1,5 +1,6 @@
 package com.example.meetapp.model;
 
+import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -76,12 +77,11 @@ public class Group implements Serializable {
                 '}';
     }
 
-    public String addOrUpdateGroupGetID() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Groups").push();
-        this.setId(reference.getKey());
+    public String addGroup() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).push();
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("name", this.name);
-        map.put("id", this.getId());
+        map.put("id", this.id);
         map.put("subject", this.subject);
         map.put("photoUrl", this.photoUrl);
         map.put("isPublic", this.isPublic);
@@ -91,6 +91,19 @@ public class Group implements Serializable {
         reference.child("manager/"+CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
         return reference.getKey();
     }
+
+    public void updateGroup(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(id);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", this.name);
+        map.put("id", this.id);
+        map.put("subject", this.subject);
+        map.put("photoUrl", this.photoUrl);
+        map.put("isPublic", this.isPublic);
+        map.put("description", this.description);
+        reference.updateChildren(map);
+    }
+
     public void addUserToGroup(){
         FirebaseDatabase.getInstance().getReference().child("Groups").child(this.id).child("Members")
                 .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());

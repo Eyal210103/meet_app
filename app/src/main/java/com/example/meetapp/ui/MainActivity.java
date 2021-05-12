@@ -17,6 +17,7 @@ import com.example.meetapp.firebaseActions.UserGroupsRepo;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.notifications.FirebaseDatabaseListening;
+import com.example.meetapp.notifications.MyFirebaseMessaging;
 import com.example.meetapp.receivers.NetworkChangeReceiver;
 import com.example.meetapp.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         NavigationUI.setupWithNavController(navView, navController);
 
         UserGroupsRepo.getInstance().getGroups();
+
+        Intent i = new Intent("com.example.meetapp.notifications.MyFirebaseMessaging");
+        i.setClass(this, MyFirebaseMessaging.class);
+        startService(i);
         FirebaseDatabaseListening.getInstance().startService();
     }
 

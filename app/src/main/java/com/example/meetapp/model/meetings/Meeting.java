@@ -18,7 +18,6 @@ public class Meeting implements Serializable {
     protected double latitude;
     protected double longitude;
 
-
     public static String dateToString(Date date){
         return "" + date.getYear() + date.getMonth() + date.getDay();
     }
