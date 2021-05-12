@@ -1,5 +1,6 @@
 package com.example.meetapp.ui.groupInfo.groupSettings;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
+import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
 import com.example.meetapp.databinding.EditGroupDialogBinding;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.Const;
@@ -33,12 +35,14 @@ import com.example.meetapp.model.Group;
 import static android.app.Activity.RESULT_OK;
 import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
 
-public class EditGroupDialog extends DialogFragment {
+public class EditGroupDialog extends DialogFragment implements PhotoUploadCompleteListener {
 
     private static final int PICK_IMAGE = 52;
     private Uri imageUri;
     private EditGroupDialogBinding binding;
     private Group group;
+    private ProgressDialog progressDialog;
+
 
 
     @Nullable
@@ -135,7 +139,10 @@ public class EditGroupDialog extends DialogFragment {
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
                 gd.setCornerRadius(0f);
                 binding.getRoot().setBackground(gd);
-
+                progressDialog = new ProgressDialog(requireActivity());
+                progressDialog.setCancelable(false);
+                progressDialog.setTitle(getString(R.string.create_group_message));
+                progressDialog.show();
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -150,6 +157,11 @@ public class EditGroupDialog extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        this.dismiss();
+    }
+
+    @Override
+    public void onPhotoUploadComplete() {
+        progressDialog.dismiss();
+
     }
 }
