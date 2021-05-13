@@ -8,6 +8,7 @@
     tools:context=".ui.settings.settingsFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -26,28 +27,122 @@
             android:src="@color/colorAccent"
             app:civ_border_color="@color/oppBackground"
             app:civ_border_width="0.2dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
-                android:textColor="@color/oppBackground"
                 android:id="@+id/settings_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:text="@string/app_name"
-                android:textSize="20sp" />
-            <TextView
                 android:textColor="@color/oppBackground"
+                android:textSize="20sp" />
+
+            <TextView
                 android:id="@+id/settings_user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:text="email@email.com"
+                android:textColor="@color/oppBackground"
                 android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+         app:layout_constraintEnd_toEndOf="@+id/linearLayout9"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout9"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/settings_account_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/profile_settings"
+                app:drawableTint="@color/oppBackground"
+                android:textColor="@color/oppBackground"
+                android:textSize="20sp"
+                android:gravity="center_vertical"
+                app:drawableLeftCompat="@drawable/ic_baseline_account_icon_20" />
+
+            <LinearLayout
+                android:paddingHorizontal="8dp"
+                android:id="@+id/account_settings_field_linearLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/settings_editText_DisplayName"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:background="@drawable/main_app_design"
+                    android:drawableStart="@drawable/ic_baseline_person_24"
+                    android:drawableTint="@color/oppBackground"
+                    android:hint="@string/display_name_field"
+                    android:inputType="textPersonName"
+                    android:padding="6dp"
+                    android:textColor="@color/oppBackground"
+                    android:textColorHint="@color/oppBackground"
+                    android:layout_marginTop="8dp" />
+
+                <RelativeLayout
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/settings_edit_img_civ"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:src="@color/colorAccent"
+                        app:civ_border_color="@color/oppBackground"
+                        app:civ_border_width="0.2dp" />
+                    <Button
+                        android:id="@+id/settings_choose_img_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/main_app_design"
+                        android:backgroundTint="@color/colorAccent"
+                        android:text="@string/choose_image" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/settings_save_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/main_app_design"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/save_changes"
+                    android:layout_marginTop="8dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/settings_logout_textview"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAlt"
+                android:text="@string/logout"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

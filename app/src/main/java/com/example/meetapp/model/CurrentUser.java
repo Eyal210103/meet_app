@@ -23,14 +23,16 @@ public class CurrentUser {
         user.setProfileImageUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
         return user;
     }
+
     public static void addOrUpdateUser(){
-        getInstance();
+        getInstance(); //null safe
         HashMap<String,Object> map = new HashMap<String, Object>();
         map.put("displayName",user.getDisplayName());
         map.put("email",user.getEmail());
         map.put("id",user.getId());
         map.put("profileImageUrl",user.getProfileImageUrl());
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(user.getId()).updateChildren(map);
+        getInstance(); //update
     }
 
     public static void joinMeeting(String id,String type , String group) {

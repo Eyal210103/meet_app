@@ -189,7 +189,7 @@ public class MeetingInfoFragment extends Fragment {
     private void toggleIsUserIn(){
         Button button =view.findViewById(R.id.im_coming_button_meeting_info);
         if (isUserAlreadyIn)
-            button.setText(getString(R.string.user_participaiting));
+            button.setText(getString(R.string.user_is_coming));
         else
             button.setText(getString(R.string.confirm_arrival));
     }

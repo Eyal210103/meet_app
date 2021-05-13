@@ -27,7 +27,7 @@ import static android.content.Context.ALARM_SERVICE;
 public class MeetingReminderNotificationBroadcastReceiver extends BroadcastReceiver {
 
     Meeting meeting;
-    private static final String CHANNEL_ID = "com.example.meetapp";
+    private static final String CHANNEL_ID = "com.example.meetapp.receivers";
     private static final String CHANNEL_NAME = "MeetApp Meetings";
 
     public MeetingReminderNotificationBroadcastReceiver(Meeting meeting) {
@@ -35,7 +35,6 @@ public class MeetingReminderNotificationBroadcastReceiver extends BroadcastRecei
     }
 
     public MeetingReminderNotificationBroadcastReceiver() {
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

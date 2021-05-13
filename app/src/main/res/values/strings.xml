@@ -88,6 +88,10 @@
     <string name="meeting_remainder">A Little Reminder For A Meeting You Have Today At </string>
     <string name="group_meeting_remainder">A Little Reminder For A Group Meeting You Have Today At </string>
     <string name="is_public">Is Public?</string>
-    <string name="user_participaiting">Im Not Coming</string>
+    <string name="user_is_coming">Im Not Coming</string>
+
+    <string name="profile_settings">Account</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="logout">Logout</string>
 
 </resources>
