@@ -117,4 +117,48 @@ public class StorageUpload {
             }
         });
     }
+
+    public static void uploadProfileImageWithDisplayNameUpdate(final Fragment context, final String id , Uri data , String displayName){
+        reference.child(FirebaseTags.STORAGE_PROFILE_IMAGES).child(id).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()){
+                    reference.child(FirebaseTags.STORAGE_PROFILE_IMAGES).child(id).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()){
+                                database.getReference().child(FirebaseTags.USER_CHILDES).child(id).child(FirebaseTags.USER_PHOTO_URL_CHILD).setValue(task.getResult().toString());
+                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                        .setPhotoUri(Uri.parse(task.getResult().toString()))
+                                        .setDisplayName(displayName)
+                                        .build();
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null) {
+                                    user.updateProfile(profileUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context;
+                                            photoUploadCompleteListener.onPhotoUploadComplete();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            reference.child(FirebaseTags.STORAGE_PROFILE_IMAGES).child(id).delete();
+                                            PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
+                                            photoUploadErrorListener.onPhotoUploadError();
+                                        }
+                                    });
+                                }
+
+                            }else {
+                                reference.child(FirebaseTags.STORAGE_PROFILE_IMAGES).child(id).delete();
+                                PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
+                                photoUploadErrorListener.onPhotoUploadError();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
 }

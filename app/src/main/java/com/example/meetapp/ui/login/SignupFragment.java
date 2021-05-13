@@ -118,9 +118,7 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                     }
                                 });
                             }
-                        } else {
                         }
-
                     }
                 });
     }

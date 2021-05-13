@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MeetApp</string>
-    <string name="logoutAction" >התנתק/י</string>
     <string name="title_home" >בית</string>
     <string name="groups" >קבוצות</string>
     <string name="settings" >הגדרות</string>
@@ -88,7 +87,7 @@
 
     <string name="user_is_coming">לא אגיע</string>
     <string name="profile_settings">Profile</string>
-    <string name="save_changes">Save Changes</string>
-    <string name="logout">Logout</string>
+    <string name="save_changes">שמור שינויים</string>
+    <string name="logout">התנתק/י</string>
 
 </resources>

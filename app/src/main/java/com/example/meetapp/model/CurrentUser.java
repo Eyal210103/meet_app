@@ -1,7 +1,14 @@
 package com.example.meetapp.model;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.example.meetapp.callbacks.OnCompleteAction;
 import com.example.meetapp.firebaseActions.FirebaseTags;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -51,6 +58,15 @@ public class CurrentUser {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
+    public static void updateUserInAuth(UserProfileChangeRequest profileUpdate , Fragment context){
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                OnCompleteAction onCompleteAction = (OnCompleteAction)context;
+                onCompleteAction.OnComplete();
+            }
+        });
+    }
 
     public static void setCurrentUser(User user) {
         CurrentUser.user = user;
