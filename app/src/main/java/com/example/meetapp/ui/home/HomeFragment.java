@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,15 +22,16 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.meetapp.R;
 import com.example.meetapp.databinding.HomeFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.Meeting;
-import com.example.meetapp.ui.meetings.MeetingsInfoDialog;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,8 +49,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class HomeFragment extends Fragment {
 
     public static final int BITMAP_SIZE = 80;
@@ -62,25 +60,24 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
 
-    private TextView locationTV ,topicTV;
-    private CircleImageView topicIV;
+//    private TextView locationTV ,topicTV;
+//    private CircleImageView topicIV;
     private MapView mapView;
     private GoogleMap mMap;
-    private View view;
     private HomeFragmentBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = HomeFragmentBinding.inflate(inflater,container,false);
-        view = binding.getRoot();
+        View view = binding.getRoot();
 
 
         this.mapView = binding.mapView;
         initGoogleMap(savedInstanceState);
-        locationTV = binding.locationTextView;
-        topicTV = binding.locationSubjectTextView;
-        topicIV = binding.homeLocationSubjectCircleImageView;
+//        locationTV = binding.locationTextView;
+//        topicTV = binding.locationSubjectTextView;
+//        topicIV = binding.homeLocationSubjectCircleImageView;
         EditText locationName = binding.homeEditTextAll;
 
         binding.homeSearchIconImageView.setOnClickListener(new View.OnClickListener() {
@@ -91,38 +88,27 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.constraintLayout4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
-                int i = mViewModel.getPublicHash().get((String)v.getTag());
-                Meeting m = mViewModel.getMeetings().getValue().get(i).getValue();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(Const.BUNDLE_MEETING,m);
-                meetingsInfoDialog.setArguments(bundle);
-                meetingsInfoDialog.show(getFragmentManager(),"Meeting Dialog");
-            }
-        });
 
         mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
-                for (MutableLiveData<Meeting> m: mutableLiveData) {
+                for (LiveData<Meeting> m: mutableLiveData) {
                     if (!m.hasObservers()) {
                         m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                             @Override
                             public void onChanged(Meeting meeting) {
-                                if (!markersHash.containsKey(meeting.getId())) {
+                                String id = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
+                                if (!markersHash.containsKey(id)){
                                     MarkerOptions markerOptions = new MarkerOptions();
-                                    markerOptions.title(meeting.getSubject());
                                     markerOptions.position(meeting.getLocation());
                                     Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
                                     icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
-                                    ids.add(meeting.getId());
                                     markers.add(markerOptions);
-                                    markersHash.put(meeting.getId(),meeting.getId());
+                                    ids.add(id);
+                                    markersHash.put(id,id);
                                 }
+                                mViewModel.addMeetingToMarker(id,m);
                             }
                         });
                     }
@@ -180,9 +166,13 @@ public class HomeFragment extends Fragment {
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
-                            locationTV.setText(getAddress(marker.getPosition()));
-                            topicTV.setText(marker.getTitle());
-                            topicIV.setImageResource(getSubjectIcon(marker.getTitle()));
+//                            locationTV.setText(getAddress(marker.getPosition()));
+//                            topicTV.setText(marker.getTitle());
+//                            topicIV.setImageResource(getSubjectIcon(marker.getTitle()));
+                            LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
+                            llm.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.meetingsInLocationRecyclerView.setLayoutManager(llm);
+                            binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(requireActivity(),mViewModel.getListOfMeetings((String) marker.getTag())));
                             binding.homeMotionLayout.transitionToEnd();
                             binding.constraintLayout4.setTag(marker.getTag());
                             return false;
@@ -223,32 +213,16 @@ public class HomeFragment extends Fragment {
             List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
             try {
                 Address obj = addresses.get(0);
-                String add = obj.getAddressLine(0);
-                return add;
+                return obj.getAddressLine(0);
             }catch (Exception e){
                 e.printStackTrace();
             }
-            //add = add + "\n" + obj.getCountryName();
-            //add = add + "\n" + obj.getCountryCode();
-            //add = add + "\n" + obj.getAdminArea();
-            //add = add + "\n" + obj.getPostalCode();
-            //add = add + "\n" + obj.getSubAdminArea();
-            //add = add + "\n" + obj.getLocality();
-            //add = add + "\n" + obj.getSubThoroughfare();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Null";
+        return "Error Has Occurred";
     }
 
-    private void addMarkerToMap(LatLng location) {
-        if (location != null) {
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(location);
-            markerOptions.title(location.latitude + " : " + location.longitude);
-            mMap.addMarker(markerOptions);
-        }
-    }
 
     private void addMarkerToMap(MarkerOptions location , String id) {
         if (location != null && mMap!= null) {
@@ -256,6 +230,7 @@ public class HomeFragment extends Fragment {
             m.setTag(id);
         }
     }
+
     private void addMarkers(){
         for (int i = 0; i < markers.size(); i++) {
             addMarkerToMap(markers.get(i) , ids.get(i));
@@ -299,7 +274,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
-
+    private String getLatLngString(double latitude,double longitude){
+        return "" + latitude +""+ longitude;
+    }
 
     @Override
     public void onPause() {

@@ -36,9 +36,7 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
     private Uri imageUri;
     SettingsFragmentBinding binding;
 
-    public static SettingsFragment newInstance() {
-        return new SettingsFragment();
-    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

@@ -50,7 +50,7 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
         Button buttonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
 
         recyclerView = view.findViewById(R.id.groups_recycler_view);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);

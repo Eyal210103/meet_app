@@ -22,15 +22,6 @@
         android:label="settings_fragment"
         tools:layout="@layout/settings_fragment" />
     <fragment
-        android:id="@+id/groupsChatsFragment"
-        android:name="com.example.meetapp.ui.groupsChats.GroupsChatsFragment"
-        android:label="groups_chats_fragment"
-        tools:layout="@layout/groups_chats_fragment" >
-        <action
-            android:id="@+id/action_socialMenuFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/myGroupsFragment"
         android:name="com.example.meetapp.ui.myGroups.MyGroupsFragment"
         android:label="my_groups_fragment"
