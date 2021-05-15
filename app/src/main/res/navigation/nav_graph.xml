@@ -29,7 +29,8 @@
         <action
             android:id="@+id/action_socialMenuFragment_to_groupInfoFragment"
             app:destination="@id/groupInfoFragment"
-            app:enterAnim="@anim/page_transition_slide_rtl" />
+            app:enterAnim="@anim/page_transition_slide_rtl"
+            app:exitAnim="@anim/page_transition_slide_ltr" />
         <action
             android:id="@+id/action_socialMenuFragment_to_createGroupFragment2"
             app:destination="@id/createGroupFragment"

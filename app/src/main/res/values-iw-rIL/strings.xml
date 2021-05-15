@@ -83,11 +83,16 @@
 
     <string name="meeting_remainder">תזכורת קטנה שיש לך פגישה היום ב </string>
     <string name="group_meeting_remainder">תזכורת קטנה שיש לך פגישה קבוצתית היום ב  </string>
-    <string name="is_public">Is Public?</string>
+    <string name="is_public">האם ציבורי?</string>
 
     <string name="user_is_coming">לא אגיע</string>
-    <string name="profile_settings">Profile</string>
+    <string name="profile_settings">פרופיל</string>
     <string name="save_changes">שמור שינויים</string>
     <string name="logout">התנתק/י</string>
+
+    <string name="upload_options">אפשרויות העלאת תמונה</string>
+    <string name="select_upload_method">באיזה דרך תעלה את התמונה</string>
+    <string name="option_gallery">גלריה</string>
+    <string name="option_camera">מצלמה</string>
 
 </resources>

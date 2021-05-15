@@ -62,12 +62,12 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
         if (action.equals("None")){
-            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
+            getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr).replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
         }
         else {
             MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
             if (value == null) {
-                getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr).replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
                 return;
             }
             String key = (String) value;
@@ -89,7 +89,7 @@ public class MyMeetingsFragment extends Fragment implements OnClickInRecyclerVie
                 bundle.putString(Const.BUNDLE_GROUP_ID, "");
                 meetingInfoFragment.setArguments(bundle);
             }
-            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
+            getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr).replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
         }
 
 

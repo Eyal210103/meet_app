@@ -1,5 +1,6 @@
 package com.example.meetapp.firebaseActions;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class StorageUpload {
     private static final StorageReference reference = FirebaseStorage.getInstance().getReference();
@@ -60,13 +63,10 @@ public class StorageUpload {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()){
-                                database.getReference().child(FirebaseTags.STORAGE_GROUP_CHAT).child(groupId).child(FirebaseTags.STORAGE_CHAT).child(messageId).child(FirebaseTags.CHAT_PHOTO_URL).setValue(task.getResult().toString());
-//                                PhotoUploadCompleteListener photoUploadCompleteListener = (PhotoUploadCompleteListener)context; TODO
-//                                photoUploadCompleteListener.onPhotoUploadComplete();
+                                database.getReference().child(FirebaseTags.STORAGE_GROUP_CHAT).child(groupId).child(FirebaseTags.STORAGE_CHAT)
+                                        .child(messageId).child(FirebaseTags.CHAT_PHOTO_URL).setValue(task.getResult().toString());
                             }else {
                                 reference.child(FirebaseTags.STORAGE_CHAT_IMAGES).child(groupId).child(messageId).delete();
-//                                PhotoUploadErrorListener photoUploadErrorListener = (PhotoUploadErrorListener)context;
-//                                photoUploadErrorListener.onPhotoUploadError();
                             }
                         }
                     });
@@ -74,6 +74,33 @@ public class StorageUpload {
             }
         });
     }
+
+    public static void uploadChatImage(final Fragment context, final String groupId , String messageId , Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        reference.child(FirebaseTags.STORAGE_CHAT_IMAGES).child(groupId).child(messageId)
+                .putBytes(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()){
+                    reference.child(FirebaseTags.STORAGE_CHAT_IMAGES).child(groupId).child(messageId)
+                            .getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()){
+                                database.getReference().child(FirebaseTags.STORAGE_GROUP_CHAT).child(groupId).child(FirebaseTags.STORAGE_CHAT)
+                                        .child(messageId).child(FirebaseTags.CHAT_PHOTO_URL).setValue(task.getResult().toString());
+                            }else {
+                                reference.child(FirebaseTags.STORAGE_CHAT_IMAGES).child(groupId).child(messageId).delete();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
 
     public static void uploadProfileImage(final Fragment context, final String id , Uri data){
         reference.child(FirebaseTags.STORAGE_PROFILE_IMAGES).child(id).putFile(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {

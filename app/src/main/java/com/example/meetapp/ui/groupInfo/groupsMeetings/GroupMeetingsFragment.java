@@ -1,7 +1,6 @@
 package com.example.meetapp.ui.groupInfo.groupsMeetings;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +54,12 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInRecycler
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
         if (value == null){
-            getChildFragmentManager().beginTransaction().replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
-            Log.d("val",action);
+            getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr)
+                    .replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
         }else {
             if (action.equals("None")) {
-               getChildFragmentManager().beginTransaction().replace(R.id.meeting_info_fragment_container_group, new SelectDateFragment()).commit();
+               getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr)
+                       .replace(R.id.meeting_info_fragment_container_group, new SelectDateFragment()).commit();
             } else {
                 MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();
                 GroupMeeting meeting = (GroupMeeting) mViewModel.getMeetings().getValue().get((String) value).get(i).getValue();

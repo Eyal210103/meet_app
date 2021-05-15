@@ -50,7 +50,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     @NonNull
     @Override
     public CalenderBarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.calender_item, parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.calender_item, parent, false);
         return new CalenderBarViewHolder(v);
     }
 
@@ -61,22 +61,22 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(days.get(position));
         holder.day.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
-        holder.date.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
+        holder.date.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
         holder.invisibleDots();
 
-        String key = "" + calendar.get(java.util.Calendar.YEAR) +  calendar.get(java.util.Calendar.MONTH) +  calendar.get(java.util.Calendar.DAY_OF_MONTH);
+        String key = "" + calendar.get(java.util.Calendar.YEAR) + calendar.get(java.util.Calendar.MONTH) + calendar.get(java.util.Calendar.DAY_OF_MONTH);
 
         boolean isGood = false;
         boolean isRegular = false;
-        boolean isGroup =false;
+        boolean isGroup = false;
 
-        if (key.equals(selectedDateString)){
+        if (key.equals(selectedDateString)) {
             context.setViewBackground(position);
         }
 
         int meetingCount = 0;
 
-        if (publicMeetings!= null &&!publicMeetings.isEmpty()){
+        if (publicMeetings != null && !publicMeetings.isEmpty()) {
             if (publicMeetings.containsKey(key)) {
                 isGood = true;
                 for (LiveData<Meeting> meeting : publicMeetings.get(key)) {
@@ -90,19 +90,19 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             }
         }
 
-        if (groupMeetings != null && !groupMeetings.isEmpty()){
+        if (groupMeetings != null && !groupMeetings.isEmpty()) {
             if (groupMeetings.containsKey(key)) {
                 isGood = true;
-                isGroup= true;
+                isGroup = true;
                 for (LiveData<GroupMeeting> meeting : groupMeetings.get(key)) {
                     meetingCount++;
                 }
             }
         }
 
-        if (isGood){
+        if (isGood) {
             holder.visibleDots();
-        }else {
+        } else {
             holder.invisibleDots();
         }
 
@@ -115,21 +115,28 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             public void onClick(View v) {
                 selected = position;
                 selectedDateString = key;
-                if (finalMeetingCount <= 1){
+                if (finalMeetingCount <= 1) {
                     selectedIndex = 0;
-                    setData(position,finalIsGroup,finalIsRegular,key);
-                }else{
+                    setData(position, finalIsGroup, finalIsRegular, key);
+                } else {
                     holder.spinner.performClick();
-                    SpinnerAdapter spinnerAdapter = new SpinnerAdapter(context.requireActivity(),R.layout.multi_meetings_adapter,publicMeetings.get(key));
-                    holder.spinner.setAdapter(spinnerAdapter);
-                    holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-                    {
-                        public void onItemSelected(AdapterView<?> parent, View view, int index, long id)
-                        { selectedIndex = index;
-                            setData(position,finalIsGroup,finalIsRegular,key);
+                    SpinnerAdapter spinnerAdapter;
+                    if (publicMeetings != null) {
+                        spinnerAdapter = new SpinnerAdapter(context.requireActivity(), R.layout.multi_meetings_adapter, publicMeetings.get(key));
+                        holder.spinner.setAdapter(spinnerAdapter);
+                    }
+                    else if (groupMeetings != null) {
+                        spinnerAdapter = new SpinnerAdapter(context.requireActivity(), R.layout.multi_meetings_adapter, groupMeetings.get(key));
+                        holder.spinner.setAdapter(spinnerAdapter);
+
+                    }
+                    holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int index, long id) {
+                            selectedIndex = index;
+                            setData(position, finalIsGroup, finalIsRegular, key);
                         }
-                        public void onNothingSelected(AdapterView<?> parent)
-                        {
+
+                        public void onNothingSelected(AdapterView<?> parent) {
                         }
                     });
                 }
@@ -140,7 +147,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
 
         if (position != selected) {
             holder.itemView.setBackgroundResource(R.drawable.calender_item_background);
-        }else {
+        } else {
             context.setViewBackground(position);
         }
 
@@ -156,32 +163,32 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         return days.size();
     }
 
-    public void setDays(ArrayList<Date> days){
+    public void setDays(ArrayList<Date> days) {
         this.days = days;
         try {
             this.notifyDataSetChanged();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void sendMonth(int month){
+    private void sendMonth(int month) {
         ((MonthListener) context).OnDateChanged(month);
     }
 
-    private void setData(int position, boolean finalIsGroup, boolean finalIsRegular, String key){
+    private void setData(int position, boolean finalIsGroup, boolean finalIsRegular, String key) {
         context.setViewBackground(position);
-        if (finalIsGroup){
-            context.onClickDate(key, Const.MEETING_TYPE_GROUP,selectedIndex);
-        }else if(finalIsRegular){
-            context.onClickDate(key, Const.MEETING_TYPE_PUBLIC,selectedIndex);
-        }else {
-            context.onClickDate("","None",0);
+        if (finalIsGroup) {
+            context.onClickDate(key, Const.MEETING_TYPE_GROUP, selectedIndex);
+        } else if (finalIsRegular) {
+            context.onClickDate(key, Const.MEETING_TYPE_PUBLIC, selectedIndex);
+        } else {
+            context.onClickDate("", "None", 0);
         }
     }
 
-    private void setDotsColor(int mode ,CalenderBarViewHolder holder){
-        switch (mode){
+    private void setDotsColor(int mode, CalenderBarViewHolder holder) {
+        switch (mode) {
             case 1:
                 holder.dot1.setBackgroundResource(R.drawable.blue_dot);
                 holder.dot2.setBackgroundResource(R.drawable.blue_dot);
@@ -197,8 +204,8 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     }
 
 
-    public String getDayOfWeek(int day){
-        switch (day){
+    public String getDayOfWeek(int day) {
+        switch (day) {
             case android.icu.util.Calendar.SUNDAY:
                 return context.getString(R.string.days_sunday);
 
@@ -225,12 +232,13 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     }
 
 
-    static class CalenderBarViewHolder extends RecyclerView.ViewHolder{
+    static class CalenderBarViewHolder extends RecyclerView.ViewHolder {
         TextView day;
         TextView date;
-        View dot1 ,dot2, dot3;
+        View dot1, dot2, dot3;
         LinearLayout linearLayout;
         Spinner spinner;
+
         public CalenderBarViewHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.tv_day_of_month_calendar_item);
@@ -242,13 +250,14 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             spinner = itemView.findViewById(R.id.spinner_calender_item);
         }
 
-        private void visibleDots(){
+        private void visibleDots() {
             this.linearLayout.setVisibility(View.VISIBLE);
             this.dot1.setVisibility(View.VISIBLE);
             this.dot2.setVisibility(View.VISIBLE);
             this.dot3.setVisibility(View.VISIBLE);
         }
-        private void invisibleDots(){
+
+        private void invisibleDots() {
             this.dot1.setVisibility(View.INVISIBLE);
             this.dot2.setVisibility(View.INVISIBLE);
             this.dot3.setVisibility(View.INVISIBLE);

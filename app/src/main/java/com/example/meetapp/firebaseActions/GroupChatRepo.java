@@ -1,5 +1,6 @@
 package com.example.meetapp.firebaseActions;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -162,6 +163,21 @@ public class GroupChatRepo {
         thread.start();
     }
 
+    public void sendImageMessage(Message message, Bitmap photo) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
+                .child(this.groupId).child(FirebaseTags.CHAT_CHILDES).push();
+        message.setGroupName(group.getName());
+        message.setId(reference.getKey());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                StorageUpload.uploadChatImage(null, GroupChatRepo.this.groupId, message.getId(), photo);
+                reference.setValue(message);
+            }
+        });
+        thread.start();
+    }
+
     private void sendNotification(final String id, final Message messageData) {
         DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = token.orderByKey();
@@ -195,5 +211,6 @@ public class GroupChatRepo {
         });
 
     }
+
 
 }

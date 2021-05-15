@@ -81,7 +81,7 @@ public class GroupDashboardFragment extends Fragment {
         recyclerView.setLayoutManager(glm);
 
 
-        view.findViewById(R.id.group_dash_create_meeting_imageView).setOnClickListener(new View.OnClickListener() {
+        binding.groupDashCreateMeetingImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
@@ -92,7 +92,7 @@ public class GroupDashboardFragment extends Fragment {
         });
 
 
-        View message = view.findViewById(R.id.include2);
+        View message = binding.include2.getRoot();
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +101,7 @@ public class GroupDashboardFragment extends Fragment {
             }
         });
 
-        View meeting = view.findViewById(R.id.include);
+        View meeting = binding.include.getRoot();
         meeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +131,7 @@ public class GroupDashboardFragment extends Fragment {
                 updateClosesMeetingUI(groupMeeting, view);
             }
         });
+
 
         mViewModel.getLastMessage().observe(getViewLifecycleOwner(), new Observer<Message>() {
             @Override

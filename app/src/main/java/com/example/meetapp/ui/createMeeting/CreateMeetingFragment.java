@@ -71,7 +71,6 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         binding = FragmentCreateMeetingBinding.inflate(inflater,container,false);
         view = binding.getRoot();
 
-
         RecyclerView recyclerViewSubjects = binding.createMeetingRecyclerView;
         SubjectAdapter subjectAdapter = new SubjectAdapter(this);
         recyclerViewSubjects.setAdapter(subjectAdapter);
@@ -115,7 +114,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
-        int mHour = c.get(Calendar.HOUR);
+        int mHour = c.get(Calendar.HOUR_OF_DAY);
         int minutes = c.get(Calendar.MINUTE);
 
         updateDateUI(c, view);

@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
     public static final int BITMAP_SIZE = 80;
     private static final int REQUEST_LOCATION = 103;
 
-    private final HashMap<String,String> markersHash = new HashMap<>();
+    private final HashMap<String,MarkerOptions> markersHash = new HashMap<>();
     private final ArrayList<MarkerOptions> markers = new ArrayList<>();
     private final ArrayList<String> ids = new ArrayList<>();
 
@@ -88,7 +88,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
@@ -98,6 +97,7 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onChanged(Meeting meeting) {
                                 String id = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
+                                mViewModel.addMeetingToMarker(id,m);
                                 if (!markersHash.containsKey(id)){
                                     MarkerOptions markerOptions = new MarkerOptions();
                                     markerOptions.position(meeting.getLocation());
@@ -106,17 +106,21 @@ public class HomeFragment extends Fragment {
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
                                     markers.add(markerOptions);
                                     ids.add(id);
-                                    markersHash.put(id,id);
+                                    markersHash.put(id,markerOptions);
+                                } else if (mViewModel.getListOfMeetings(id).size()>1){
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),R.drawable.multi_meeting);
+                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
+                                    markersHash.get(id).icon(BitmapDescriptorFactory.fromBitmap(icon));
                                 }
-                                mViewModel.addMeetingToMarker(id,m);
                             }
                         });
                     }
-                    if (mapView!=null)
-                        addMarkers();
                 }
+                if (mapView!=null)
+                    addMarkers();
             }
         });
+
         return view;
     }
 

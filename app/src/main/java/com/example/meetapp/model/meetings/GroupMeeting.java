@@ -95,7 +95,7 @@ public class GroupMeeting extends Meeting implements Serializable {
     @Override
     public void updateOrAddReturnId() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).push();
-        this.setId(reference.getKey());
+        this.id = reference.getKey();
         HashMap<String,Object> map = new HashMap<>();
         map.put("millis",millis);
         map.put("id",id);

@@ -1,5 +1,7 @@
 package com.example.meetapp.ui.chat;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -26,6 +28,9 @@ public class GroupChatViewModel extends ViewModel {
     }
     public void sendImageMessage(Message message){
         repo.sendImageMessage(message);
+    }
+    public void sendCameraMessage(Message message, Bitmap photo){
+        repo.sendImageMessage(message,photo);
     }
 
 }

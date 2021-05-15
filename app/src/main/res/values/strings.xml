@@ -94,4 +94,10 @@
     <string name="save_changes">Save Changes</string>
     <string name="logout">Logout</string>
 
+    <string name="upload_options">Upload Pictures Option</string>
+    <string name="select_upload_method">How do you want to set your picture?</string>
+    <string name="option_gallery">Gallery</string>
+    <string name="option_camera">Camera</string>
+
+
 </resources>

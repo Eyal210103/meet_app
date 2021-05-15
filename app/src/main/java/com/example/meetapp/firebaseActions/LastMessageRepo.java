@@ -17,14 +17,16 @@ import com.google.firebase.database.ValueEventListener;
 public class LastMessageRepo {
 
     private final String groupId;
-    private MutableLiveData<String> displayName;
+    private final MutableLiveData<String> displayName;
     private final MutableLiveData<Message> messageMutableLiveData ;
     private ChildEventListener childEventListener;
 
     public LastMessageRepo(String id) {
         this.groupId = id;
         messageMutableLiveData = new MutableLiveData<>();
+        displayName = new MutableLiveData<>();
         this.loadMessage();
+
     }
 
     private void loadMessage(){
@@ -32,8 +34,8 @@ public class LastMessageRepo {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message key = snapshot.getValue(Message.class);
-                messageMutableLiveData.setValue(key);
-                displayName = getUserDisplayName(key.getSenderId());
+                messageMutableLiveData.postValue(key);
+                changeUserDisplayName(key.getSenderId());
             }
 
             @Override
@@ -65,20 +67,18 @@ public class LastMessageRepo {
         return displayName;
     }
 
-    private  MutableLiveData<String> getUserDisplayName(String key){
-        final MutableLiveData<String> userName = new MutableLiveData<>();
+    private void changeUserDisplayName(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.getValue(User.class).getDisplayName();
-                userName.setValue(name);
+                displayName.postValue(name);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        return userName;
     }
 
     public void detachListener() {

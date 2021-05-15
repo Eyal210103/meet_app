@@ -79,6 +79,7 @@ public class Group implements Serializable {
 
     public String addGroup() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).push();
+        this.id = reference.getKey();
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("name", this.name);
         map.put("id", this.id);

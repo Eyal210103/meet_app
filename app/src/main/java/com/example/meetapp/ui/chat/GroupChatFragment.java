@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +38,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class GroupChatFragment extends Fragment {
 
-    private static final String TAG = "CHAT";
-
     protected static final int CAMERA_REQUEST = 0;
     protected static final int GALLERY_PICTURE = 1;
     private static final int REQUEST_CAMERA = 103;
@@ -48,7 +45,7 @@ public class GroupChatFragment extends Fragment {
     private GroupChatViewModel mViewModel;
     ImageView imagePreview;
     private Uri imageUri = null;
-
+    private Bitmap imageBitmap = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,35 +74,33 @@ public class GroupChatFragment extends Fragment {
         ImageView cameraIV = binding.chatCameraIv;
         imagePreview = binding.selectedImageChatIv;
 
-        view.findViewById(R.id.chat_send_button).setOnClickListener(new View.OnClickListener() {
+        binding.chatSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Message message = new Message();
+                message.setContext(contextET.getText().toString());
+                message.setSenderDisplayName(CurrentUser.getInstance().getDisplayName());
+                message.setSenderId(CurrentUser.getInstance().getId());
+                Date currentTime = Calendar.getInstance().getTime();
+                message.setTime(currentTime.getTime());
                 if(imageUri != null){
                     //StorageUpload.uploadChatImage();
-                    Message message = new Message();
-                    message.setContext(contextET.getText().toString());
-                    message.setSenderDisplayName(CurrentUser.getInstance().getDisplayName());
-                    message.setSenderId(CurrentUser.getInstance().getId());
                     message.setUrl(imageUri.toString());
-                    Date currentTime = Calendar.getInstance().getTime();
-                    message.setTime(currentTime.getTime());
                     mViewModel.sendImageMessage(message);
-                    contextET.setText("");
-                    recyclerView.smoothScrollToPosition(adapter.getItemCount());
                     imageUri = null;
                     imagePreview.setVisibility(View.GONE);
                 }
-                else if (!contextET.getText().toString().matches("")){
-                    Message message = new Message();
-                    message.setContext(contextET.getText().toString());
-                    message.setSenderDisplayName(CurrentUser.getInstance().getDisplayName());
-                    message.setSenderId(CurrentUser.getInstance().getId());
-                    Date currentTime = Calendar.getInstance().getTime();
-                    message.setTime(currentTime.getTime());
-                    mViewModel.sendMessage(message);
-                    contextET.setText("");
-                    recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                else if (imageBitmap != null){
+                    mViewModel.sendCameraMessage(message,imageBitmap);
+                    imageBitmap = null;
+                    imagePreview.setVisibility(View.GONE);
                 }
+                else if (!contextET.getText().toString().matches("")){
+                    mViewModel.sendMessage(message);
+                }
+                contextET.setText("");
+                recyclerView.smoothScrollToPosition(adapter.getItemCount());
+
             }
         });
 
@@ -135,17 +130,12 @@ public class GroupChatFragment extends Fragment {
         return view;
     }
 
-
     private void startDialog() {
-
-        //TODO change to string res
-
-
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(requireActivity());
-        myAlertDialog.setTitle("Upload Pictures Option");
-        myAlertDialog.setMessage("How do you want to set your picture?");
+        myAlertDialog.setTitle(getString(R.string.upload_options));
+        myAlertDialog.setMessage(getString(R.string.select_upload_method));
 
-        myAlertDialog.setPositiveButton("Gallery",new DialogInterface.OnClickListener() {
+        myAlertDialog.setPositiveButton(getString(R.string.option_gallery),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Intent pictureActionIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(pictureActionIntent, GALLERY_PICTURE);
@@ -153,7 +143,7 @@ public class GroupChatFragment extends Fragment {
                     }
                 });
 
-        myAlertDialog.setNegativeButton("Camera",new DialogInterface.OnClickListener() {
+        myAlertDialog.setNegativeButton(getString(R.string.option_camera),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                         if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -166,7 +156,6 @@ public class GroupChatFragment extends Fragment {
         myAlertDialog.show();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -174,13 +163,12 @@ public class GroupChatFragment extends Fragment {
             imageUri = data.getData();
             imagePreview.setVisibility(View.VISIBLE);
             imagePreview.setImageURI(imageUri);
-            Log.d(TAG, "onActivityResult: " + imageUri + "_________");
         }
         else if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST) {
             if (data != null) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageBitmap = (Bitmap) data.getExtras().get("data");
                 imagePreview.setVisibility(View.VISIBLE);
-                imagePreview.setImageBitmap(photo);
+                imagePreview.setImageBitmap(imageBitmap);
             }
         }
     }
