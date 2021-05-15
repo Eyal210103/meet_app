@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,10 +32,12 @@ public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLo
 
     private final ArrayList<LiveData<Meeting>> meetings;
     private final FragmentActivity context;
+    private final HashMap<String,String> meetingToGroupId;
 
-    public MeetingsToLocationAdapter(FragmentActivity context, ArrayList<LiveData<Meeting>> meetings) {
+    public MeetingsToLocationAdapter(FragmentActivity context, ArrayList<LiveData<Meeting>> meetings, HashMap<String,String> meetingToGroupId) {
         this.context = context;
         this.meetings = meetings;
+        this.meetingToGroupId = meetingToGroupId;
     }
 
     @NonNull
@@ -56,6 +59,8 @@ public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLo
                 public void onClick(View v) {
                     MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
                     Bundle bundle = new Bundle();
+                    String id = meetingToGroupId.containsKey(meeting.getId()) ? meetingToGroupId.get(meeting.getId()) : "";
+                    bundle.putString(Const.BUNDLE_GROUP_ID,id);
                     bundle.putSerializable(Const.BUNDLE_MEETING,meeting);
                     meetingsInfoDialog.setArguments(bundle);
                     meetingsInfoDialog.show(context.getSupportFragmentManager(),"Meeting Dialog");

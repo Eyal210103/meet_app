@@ -24,6 +24,10 @@ public class UserMeetingsRepo {
     private final HashMap<String,String> idsOfGroupMeetingsToGroup;
     private final HashMap<String,String> meetingIdToStringDate;
 
+    private final MutableLiveData<ArrayList<MutableLiveData<Meeting>>> meetingsListMutableLiveData = new MutableLiveData<>();
+    private final ArrayList<MutableLiveData<Meeting>> userAllMeetingsList = new ArrayList<>();
+
+
     private static UserMeetingsRepo instance = null;
 
     private UserMeetingsRepo() {
@@ -31,6 +35,7 @@ public class UserMeetingsRepo {
         mutableLiveData = new MutableLiveData<>();
         idsOfGroupMeetingsToGroup = new HashMap<>();
         meetingIdToStringDate = new HashMap<>();
+        meetingsListMutableLiveData.setValue(userAllMeetingsList);
     }
 
     public static UserMeetingsRepo getInstance() {
@@ -61,13 +66,13 @@ public class UserMeetingsRepo {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
-
-
                             MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                             meetingMutableLiveData.setValue(meeting);
                             if (!allMeetings.containsKey(meeting.getDateString())){
                                 allMeetings.put(meeting.getDateString(),new ArrayList<>());
                             }
+
+                            // TODO SO SO SO MUCH NOT NEEDED
                             ArrayList<LiveData<Meeting>> temp = allMeetings.get(meeting.getDateString());
                             boolean inserted = false;
                             for (int i = 0; i < temp.size(); i++) {
@@ -84,6 +89,9 @@ public class UserMeetingsRepo {
                             meetingIdToStringDate.replace(meetingId,meeting.getDateString());
                             allMeetings.put(meeting.getDateString(),temp);
                             mutableLiveData.postValue(allMeetings);
+
+                            userAllMeetingsList.add(meetingMutableLiveData);
+                            meetingsListMutableLiveData.postValue(userAllMeetingsList);
                         }
                         else {
                             FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance()
@@ -153,6 +161,9 @@ public class UserMeetingsRepo {
                             if (!inserted){
                                 temp.add(meetingMutableLiveData);
                             }
+                            userAllMeetingsList.add(meetingMutableLiveData);
+                            meetingsListMutableLiveData.postValue(userAllMeetingsList);
+
                             meetingIdToStringDate.replace(meeting.getId(),meeting.getDateString());
                             allMeetings.put(meeting.getDateString(),temp);
                             mutableLiveData.postValue(allMeetings);
@@ -191,6 +202,10 @@ public class UserMeetingsRepo {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    public MutableLiveData<ArrayList<MutableLiveData<Meeting>>> getMeetingsListMutableLiveData() {
+        return meetingsListMutableLiveData;
     }
 
     public HashMap<String, String> getIdsOfGroupMeetingsToGroup() {

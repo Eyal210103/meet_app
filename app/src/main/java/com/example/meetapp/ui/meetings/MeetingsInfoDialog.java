@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.MeetingInfoDialogBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.Meeting;
@@ -37,12 +38,14 @@ import java.util.Locale;
 public class MeetingsInfoDialog extends DialogFragment {
 
     MeetingInfoDialogViewModel mViewModel;
+    String groupId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MeetingInfoDialogViewModel.class);
         Meeting meeting = (Meeting) getArguments().getSerializable(Const.BUNDLE_MEETING);
+        groupId = getArguments().getString(Const.BUNDLE_GROUP_ID);
         mViewModel.init(meeting.getId());
     }
 
@@ -51,24 +54,24 @@ public class MeetingsInfoDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.meeting_info_dialog, container, false);
+        MeetingInfoDialogBinding binding = MeetingInfoDialogBinding.inflate(inflater, container, false);
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Meeting meeting = (Meeting) getArguments().getSerializable(Const.BUNDLE_MEETING);
 
-        TextView day = view.findViewById(R.id.meeting_dialog_tv_day_of_month_calendar_item);
-        TextView dayOfWeek = view.findViewById(R.id.meeting_dialog_tv_day_of_week_calendar_item);
-        TextView month = view.findViewById(R.id.meeting_dialog_tv_day_calendar_item);
-        TextView hour = view.findViewById(R.id.meeting_dialog_hour_textView);
-        TextView location = view.findViewById(R.id.meeting_dialog_location_textView);
-        TextView description = view.findViewById(R.id.meeting_dialog_desc_textView);
+        TextView day = binding.meetingDialogTvDayOfMonthCalendarItem;
+        TextView dayOfWeek = binding.meetingDialogTvDayOfWeekCalendarItem;
+        TextView month = binding.meetingDialogTvDayCalendarItem;
+        TextView hour = binding.meetingDialogHourTextView;
+        TextView location = binding.meetingDialogLocationTextView;
+        TextView description = binding.meetingDialogDescTextView;
 
         Date date = new Date(meeting.getMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        day.setText(""+calendar.get(Calendar.DAY_OF_MONTH));
+        day.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
         dayOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         month.setText(getMonth(calendar.get(Calendar.MONTH)));
         hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
@@ -76,25 +79,23 @@ public class MeetingsInfoDialog extends DialogFragment {
         location.setText(meeting.getSubject() + "\n\n" + getAddress(meeting.getLocation()));
 
 
-        RecyclerView recyclerView  = view.findViewById(R.id.meeting_dialog_who_coming_recycler);
-        WhoComingAdapter adapter = new WhoComingAdapter(requireActivity(),mViewModel.users.getValue());
+        RecyclerView recyclerView = binding.meetingDialogWhoComingRecycler;
+        WhoComingAdapter adapter = new WhoComingAdapter(requireActivity(), mViewModel.users.getValue());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
 
-        view.findViewById(R.id.meeting_info_dialog_more_info_btn).setOnClickListener(new View.OnClickListener() {
+        binding.meetingInfoDialogMoreInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //action_homeFragment_to_meetingInfoFragment
                 dismiss();
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 Bundle bundle = new Bundle();
-                bundle.putString(Const.BUNDLE_ID,meeting.getId());
-                String type = meeting instanceof Meeting ? Const.MEETING_TYPE_PUBLIC: Const.MEETING_TYPE_GROUP;
-                bundle.putString(Const.BUNDLE_TYPE,type);
-                String groupId = meeting instanceof Meeting ? Const.MEETING_TYPE_PUBLIC: meeting.getId();
-                bundle.putString(Const.BUNDLE_GROUP_ID,groupId);
+                bundle.putString(Const.BUNDLE_ID, meeting.getId());
+                String type = groupId.equals("") ? Const.MEETING_TYPE_PUBLIC : Const.MEETING_TYPE_GROUP;
+                bundle.putString(Const.BUNDLE_TYPE, type);
+                bundle.putString(Const.BUNDLE_GROUP_ID, groupId);
                 navController.navigate(R.id.action_homeFragment_to_meetingInfoFragment, bundle);
             }
         });
@@ -107,13 +108,12 @@ public class MeetingsInfoDialog extends DialogFragment {
         });
 
 
-        return view;
+        return binding.getRoot();
     }
 
 
-
-    public String getDayOfWeek(int day){
-        switch (day){
+    public String getDayOfWeek(int day) {
+        switch (day) {
             case android.icu.util.Calendar.SUNDAY:
                 return getString(R.string.days_sunday);
 
@@ -139,8 +139,8 @@ public class MeetingsInfoDialog extends DialogFragment {
         }
     }
 
-    public String getMonth(int day){
-        switch (day){
+    public String getMonth(int day) {
+        switch (day) {
             case android.icu.util.Calendar.JANUARY:
                 return getString(R.string.months_january);
 
@@ -185,12 +185,12 @@ public class MeetingsInfoDialog extends DialogFragment {
     public String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
+            List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
             try {
                 Address obj = addresses.get(0);
                 String add = obj.getAddressLine(0);
                 return add;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
+import com.example.meetapp.databinding.MeetingInfoFragmentBinding;
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
@@ -47,7 +48,7 @@ public class MeetingInfoFragment extends Fragment {
 
     private MeetingInfoViewModel mViewModel;
     private String type;
-    private View view;
+    private MeetingInfoFragmentBinding binding;
     private MapView mapView;
     private GoogleMap mMap;
     private boolean isUserAlreadyIn;
@@ -56,37 +57,34 @@ public class MeetingInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MeetingInfoViewModel.class);
-        String id  = getArguments().getString(Const.BUNDLE_ID);
+        String id = getArguments().getString(Const.BUNDLE_ID);
         type = getArguments().getString(Const.BUNDLE_TYPE);
-        String groupId = getArguments().getString(Const.BUNDLE_GROUP_ID,"");
-        mViewModel.init(id,groupId,type);
-
+        String groupId = getArguments().getString(Const.BUNDLE_GROUP_ID, "");
+        mViewModel.init(id, groupId, type);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.meeting_info_fragment, container, false);
+        binding = MeetingInfoFragmentBinding.inflate(inflater, container, false);
 
-        RecyclerView recyclerView  = view.findViewById(R.id.meeting_participants_recyclerView);
-        WhoComingAdapter adapter = new WhoComingAdapter(requireActivity(),mViewModel.getUsers().getValue());
+        RecyclerView recyclerView = binding.meetingParticipantsRecyclerView;
+        WhoComingAdapter adapter = new WhoComingAdapter(requireActivity(), mViewModel.getUsers().getValue());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
 
-        mapView = view.findViewById(R.id.mapViewMeetingInfo);
+        mapView = binding.mapViewMeetingInfo;
 
         initGoogleMap(savedInstanceState);
-
-
 
         mViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<ArrayList<User>>() {
             @Override
             public void onChanged(ArrayList<User> users) {
                 adapter.notifyDataSetChanged();
-                for (User u:users) {
-                    if (u.getId().equals(CurrentUser.getInstance().getId())){
+                for (User u : users) {
+                    if (u.getId().equals(CurrentUser.getInstance().getId())) {
                         isUserAlreadyIn = true;
                         toggleIsUserIn();
                         return;
@@ -96,15 +94,14 @@ public class MeetingInfoFragment extends Fragment {
             }
         });
 
-
-        if (type.equals(Const.MEETING_TYPE_PUBLIC)){
+        if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
             mViewModel.getPublicM().observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                 @Override
                 public void onChanged(Meeting meeting) {
                     updateUI(meeting);
                 }
             });
-        }else if(type.equals(Const.MEETING_TYPE_GROUP)){
+        } else if (type.equals(Const.MEETING_TYPE_GROUP)) {
             mViewModel.getGroupM().observe(getViewLifecycleOwner(), new Observer<GroupMeeting>() {
                 @Override
                 public void onChanged(GroupMeeting groupMeeting) {
@@ -113,10 +110,10 @@ public class MeetingInfoFragment extends Fragment {
             });
         }
 
-        view.findViewById(R.id.im_coming_button_meeting_info).setOnClickListener(new View.OnClickListener() {
+        binding.imComingButtonMeetingInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isUserAlreadyIn){
+                if (isUserAlreadyIn) {
                     if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
                         Meeting meeting = mViewModel.getPublicM().getValue();
                         CurrentUser.quitMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES);
@@ -126,7 +123,7 @@ public class MeetingInfoFragment extends Fragment {
                         CurrentUser.quitMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES);
                         meeting.deleteUserArrival(CurrentUser.getInstance().getId());
                     }
-                }else {
+                } else {
                     if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
                         Meeting meeting = mViewModel.getPublicM().getValue();
                         CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES, meeting.getId());
@@ -140,7 +137,7 @@ public class MeetingInfoFragment extends Fragment {
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
@@ -161,16 +158,14 @@ public class MeetingInfoFragment extends Fragment {
         });
     }
 
-
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void updateUI(Meeting meeting) {
-
-        TextView day = view.findViewById(R.id.meeting_info_tv_day_of_month_calendar_item);
-        TextView dayOfWeek = view.findViewById(R.id.meeting_info_tv_day_of_week_calendar_item);
-        TextView month = view.findViewById(R.id.meeting_info_tv_day_calendar_item);
-        TextView hour = view.findViewById(R.id.meeting_info_hour_textView);
-        TextView location = view.findViewById(R.id.meeting_info_location_textView);
-        TextView description = view.findViewById(R.id.meeting_info_desc_textView);
+        TextView day = binding.meetingInfoTvDayOfMonthCalendarItem;//view.findViewById(R.id.meeting_info_tv_day_of_month_calendar_item);
+        TextView dayOfWeek = binding.meetingInfoTvDayOfWeekCalendarItem; //view.findViewById(R.id.meeting_info_tv_day_of_week_calendar_item);
+        TextView month = binding.meetingInfoTvDayCalendarItem; //view.findViewById(R.id.meeting_info_tv_day_calendar_item);
+        TextView hour = binding.meetingInfoHourTextView; //view.findViewById(R.id.meeting_info_hour_textView);
+        TextView location = binding.meetingInfoLocationTextView; //view.findViewById(R.id.meeting_info_location_textView);
+        TextView description = binding.meetingInfoDescTextView; //view.findViewById(R.id.meeting_info_desc_textView);
         Date date = new Date(meeting.getMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -186,18 +181,16 @@ public class MeetingInfoFragment extends Fragment {
         //mMap.getUiSettings().setAllGesturesEnabled(false);
     }
 
-    private void toggleIsUserIn(){
-        Button button =view.findViewById(R.id.im_coming_button_meeting_info);
+    private void toggleIsUserIn() {
+        Button button = binding.imComingButtonMeetingInfo; // view.findViewById(R.id.im_coming_button_meeting_info);
         if (isUserAlreadyIn)
             button.setText(getString(R.string.user_is_coming));
         else
             button.setText(getString(R.string.confirm_arrival));
     }
 
-
-
-    public String getDayOfWeek(int day){
-        switch (day){
+    public String getDayOfWeek(int day) {
+        switch (day) {
             case android.icu.util.Calendar.SUNDAY:
                 return getString(R.string.days_sunday);
 
@@ -223,8 +216,8 @@ public class MeetingInfoFragment extends Fragment {
         }
     }
 
-    public String getMonth(int day){
-        switch (day){
+    public String getMonth(int day) {
+        switch (day) {
             case android.icu.util.Calendar.JANUARY:
                 return getString(R.string.months_january);
 
@@ -265,15 +258,16 @@ public class MeetingInfoFragment extends Fragment {
                 return "";
         }
     }
+
     public String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
+            List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
             try {
                 Address obj = addresses.get(0);
                 String add = obj.getAddressLine(0);
                 return add;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -289,7 +283,6 @@ public class MeetingInfoFragment extends Fragment {
         }
         return "Null";
     }
-
 
     @Override
     public void onPause() {

@@ -67,6 +67,13 @@ public class HomeFragment extends Fragment {
     private HomeFragmentBinding binding;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+    }
+
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = HomeFragmentBinding.inflate(inflater,container,false);
@@ -75,9 +82,7 @@ public class HomeFragment extends Fragment {
 
         this.mapView = binding.mapView;
         initGoogleMap(savedInstanceState);
-//        locationTV = binding.locationTextView;
-//        topicTV = binding.locationSubjectTextView;
-//        topicIV = binding.homeLocationSubjectCircleImageView;
+
         EditText locationName = binding.homeEditTextAll;
 
         binding.homeSearchIconImageView.setOnClickListener(new View.OnClickListener() {
@@ -121,14 +126,42 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        //TODO BEHAVIOR IS DIFFERENT
+        mViewModel.getUserMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
+            @Override
+            public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
+                for (LiveData<Meeting> m: mutableLiveData) {
+                    if (!m.hasObservers()) {
+                        m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
+                            @Override
+                            public void onChanged(Meeting meeting) {
+                                String id = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
+                                mViewModel.addMeetingToMarker(id,m);
+                                if (!markersHash.containsKey(id)){
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    markerOptions.position(meeting.getLocation());
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
+                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
+                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+                                    markers.add(markerOptions);
+                                    ids.add(id);
+                                    markersHash.put(id,markerOptions);
+                                } else if (mViewModel.getListOfMeetings(id).size()>1){
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),R.drawable.multi_meeting);
+                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
+                                    markersHash.get(id).icon(BitmapDescriptorFactory.fromBitmap(icon));
+                                }
+                            }
+                        });
+                    }
+                }
+                if (mapView!=null)
+                    addMarkers();
+            }
+        });
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-    }
 
     private LatLng getLocation() {
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -176,7 +209,7 @@ public class HomeFragment extends Fragment {
                             LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
                             llm.setOrientation(LinearLayoutManager.VERTICAL);
                             binding.meetingsInLocationRecyclerView.setLayoutManager(llm);
-                            binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(requireActivity(),mViewModel.getListOfMeetings((String) marker.getTag())));
+                            binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(requireActivity(),mViewModel.getListOfMeetings((String) marker.getTag()),mViewModel.getGroupMeetingToGroupId()));
                             binding.homeMotionLayout.transitionToEnd();
                             binding.constraintLayout4.setTag(marker.getTag());
                             return false;
@@ -226,7 +259,6 @@ public class HomeFragment extends Fragment {
         }
         return "Error Has Occurred";
     }
-
 
     private void addMarkerToMap(MarkerOptions location , String id) {
         if (location != null && mMap!= null) {

@@ -13,7 +13,7 @@ public class MeetingInfoDialogViewModel extends ViewModel {
     LiveData<ArrayList<User>> users;
 
     public void init(String id){
-        users = AvailableMeetingsRepo.loadWhoComing(id);
+        users = AvailableMeetingsRepo.getWhoComing(id);
     }
 
     public LiveData<ArrayList<User>> getUsers() {

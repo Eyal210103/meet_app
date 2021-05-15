@@ -17,28 +17,34 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class AvailableMeetingsRepo {
 
+    private final MutableLiveData<ArrayList<MutableLiveData<Meeting>>> publicMeetingsMutableLiveData = new MutableLiveData<>();
+    private final HashMap<String,String> meetingIdToGroupId = new HashMap<>();
+    private final HashMap<String,Integer> publicMeetingToIndexHash = new HashMap<>();
     private final ArrayList<MutableLiveData<Meeting>> publicMeetings = new ArrayList<>();
-    private final HashMap<String,Integer> publicHash = new HashMap<>();
     private long todayMillis;
-
-    private static AvailableMeetingsRepo instance =  null;
 
     private AvailableMeetingsRepo() {
     }
 
+    private static AvailableMeetingsRepo instance =  null;
+
     public static AvailableMeetingsRepo getInstance() {
         if (instance == null) {
             instance = new AvailableMeetingsRepo();
+            instance.loadPublicMeetings();
+            instance.loadPublicGroupMeetings();
         }
         return instance;
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<Meeting>>> getPublicMeetings(){
+    public void loadPublicMeetings(){
         todayMillis = Calendar.getInstance().getTimeInMillis();
-        MutableLiveData<ArrayList<MutableLiveData<Meeting>>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(publicMeetings);
+        publicMeetingsMutableLiveData.setValue(publicMeetings);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -46,14 +52,14 @@ public class AvailableMeetingsRepo {
                 if (meeting != null && meeting.getMillis() > todayMillis) {
                     MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
-                    publicHash.put(meeting.getId(), publicMeetings.size());
+                    publicMeetingToIndexHash.put(meeting.getId(), publicMeetings.size()-1);
                     publicMeetings.add(meetingMutableLiveData);
-                    mutableLiveData.postValue(publicMeetings);
+                    publicMeetingsMutableLiveData.postValue(publicMeetings);
                 }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int i = publicHash.get(snapshot.getKey());
+                int i = publicMeetingToIndexHash.get(snapshot.getKey());
                 publicMeetings.get(i).postValue(snapshot.getValue(Meeting.class));
             }
             @Override
@@ -65,10 +71,66 @@ public class AvailableMeetingsRepo {
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
-        return mutableLiveData;
     }
 
-    public static LiveData<ArrayList<User>> loadWhoComing(String mId){
+    public void loadPublicGroupMeetings(){
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                String groupId = snapshot.getValue(String.class);
+                String meetingId = snapshot.getKey();
+                loadSinglePublicMeetingData(groupId,meetingId);
+                meetingIdToGroupId.put(meetingId,groupId);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadSinglePublicMeetingData(String groupId,String meetingId){
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(meetingId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Meeting meeting = snapshot.getValue(Meeting.class);
+                if (meeting != null && meeting.getMillis() > todayMillis) {
+                    MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
+                    meetingMutableLiveData.setValue(meeting);
+                    publicMeetingToIndexHash.put(meeting.getId(), publicMeetings.size()-1);
+                    publicMeetings.add(meetingMutableLiveData);
+                    publicMeetingsMutableLiveData.postValue(publicMeetings);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public LiveData<ArrayList<MutableLiveData<Meeting>>> getPublicMeetings(){
+        return publicMeetingsMutableLiveData;
+    }
+
+    public static LiveData<ArrayList<User>> getWhoComing(String mId){
         ArrayList<User> arrayList = new ArrayList<User>();
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(arrayList);
@@ -107,7 +169,7 @@ public class AvailableMeetingsRepo {
         return mutableLiveData;
     }
 
-    public HashMap<String, Integer> getPublicHash() {
-        return publicHash;
+    public HashMap<String, String> getMeetingIdToGroupId() {
+        return meetingIdToGroupId;
     }
 }
