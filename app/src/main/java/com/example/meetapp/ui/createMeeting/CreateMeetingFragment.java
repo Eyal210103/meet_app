@@ -10,10 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -160,10 +158,10 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setMillis(c.getTimeInMillis());
                     meeting.setLatitude(location.latitude);
                     meeting.setLongitude(location.longitude);
-                    meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setDescription(binding.createMeetingDescriptionEt.getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     String gId = ((MutableLiveData<Group>) spinnerSelectGroup.getSelectedItem()).getValue().getId();
-                    boolean isOpen = ((Switch)view.findViewById(R.id.is_public_group_meeting_switch)).isChecked();
+                    boolean isOpen = binding.isPublicGroupMeetingSwitch.isChecked();
                     meeting.setOpen(isOpen);
                     meeting.setGroupId(gId);
                     meeting.updateOrAddReturnId();
@@ -176,7 +174,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setMillis(c.getTimeInMillis());
                     meeting.setLatitude(location.latitude);
                     meeting.setLongitude(location.longitude);
-                    meeting.setDescription(((EditText) view.findViewById(R.id.create_meeting_description_et)).getText().toString());
+                    meeting.setDescription(binding.createMeetingDescriptionEt.getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
