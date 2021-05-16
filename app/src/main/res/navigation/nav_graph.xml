@@ -29,8 +29,8 @@
         <action
             android:id="@+id/action_socialMenuFragment_to_groupInfoFragment"
             app:destination="@id/groupInfoFragment"
-            app:enterAnim="@anim/page_transition_slide_rtl"
-            app:exitAnim="@anim/page_transition_slide_ltr" />
+            app:enterAnim="@anim/page_transition_slide_right_enter"
+            app:exitAnim="@anim/page_transition_slide_right_exit" />
         <action
             android:id="@+id/action_socialMenuFragment_to_createGroupFragment2"
             app:destination="@id/createGroupFragment"
@@ -46,8 +46,10 @@
         android:label="my_meetings_fragment"
         tools:layout="@layout/my_meetings_fragment" >
         <action
-            android:id="@+id/action_socialMenuFragment_to_createMeetingFragment"
-            app:destination="@id/createMeetingFragment" />
+            android:id="@+id/action_myMeetingsFragment_to_createMeetingFragment"
+            app:destination="@id/createMeetingFragment"
+            app:enterAnim="@anim/page_transiction_slide_up_enter"
+            app:exitAnim="@anim/page_transiction_slide_up_exit" />
     </fragment>
     <fragment
         android:id="@+id/createGroupFragment"

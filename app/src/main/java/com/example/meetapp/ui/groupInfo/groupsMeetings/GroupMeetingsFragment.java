@@ -14,7 +14,7 @@ import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
-import com.example.meetapp.ui.calenderBarPackage.CalenderBarFragment;
+import com.example.meetapp.ui.calenderBar.CalenderBarFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
 import com.example.meetapp.ui.meetings.SelectDateFragment;
@@ -54,11 +54,11 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInRecycler
     @Override
     public void onClickInRecyclerView(Object value, String action, int i) {
         if (value == null){
-            getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr)
+            getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_right_enter,R.anim.page_transition_slide_right_exit)
                     .replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
         }else {
             if (action.equals("None")) {
-               getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_rtl,R.anim.page_transition_slide_ltr)
+               getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_right_enter,R.anim.page_transition_slide_right_exit)
                        .replace(R.id.meeting_info_fragment_container_group, new SelectDateFragment()).commit();
             } else {
                 MeetingInfoFragment meetingInfoFragment = new MeetingInfoFragment();

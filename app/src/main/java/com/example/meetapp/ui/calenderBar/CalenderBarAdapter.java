@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.calenderBarPackage;
+package com.example.meetapp.ui.calenderBar;
 
 import android.annotation.SuppressLint;
 import android.icu.util.Calendar;
@@ -117,15 +117,14 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 selectedDateString = key;
                 if (finalMeetingCount <= 1) {
                     selectedIndex = 0;
-                    setData(position, finalIsGroup, finalIsRegular, key);
+                    setData(position, finalIsGroup, finalIsRegular, calendar.getTimeInMillis(), key);
                 } else {
                     holder.spinner.performClick();
                     SpinnerAdapter spinnerAdapter;
                     if (publicMeetings != null) {
                         spinnerAdapter = new SpinnerAdapter(context.requireActivity(), R.layout.multi_meetings_adapter, publicMeetings.get(key));
                         holder.spinner.setAdapter(spinnerAdapter);
-                    }
-                    else if (groupMeetings != null) {
+                    } else if (groupMeetings != null) {
                         spinnerAdapter = new SpinnerAdapter(context.requireActivity(), R.layout.multi_meetings_adapter, groupMeetings.get(key));
                         holder.spinner.setAdapter(spinnerAdapter);
 
@@ -133,7 +132,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                     holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> parent, View view, int index, long id) {
                             selectedIndex = index;
-                            setData(position, finalIsGroup, finalIsRegular, key);
+                            setData(position, finalIsGroup, finalIsRegular, calendar.getTimeInMillis(), key);
                         }
 
                         public void onNothingSelected(AdapterView<?> parent) {
@@ -176,33 +175,16 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         ((MonthListener) context).OnDateChanged(month);
     }
 
-    private void setData(int position, boolean finalIsGroup, boolean finalIsRegular, String key) {
+    private void setData(int position, boolean finalIsGroup, boolean finalIsRegular, long millis, String key) {
         context.setViewBackground(position);
         if (finalIsGroup) {
-            context.onClickDate(key, Const.MEETING_TYPE_GROUP, selectedIndex);
+            context.onClickDate(key, Const.MEETING_TYPE_GROUP, millis, selectedIndex);
         } else if (finalIsRegular) {
-            context.onClickDate(key, Const.MEETING_TYPE_PUBLIC, selectedIndex);
+            context.onClickDate(key, Const.MEETING_TYPE_PUBLIC, millis, selectedIndex);
         } else {
-            context.onClickDate("", "None", 0);
+            context.onClickDate("", "None", millis, 0);
         }
     }
-
-    private void setDotsColor(int mode, CalenderBarViewHolder holder) {
-        switch (mode) {
-            case 1:
-                holder.dot1.setBackgroundResource(R.drawable.blue_dot);
-                holder.dot2.setBackgroundResource(R.drawable.blue_dot);
-                holder.dot3.setBackgroundResource(R.drawable.blue_dot);
-                return;
-            case 2:
-                holder.dot1.setBackgroundResource(R.drawable.red_dot);
-                holder.dot2.setBackgroundResource(R.drawable.red_dot);
-                holder.dot3.setBackgroundResource(R.drawable.red_dot);
-                return;
-            case 3:
-        }
-    }
-
 
     public String getDayOfWeek(int day) {
         switch (day) {
@@ -230,7 +212,6 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
                 return "";
         }
     }
-
 
     static class CalenderBarViewHolder extends RecyclerView.ViewHolder {
         TextView day;

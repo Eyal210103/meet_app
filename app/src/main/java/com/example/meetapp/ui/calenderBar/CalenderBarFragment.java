@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.calenderBarPackage;
+package com.example.meetapp.ui.calenderBar;
 
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
-import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.callbacks.OnClickInCalender;
 import com.example.meetapp.databinding.CalenderBarFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
@@ -140,8 +140,9 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
             e.printStackTrace();
         }
     }
-    public void onClickDate(String index, String type , int i){
-        ((OnClickInRecyclerView) parent).onClickInRecyclerView(index,type,i);
+
+    public void onClickDate(String index, String type, long millis , int i){
+        ((OnClickInCalender) parent).onClickIInCalender(index,type,millis,i);
     }
 
     @Override
