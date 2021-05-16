@@ -2,18 +2,29 @@ package com.example.meetapp.ui.settings;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
 import com.example.meetapp.callbacks.OnCompleteAction;
 import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
@@ -24,6 +35,7 @@ import com.example.meetapp.model.CurrentUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
 
 public class SettingsFragment extends Fragment implements PhotoUploadCompleteListener, OnCompleteAction {
 
@@ -37,7 +49,6 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
     SettingsFragmentBinding binding;
 
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -46,6 +57,7 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
         View view = binding.getRoot();
 
         updateUI();
+
         binding.settingsEditTextDisplayName.setText(CurrentUser.getInstance().getDisplayName());
 
         binding.settingsChooseImgButton.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +74,7 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
                 onClickInFragment.onClickInFragment(Const.ACTION_LOGOUT);
             }
         });
+
         binding.settingsSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,11 +110,40 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
             }
         });
 
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+            binding.settingsDarkModeSwitch.setChecked(true);
+
+        binding.settingsDarkModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        });
+
         return view;
     }
 
     public void updateUI() {
-        Glide.with(requireActivity()).load(CurrentUser.getInstance().getProfileImageUrl()).into(binding.settingsUserProfile);
+        Glide.with(requireActivity()).load(CurrentUser.getInstance().getProfileImageUrl()).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                int colorFromImg = getDominantColor(bitmap);
+                int[] colors = {requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),colorFromImg};
+
+                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+                binding.settingsLayout.setBackground(gd);
+
+                return false;
+            }
+        }).into(binding.settingsUserProfile);
         binding.settingsUserName.setText(CurrentUser.getInstance().getDisplayName());
         binding.settingsUserEmail.setText(CurrentUser.getInstance().getEmail());
         binding.settingsEditTextDisplayName.setText(CurrentUser.getInstance().getDisplayName());

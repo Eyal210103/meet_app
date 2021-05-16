@@ -282,6 +282,7 @@
                 android:id="@+id/create_meeting_complete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/main_app_design"
                 android:backgroundTint="@color/blue"
@@ -309,16 +310,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/is_public_group_meeting_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                app:switchMinWidth="60dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/is_public_textView"
                 app:layout_constraintStart_toEndOf="@+id/is_public_textView"
-                app:layout_constraintTop_toTopOf="@+id/is_public_textView"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                app:layout_constraintTop_toTopOf="@+id/is_public_textView" />
 
             <TextView
                 android:id="@+id/is_public_textView"

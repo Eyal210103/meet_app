@@ -52,7 +52,7 @@ public class AvailableMeetingsRepo {
                 if (meeting != null && meeting.getMillis() > todayMillis) {
                     MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
-                    publicMeetingToIndexHash.put(meeting.getId(), publicMeetings.size()-1);
+                    publicMeetingToIndexHash.put(meeting.getId(), publicMeetings.size());
                     publicMeetings.add(meetingMutableLiveData);
                     publicMeetingsMutableLiveData.postValue(publicMeetings);
                 }

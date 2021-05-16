@@ -99,6 +99,8 @@
     <string name="select_upload_method">How do you want to set your picture?</string>
     <string name="option_gallery">Gallery</string>
     <string name="option_camera">Camera</string>
+    <string name="preferences">Preferences</string>
+    <string name="dark_mode">Dark Mode</string>
 
 
 </resources>

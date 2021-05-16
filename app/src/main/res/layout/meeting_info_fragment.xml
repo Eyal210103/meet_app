@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout9"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -48,7 +48,6 @@
             android:id="@+id/meeting_info_hour_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/main_app_design"
             android:backgroundTint="@color/backgroundSec"
@@ -56,7 +55,7 @@
             android:text="00:00"
             android:textColor="@color/oppBackground"
             android:textSize="36sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/meeting_info_tv_day_of_month_calendar_item"
             app:layout_constraintTop_toBottomOf="@+id/meeting_info_tv_day_of_week_calendar_item" />
 
         <LinearLayout
@@ -111,8 +110,6 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/main_app_design"
-        android:backgroundTint="@color/ic_launcher_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout9"
@@ -120,20 +117,39 @@
         app:layout_constraintStart_toEndOf="@+id/constraintLayout9"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
 
-        <ImageView
-            android:id="@+id/meeting_info_subject_iv"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/basketball"
-            tools:ignore="ContentDescription" />
+        <LinearLayout
+            android:id="@+id/meeting_info_group_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/meeting_info_group_civ"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@color/blue"
+                app:civ_border_color="@color/oppBackground"
+                app:civ_border_width="0.2dp" />
+            <TextView
+                android:id="@+id/meeting_info_group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/oppBackground"
+                android:textSize="24sp"
+                android:text="@string/app_name"/>
+
+        </LinearLayout>
 
         <TextView
+            android:background="@drawable/main_app_design"
+            android:backgroundTint="@color/ic_launcher_background"
             android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
             android:id="@+id/meeting_info_location_textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -145,7 +161,7 @@
         app:layout_constraintEnd_toStartOf="@+id/im_coming_button_meeting_info"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meeting_info_desc_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout10" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapViewMeetingInfo"
@@ -168,25 +184,41 @@
         android:background="@drawable/main_app_design"
         android:textColor="@color/oppBackground"
         android:backgroundTint="@color/colorAccent"
-        android:paddingHorizontal="20dp"
         android:text="@string/confirm_arrival"
         app:layout_constraintBottom_toBottomOf="@+id/meeting_participants_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/meeting_participants_recyclerView" />
 
-    <TextView
-        android:id="@+id/meeting_info_desc_textView"
-        android:layout_width="0dp"
+
+    <LinearLayout
+        android:id="@+id/linearLayout10"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
         android:background="@drawable/main_app_design"
         android:backgroundTint="@color/blue"
-        android:padding="10dp"
-        android:textColor="@color/oppBackground"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout8"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout9"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+
+        <ImageView
+            android:id="@+id/meeting_info_subject_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/basketball"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/meeting_info_desc_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/oppBackground"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <com.example.meetapp.ui.views.MovableFloatingActionButton
         android:id="@+id/floatingActionButton_meeting_chat"

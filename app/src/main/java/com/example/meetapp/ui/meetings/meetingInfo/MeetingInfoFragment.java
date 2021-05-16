@@ -2,6 +2,10 @@ package com.example.meetapp.ui.meetings.meetingInfo;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -22,11 +26,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.databinding.MeetingInfoFragmentBinding;
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
+import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
@@ -45,6 +55,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
+
 public class MeetingInfoFragment extends Fragment {
 
     private MeetingInfoViewModel mViewModel;
@@ -52,7 +64,7 @@ public class MeetingInfoFragment extends Fragment {
     private MeetingInfoFragmentBinding binding;
     private MapView mapView;
     private GoogleMap mMap;
-    private boolean isUserAlreadyIn;
+    private boolean isUserAlreadyIn ,displayGroupInfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +72,7 @@ public class MeetingInfoFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(MeetingInfoViewModel.class);
         String id = getArguments().getString(Const.BUNDLE_ID);
         type = getArguments().getString(Const.BUNDLE_TYPE);
+        displayGroupInfo = getArguments().getBoolean(Const.MEETING_TYPE_GROUP,true);
         String groupId = getArguments().getString(Const.BUNDLE_GROUP_ID, "");
         mViewModel.init(id, groupId, type);
     }
@@ -111,6 +124,14 @@ public class MeetingInfoFragment extends Fragment {
             });
         }
 
+        if (type.equals(Const.MEETING_TYPE_GROUP) && displayGroupInfo) {
+            mViewModel.getGroupData().observe(getViewLifecycleOwner(), new Observer<Group>() {
+                @Override
+                public void onChanged(Group group) {
+                    updateGroupData(group);
+                }
+            });
+        }
         binding.imComingButtonMeetingInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,13 +186,12 @@ public class MeetingInfoFragment extends Fragment {
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void updateUI(Meeting meeting) {
-        TextView day = binding.meetingInfoTvDayOfMonthCalendarItem;//view.findViewById(R.id.meeting_info_tv_day_of_month_calendar_item);
-        TextView dayOfWeek = binding.meetingInfoTvDayOfWeekCalendarItem; //view.findViewById(R.id.meeting_info_tv_day_of_week_calendar_item);
-        TextView month = binding.meetingInfoTvDayCalendarItem; //view.findViewById(R.id.meeting_info_tv_day_calendar_item);
-        TextView hour = binding.meetingInfoHourTextView; //view.findViewById(R.id.meeting_info_hour_textView);
-        TextView location = binding.meetingInfoLocationTextView; //view.findViewById(R.id.meeting_info_location_textView);
-        TextView description = binding.meetingInfoDescTextView; //view.findViewById(R.id.meeting_info_desc_textView);
-
+        TextView day = binding.meetingInfoTvDayOfMonthCalendarItem;
+        TextView dayOfWeek = binding.meetingInfoTvDayOfWeekCalendarItem;
+        TextView month = binding.meetingInfoTvDayCalendarItem;
+        TextView hour = binding.meetingInfoHourTextView;
+        TextView location = binding.meetingInfoLocationTextView;
+        TextView description = binding.meetingInfoDescTextView;
         ImageView subjectImageView = binding.meetingInfoSubjectIv;
 
         Date date = new Date(meeting.getMillis());
@@ -187,7 +207,31 @@ public class MeetingInfoFragment extends Fragment {
         mMap.addMarker(new MarkerOptions().position(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
         mMap.moveCamera(CameraUpdateFactory.zoomIn());
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
         //mMap.getUiSettings().setAllGesturesEnabled(false);
+    }
+
+    private void updateGroupData(Group group) {
+        binding.meetingInfoGroupInfo.setVisibility(View.VISIBLE);
+        Glide.with(this).load(group.getPhotoUrl()).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                int colorFromImg = getDominantColor(bitmap);
+                int[] colors = {requireContext().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
+
+                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+                gd.setCornerRadius(60);
+                binding.meetingInfoGroupInfo.setBackground(gd);
+
+                return false;
+            }
+        }).into(binding.meetingInfoGroupCiv);
+        binding.meetingInfoGroupName.setText(group.getName());
     }
 
     private void toggleIsUserIn() {
@@ -293,8 +337,8 @@ public class MeetingInfoFragment extends Fragment {
         return "Null";
     }
 
-    private int getSubjectIcon(String subject){
-        switch (subject){
+    private int getSubjectIcon(String subject) {
+        switch (subject) {
             case Const.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
             case Const.SUBJECT_BASKETBALL:

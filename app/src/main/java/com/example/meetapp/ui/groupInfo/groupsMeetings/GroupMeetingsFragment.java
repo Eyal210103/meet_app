@@ -71,6 +71,7 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInCalender
             Bundle bundle = new Bundle();
             bundle.putString(Const.BUNDLE_ID, meeting.getId());
             bundle.putString(Const.BUNDLE_TYPE, Const.MEETING_TYPE_GROUP);
+            bundle.putBoolean(Const.MEETING_TYPE_GROUP,false);
             String groupId = ((GroupMeeting) meeting).getGroupId();
             bundle.putString(Const.BUNDLE_GROUP_ID, groupId);
             meetingInfoFragment.setArguments(bundle);

@@ -19,12 +19,15 @@ public class HomeViewModel extends ViewModel {
     private final HashMap<String, ArrayList<LiveData<Meeting>>> meetingToMarker;
     private final HashMap<String, String> markerIdToMeeting;
     private final HashMap<String, String> groupMeetingToGroupId;
+    private final HashMap<String, String> currentUserGroupMeetingToGroupId;
+
 
     public HomeViewModel() {
         meetings = AvailableMeetingsRepo.getInstance().getPublicMeetings();
         meetingToMarker = new HashMap<>();
         markerIdToMeeting = new HashMap<>();
         groupMeetingToGroupId = AvailableMeetingsRepo.getInstance().getMeetingIdToGroupId();
+        currentUserGroupMeetingToGroupId = UserMeetingsRepo.getInstance().getIdsOfGroupMeetingsToGroup();
         userMeetings = UserMeetingsRepo.getInstance().getMeetingsListMutableLiveData();
     }
 
@@ -56,6 +59,9 @@ public class HomeViewModel extends ViewModel {
     }
 
     public HashMap<String, String> getGroupMeetingToGroupId() {
+        HashMap<String,String> temp = new HashMap<>();
+        temp.putAll(currentUserGroupMeetingToGroupId);
+        temp.putAll(groupMeetingToGroupId);
         return groupMeetingToGroupId;
     }
 }

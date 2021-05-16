@@ -95,5 +95,7 @@
     <string name="option_gallery">גלריה</string>
     <string name="option_camera">מצלמה</string>
     <string name="user_is_not_coming">אגיע</string>
+    <string name="preferences">Preferences</string>
+    <string name="dark_mode">Dark Mode</string>
 
 </resources>

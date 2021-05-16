@@ -127,41 +127,40 @@ public class HomeFragment extends Fragment {
         });
 
         //TODO BEHAVIOR IS DIFFERENT
-        mViewModel.getUserMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
-            @Override
-            public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
-                for (LiveData<Meeting> m: mutableLiveData) {
-                    if (!m.hasObservers()) {
-                        m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
-                            @Override
-                            public void onChanged(Meeting meeting) {
-                                String id = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
-                                mViewModel.addMeetingToMarker(id,m);
-                                if (!markersHash.containsKey(id)){
-                                    MarkerOptions markerOptions = new MarkerOptions();
-                                    markerOptions.position(meeting.getLocation());
-                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
-                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
-                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
-                                    markers.add(markerOptions);
-                                    ids.add(id);
-                                    markersHash.put(id,markerOptions);
-                                } else if (mViewModel.getListOfMeetings(id).size()>1){
-                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),R.drawable.multi_meeting);
-                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
-                                    markersHash.get(id).icon(BitmapDescriptorFactory.fromBitmap(icon));
-                                }
-                            }
-                        });
-                    }
-                }
-                if (mapView!=null)
-                    addMarkers();
-            }
-        });
+//        mViewModel.getUserMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
+//            @Override
+//            public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
+//                for (LiveData<Meeting> m: mutableLiveData) {
+//                    if (!m.hasObservers()) {
+//                        m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
+//                            @Override
+//                            public void onChanged(Meeting meeting) {
+//                                String id = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
+//                                mViewModel.addMeetingToMarker(id,m);
+//                                if (!markersHash.containsKey(id)){
+//                                    MarkerOptions markerOptions = new MarkerOptions();
+//                                    markerOptions.position(meeting.getLocation());
+//                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
+//                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
+//                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+//                                    markers.add(markerOptions);
+//                                    ids.add(id);
+//                                    markersHash.put(id,markerOptions);
+//                                } else if (mViewModel.getListOfMeetings(id).size()>1){
+//                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),R.drawable.multi_meeting);
+//                                    icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
+//                                    markersHash.get(id).icon(BitmapDescriptorFactory.fromBitmap(icon));
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//                if (mapView!=null)
+//                    addMarkers();
+//            }
+//        });
         return view;
     }
-
 
     private LatLng getLocation() {
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
