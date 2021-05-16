@@ -28,12 +28,12 @@ public class GroupInfoViewModel extends ViewModel {
     private LiveData<GroupMeeting> closesMeeting;
     private LiveData<Message> lastMessage;
 
-    public void init(MutableLiveData<Group> groupMutableLiveData , String id){
+    public void init(LiveData<Group> groupLiveData , String id){
         this.groupId = id;
-        this.groupMutableLiveData = groupMutableLiveData;
+        this.groupMutableLiveData = groupLiveData;
         groupsMembersRepo = new GroupsMembersRepo(groupId);
         membersMutableLiveData = groupsMembersRepo.getMembers();
-        groupMeetingsRepo = new GroupMeetingsRepo(groupId, groupsMembersRepo);
+        groupMeetingsRepo = new GroupMeetingsRepo(groupId);
         meetingsLiveData = groupMeetingsRepo.getMeeting();
         closesMeeting = groupMeetingsRepo.getClosesMeeting();
         lastMessageRepo = new LastMessageRepo(id);

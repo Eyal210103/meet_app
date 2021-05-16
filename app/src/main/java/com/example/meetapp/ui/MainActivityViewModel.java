@@ -1,7 +1,6 @@
 package com.example.meetapp.ui;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivityViewModel extends ViewModel {
-    MutableLiveData<ArrayList<MutableLiveData<Group>>> groupsList = null;
-    HashMap<String, MutableLiveData<Group>> groupsMap = null;
+    LiveData<ArrayList<LiveData<Group>>> groupsList = null;
+    HashMap<String, LiveData<Group>> groupsMap = null;
     LiveData<HashMap<String, ArrayList<LiveData<Meeting>>>> meetingsMap = null;
     HashMap<String,String> idsOfGroupMeetingsToGroup = null;
 
@@ -26,15 +25,15 @@ public class MainActivityViewModel extends ViewModel {
         idsOfGroupMeetingsToGroup = UserMeetingsRepo.getInstance().getIdsOfGroupMeetingsToGroup();
     }
 
-    public LiveData<ArrayList<MutableLiveData<Group>>> getGroups() {
+    public LiveData<ArrayList<LiveData<Group>>> getGroups() {
         return groupsList;
     }
 
-    public HashMap<String, MutableLiveData<Group>> getGroupsMap() {
+    public HashMap<String, LiveData<Group>> getGroupsMap() {
         return groupsMap;
     }
 
-    public LiveData<ArrayList<MutableLiveData<Group>>> getGroupsList() {
+    public LiveData<ArrayList<LiveData<Group>>> getGroupsList() {
         return groupsList;
     }
 

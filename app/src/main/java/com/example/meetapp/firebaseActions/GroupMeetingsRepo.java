@@ -1,5 +1,7 @@
 package com.example.meetapp.firebaseActions;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -25,20 +27,19 @@ public class GroupMeetingsRepo {
     private final HashMap<String, LiveData<HashMap<String, LiveData<User>>>> whoComing;
     private final MutableLiveData<HashMap<String, LiveData<HashMap<String, LiveData<User>>>>> mutableLiveWhoComing;
     private final HashMap<String,String> meetingIdToStringDate;
-    GroupsMembersRepo groupsMembersRepo;
     private final String id;
     private final MutableLiveData<GroupMeeting> closesMeeting;
+    private GroupMeeting closesMeetingDAO;
 
     ChildEventListener listener;
 
-    public GroupMeetingsRepo(String id, GroupsMembersRepo groupsMembersRepo) {
+    public GroupMeetingsRepo(String id) {
         this.closesMeeting = new MutableLiveData<>();
         this.allMeetings = new HashMap<>();
         this.mutableLiveData = new MutableLiveData<>();
         this.whoComing = new HashMap<>();
         this.mutableLiveWhoComing = new MutableLiveData<>();
         meetingIdToStringDate = new HashMap<>();
-        this.groupsMembersRepo = groupsMembersRepo;
         this.id = id;
         this.loadMeetings();
     }
@@ -75,9 +76,14 @@ public class GroupMeetingsRepo {
                 mutableLiveData.postValue(allMeetings);
 
                 if (closesMeeting.getValue() == null) {
-                    closesMeeting.postValue(meetingMutableLiveData.getValue());
-                } else if (isBefore(meeting.getMillis())) {
                     closesMeeting.postValue(meeting);
+                    closesMeetingDAO = meeting;
+                    Log.d("closessss", "onChildAdded: " + meeting.toString());
+                }
+                if (closesMeetingDAO.getMillis() > meeting.getMillis()) {
+                    closesMeeting.setValue(meeting);
+                    closesMeetingDAO = meeting;
+                    Log.d("closessss", "onChildAdded: " + meeting.toString());
                 }
             }
 
@@ -105,14 +111,11 @@ public class GroupMeetingsRepo {
                 allMeetings.put(meeting.getDateString(), temp);
                 mutableLiveData.postValue(allMeetings);
 
-                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {
-                };
+                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
                 HashMap<String, String> hashMap = (HashMap<String, String>) snapshot.child(FirebaseTags.WHO_COMING_CHILDES).getValue(genericTypeIndicator);
                 loadWhoComing(hashMap, meeting.getId());
 
-                if (closesMeeting.getValue() == null) {
-                    closesMeeting.postValue(meetingMutableLiveData.getValue());
-                } else if (closesMeeting.getValue().getId().equals(meeting.getId())) {
+                if (closesMeeting.getValue().getId().equals(meeting.getId())) {
                     closesMeeting.postValue(meeting);
                 }
             }

@@ -10,7 +10,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -71,17 +71,19 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
         });
         recyclerView.setAdapter(adapter);
 
-        mViewModel.getGroups().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Group>>>() {
+        mViewModel.getGroups().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Group>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<Group>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<Group>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
-                for (MutableLiveData<Group> m:mutableLiveData) {
-                    m.observe(getViewLifecycleOwner(), new Observer<Group>() {
-                        @Override
-                        public void onChanged(Group group) {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
+                for (LiveData<Group> m:mutableLiveData) {
+                    if (!m.hasActiveObservers()) {
+                        m.observe(getViewLifecycleOwner(), new Observer<Group>() {
+                            @Override
+                            public void onChanged(Group group) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
             }
         });

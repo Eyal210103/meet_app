@@ -2,6 +2,7 @@ package com.example.meetapp.firebaseActions;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.CurrentUser;
@@ -18,9 +19,9 @@ import java.util.HashMap;
 
 public class UserGroupsRepo {
 
-    private final ArrayList<MutableLiveData<Group>> groupList = new ArrayList<MutableLiveData<Group>>();
-    private final HashMap<String,MutableLiveData<Group>> groupMap = new HashMap<>();
-    MutableLiveData<ArrayList<MutableLiveData<Group>>> mutableLiveData = new MutableLiveData<>();
+    private final ArrayList<LiveData<Group>> groupList = new ArrayList<LiveData<Group>>();
+    private final HashMap<String,LiveData<Group>> groupMap = new HashMap<>();
+    MutableLiveData<ArrayList<LiveData<Group>>> mutableLiveData = new MutableLiveData<>();
 
     static UserGroupsRepo instance = null;
 
@@ -60,7 +61,7 @@ public class UserGroupsRepo {
                         @Override
                         public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                             String key = snapshot.getValue(String.class);
-                            for (MutableLiveData<Group> g : groupList) {
+                            for (LiveData<Group> g : groupList) {
                                 if (g!= null && key.equals(g.getValue().getId())) {
                                     groupList.remove(g);
                                     mutableLiveData.postValue(groupList);
@@ -81,7 +82,7 @@ public class UserGroupsRepo {
         }
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<Group>>> getGroups(){
+    public LiveData<ArrayList<LiveData<Group>>> getGroups(){
         return mutableLiveData;
     }
 
@@ -98,7 +99,7 @@ public class UserGroupsRepo {
         });
     }
 
-    public HashMap<String, MutableLiveData<Group>> getHashMapGroups() {
+    public HashMap<String, LiveData<Group>> getHashMapGroups() {
         return groupMap;
     }
 

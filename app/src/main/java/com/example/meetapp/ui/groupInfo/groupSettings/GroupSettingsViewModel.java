@@ -18,7 +18,7 @@ public class GroupSettingsViewModel extends ViewModel {
     private LiveData<ArrayList<String>> managers;
     private LiveData<ArrayList<MutableLiveData<User>>> members;
 
-    public void init(MutableLiveData<Group> group , String id){
+    public void init(LiveData<Group> group , String id){
         groupSettingsRepo = new GroupSettingsRepo(id);
         paddingUsers = groupSettingsRepo.getWaitingUsers();
         this.group = group;

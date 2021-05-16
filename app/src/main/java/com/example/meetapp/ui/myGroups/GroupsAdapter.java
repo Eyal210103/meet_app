@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,9 +42,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     Fragment context;
     int type;
-    ArrayList<MutableLiveData<Group>> groups;
+    ArrayList<LiveData<Group>> groups;
 
-    public GroupsAdapter(Fragment context, ArrayList<MutableLiveData<Group>> groups , int type) {
+    public GroupsAdapter(Fragment context, ArrayList<LiveData<Group>> groups , int type) {
         this.context = context;
         this.groups = groups;
         this.type =type;

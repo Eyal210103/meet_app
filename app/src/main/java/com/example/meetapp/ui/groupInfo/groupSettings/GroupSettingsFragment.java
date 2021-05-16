@@ -58,7 +58,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(GroupSettingsViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(getArguments().getString(Const.BUNDLE_GROUP_ID)),getArguments().getString(Const.BUNDLE_GROUP_ID));
+        String groupId = requireArguments().getString(Const.BUNDLE_GROUP_ID);
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(groupId),getArguments().getString(Const.BUNDLE_GROUP_ID));
     }
 
     @Override

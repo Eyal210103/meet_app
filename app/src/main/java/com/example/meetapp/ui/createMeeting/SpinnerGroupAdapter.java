@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
 import com.example.meetapp.R;
@@ -26,12 +25,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SpinnerGroupAdapter extends ArrayAdapter<LiveData<Group>> {
 
-    ArrayList<MutableLiveData<Group>> groups;
+    ArrayList<LiveData<Group>> groups;
     LayoutInflater layoutInflater;
     int resource;
     Context context;
 
-    public SpinnerGroupAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<MutableLiveData<Group>> objects) {
+    public SpinnerGroupAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<LiveData<Group>> objects) {
         super(context, resource);
         groups = objects;
         this.resource = resource;

@@ -59,8 +59,8 @@ public class GroupDashboardFragment extends Fragment {
         mViewModel = ViewModelProviders.of(parent).get(GroupInfoViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
         this.id = requireArguments().getString(Const.BUNDLE_GROUP_ID);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(requireArguments().getString(Const.BUNDLE_GROUP_ID))
-                ,id);
+        String groupId = requireArguments().getString(Const.BUNDLE_GROUP_ID);
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(groupId),id);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class GroupDashboardFragment extends Fragment {
         mViewModel.getClosesMeeting().observe(getViewLifecycleOwner(), new Observer<GroupMeeting>() {
             @Override
             public void onChanged(GroupMeeting groupMeeting) {
-                updateClosesMeetingUI(groupMeeting, view);
+                updateClosesMeetingUI(groupMeeting);
             }
         });
 
@@ -148,7 +148,7 @@ public class GroupDashboardFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
-    private void updateClosesMeetingUI(Meeting meeting,View view){
+    private void updateClosesMeetingUI(Meeting meeting){
         binding.include.getRoot().setVisibility(View.VISIBLE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(meeting.getMillis()));
