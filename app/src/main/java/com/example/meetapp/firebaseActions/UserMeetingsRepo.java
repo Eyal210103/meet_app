@@ -68,30 +68,30 @@ public class UserMeetingsRepo {
                             GroupMeeting meeting = snapshot.getValue(GroupMeeting.class);
                             MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                             meetingMutableLiveData.setValue(meeting);
-                            if (!allMeetings.containsKey(meeting.getDateString())){
+                            if (!allMeetings.containsKey(meeting.getDateString())){ // put new array
                                 allMeetings.put(meeting.getDateString(),new ArrayList<>());
                             }
 
-                            // TODO SO SO SO MUCH NOT NEEDED
                             ArrayList<LiveData<Meeting>> temp = allMeetings.get(meeting.getDateString());
                             boolean inserted = false;
-                            for (int i = 0; i < temp.size(); i++) {
+                            for (int i = 0; i < temp.size(); i++) { // check if update is needed
                                 if (temp.get(i).getValue().getId().equals(meeting.getId())){
                                     temp.set(i,meetingMutableLiveData);
                                     inserted = true;
                                     break;
                                 }
                             }
-                            if (!inserted){
+                            if (!inserted){ // if not exist -> add
                                 temp.add(meetingMutableLiveData);
                                 idsOfGroupMeetingsToGroup.put(meetingId,groupId);
                             }
-                            meetingIdToStringDate.replace(meetingId,meeting.getDateString());
-                            allMeetings.put(meeting.getDateString(),temp);
+                            meetingIdToStringDate.put(meetingId,meeting.getDateString());
+                            allMeetings.put(meeting.getDateString(),temp); // to observers
+
                             mutableLiveData.postValue(allMeetings);
 
                             userAllMeetingsList.add(meetingMutableLiveData);
-                            meetingsListMutableLiveData.postValue(userAllMeetingsList);
+                            meetingsListMutableLiveData.postValue(userAllMeetingsList); // to observers
                         }
                         else {
                             FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance()
@@ -114,12 +114,23 @@ public class UserMeetingsRepo {
                 String meetingId = snapshot.getKey();
                 if (meetingIdToStringDate.containsKey(meetingId)){
                     String date = meetingIdToStringDate.get(meetingId);
+                    int i = 0;
                     for (LiveData<Meeting> liveData:allMeetings.get(date)) {
                         if (liveData.getValue().getId().equals(meetingId)){
-                            allMeetings.get(date).remove(liveData);
-                            mutableLiveData.postValue(allMeetings);
+                            allMeetings.get(date).remove(i);
+                            mutableLiveData.postValue(allMeetings); // to observers
                             idsOfGroupMeetingsToGroup.remove(meetingId);
+                            meetingIdToStringDate.remove(meetingId);
+                            break;
                         }
+                        i++;
+                    }
+                }
+                for (int i = 0; i < userAllMeetingsList.size(); i++) {
+                    if (userAllMeetingsList.get(i).getValue().getId().equals(meetingId)){
+                        userAllMeetingsList.remove(i);
+                        meetingsListMutableLiveData.postValue(userAllMeetingsList); // to observers
+                        break;
                     }
                 }
             }
@@ -185,11 +196,22 @@ public class UserMeetingsRepo {
                 String meetingId = snapshot.getKey();
                 if (meetingIdToStringDate.containsKey(meetingId)){
                     String date = meetingIdToStringDate.get(meetingId);
+                    int i = 0;
                     for (LiveData<Meeting> liveData:allMeetings.get(date)) {
                         if (liveData.getValue().getId().equals(meetingId)){
-                            allMeetings.get(date).remove(liveData);
-                            mutableLiveData.postValue(allMeetings);
+                            allMeetings.get(date).remove(i);
+                            mutableLiveData.postValue(allMeetings); // to observers
+                            idsOfGroupMeetingsToGroup.remove(meetingId);
+                            break;
                         }
+                        i++;
+                    }
+                }
+                for (int i = 0; i < userAllMeetingsList.size(); i++) {
+                    if (userAllMeetingsList.get(i).getValue().getId().equals(meetingId)){
+                        userAllMeetingsList.remove(i);
+                        meetingsListMutableLiveData.postValue(userAllMeetingsList); // to observers
+                        break;
                     }
                 }
             }

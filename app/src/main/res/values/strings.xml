@@ -15,7 +15,7 @@
     <string name="create_group">Create Group</string>
     <string name="create">Create</string>
     <string name="join">Join</string>
-    <string name="type_locations_or_subjects">Type Locations Or Subjects</string>
+    <string name="type_locations_or_subjects">Search Locations</string>
     <string name="type_a_message_hint">Type A Message</string>
     <string name="next_meeting">Next Meeting</string>
     <string name="login_field">Login</string>ֺ
@@ -89,6 +89,7 @@
     <string name="group_meeting_remainder">A Little Reminder For A Group Meeting You Have Today At </string>
     <string name="is_public">Is Public?</string>
     <string name="user_is_coming">Im Not Coming</string>
+    <string name="user_is_not_coming">Im Not Coming</string>
 
     <string name="profile_settings">Account</string>
     <string name="save_changes">Save Changes</string>

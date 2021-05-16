@@ -14,7 +14,7 @@ public class MyMeetingsViewModel extends ViewModel {
     private HashMap<String,String> idsOfGroupMeetingsToGroup = null;
 
 
-    public void init(MainActivityViewModel mainActivityViewModel, String id) {
+    public void init(MainActivityViewModel mainActivityViewModel) {
         if (mainActivityViewModel != null) {
             this.meetings = mainActivityViewModel.getMeetingsMap();
             this.idsOfGroupMeetingsToGroup = mainActivityViewModel.getIdsOfGroupMeetingsToGroup();

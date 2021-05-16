@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,6 +124,7 @@ public class MeetingInfoFragment extends Fragment {
                         CurrentUser.quitMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES);
                         meeting.deleteUserArrival(CurrentUser.getInstance().getId());
                     }
+                    binding.imComingButtonMeetingInfo.setText(getString(R.string.user_is_not_coming));
                 } else {
                     if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
                         Meeting meeting = mViewModel.getPublicM().getValue();
@@ -133,7 +135,10 @@ public class MeetingInfoFragment extends Fragment {
                         CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES, mViewModel.getGroupId());
                         meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     }
+                    binding.imComingButtonMeetingInfo.setText(getString(R.string.user_is_coming));
+                    adapter.notifyDataSetChanged();
                 }
+                //adapter.notifyDataSetChanged();
             }
         });
 
@@ -166,6 +171,9 @@ public class MeetingInfoFragment extends Fragment {
         TextView hour = binding.meetingInfoHourTextView; //view.findViewById(R.id.meeting_info_hour_textView);
         TextView location = binding.meetingInfoLocationTextView; //view.findViewById(R.id.meeting_info_location_textView);
         TextView description = binding.meetingInfoDescTextView; //view.findViewById(R.id.meeting_info_desc_textView);
+
+        ImageView subjectImageView = binding.meetingInfoSubjectIv;
+
         Date date = new Date(meeting.getMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -175,6 +183,7 @@ public class MeetingInfoFragment extends Fragment {
         hour.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
         description.setText(meeting.getDescription());
         location.setText(getAddress(meeting.getLocation()));
+        subjectImageView.setImageResource(getSubjectIcon(meeting.getSubject()));
         mMap.addMarker(new MarkerOptions().position(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
         mMap.moveCamera(CameraUpdateFactory.zoomIn());
@@ -282,6 +291,25 @@ public class MeetingInfoFragment extends Fragment {
             e.printStackTrace();
         }
         return "Null";
+    }
+
+    private int getSubjectIcon(String subject){
+        switch (subject){
+            case Const.SUBJECT_RESTAURANT:
+                return R.drawable.restaurant;
+            case Const.SUBJECT_BASKETBALL:
+                return R.drawable.basketball;
+            case Const.SUBJECT_SOCCER:
+                return R.drawable.soccer;
+            case Const.SUBJECT_FOOTBALL:
+                return R.drawable.football;
+            case Const.SUBJECT_VIDEO_GAMES:
+                return R.drawable.videogame;
+            case Const.SUBJECT_MEETING:
+                return R.drawable.meetingicon;
+            default:
+                return R.drawable.groupsicon;
+        }
     }
 
     @Override

@@ -31,6 +31,14 @@ public class MyMeetingsFragment extends Fragment implements OnClickInCalender {
 
     private long prevMillis;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MyMeetingsViewModel.class);
+        mViewModel.init(mainActivityViewModel);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,15 +63,6 @@ public class MyMeetingsFragment extends Fragment implements OnClickInCalender {
 
         return binding.getRoot();
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel = ViewModelProviders.of(this).get(MyMeetingsViewModel.class);
-        mViewModel.init(mainActivityViewModel, null);
-    }
-
 
     @Override
     public void onClickIInCalender(Object value, String action, long millis, int i) {

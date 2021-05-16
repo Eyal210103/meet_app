@@ -23,8 +23,6 @@ public class MeetingInfoRepo {
     private final MutableLiveData<GroupMeeting> gMeetingLiveData = new MutableLiveData<>();
     private final String meetingId;
 
-    //TODO - Move to constructor
-
     public MeetingInfoRepo(String id) {
         this.meetingId = id;
     }
@@ -91,14 +89,20 @@ public class MeetingInfoRepo {
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                //TODO
+                String id = snapshot.getKey();
+                for (User user:arrayList) {
+                    if (user.getId().equals(id)){
+                        arrayList.remove(user);
+                        mutableLiveData.postValue(arrayList);
+                        return;
+                    }
+                }
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                error.toException().printStackTrace();
             }
         });
         return mutableLiveData;
@@ -134,7 +138,14 @@ public class MeetingInfoRepo {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                //TODO
+                String userId = snapshot.getKey();
+                for (User user:arrayList) {
+                    if (user.getId().equals(userId)){
+                        arrayList.remove(user);
+                        mutableLiveData.postValue(arrayList);
+                        return;
+                    }
+                }
             }
 
             @Override

@@ -64,31 +64,6 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
         ImageView arrowNextIV = binding.groupMeetingsArrowForwardImageView;
 
 
-        if (mViewModel instanceof MyMeetingsViewModel) {
-            this.adapter = new CalenderBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
-
-            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<Meeting>>>>() {
-                @Override
-                public void onChanged(HashMap<String, ArrayList<LiveData<Meeting>>> stringArrayListHashMap) {
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        }else {
-
-            this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(), Const.BUNDLE_GROUP_ID);
-            ((GroupInfoViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<GroupMeeting>>>>() {
-                @Override
-                public void onChanged(HashMap<String, ArrayList<LiveData<GroupMeeting>>> stringArrayListHashMap) {
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        }
-
-        llm = new LinearLayoutManager(this.requireActivity());
-        llm.setOrientation(RecyclerView.HORIZONTAL);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(llm);
         add30Days();
 
         arrowNextIV.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +84,32 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
                 }
             }
         });
+
+
+
+        if (mViewModel instanceof MyMeetingsViewModel) {
+            this.adapter = new CalenderBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
+
+            ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<Meeting>>>>() {
+                @Override
+                public void onChanged(HashMap<String, ArrayList<LiveData<Meeting>>> stringArrayListHashMap) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }else {
+            this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(), Const.BUNDLE_GROUP_ID);
+            ((GroupInfoViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<GroupMeeting>>>>() {
+                @Override
+                public void onChanged(HashMap<String, ArrayList<LiveData<GroupMeeting>>> stringArrayListHashMap) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+        llm = new LinearLayoutManager(this.requireActivity());
+        llm.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(llm);
 
         return  view;
     }
@@ -192,5 +193,4 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
                 return "";
         }
     }
-
 }
