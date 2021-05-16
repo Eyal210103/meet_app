@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="8dp"
             android:visibility="visible">
 
             <TextView
@@ -106,15 +106,15 @@
                 android:id="@+id/group_settings_waiting_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="14dp"
             android:orientation="vertical"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="8dp"
             android:visibility="visible">
 
             <TextView
@@ -125,6 +125,7 @@
                 android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="8dp"
                 android:id="@+id/group_settings_members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
