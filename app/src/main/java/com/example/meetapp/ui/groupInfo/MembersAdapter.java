@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,10 +19,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersViewHolder>{
 
-    private Fragment context;
-    private ArrayList<MutableLiveData<User>> members;
+    private final Fragment context;
+    private final ArrayList<LiveData<User>> members;
 
-    public MembersAdapter(Fragment context, ArrayList<MutableLiveData<User>> members) {
+    public MembersAdapter(Fragment context, ArrayList<LiveData<User>> members) {
         this.context = context;
         this.members = members;
     }

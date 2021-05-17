@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -97,11 +97,11 @@ public class GroupInfoFragment extends Fragment {
             }}).attach();
 
 
-        mViewModel.getMembersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+        mViewModel.getMembersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<User>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<User>> mutableLiveData) {
                 membersAdapter.notifyDataSetChanged();
-                for (MutableLiveData<User> u : mViewModel.getMembersLiveData().getValue()) {
+                for (LiveData<User> u : mViewModel.getMembersLiveData().getValue()) {
                     if (!u.hasObservers()) {
                         u.observe(getViewLifecycleOwner(), new Observer<User>() {
                             @Override
@@ -156,6 +156,7 @@ public class GroupInfoFragment extends Fragment {
         }).into(groupImage);
 
         groupName.setText(group.getName());
+        groupName.setSelected(true);
         groupSubject.setImageResource(getSubjectIcon(group.getSubject()));
     }
 

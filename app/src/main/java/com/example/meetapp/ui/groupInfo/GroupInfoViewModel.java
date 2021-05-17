@@ -1,7 +1,6 @@
 package com.example.meetapp.ui.groupInfo;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.GroupMeetingsRepo;
@@ -23,7 +22,7 @@ public class GroupInfoViewModel extends ViewModel {
     private LastMessageRepo lastMessageRepo;
 
     private LiveData<Group> groupMutableLiveData;
-    private LiveData<ArrayList<MutableLiveData<User>>> membersMutableLiveData;
+    private LiveData<ArrayList<LiveData<User>>> membersMutableLiveData;
     private LiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> meetingsLiveData;
     private LiveData<GroupMeeting> closesMeeting;
     private LiveData<Message> lastMessage;
@@ -44,7 +43,7 @@ public class GroupInfoViewModel extends ViewModel {
         return groupMutableLiveData;
     }
 
-    public LiveData<ArrayList<MutableLiveData<User>>> getMembersLiveData() {
+    public LiveData<ArrayList<LiveData<User>>> getMembersLiveData() {
         return membersMutableLiveData;
     }
 

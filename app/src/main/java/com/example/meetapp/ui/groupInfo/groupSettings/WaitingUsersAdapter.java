@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,10 +22,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapter.WaitingUsersViewHolder> {
 
-    private Fragment context;
-    private ArrayList<MutableLiveData<User>> members;
+    private final Fragment context;
+    private final ArrayList<LiveData<User>> members;
 
-    public WaitingUsersAdapter(Fragment context, ArrayList<MutableLiveData<User>> members) {
+    public WaitingUsersAdapter(Fragment context, ArrayList<LiveData<User>> members) {
         this.context = context;
         this.members = members;
     }
@@ -47,14 +47,14 @@ public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapte
             holder.approve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickInRecyclerView.onClickInRecyclerView(position, Const.ACTION_APPROVE,0);
+                    onClickInRecyclerView.onClickInRecyclerView(user.getId(), Const.ACTION_APPROVE,0);
                     notifyDataSetChanged();
                 }
             });
             holder.reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickInRecyclerView.onClickInRecyclerView(position, Const.ACTION_REJECT,0);
+                    onClickInRecyclerView.onClickInRecyclerView(user.getId(), Const.ACTION_REJECT,0);
                     notifyItemRemoved(position);
                 }
             });
@@ -66,8 +66,7 @@ public class WaitingUsersAdapter extends RecyclerView.Adapter<WaitingUsersAdapte
         return members.size();
     }
 
-    class WaitingUsersViewHolder extends RecyclerView.ViewHolder {
-
+    static class WaitingUsersViewHolder extends RecyclerView.ViewHolder {
         CircleImageView profile, approve , reject;
         TextView name;
 

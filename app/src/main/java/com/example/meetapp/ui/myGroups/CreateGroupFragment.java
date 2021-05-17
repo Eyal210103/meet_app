@@ -165,7 +165,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     }
 
     @Override
-    public void onClickInRecyclerView(Object value, String action, int i) {
+    public void onClickInRecyclerView(Object value, String action, Integer i) {
         if (action.equals(Const.ACTION_SUBJECT)){
             int v = (int)value;
             if (position != -1){

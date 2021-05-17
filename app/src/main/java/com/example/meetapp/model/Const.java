@@ -18,6 +18,8 @@ public class Const {
     public static final String ACTION_REJECT = "reject";
     public static final String ACTION_LEAVE = "leave";
     public static final String ACTION_LOGOUT = "logout";
+    public static final String ACTION_SET_MANAGER = "setManager";
+    public static final String ACTION_REMOVE = "remove";
 
 
     public static final String SUBJECT_RESTAURANT ="Restaurant";

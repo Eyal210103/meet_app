@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -110,11 +110,11 @@ public class GroupDashboardFragment extends Fragment {
             }
         });
 
-        mViewModel.getMembersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+        mViewModel.getMembersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<User>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<User>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
-                for (MutableLiveData<User> u : mutableLiveData) {
+                for (LiveData<User> u : mutableLiveData) {
                     u.observe(getViewLifecycleOwner(), new Observer<User>() {
                         @Override
                         public void onChanged(User user) {

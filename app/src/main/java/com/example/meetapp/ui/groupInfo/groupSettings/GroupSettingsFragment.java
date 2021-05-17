@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,13 +60,13 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         mViewModel = ViewModelProviders.of(this).get(GroupSettingsViewModel.class);
         MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
         String groupId = requireArguments().getString(Const.BUNDLE_GROUP_ID);
-        mViewModel.init(mainActivityViewModel.getGroupsMap().get(groupId),getArguments().getString(Const.BUNDLE_GROUP_ID));
+        mViewModel.init(mainActivityViewModel.getGroupsMap().get(groupId), getArguments().getString(Const.BUNDLE_GROUP_ID));
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = GroupSettingFragmentBinding.inflate(inflater,container,false);
+        binding = GroupSettingFragmentBinding.inflate(inflater, container, false);
         view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
 
         this.circleImageView = binding.groupSettingsCircleImageView;//view.findViewById(R.id.group_settings_circleImageView);
@@ -79,15 +80,15 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             public void onClick(View v) {
                 EditGroupDialog editGroupDialog = new EditGroupDialog();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Const.BUNDLE_GROUP_ID,mViewModel.getGroup().getValue());
+                bundle.putSerializable(Const.BUNDLE_GROUP_ID, mViewModel.getGroup().getValue());
                 editGroupDialog.setArguments(bundle);
-                editGroupDialog.show(getChildFragmentManager(),"Edit Group");
+                editGroupDialog.show(getChildFragmentManager(), "Edit Group");
             }
         });
 
         setInvisible();
 
-        WaitingUsersAdapter adapter = new WaitingUsersAdapter(this, mViewModel.getPaddingUsers().getValue());
+        WaitingUsersAdapter adapter = new WaitingUsersAdapter(this, mViewModel.getPendingUsers().getValue());
         RecyclerView recyclerView = binding.groupSettingsWaitingRecycler;
         LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -95,21 +96,21 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         recyclerView.setAdapter(adapter);
 
         RecyclerView members = binding.groupSettingsMembers;//view.findViewById(R.id.group_settings_members);
-        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(requireActivity(),mViewModel.getMembers().getValue(),isThere);
+        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(this, mViewModel.getMembers().getValue(), isThere);
         members.setAdapter(settingsAdapter);
         LinearLayoutManager llm2 = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         members.setLayoutManager(llm2);
 
 
-        mViewModel.getPaddingUsers().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+        mViewModel.getPendingUsers().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<User>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<User>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
-                if (mutableLiveData.isEmpty()){
+                if (mutableLiveData.isEmpty()) {
                     setInvisible();
-                }else {
-                    for (MutableLiveData<User> u : mutableLiveData) {
+                } else {
+                    for (LiveData<User> u : mutableLiveData) {
                         u.observe(getViewLifecycleOwner(), new Observer<User>() {
                             @Override
                             public void onChanged(User user) {
@@ -121,36 +122,42 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
                 }
             }
         });
+
         mViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
             @Override
             public void onChanged(Group group) {
                 updateUI(group);
             }
         });
+
         mViewModel.getManagers().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
-                for (String s:strings) {
-                    if (s.equals(CurrentUser.getInstance().getId())){
+                Log.d("managers_____", "onChanged: " + strings.toString());
+                for (String s : strings) {
+                    if (s.equals(CurrentUser.getInstance().getId())) {
                         isThere = true;
+                        settingsAdapter.setIsManager(true);
                         linearLayoutWaiting.setVisibility(View.VISIBLE);
                         break;
                     }
                 }
-                if (!isThere){
+                if (!isThere) {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(linearLayoutWaiting.getLayoutParams());
-                    params.height= 0;
+                    params.height = 0;
                     params.topMargin = 6;
                     linearLayoutWaiting.setLayoutParams(params);
                 }
+                settingsAdapter.notifyDataSetChanged();
                 adapter.notifyDataSetChanged();
             }
         });
-        mViewModel.getMembers().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<User>>>() {
+
+        mViewModel.getMembers().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<User>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<User>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<User>> mutableLiveData) {
                 settingsAdapter.notifyDataSetChanged();
-                for (MutableLiveData<User> u : mutableLiveData) {
+                for (LiveData<User> u : mutableLiveData) {
                     u.observe(getViewLifecycleOwner(), new Observer<User>() {
                         @Override
                         public void onChanged(User user) {
@@ -164,41 +171,28 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         return view;
     }
 
-    @Override
-    public void onClickInRecyclerView(Object value, String action, int i) {
-        if (action.equals(Const.ACTION_APPROVE)){
-            mViewModel.approveUser((Integer)value);
-            if (mViewModel.getPaddingUsers().getValue().size() == 0){
-                setInvisible();
-            }
-        }else if(action.equals(Const.ACTION_REJECT)){
-            mViewModel.rejectUser((Integer)value);
-            if (mViewModel.getPaddingUsers().getValue().size() == 0){
-                setInvisible();
-            }
-        }
-    }
-
-    private void setInvisible(){
+    private void setInvisible() {
         linearLayoutWaiting.setVisibility(View.INVISIBLE);
         binding.waitingReqTv.setVisibility(View.INVISIBLE);
     }
-    private void setVisible(){
+
+    private void setVisible() {
         linearLayoutWaiting.setVisibility(View.VISIBLE);
         binding.waitingReqTv.setVisibility(View.VISIBLE);
     }
 
-    public void updateUI(Group group){
+    public void updateUI(Group group) {
         Glide.with(requireActivity()).load(group.getPhotoUrl()).listener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 return false;
             }
+
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
                 int colorFromImg = getDominantColor(bitmap);
-                int[] colors = {requireActivity().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
+                int[] colors = {requireActivity().getColor(R.color.backgroundSec), colorFromImg, colorFromImg};
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
                 gd.setCornerRadius(0f);
@@ -208,6 +202,36 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             }
         }).into(circleImageView);
         this.nameTextView.setText(group.getName());
+        this.nameTextView.setSelected(true);
         this.descriptionTextView.setText(group.getDescription());
+        this.descriptionTextView.setSelected(true);
+    }
+
+    @Override
+    public void onClickInRecyclerView(Object value, String action, Integer i) {
+        switch (action) {
+            case Const.ACTION_APPROVE:
+                mViewModel.approveUser((String) value);
+                if (mViewModel.getPendingUsers().getValue().size() == 0) {
+                    setInvisible();
+                }
+                break;
+            case Const.ACTION_REJECT:
+                mViewModel.rejectUser((String) value);
+                if (mViewModel.getPendingUsers().getValue().size() == 0) {
+                    setInvisible();
+                }
+                break;
+            case Const.ACTION_SET_MANAGER: {
+                String userId = (String) value;
+                mViewModel.addManager(userId);
+                break;
+            }
+            case Const.ACTION_REMOVE: {
+                String userId = (String) value;
+                mViewModel.removeUser(userId);
+                break;
+            }
+        }
     }
 }

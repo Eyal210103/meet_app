@@ -1,10 +1,13 @@
 package com.example.meetapp.firebaseActions;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.meetapp.callbacks.OnCompleteAction;
 import com.example.meetapp.model.User;
 import com.example.meetapp.model.meetings.Meeting;
 import com.google.firebase.database.ChildEventListener;
@@ -27,11 +30,12 @@ public class AvailableMeetingsRepo {
     private final HashMap<String,Integer> publicMeetingToIndexHash = new HashMap<>();
     private final ArrayList<MutableLiveData<Meeting>> publicMeetings = new ArrayList<>();
     private long todayMillis;
+    private Context listener;
+
+    private static AvailableMeetingsRepo instance =  null;
 
     private AvailableMeetingsRepo() {
     }
-
-    private static AvailableMeetingsRepo instance =  null;
 
     public static AvailableMeetingsRepo getInstance() {
         if (instance == null) {
@@ -42,7 +46,17 @@ public class AvailableMeetingsRepo {
         return instance;
     }
 
-    public void loadPublicMeetings(){
+    public static AvailableMeetingsRepo getInstance(Context context){
+        if (instance == null) {
+            instance = new AvailableMeetingsRepo();
+            instance.loadPublicMeetings();
+            instance.loadPublicGroupMeetings();
+        }
+        instance.listener = context;
+        return instance;
+    }
+
+    private void loadPublicMeetings(){
         todayMillis = Calendar.getInstance().getTimeInMillis();
         publicMeetingsMutableLiveData.setValue(publicMeetings);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
@@ -73,7 +87,7 @@ public class AvailableMeetingsRepo {
         });
     }
 
-    public void loadPublicGroupMeetings(){
+    private void loadPublicGroupMeetings(){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
@@ -81,6 +95,12 @@ public class AvailableMeetingsRepo {
                 String meetingId = snapshot.getKey();
                 loadSinglePublicMeetingData(groupId,meetingId);
                 meetingIdToGroupId.put(meetingId,groupId);
+
+                if (listener != null){
+                    OnCompleteAction onCompleteAction = (OnCompleteAction)listener;
+                    onCompleteAction.OnComplete();
+                    listener = null;
+                }
             }
 
             @Override

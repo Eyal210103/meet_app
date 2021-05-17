@@ -1,5 +1,6 @@
 package com.example.meetapp.ui.myGroups;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -44,10 +45,10 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     int type;
     ArrayList<LiveData<Group>> groups;
 
-    public GroupsAdapter(Fragment context, ArrayList<LiveData<Group>> groups , int type) {
+    public GroupsAdapter(Fragment context, ArrayList<LiveData<Group>> groups, int type) {
         this.context = context;
         this.groups = groups;
-        this.type =type;
+        this.type = type;
     }
 
     @NonNull
@@ -57,11 +58,15 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         return new GroupsViewHolder(v);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
         final Group current = groups.get(position).getValue();
         if (current != null) {
             holder.groupName.setText(current.getName());
+
+            holder.groupName.setSelected(true);
+
             //Glide.with(context.requireActivity()).load(current.getPhotoUrl()).into(holder.groupImage);
 
             Glide.with(context.requireActivity()).load(current.getPhotoUrl()).listener(new RequestListener<Drawable>() {
@@ -69,11 +74,12 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                     return false;
                 }
+
                 @Override
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                    Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
                     int colorFromImg = getDominantColor(bitmap);
-                    int[] colors = {context.requireContext().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
+                    int[] colors = {context.requireContext().getColor(R.color.backgroundSec), colorFromImg, colorFromImg};
 
                     GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
                     gd.setCornerRadius(60);
@@ -84,6 +90,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             }).into(holder.groupImage);
 
             Glide.with(context.requireActivity()).load(getSubjectIcon(current.getSubject())).into(holder.subject);
+
             if (type == Const.TYPE_MY_GROUPS) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -107,14 +114,15 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                     }
                 });
             }
+
             holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    menu.add(position,0,0,context.getString(R.string.menu_option_leave_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    menu.add(position, 0, 0, context.getString(R.string.menu_option_leave_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                            onClickInRecyclerView.onClickInRecyclerView(current.getId(), Const.ACTION_LEAVE,0);
+                            OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView) context;
+                            onClickInRecyclerView.onClickInRecyclerView(current.getId(), Const.ACTION_LEAVE, 0);
                             return false;
                         }
                     });
@@ -128,8 +136,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         return groups.size();
     }
 
-    private int getSubjectIcon(String subject){
-        switch (subject){
+    private int getSubjectIcon(String subject) {
+        switch (subject) {
             case Const.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
             case Const.SUBJECT_BASKETBALL:

@@ -2,6 +2,7 @@ package com.example.meetapp.firebaseActions;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.User;
@@ -16,15 +17,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GroupsMembersRepo {
-    private final ArrayList<MutableLiveData<User>> membersAL;
+    private final ArrayList<LiveData<User>> membersAL;
     private final HashMap<String,String> usersIdsMap;
     private final String groupId;
-    MutableLiveData<ArrayList<MutableLiveData<User>>> mutableLiveData;
+    MutableLiveData<ArrayList<LiveData<User>>> mutableLiveData;
     ChildEventListener childEventListener;
 
     public GroupsMembersRepo (String groupId){
         this.groupId = groupId;
-        membersAL = new ArrayList<MutableLiveData<User>>();
+        membersAL = new ArrayList<LiveData<User>>();
         usersIdsMap = new HashMap<>();
         mutableLiveData = new MutableLiveData<>();
         this.loadMembers();
@@ -58,7 +59,7 @@ public class GroupsMembersRepo {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 String key = snapshot.getValue(String.class);
-                for (MutableLiveData<User> u : membersAL) {
+                for (LiveData<User> u : membersAL) {
                     if (key != null && key.equals(u.getValue().getId())) {
                         membersAL.remove(u);
                         usersIdsMap.remove(key);
@@ -77,7 +78,7 @@ public class GroupsMembersRepo {
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MEMBERS_CHILDES).addChildEventListener(childEventListener);
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<User>>> getMembers(){
+    public LiveData<ArrayList<LiveData<User>>> getMembers(){
         return mutableLiveData;
     }
     private MutableLiveData<User> putUserData(String key){
