@@ -188,19 +188,10 @@ public class MeetingsInfoDialog extends DialogFragment {
             List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
             try {
                 Address obj = addresses.get(0);
-                String add = obj.getAddressLine(0);
-                return add;
+                return obj.getAddressLine(0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            //add = add + "\n" + obj.getCountryName();
-            //add = add + "\n" + obj.getCountryCode();
-            //add = add + "\n" + obj.getAdminArea();
-            //add = add + "\n" + obj.getPostalCode();
-            //add = add + "\n" + obj.getSubAdminArea();
-            //add = add + "\n" + obj.getLocality();
-            //add = add + "\n" + obj.getSubThoroughfare();
         } catch (IOException e) {
             e.printStackTrace();
         }

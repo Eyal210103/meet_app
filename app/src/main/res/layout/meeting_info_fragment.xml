@@ -220,17 +220,5 @@
 
     </LinearLayout>
 
-    <com.example.meetapp.ui.views.MovableFloatingActionButton
-        android:id="@+id/floatingActionButton_meeting_chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:src="@drawable/ic_baseline_chat_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription"
-        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

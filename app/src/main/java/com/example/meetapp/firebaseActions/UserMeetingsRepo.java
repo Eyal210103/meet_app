@@ -174,7 +174,7 @@ public class UserMeetingsRepo {
                                 userAllMeetingsList.add(meetingMutableLiveData);
                                 meetingsListMutableLiveData.postValue(userAllMeetingsList);
 
-                                meetingIdToStringDate.replace(meeting.getId(), meeting.getDateString());
+                                meetingIdToStringDate.put(meeting.getId(), meeting.getDateString());
                                 allMeetings.put(meeting.getDateString(), temp);
                                 mutableLiveData.postValue(allMeetings);
                             }
