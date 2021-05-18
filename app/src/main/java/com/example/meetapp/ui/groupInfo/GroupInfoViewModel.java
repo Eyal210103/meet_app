@@ -30,11 +30,14 @@ public class GroupInfoViewModel extends ViewModel {
     public void init(LiveData<Group> groupLiveData , String id){
         this.groupId = id;
         this.groupMutableLiveData = groupLiveData;
+
         groupMembersRepo = new GroupMembersRepo(groupId);
         membersMutableLiveData = groupMembersRepo.getMembers();
+
         groupMeetingsRepo = new GroupMeetingsRepo(groupId);
         meetingsLiveData = groupMeetingsRepo.getMeetings();
         closesMeeting = groupMeetingsRepo.getClosesMeeting();
+
         lastMessageRepo = new LastMessageRepo(id);
         lastMessage = lastMessageRepo.getMessage();
     }

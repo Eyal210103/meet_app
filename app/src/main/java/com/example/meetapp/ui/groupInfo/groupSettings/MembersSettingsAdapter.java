@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,11 +29,13 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
     private final Fragment context;
     private final ArrayList<LiveData<User>> members;
     private boolean isManager;
+    private ArrayList<String> managers;
 
-    public MembersSettingsAdapter(Fragment context, ArrayList<LiveData<User>> members, boolean isManager) {
+    public MembersSettingsAdapter(Fragment context, ArrayList<LiveData<User>> members, ArrayList<String> managers, boolean isManager) {
         this.context = context;
         this.members = members;
         this.isManager = isManager;
+        this.managers = managers;
     }
 
     @NonNull
@@ -48,6 +51,9 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
         if (user!= null){
             Glide.with(context).load(user.getProfileImageUrl()).into(holder.circleImageView);
             holder.textView.setText(user.getDisplayName());
+
+            if (managers.contains(user.getId()))
+                holder.isManager.setVisibility(View.VISIBLE);
 
             if (!user.getId().equals(CurrentUser.getInstance().getId())) {
                 holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
@@ -106,13 +112,19 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
         this.notifyDataSetChanged();
     }
 
-    class MembersSettingsViewHolder extends RecyclerView.ViewHolder  {
+    public void setManagers(ArrayList<String> managers) {
+        this.managers = managers;
+    }
+
+    static class MembersSettingsViewHolder extends RecyclerView.ViewHolder  {
         TextView textView;
         CircleImageView circleImageView;
+        ImageView isManager;
         public MembersSettingsViewHolder(@NonNull View itemView) {
             super(itemView);
             circleImageView = itemView.findViewById(R.id.settings_members_circleImageView);
             textView = itemView.findViewById(R.id.settings_members_textView);
+            isManager = itemView.findViewById(R.id.settings_is_manager_indication);
         }
 
     }

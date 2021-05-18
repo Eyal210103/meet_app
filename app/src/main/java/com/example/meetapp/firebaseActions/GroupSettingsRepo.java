@@ -34,7 +34,6 @@ public class GroupSettingsRepo {
         managers = new ArrayList<>();
         waitingUsersListMutableLiveData = new MutableLiveData<>();
         managersIdsMutableLiveData = new MutableLiveData<>();
-
         this.loadWaitingUsers();
         this.loadManagers();
     }
@@ -56,7 +55,7 @@ public class GroupSettingsRepo {
                 if (!isThere) {
                     LiveData<User> userMutableLiveData = putUserData(key);
                     membersAL.add(userMutableLiveData);
-                    waitingUsersListMutableLiveData.setValue(membersAL);
+                    waitingUsersListMutableLiveData.postValue(membersAL);
                 }
             }
 
@@ -67,10 +66,11 @@ public class GroupSettingsRepo {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 String key = snapshot.getValue(String.class);
+                idsHashMap.remove(key);
                 for (LiveData<User> u : membersAL) {
                     if (key.equals(u.getValue().getId())) {
                         membersAL.remove(u);
-                        idsHashMap.remove(key);
+                        waitingUsersListMutableLiveData.postValue(membersAL);
                         break;
                     }
                 }
@@ -108,7 +108,7 @@ public class GroupSettingsRepo {
     }
 
     private void loadManagers(){
-        managersIdsMutableLiveData.postValue(managers);
+        managersIdsMutableLiveData.setValue(managers);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MANAGER_CHILDES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -116,7 +116,6 @@ public class GroupSettingsRepo {
                 for (DataSnapshot s : snapshot.getChildren()) {
                     managers.add(s.getValue(String.class));
                     Log.d("managers_____", "onChanged: " +s.getValue(String.class));
-
                 }
                 managersIdsMutableLiveData.postValue(managers);
             }

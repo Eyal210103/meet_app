@@ -32,24 +32,17 @@ public class GroupMembersRepo {
     }
 
     private void loadMembers(){
-        usersIdsMap.clear();
-        membersAL.clear();
         mutableLiveData.setValue(membersAL);
         this.childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String key = snapshot.getValue(String.class);
-                boolean isThere = false;
-                if (usersIdsMap.containsKey(key)){
-                    isThere= true;
-                }else {
+                if (!usersIdsMap.containsKey(key)) {
                     usersIdsMap.put(key,key);
+                    membersAL.add(putUserData(key));
+                    mutableLiveData.postValue(membersAL);
                 }
-                if (!isThere) {
-                    LiveData<User> userMutableLiveData = putUserData(key);
-                    membersAL.add(userMutableLiveData);
-                    mutableLiveData.setValue(membersAL);
-                }
+
             }
 
             @Override
@@ -88,7 +81,7 @@ public class GroupMembersRepo {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userMutableLiveData.setValue(snapshot.getValue(User.class));
+                userMutableLiveData.postValue(snapshot.getValue(User.class));
             }
 
             @Override
@@ -100,6 +93,5 @@ public class GroupMembersRepo {
 
     public void detachListener(){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MEMBERS_CHILDES).removeEventListener(childEventListener);
-
     }
 }

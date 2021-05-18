@@ -51,7 +51,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private GroupSettingsFragmentBinding binding;
     boolean isManagerAndIsPendingNotEmpty = true;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +93,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         recyclerView.setAdapter(adapter);
 
         RecyclerView members = binding.groupSettingsMembers;//view.findViewById(R.id.group_settings_members);
-        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(this, mViewModel.getMembers().getValue(), isManagerAndIsPendingNotEmpty);
+        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(this, mViewModel.getMembers().getValue(),mViewModel.getManagers().getValue(),isManagerAndIsPendingNotEmpty);
         members.setAdapter(settingsAdapter);
         LinearLayoutManager llm2 = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -131,6 +130,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         mViewModel.getManagers().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> ids) {
+                settingsAdapter.setManagers(ids);
+                settingsAdapter.notifyDataSetChanged();
                 for (String s : ids) {
                     if (s.equals(CurrentUser.getInstance().getId())) {
                         settingsAdapter.setIsManager(true);
@@ -168,10 +169,10 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     }
 
     private void setVisible() {
-        if (isManagerAndIsPendingNotEmpty) {
+        //if (isManagerAndIsPendingNotEmpty) {
             linearLayoutWaiting.setVisibility(View.VISIBLE);
             binding.waitingReqTv.setVisibility(View.VISIBLE);
-        }
+        //}
     }
 
     public void updateUI(Group group) {

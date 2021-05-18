@@ -77,11 +77,11 @@ public class GroupInfoFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewMembers.setLayoutManager(llm);
-        recyclerViewMembers.setHasFixedSize(true);
+
         membersAdapter = new MembersAdapter(this, mViewModel.getMembersLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
         
-        viewPager = view.findViewById(R.id.viewPager_group);
+        viewPager =binding.viewPagerGroup;
         viewPager.setNestedScrollingEnabled(true);
         ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(this,mViewModel.getGroupId());
         viewPager.setAdapter(adapter);
@@ -100,17 +100,15 @@ public class GroupInfoFragment extends Fragment {
         mViewModel.getMembersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<User>>>() {
             @Override
             public void onChanged(ArrayList<LiveData<User>> mutableLiveData) {
-                membersAdapter.notifyDataSetChanged();
-                for (LiveData<User> u : mViewModel.getMembersLiveData().getValue()) {
-                    if (!u.hasObservers()) {
-                        u.observe(getViewLifecycleOwner(), new Observer<User>() {
-                            @Override
-                            public void onChanged(User user) {
-                                membersAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
+                for (LiveData<User> u : mutableLiveData) {
+                    u.observe(getViewLifecycleOwner(), new Observer<User>() {
+                        @Override
+                        public void onChanged(User user) {
+                            membersAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
+                membersAdapter.notifyDataSetChanged();
             }
         });
 
