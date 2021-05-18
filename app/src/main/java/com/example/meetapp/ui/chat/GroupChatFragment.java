@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -111,12 +111,12 @@ public class GroupChatFragment extends Fragment {
             }
         });
 
-        mViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Message>>>() {
+        mViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Message>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<Message>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<Message>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(adapter.getItemCount());
-                for (MutableLiveData<Message> m : mutableLiveData) {
+                for (LiveData<Message> m : mutableLiveData) {
                     m.observe(getViewLifecycleOwner(), new Observer<Message>() {
                         @Override
                         public void onChanged(Message message) {

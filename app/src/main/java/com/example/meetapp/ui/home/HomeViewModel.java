@@ -14,12 +14,14 @@ import java.util.HashMap;
 public class HomeViewModel extends ViewModel {
 
     private final LiveData<ArrayList<MutableLiveData<Meeting>>> meetings;
-    private final LiveData<ArrayList<MutableLiveData<Meeting>>> userMeetings;
+    private final LiveData<ArrayList<LiveData<Meeting>>> userMeetings;
 
     private final HashMap<String, ArrayList<LiveData<Meeting>>> meetingToMarker;
     private final HashMap<String, String> markerIdToMeeting;
     private final HashMap<String, String> groupMeetingToGroupId;
     private final HashMap<String, String> currentUserGroupMeetingToGroupId;
+    private final HashMap<String, String> allUserMeetingsIds;
+
 
 
     public HomeViewModel() {
@@ -29,6 +31,7 @@ public class HomeViewModel extends ViewModel {
         groupMeetingToGroupId = AvailableMeetingsRepo.getInstance().getMeetingIdToGroupId();
         currentUserGroupMeetingToGroupId = UserMeetingsRepo.getInstance().getIdsOfGroupMeetingsToGroup();
         userMeetings = UserMeetingsRepo.getInstance().getMeetingsListMutableLiveData();
+        allUserMeetingsIds = UserMeetingsRepo.getInstance().getMeetingIdToStringDate();
     }
 
     public LiveData<ArrayList<MutableLiveData<Meeting>>> getMeetings() {
@@ -54,7 +57,7 @@ public class HomeViewModel extends ViewModel {
         return meetingToMarker.get(markerId);
     }
 
-    public LiveData<ArrayList<MutableLiveData<Meeting>>> getUserMeetings() {
+    public LiveData<ArrayList<LiveData<Meeting>>> getUserMeetings() {
         return userMeetings;
     }
 
@@ -63,5 +66,9 @@ public class HomeViewModel extends ViewModel {
         temp.putAll(currentUserGroupMeetingToGroupId);
         temp.putAll(groupMeetingToGroupId);
         return groupMeetingToGroupId;
+    }
+
+    public HashMap<String, String> getAllUserMeetingsIds() {
+        return allUserMeetingsIds;
     }
 }

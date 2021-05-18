@@ -33,6 +33,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private String selectedDateString;
     private int selected;
     private int selectedIndex;
+    private String goTo;
 
 
     public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String, ArrayList<LiveData<Meeting>>> meetings) {
@@ -155,6 +156,10 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
 
         sendMonth(calendar.get(Calendar.MONTH));
 
+        if (goTo != null && goTo.equals(key)) {
+            holder.itemView.performClick();
+            goTo = null;
+        }
     }
 
     @Override
@@ -169,6 +174,10 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void goTo(String goTo){
+        this.goTo = goTo;
     }
 
     private void sendMonth(int month) {
@@ -225,7 +234,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
             date = itemView.findViewById(R.id.tv_day_of_month_calendar_item);
             day = itemView.findViewById(R.id.tv_day_calendar_item);
             linearLayout = itemView.findViewById(R.id.dots_calendar);
-            dot1 = itemView.findViewById(R.id.dot1);
+            dot1 = itemView.findViewById(R.id.multi_meeting_is_already_there_dot);
             dot2 = itemView.findViewById(R.id.dot2);
             dot3 = itemView.findViewById(R.id.dot3);
             spinner = itemView.findViewById(R.id.spinner_calender_item);

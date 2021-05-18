@@ -57,12 +57,12 @@ public class AvailableMeetingsRepo {
     }
 
     private void loadPublicMeetings(){
-        todayMillis = Calendar.getInstance().getTimeInMillis();
         publicMeetingsMutableLiveData.setValue(publicMeetings);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Meeting meeting = snapshot.getValue(Meeting.class);
+                todayMillis = Calendar.getInstance().getTime().getTime();
                 if (meeting != null && meeting.getMillis() > todayMillis) {
                     MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
@@ -90,11 +90,10 @@ public class AvailableMeetingsRepo {
     private void loadPublicGroupMeetings(){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String groupId = snapshot.getValue(String.class);
                 String meetingId = snapshot.getKey();
-                loadSinglePublicMeetingData(groupId,meetingId);
-                meetingIdToGroupId.put(meetingId,groupId);
+                loadSinglePublicGroupMeetingData(groupId,meetingId);
 
                 if (listener != null){
                     OnCompleteAction onCompleteAction = (OnCompleteAction)listener;
@@ -104,7 +103,7 @@ public class AvailableMeetingsRepo {
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
@@ -125,17 +124,19 @@ public class AvailableMeetingsRepo {
         });
     }
 
-    private void loadSinglePublicMeetingData(String groupId,String meetingId){
+    private void loadSinglePublicGroupMeetingData(String groupId, String meetingId){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(meetingId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Meeting meeting = snapshot.getValue(Meeting.class);
+                todayMillis = Calendar.getInstance().getTime().getTime();
                 if (meeting != null && meeting.getMillis() > todayMillis) {
                     MutableLiveData<Meeting> meetingMutableLiveData = new MutableLiveData<>();
                     meetingMutableLiveData.setValue(meeting);
                     publicMeetingToIndexHash.put(meeting.getId(), publicMeetings.size()-1);
                     publicMeetings.add(meetingMutableLiveData);
                     publicMeetingsMutableLiveData.postValue(publicMeetings);
+                    meetingIdToGroupId.put(meetingId,groupId);
                 }
             }
 

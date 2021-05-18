@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meetapp.firebaseActions.GroupMeetingsRepo;
-import com.example.meetapp.firebaseActions.GroupsMembersRepo;
+import com.example.meetapp.firebaseActions.GroupMembersRepo;
 import com.example.meetapp.firebaseActions.LastMessageRepo;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.Message;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class GroupInfoViewModel extends ViewModel {
 
     private String groupId;
-    private GroupsMembersRepo groupsMembersRepo;
+    private GroupMembersRepo groupMembersRepo;
     private GroupMeetingsRepo groupMeetingsRepo;
     private LastMessageRepo lastMessageRepo;
 
@@ -30,10 +30,10 @@ public class GroupInfoViewModel extends ViewModel {
     public void init(LiveData<Group> groupLiveData , String id){
         this.groupId = id;
         this.groupMutableLiveData = groupLiveData;
-        groupsMembersRepo = new GroupsMembersRepo(groupId);
-        membersMutableLiveData = groupsMembersRepo.getMembers();
+        groupMembersRepo = new GroupMembersRepo(groupId);
+        membersMutableLiveData = groupMembersRepo.getMembers();
         groupMeetingsRepo = new GroupMeetingsRepo(groupId);
-        meetingsLiveData = groupMeetingsRepo.getMeeting();
+        meetingsLiveData = groupMeetingsRepo.getMeetings();
         closesMeeting = groupMeetingsRepo.getClosesMeeting();
         lastMessageRepo = new LastMessageRepo(id);
         lastMessage = lastMessageRepo.getMessage();
@@ -56,7 +56,7 @@ public class GroupInfoViewModel extends ViewModel {
     }
 
     public void detach() {
-        groupsMembersRepo.detachListener();
+        groupMembersRepo.detachListener();
         groupMeetingsRepo.detachListener();
         lastMessageRepo.detachListener();
     }

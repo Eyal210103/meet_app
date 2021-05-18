@@ -68,12 +68,12 @@ public class GroupInfoFragment extends Fragment {
         GroupInfoFragmentBinding binding = GroupInfoFragmentBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
 
-        groupImage = binding.groupInfoGroupCiv;//view.findViewById(R.id.group_info_group_civ);
-        groupName = binding.groupInfoGroupName;//view.findViewById(R.id.group_info_group_name);
-        groupSubject = binding.groupInfoSubjectImageView;//view.findViewById(R.id.group_info_subject_imageView);
-        constraintLayout = binding.groupInfoMain;//view.findViewById(R.id.group_info_main);
+        groupImage = binding.groupInfoGroupCiv;
+        groupName = binding.groupInfoGroupName;
+        groupSubject = binding.groupInfoSubjectImageView;
+        constraintLayout = binding.groupInfoMain;
 
-        RecyclerView recyclerViewMembers = binding.groupInfoRecyclerViewMembers; //view.findViewById(R.id.group_info_recyclerView_members);
+        RecyclerView recyclerViewMembers = binding.groupInfoRecyclerViewMembers;
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewMembers.setLayoutManager(llm);

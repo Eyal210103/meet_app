@@ -51,7 +51,7 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
-    public static final int BITMAP_SIZE = 80;
+    public static final int BITMAP_SIZE = 90;
     private static final int REQUEST_LOCATION = 103;
 
     private final HashMap<String,MarkerOptions> markersHash = new HashMap<>();
@@ -60,8 +60,6 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
 
-//    private TextView locationTV ,topicTV;
-//    private CircleImageView topicIV;
     private MapView mapView;
     private GoogleMap mMap;
     private HomeFragmentBinding binding;
@@ -78,7 +76,6 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = HomeFragmentBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
-
 
         this.mapView = binding.mapView;
         initGoogleMap(savedInstanceState);
@@ -127,9 +124,9 @@ public class HomeFragment extends Fragment {
         });
 
         //TODO BEHAVIOR IS DIFFERENT-
-        mViewModel.getUserMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
+        mViewModel.getUserMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Meeting>>>() {
             @Override
-            public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
+            public void onChanged(ArrayList<LiveData<Meeting>> mutableLiveData) {
                 for (LiveData<Meeting> m: mutableLiveData) {
                     if (!m.hasObservers()) {
                         m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
@@ -208,7 +205,7 @@ public class HomeFragment extends Fragment {
                             LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
                             llm.setOrientation(LinearLayoutManager.VERTICAL);
                             binding.meetingsInLocationRecyclerView.setLayoutManager(llm);
-                            binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(requireActivity(),mViewModel.getListOfMeetings((String) marker.getTag()),mViewModel.getGroupMeetingToGroupId()));
+                            binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(HomeFragment.this,mViewModel.getListOfMeetings((String) marker.getTag()),mViewModel.getGroupMeetingToGroupId(),mViewModel.getAllUserMeetingsIds()));
                             binding.homeMotionLayout.transitionToEnd();
                             binding.constraintLayout4.setTag(marker.getTag());
                             return false;

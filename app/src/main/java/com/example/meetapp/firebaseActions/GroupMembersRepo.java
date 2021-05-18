@@ -16,14 +16,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GroupsMembersRepo {
+public class GroupMembersRepo {
     private final ArrayList<LiveData<User>> membersAL;
     private final HashMap<String,String> usersIdsMap;
     private final String groupId;
     MutableLiveData<ArrayList<LiveData<User>>> mutableLiveData;
     ChildEventListener childEventListener;
 
-    public GroupsMembersRepo (String groupId){
+    public GroupMembersRepo(String groupId){
         this.groupId = groupId;
         membersAL = new ArrayList<LiveData<User>>();
         usersIdsMap = new HashMap<>();
@@ -46,7 +46,7 @@ public class GroupsMembersRepo {
                     usersIdsMap.put(key,key);
                 }
                 if (!isThere) {
-                    MutableLiveData<User> userMutableLiveData = putUserData(key);
+                    LiveData<User> userMutableLiveData = putUserData(key);
                     membersAL.add(userMutableLiveData);
                     mutableLiveData.setValue(membersAL);
                 }
@@ -81,7 +81,8 @@ public class GroupsMembersRepo {
     public LiveData<ArrayList<LiveData<User>>> getMembers(){
         return mutableLiveData;
     }
-    private MutableLiveData<User> putUserData(String key){
+
+    private LiveData<User> putUserData(String key){
         Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {

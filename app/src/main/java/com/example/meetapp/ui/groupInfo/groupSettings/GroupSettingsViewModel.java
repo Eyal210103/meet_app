@@ -3,8 +3,8 @@ package com.example.meetapp.ui.groupInfo.groupSettings;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.meetapp.firebaseActions.GroupMembersRepo;
 import com.example.meetapp.firebaseActions.GroupSettingsRepo;
-import com.example.meetapp.firebaseActions.GroupsMembersRepo;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 
@@ -23,8 +23,8 @@ public class GroupSettingsViewModel extends ViewModel {
         this.group = group;
         managers = groupSettingsRepo.getManagers();
 
-        GroupsMembersRepo groupsMembersRepo = new GroupsMembersRepo(id);
-        members = groupsMembersRepo.getMembers();
+        GroupMembersRepo groupMembersRepo = new GroupMembersRepo(id);
+        members = groupMembersRepo.getMembers();
     }
 
     public LiveData<ArrayList<LiveData<User>>> getPendingUsers() {

@@ -128,7 +128,7 @@ public class MeetingInfoFragment extends Fragment {
             mViewModel.getGroupData().observe(getViewLifecycleOwner(), new Observer<Group>() {
                 @Override
                 public void onChanged(Group group) {
-                    updateGroupData(group);
+                    updateGroupDataUI(group);
                 }
             });
         }
@@ -211,7 +211,7 @@ public class MeetingInfoFragment extends Fragment {
         //mMap.getUiSettings().setAllGesturesEnabled(false);
     }
 
-    private void updateGroupData(Group group) {
+    private void updateGroupDataUI(Group group) {
         binding.meetingInfoGroupInfo.setVisibility(View.VISIBLE);
         Glide.with(this).load(group.getPhotoUrl()).listener(new RequestListener<Drawable>() {
             @Override
@@ -225,7 +225,7 @@ public class MeetingInfoFragment extends Fragment {
                 int[] colors = {requireContext().getColor(R.color.backgroundSec),colorFromImg,colorFromImg};
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
-                gd.setCornerRadius(60);
+                gd.setCornerRadius(40);
                 binding.meetingInfoGroupInfo.setBackground(gd);
 
                 return false;
@@ -318,8 +318,7 @@ public class MeetingInfoFragment extends Fragment {
             List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
             try {
                 Address obj = addresses.get(0);
-                String add = obj.getAddressLine(0);
-                return add;
+                return obj.getAddressLine(0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -334,7 +333,7 @@ public class MeetingInfoFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Null";
+        return "Error Has Occurred";
     }
 
     private int getSubjectIcon(String subject) {

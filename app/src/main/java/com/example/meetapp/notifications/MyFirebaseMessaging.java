@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.meetapp.R;
 import com.example.meetapp.ui.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -54,7 +55,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             i = j;
         }
 
-        oreoNotification.getManager().notify(i, builder.build());
+        oreoNotification.getManager().notify(12, builder.build());
 
     }
 
@@ -76,7 +77,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(Integer.parseInt(icon))
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

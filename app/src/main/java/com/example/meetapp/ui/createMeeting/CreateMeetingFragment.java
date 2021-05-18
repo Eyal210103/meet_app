@@ -167,8 +167,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES, gId);
-                    MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
-                    meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
+                    MeetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
                 } else {
                     Meeting meeting = new Meeting();
                     meeting.setMillis(c.getTimeInMillis());
@@ -179,8 +178,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.updateOrAddReturnId();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES, meeting.getId());
-                    MeetingReminderNotificationBroadcastReceiver meetingReminderNotificationBroadcastReceiver= new MeetingReminderNotificationBroadcastReceiver(meeting);
-                    meetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
+                    MeetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.ACTION, Const.BUNDLE_MEETING);

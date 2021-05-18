@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,10 +23,10 @@ import java.util.Calendar;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<MutableLiveData<Message>> list;
-    private Fragment context;
+    private final ArrayList<LiveData<Message>> list;
+    private final Fragment context;
 
-    public ChatAdapter(Fragment context, ArrayList<MutableLiveData<Message>> list) {
+    public ChatAdapter(Fragment context, ArrayList<LiveData<Message>> list) {
         this.list = list;
         this.context = context;
     }

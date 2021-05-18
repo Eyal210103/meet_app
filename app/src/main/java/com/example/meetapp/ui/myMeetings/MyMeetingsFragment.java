@@ -43,9 +43,21 @@ public class MyMeetingsFragment extends Fragment implements OnClickInCalender {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        MyMeetingsFragmentBinding binding = MyMeetingsFragmentBinding.inflate(inflater,container,false);
+        MyMeetingsFragmentBinding binding = MyMeetingsFragmentBinding.inflate(inflater, container, false);
 
-        CalenderBarFragment calenderBarFragment = new CalenderBarFragment(mViewModel, this);
+        CalenderBarFragment calenderBarFragment;
+        if (getArguments() != null) {
+            if (getArguments().containsKey(Const.BUNDLE_GOTO_DATE)) {
+                String goTo = getArguments().getString(Const.BUNDLE_GOTO_DATE);
+                calenderBarFragment = new CalenderBarFragment(mViewModel, goTo, this);
+            }
+            else {
+                calenderBarFragment = new CalenderBarFragment(mViewModel, this);
+            }
+        } else {
+            calenderBarFragment = new CalenderBarFragment(mViewModel, this);
+        }
+
         getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
 
         prevMillis = Calendar.getInstance().getTimeInMillis();
@@ -68,10 +80,10 @@ public class MyMeetingsFragment extends Fragment implements OnClickInCalender {
     public void onClickIInCalender(Object value, String action, long millis, int i) {
         if (action.equals("None") || value == null) {
             if (millis < prevMillis) {
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_right_enter,R.anim.page_transition_slide_right_exit)
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_right_enter, R.anim.page_transition_slide_right_exit)
                         .replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
-            }else {
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_left_enter,R.anim.page_transition_slide_left_exit)
+            } else {
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_left_enter, R.anim.page_transition_slide_left_exit)
                         .replace(R.id.meetingInfo_fragment_container, new SelectDateFragment()).commit();
             }
             prevMillis = millis;
@@ -96,10 +108,10 @@ public class MyMeetingsFragment extends Fragment implements OnClickInCalender {
             }
 
             if (meeting.getMillis() < prevMillis) {
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_right_enter,R.anim.page_transition_slide_right_exit)
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_right_enter, R.anim.page_transition_slide_right_exit)
                         .replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
-            }else {
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_left_enter,R.anim.page_transition_slide_left_exit)
+            } else {
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_transition_slide_left_enter, R.anim.page_transition_slide_left_exit)
                         .replace(R.id.meetingInfo_fragment_container, meetingInfoFragment).commit();
             }
             prevMillis = meeting.getMillis();

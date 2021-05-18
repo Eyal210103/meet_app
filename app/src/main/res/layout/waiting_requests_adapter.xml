@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/main_app_design">
+        android:background="@drawable/main_app_design"
+        android:backgroundTint="@color/tilesBackground">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/waiting_adapter_photo_civ"
@@ -43,7 +44,6 @@
             android:id="@+id/waiting_adapter_reject_civ"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_baseline_close_50"
             app:civ_border_color="#FF1600"
             app:civ_border_width="1dp"

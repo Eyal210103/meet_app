@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.R;
@@ -36,10 +37,11 @@ import retrofit2.Response;
 
 public class GroupChatRepo {
 
-    private APIService apiService;
-    private final ArrayList<MutableLiveData<Message>> list = new ArrayList<>();
+    private final APIService apiService;
+    private final ArrayList<LiveData<Message>> list = new ArrayList<>();
     private final HashMap<String, String> ids = new HashMap<>();
-    private final HashMap<String, MutableLiveData<User>> userHashMap = new HashMap<>();
+    private final HashMap<String, LiveData<User>> userHashMap = new HashMap<>();
+    final MutableLiveData<ArrayList<LiveData<Message>>> mutableLiveData = new MutableLiveData<>();
     private final String groupId;
     private Group group;
 
@@ -56,11 +58,11 @@ public class GroupChatRepo {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+        loadMessages();
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
     }
 
-    public MutableLiveData<ArrayList<MutableLiveData<Message>>> getMessages() {
-        final MutableLiveData<ArrayList<MutableLiveData<Message>>> mutableLiveData = new MutableLiveData<>();
+    private void loadMessages(){
         mutableLiveData.setValue(list);
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -72,7 +74,7 @@ public class GroupChatRepo {
                     ids.put(message.getId(), message.getId());
                 }
                 if (!userHashMap.containsKey(message.getSenderId())) {
-                    MutableLiveData<User> userMutableLiveData = putUserData(message.getSenderId());
+                    LiveData<User> userMutableLiveData = putUserData(message.getSenderId());
                     userHashMap.put(message.getSenderId(), userMutableLiveData);
                 }
             }
@@ -84,7 +86,7 @@ public class GroupChatRepo {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Message message = snapshot.getValue(Message.class);
-                for (MutableLiveData<Message> m : list) {
+                for (LiveData<Message> m : list) {
                     if (message.getId().equals(m.getValue().getId())) {
                         list.remove(m);
                         ids.remove(message);
@@ -102,11 +104,15 @@ public class GroupChatRepo {
                 error.toException().printStackTrace();
             }
         };
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.CHAT_CHILDES).addChildEventListener(childEventListener);
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.CHAT_CHILDES)
+                .addChildEventListener(childEventListener);
+    }
+
+    public LiveData<ArrayList<LiveData<Message>>> getMessages() {
         return mutableLiveData;
     }
 
-    private MutableLiveData<Message> putMessageData(String id) {
+    private LiveData<Message> putMessageData(String id) {
         MutableLiveData<Message> messageMLD = new MutableLiveData<>();
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.CHAT_CHILDES).child(id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -123,7 +129,7 @@ public class GroupChatRepo {
         return messageMLD;
     }
 
-    private MutableLiveData<User> putUserData(String key) {
+    private LiveData<User> putUserData(String key) {
         Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addValueEventListener(new ValueEventListener() {
@@ -191,9 +197,7 @@ public class GroupChatRepo {
                     apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
                         @Override
                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                            if (response.code() == 200) {
-                                assert response.body() != null;
-                            }
+                            assert response.code() != 200 || response.body() != null;
                         }
 
                         @Override

@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
-import com.example.meetapp.databinding.GroupSettingFragmentBinding;
+import com.example.meetapp.databinding.GroupSettingsFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.Group;
@@ -49,9 +48,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     private TextView descriptionTextView;
     private LinearLayout linearLayoutWaiting;
     private LinearLayout themeLinearLayout;
-    GroupSettingFragmentBinding binding;
-    View view;
-    boolean isThere = false;
+    private GroupSettingsFragmentBinding binding;
+    boolean isManagerAndIsPendingNotEmpty = true;
 
 
     @Override
@@ -66,8 +64,8 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = GroupSettingFragmentBinding.inflate(inflater, container, false);
-        view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
+        binding = GroupSettingsFragmentBinding.inflate(inflater, container, false);
+        View view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
 
         this.circleImageView = binding.groupSettingsCircleImageView;//view.findViewById(R.id.group_settings_circleImageView);
         this.nameTextView = binding.groupSettingsNameTextView;//view.findViewById(R.id.group_settings_name_textView);
@@ -96,7 +94,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         recyclerView.setAdapter(adapter);
 
         RecyclerView members = binding.groupSettingsMembers;//view.findViewById(R.id.group_settings_members);
-        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(this, mViewModel.getMembers().getValue(), isThere);
+        MembersSettingsAdapter settingsAdapter = new MembersSettingsAdapter(this, mViewModel.getMembers().getValue(), isManagerAndIsPendingNotEmpty);
         members.setAdapter(settingsAdapter);
         LinearLayoutManager llm2 = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -108,7 +106,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             public void onChanged(ArrayList<LiveData<User>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
                 if (mutableLiveData.isEmpty()) {
-                    setInvisible();
+                    isManagerAndIsPendingNotEmpty = false;
                 } else {
                     for (LiveData<User> u : mutableLiveData) {
                         u.observe(getViewLifecycleOwner(), new Observer<User>() {
@@ -132,21 +130,13 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
 
         mViewModel.getManagers().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<String> strings) {
-                Log.d("managers_____", "onChanged: " + strings.toString());
-                for (String s : strings) {
+            public void onChanged(ArrayList<String> ids) {
+                for (String s : ids) {
                     if (s.equals(CurrentUser.getInstance().getId())) {
-                        isThere = true;
                         settingsAdapter.setIsManager(true);
-                        linearLayoutWaiting.setVisibility(View.VISIBLE);
+                        setVisible();
                         break;
                     }
-                }
-                if (!isThere) {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(linearLayoutWaiting.getLayoutParams());
-                    params.height = 0;
-                    params.topMargin = 6;
-                    linearLayoutWaiting.setLayoutParams(params);
                 }
                 settingsAdapter.notifyDataSetChanged();
                 adapter.notifyDataSetChanged();
@@ -172,13 +162,16 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     }
 
     private void setInvisible() {
+
         linearLayoutWaiting.setVisibility(View.INVISIBLE);
         binding.waitingReqTv.setVisibility(View.INVISIBLE);
     }
 
     private void setVisible() {
-        linearLayoutWaiting.setVisibility(View.VISIBLE);
-        binding.waitingReqTv.setVisibility(View.VISIBLE);
+        if (isManagerAndIsPendingNotEmpty) {
+            linearLayoutWaiting.setVisibility(View.VISIBLE);
+            binding.waitingReqTv.setVisibility(View.VISIBLE);
+        }
     }
 
     public void updateUI(Group group) {

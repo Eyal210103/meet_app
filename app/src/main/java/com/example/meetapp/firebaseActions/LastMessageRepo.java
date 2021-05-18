@@ -2,6 +2,7 @@ package com.example.meetapp.firebaseActions;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.Message;
@@ -59,11 +60,11 @@ public class LastMessageRepo {
                 .child(this.groupId).child(FirebaseTags.CHAT_CHILDES).addChildEventListener(childEventListener);
     }
 
-    public MutableLiveData<Message> getMessage(){
+    public LiveData<Message> getMessage(){
         return messageMutableLiveData;
     }
 
-    public MutableLiveData<String> getDisplayName() {
+    public LiveData<String> getDisplayName() {
         return displayName;
     }
 

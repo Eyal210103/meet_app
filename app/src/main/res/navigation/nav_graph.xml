@@ -15,6 +15,11 @@
             app:destination="@id/meetingInfoFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_myMeetingsFragment"
+            app:destination="@id/myMeetingsFragment"
+            app:enterAnim="@anim/page_transition_slide_right_enter"
+            app:exitAnim="@anim/page_transition_slide_right_exit" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -131,7 +136,7 @@
         android:id="@+id/groupSettingsFragment"
         android:name="com.example.meetapp.ui.groupInfo.groupSettings.GroupSettingsFragment"
         android:label="group_setting_fragment"
-        tools:layout="@layout/group_setting_fragment" >
+        tools:layout="@layout/group_settings_fragment" >
         <argument
             android:name="id"
             app:argType="string"

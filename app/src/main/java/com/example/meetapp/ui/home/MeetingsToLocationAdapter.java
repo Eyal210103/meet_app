@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,41 +33,57 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLocationAdapter.MeetingsToLocationViewHolder> {
 
     private final ArrayList<LiveData<Meeting>> meetings;
-    private final FragmentActivity context;
-    private final HashMap<String,String> meetingToGroupId;
+    private final Fragment context;
+    private final HashMap<String, String> meetingToGroupId;
+    private final HashMap<String, String> allUserMeetings;
 
-    public MeetingsToLocationAdapter(FragmentActivity context, ArrayList<LiveData<Meeting>> meetings, HashMap<String,String> meetingToGroupId) {
+    public MeetingsToLocationAdapter(Fragment context, ArrayList<LiveData<Meeting>> meetings, HashMap<String, String> meetingToGroupId, HashMap<String, String> allUserMeetings) {
         this.context = context;
         this.meetings = meetings;
         this.meetingToGroupId = meetingToGroupId;
+        this.allUserMeetings = allUserMeetings;
     }
 
     @NonNull
     @Override
     public MeetingsToLocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.multi_meetings_in_location_adapter,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.multi_meetings_in_location_adapter, parent, false);
         return new MeetingsToLocationViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MeetingsToLocationViewHolder holder, int position) {
         Meeting meeting = meetings.get(position).getValue();
-        if (meeting != null){
+        if (meeting != null) {
             Glide.with(context).load(getSubjectIcon(meeting.getSubject())).into(holder.circleImageView);
-            holder.location.setText(getAddress(new LatLng(meeting.getLatitude(),meeting.getLongitude())));
+            holder.location.setText(getAddress(new LatLng(meeting.getLatitude(), meeting.getLongitude())));
             holder.subject.setText(meeting.getSubject());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
-                    Bundle bundle = new Bundle();
-                    String id = meetingToGroupId.containsKey(meeting.getId()) ? meetingToGroupId.get(meeting.getId()) : "";
-                    bundle.putString(Const.BUNDLE_GROUP_ID,id);
-                    bundle.putSerializable(Const.BUNDLE_MEETING,meeting);
-                    meetingsInfoDialog.setArguments(bundle);
-                    meetingsInfoDialog.show(context.getSupportFragmentManager(),"Meeting Dialog");
-                }
-            });
+            holder.location.setSelected(true);
+            if (allUserMeetings.containsKey(meeting.getId())){
+                holder.indication.setVisibility(View.VISIBLE);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final NavController navController = Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Const.BUNDLE_GOTO_DATE,allUserMeetings.get(meeting.getId()));
+                        navController.navigate(R.id.action_homeFragment_to_myMeetingsFragment, bundle);
+                    }
+                });
+            }else {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MeetingsInfoDialog meetingsInfoDialog = new MeetingsInfoDialog();
+                        Bundle bundle = new Bundle();
+                        String id = meetingToGroupId.containsKey(meeting.getId()) ? meetingToGroupId.get(meeting.getId()) : "";
+                        bundle.putString(Const.BUNDLE_GROUP_ID, id);
+                        bundle.putSerializable(Const.BUNDLE_MEETING, meeting);
+                        meetingsInfoDialog.setArguments(bundle);
+                        meetingsInfoDialog.show(context.getChildFragmentManager(), "Meeting Dialog");
+                    }
+                });
+            }
         }
     }
 
@@ -73,14 +91,15 @@ public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLo
     public int getItemCount() {
         return meetings.size();
     }
+
     public String getAddress(LatLng location) {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(context.requireActivity(), Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
+            List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
             try {
                 Address obj = addresses.get(0);
                 return obj.getAddressLine(0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (IOException e) {
@@ -89,8 +108,8 @@ public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLo
         return "Error Has Occurred";
     }
 
-    private int getSubjectIcon(String subject){
-        switch (subject){
+    private int getSubjectIcon(String subject) {
+        switch (subject) {
             case Const.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
             case Const.SUBJECT_BASKETBALL:
@@ -109,14 +128,17 @@ public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLo
     }
 
 
-    static class MeetingsToLocationViewHolder extends RecyclerView.ViewHolder{
+    static class MeetingsToLocationViewHolder extends RecyclerView.ViewHolder {
         CircleImageView circleImageView;
         TextView subject, location;
+        View indication;
+
         public MeetingsToLocationViewHolder(@NonNull View itemView) {
             super(itemView);
             subject = itemView.findViewById(R.id.location_subject_textView);
             circleImageView = itemView.findViewById(R.id.home_location_subject_circleImageView);
             location = itemView.findViewById(R.id.location_textView);
+            indication = itemView.findViewById(R.id.multi_meeting_is_already_there_dot);
         }
     }
 }

@@ -52,6 +52,7 @@
                 android:textColor="@color/oppBackground"
                 android:textSize="17sp" />
         </LinearLayout>
+
     </LinearLayout>
 
     <ScrollView
@@ -82,8 +83,10 @@
                 android:id="@+id/account_settings_field_linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/main_app_design"
                 android:orientation="vertical"
-                android:layout_marginStart="32dp"
+                android:paddingVertical="4dp"
+                android:paddingStart="32dp"
                 android:visibility="gone">
 
                 <EditText
@@ -136,6 +139,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/settings_preferences_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -147,10 +151,15 @@
                 app:drawableTint="@color/oppBackground" />
 
             <LinearLayout
+                android:id="@+id/preferences_settings_field"
                 android:layout_width="match_parent"
+                android:background="@drawable/main_app_design"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="8dp">
+                android:paddingVertical="4dp"
+                android:paddingStart="32dp"
+                android:visibility="gone">
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/settings_dark_mode_switch"
                     android:layout_width="wrap_content"
@@ -160,6 +169,7 @@
                     android:text="@string/dark_mode"
                     android:textColor="@color/oppBackground"
                     android:textSize="16sp" />
+
             </LinearLayout>
 
             <TextView

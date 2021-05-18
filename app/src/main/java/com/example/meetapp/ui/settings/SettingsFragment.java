@@ -1,7 +1,9 @@
 package com.example.meetapp.ui.settings;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -39,15 +42,21 @@ import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColo
 
 public class SettingsFragment extends Fragment implements PhotoUploadCompleteListener, OnCompleteAction {
 
-    private SettingsViewModel mViewModel;
     private static final int PICK_IMAGE = 50;
 
+    SettingsViewModel mViewModel;
     ProgressDialog progressDialog;
 
-    View selected;
     private Uri imageUri;
-    SettingsFragmentBinding binding;
+    private SettingsFragmentBinding binding;
+    private SharedPreferences sp;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
+        sp = requireContext().getSharedPreferences(Const.SP_SETTINGS, Context.MODE_PRIVATE);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -57,6 +66,13 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
         View view = binding.getRoot();
 
         updateUI();
+
+        if (mViewModel.isPrefFieldOpen){
+            binding.preferencesSettingsField.setVisibility(View.VISIBLE);
+        }
+        if (mViewModel.isAccountFieldOpen){
+            binding.accountSettingsFieldLinearLayout.setVisibility(View.VISIBLE);
+        }
 
         binding.settingsEditTextDisplayName.setText(CurrentUser.getInstance().getDisplayName());
 
@@ -99,18 +115,27 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
             public void onClick(View v) {
                 if (binding.accountSettingsFieldLinearLayout.getVisibility() == View.VISIBLE) {
                     binding.accountSettingsFieldLinearLayout.setVisibility(View.GONE);
-                    selected = null;
                 } else {
                     binding.accountSettingsFieldLinearLayout.setVisibility(View.VISIBLE);
-                    if (selected != null) {
-                        selected.setVisibility(View.GONE);
-                        selected = binding.accountSettingsFieldLinearLayout;
-                    }
+                    mViewModel.isAccountFieldOpen = true;
                 }
             }
         });
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        binding.settingsPreferencesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (binding.preferencesSettingsField.getVisibility() == View.VISIBLE){
+                    binding.preferencesSettingsField.setVisibility(View.GONE);
+                }else {
+                    binding.preferencesSettingsField.setVisibility(View.VISIBLE);
+                    mViewModel.isPrefFieldOpen = true;
+                }
+
+            }
+        });
+
+        if (sp.getBoolean(Const.SP_IS_DARK_ON,false))
             binding.settingsDarkModeSwitch.setChecked(true);
 
         binding.settingsDarkModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -120,6 +145,7 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 else
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                sp.edit().putBoolean(Const.SP_IS_DARK_ON,isChecked).apply();
             }
         });
 
@@ -136,7 +162,7 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                 Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                 int colorFromImg = getDominantColor(bitmap);
-                int[] colors = {requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),colorFromImg};
+                int[] colors = {requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),colorFromImg};
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
                 binding.settingsLayout.setBackground(gd);

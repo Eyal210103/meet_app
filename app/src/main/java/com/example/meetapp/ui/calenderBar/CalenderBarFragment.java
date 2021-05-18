@@ -24,6 +24,7 @@ import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
+import com.example.meetapp.ui.myMeetings.MyMeetingsFragment;
 import com.example.meetapp.ui.myMeetings.MyMeetingsViewModel;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
     private int position;
     private RecyclerView recyclerView;
     private final Fragment parent;
+    private String goTo;
 
     TextView monthTextView;
 
@@ -49,6 +51,12 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
     public CalenderBarFragment(GroupInfoViewModel mViewModel, Fragment parent) {
         this.mViewModel = mViewModel;
         this.parent= parent;
+    }
+
+    public CalenderBarFragment(MyMeetingsViewModel mViewModel, String goTo, MyMeetingsFragment parent) {
+        this.mViewModel = mViewModel;
+        this.parent= parent;
+        this.goTo = goTo;
     }
 
     @Override
@@ -89,7 +97,6 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
 
         if (mViewModel instanceof MyMeetingsViewModel) {
             this.adapter = new CalenderBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
-
             ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<Meeting>>>>() {
                 @Override
                 public void onChanged(HashMap<String, ArrayList<LiveData<Meeting>>> stringArrayListHashMap) {
@@ -98,6 +105,7 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
             });
         }else {
             this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(), Const.BUNDLE_GROUP_ID);
+
             ((GroupInfoViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<GroupMeeting>>>>() {
                 @Override
                 public void onChanged(HashMap<String, ArrayList<LiveData<GroupMeeting>>> stringArrayListHashMap) {
@@ -106,6 +114,9 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
             });
         }
 
+        if (this.goTo != null){
+            this.adapter.goTo(goTo);
+        }
         llm = new LinearLayoutManager(this.requireActivity());
         llm.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setAdapter(adapter);

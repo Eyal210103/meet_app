@@ -2,6 +2,7 @@ package com.example.meetapp.firebaseActions;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.model.Group;
@@ -19,7 +20,7 @@ import javax.inject.Singleton;
 public class SearchGroupFirebase {
     private static final MutableLiveData<ArrayList<Group>> groupMutableLiveData = new MutableLiveData<>();
 
-    public static MutableLiveData<ArrayList<Group>> searchGroups(String name){
+    public static LiveData<ArrayList<Group>> searchGroups(String name){
         ArrayList<Group> groups = new ArrayList<>();
         groupMutableLiveData.setValue(groups);
         groupMutableLiveData.getValue().clear();

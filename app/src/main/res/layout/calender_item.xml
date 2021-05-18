@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_day_calendar_item">
 
         <View
-            android:id="@+id/dot1"
+            android:id="@+id/multi_meeting_is_already_there_dot"
             android:layout_width="7dp"
             android:layout_height="7dp"
             android:background="@drawable/red_dot"
@@ -58,7 +58,6 @@
 
         <View
             android:id="@+id/dot2"
-
             android:layout_width="7dp"
             android:layout_height="7dp"
             android:layout_marginStart="4dp"

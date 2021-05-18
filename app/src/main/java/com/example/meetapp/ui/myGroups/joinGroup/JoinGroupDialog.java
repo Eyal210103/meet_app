@@ -61,8 +61,9 @@ public class JoinGroupDialog extends DialogFragment {
                     group.addUserToGroup();
                     Bundle bundle = new Bundle();
                     bundle.putString(Const.BUNDLE_GROUP_ID, group.getId());
-//                    final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-//                    navController.navigate(R.id.groupInfoFragment, bundle);
+                    group.addUserToGroup();
+                    final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                    navController.navigate(R.id.groupInfoFragment, bundle);
                 }else {
                     group.requestToJoin();
                     JoinGroupDialog.this.dismiss();
@@ -71,14 +72,18 @@ public class JoinGroupDialog extends DialogFragment {
                 }
             }
         });
-
-
-
+        
         mViewModel.getImgUrl().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
                 for (int i = 0; i < strings.size(); i++) {
                     Glide.with(requireActivity()).load(strings.get(i)).into(circleImageViews[i]);
+                }
+                if (strings.size()<circleImageViews.length) {
+                    int diff = circleImageViews.length - strings.size();
+                    for (int i = circleImageViews.length - 1; i < diff; i++) {
+                        circleImageViews[i].setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         });

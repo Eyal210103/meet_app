@@ -8,6 +8,8 @@ public class Const {
     public static final String BUNDLE_ID = "id";
     public static final String BUNDLE_TYPE = "type";
     public static final String BUNDLE_MEETING = "meeting";
+    public static final String BUNDLE_GOTO_DATE = "goto";
+
 
     public static final String MEETING_TYPE_PUBLIC = "publicMeeting";
     public static final String MEETING_TYPE_GROUP = "groupMeeting";
@@ -29,4 +31,9 @@ public class Const {
     public static final String SUBJECT_VIDEO_GAMES ="Video Games";
     public static final String SUBJECT_MEETING ="Meeting";
     public static final String SUBJECT_OTHER ="Other";
+
+    public static final String SP_SETTINGS = "pref";
+    public static final String SP_IS_DARK_ON = "pref";
+
+
 }

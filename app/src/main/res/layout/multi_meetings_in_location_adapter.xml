@@ -21,24 +21,43 @@
 
     <TextView
         android:id="@+id/location_subject_textView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="start"
         android:text="TOPIC"
         android:textColor="@color/oppBackground"
         android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/multi_meeting_is_already_there_dot"
         app:layout_constraintStart_toEndOf="@+id/home_location_subject_circleImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/location_textView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:gravity="start"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
         android:text="TextView"
         android:textColor="@color/oppBackground"
         app:layout_constraintBottom_toBottomOf="@+id/home_location_subject_circleImageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/location_subject_textView"
         app:layout_constraintTop_toBottomOf="@+id/location_subject_textView" />
+
+    <View
+        android:id="@+id/multi_meeting_is_already_there_dot"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/blue_dot"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/location_subject_textView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

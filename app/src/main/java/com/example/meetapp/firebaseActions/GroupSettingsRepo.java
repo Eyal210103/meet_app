@@ -54,7 +54,7 @@ public class GroupSettingsRepo {
                     idsHashMap.put(key, key);
                 }
                 if (!isThere) {
-                    MutableLiveData<User> userMutableLiveData = putUserData(key);
+                    LiveData<User> userMutableLiveData = putUserData(key);
                     membersAL.add(userMutableLiveData);
                     waitingUsersListMutableLiveData.setValue(membersAL);
                 }
@@ -91,7 +91,7 @@ public class GroupSettingsRepo {
         return waitingUsersListMutableLiveData;
     }
 
-    private MutableLiveData<User> putUserData(String key) {
+    private LiveData<User> putUserData(String key) {
         Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
