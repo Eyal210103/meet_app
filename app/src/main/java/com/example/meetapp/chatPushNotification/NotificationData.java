@@ -1,13 +1,14 @@
-package com.example.meetapp.notifications;
+package com.example.meetapp.chatPushNotification;
 
-public class Data {
+public class NotificationData {
+
     private String user;
     private int icon;
     private String body;
     private String title;
     private String sented;
 
-    public Data(String user, int icon, String body, String title, String sented) {
+    public NotificationData(String user, int icon, String body, String title, String sented) {
         this.user = user;
         this.icon = icon;
         this.body = body;
@@ -15,7 +16,7 @@ public class Data {
         this.sented = sented;
     }
 
-    public Data() {
+    public NotificationData() {
     }
 
     public String getUser() {

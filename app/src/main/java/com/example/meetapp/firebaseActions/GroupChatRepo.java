@@ -2,6 +2,7 @@ package com.example.meetapp.firebaseActions;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,16 +10,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.meetapp.R;
-import com.example.meetapp.model.CurrentUser;
+import com.example.meetapp.chatPushNotification.Client;
+import com.example.meetapp.chatPushNotification.FcmAPI;
+import com.example.meetapp.chatPushNotification.NotificationData;
+import com.example.meetapp.chatPushNotification.Sender;
+import com.example.meetapp.chatPushNotification.Token;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.Message;
 import com.example.meetapp.model.User;
-import com.example.meetapp.notifications.APIService;
-import com.example.meetapp.notifications.Client;
-import com.example.meetapp.notifications.Data;
-import com.example.meetapp.notifications.MyResponse;
-import com.example.meetapp.notifications.Sender;
-import com.example.meetapp.notifications.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,11 +32,11 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
+//import retrofit2.Response;
 
 public class GroupChatRepo {
 
-    private final APIService apiService;
+    private final FcmAPI apiService;
     private final ArrayList<LiveData<Message>> list = new ArrayList<>();
     private final HashMap<String, String> ids = new HashMap<>();
     private final HashMap<String, LiveData<User>> userHashMap = new HashMap<>();
@@ -47,6 +46,7 @@ public class GroupChatRepo {
 
 
     public GroupChatRepo(String groupId) {
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(FcmAPI.class);
         this.groupId = groupId;
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -59,10 +59,9 @@ public class GroupChatRepo {
             }
         });
         loadMessages();
-        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
     }
 
-    private void loadMessages(){
+    private void loadMessages() {
         mutableLiveData.setValue(list);
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -151,7 +150,11 @@ public class GroupChatRepo {
         message.setGroupName(group.getName());
         message.setId(reference.getKey());
         reference.setValue(message);
-        sendNotification(CurrentUser.getInstance().getId(), message);
+        for (LiveData<User> user:userHashMap.values()) {
+            User userDAO = user.getValue();
+            sendNotification(userDAO.getId(),message);
+        }
+        //sendNotification(CurrentUser.getInstance().getId(), message);
     }
 
     public void sendImageMessage(Message message) {
@@ -184,37 +187,36 @@ public class GroupChatRepo {
         thread.start();
     }
 
-    private void sendNotification(final String id, final Message messageData) {
-        DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
-        Query query = token.orderByKey();
-        query.addValueEventListener(new ValueEventListener() {
+    private void sendNotification(String receiver, final Message message){
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver).limitToFirst(1);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Token token = ds.getValue(Token.class);
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.mipmap.ic_launcher_round, messageData.getSenderDisplayName() + ": " + messageData.getContext(), messageData.getGroupName(), id);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    NotificationData data = new NotificationData(FirebaseAuth.getInstance().getUid(), R.mipmap.ic_launcher,
+                            message.getSenderDisplayName()+": "+message.getContext(), message.getGroupName(), receiver);
                     Sender sender = new Sender(data, token.getToken());
-                    apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
-                        @Override
-                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                            assert response.code() != 200 || response.body() != null;
-                        }
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
+                                    Log.d("onResponse----", "onResponse: " + "________________________");
+                                }
 
-                        @Override
-                        public void onFailure(Call<MyResponse> call, Throwable t) {
-                        }
-                    });
-
+                                @Override
+                                public void onFailure(Call<Integer> call, Throwable t) {
+                                    Log.d("onResponse----", "onResponse: " + call.toString() + "++++++++++++++++++++++++" + t.getMessage());
+                                }
+                            });
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
-
 
 }

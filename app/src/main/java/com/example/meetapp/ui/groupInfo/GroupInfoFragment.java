@@ -35,8 +35,11 @@ import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.ui.MainActivityViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -72,6 +75,15 @@ public class GroupInfoFragment extends Fragment {
         groupName = binding.groupInfoGroupName;
         groupSubject = binding.groupInfoSubjectImageView;
         constraintLayout = binding.groupInfoMain;
+
+
+        FirebaseMessaging.getInstance().subscribeToTopic(requireArguments().getString(Const.BUNDLE_GROUP_ID)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+
 
         RecyclerView recyclerViewMembers = binding.groupInfoRecyclerViewMembers;
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());

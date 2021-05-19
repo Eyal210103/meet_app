@@ -1,4 +1,4 @@
-package com.example.meetapp.notifications;
+package com.example.meetapp.chatPushNotification;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,7 +1,6 @@
 package com.example.meetapp.ui.chat;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +55,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             calendar.setTimeInMillis(millis);
             int mHour = calendar.get(Calendar.HOUR_OF_DAY);
             int mMinute = calendar.get(Calendar.MINUTE);
-            String hour = String.format("%02d:%02d", mHour, mMinute);
+            @SuppressLint("DefaultLocale") String hour = String.format("%02d:%02d", mHour, mMinute);
 
-            Log.d("", "onBindViewHolder: " + message.toString());
             if (holder instanceof ChatViewHolderReceiver) {
                 ((ChatViewHolderReceiver) holder).context.setText(message.getContext());
                 ((ChatViewHolderReceiver) holder).name.setText(message.getSenderDisplayName());
@@ -102,7 +100,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return list.size();
     }
 
-    public class ChatViewHolderSender extends RecyclerView.ViewHolder {
+    public static class ChatViewHolderSender extends RecyclerView.ViewHolder {
         TextView context, hour;
         ImageView image;
         public ChatViewHolderSender(@NonNull View itemView) {
@@ -112,7 +110,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             image = itemView.findViewById(R.id.sender_imageView);
         }
     }
-    public class ChatViewHolderReceiver extends RecyclerView.ViewHolder {
+    public static class ChatViewHolderReceiver extends RecyclerView.ViewHolder {
         TextView name, context, hour;
         ImageView image;
         public ChatViewHolderReceiver(@NonNull View itemView) {

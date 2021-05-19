@@ -1,4 +1,6 @@
-package com.example.meetapp.notifications;
+package com.example.meetapp.chatPushNotification;
+
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +25,7 @@ public class FirebaseDatabaseListening {
 
     private static FirebaseDatabaseListening instance = null;
 
-    private APIService apiService;
+    private final FcmAPI apiService;
     private boolean first;
 
     public static FirebaseDatabaseListening getInstance() {
@@ -34,7 +36,7 @@ public class FirebaseDatabaseListening {
     }
 
     private FirebaseDatabaseListening() {
-        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(FcmAPI.class);
         first = true;
     }
 
@@ -83,38 +85,36 @@ public class FirebaseDatabaseListening {
         });
     }
 
-    private void sendNotification(final String id, final Message key) {
-        DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
-        Query query = token.orderByKey();
-        query.addValueEventListener(new ValueEventListener() {
+    private void sendNotification(String receiver, final Message message){
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver).limitToFirst(1);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds:snapshot.getChildren()) {
-                    Token token = ds.getValue(Token.class);
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.mipmap.ic_launcher_round , key.getSenderDisplayName() + ": " + key.getContext(),key.getGroupName(),id);
-                    Sender sender = new Sender(data,token.getToken());
-                    apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
-                        @Override
-                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                            if (response.code() == 200){
-                                assert response.body() != null;
-                                if (response.body().success == 1){
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    NotificationData data = new NotificationData(FirebaseAuth.getInstance().getUid(), R.mipmap.ic_launcher,
+                            message.getSenderDisplayName()+": "+message.getContext(), message.getGroupName(), receiver);
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                    Log.d("onResponse----", "onResponse: " + "________________________");
                                 }
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<MyResponse> call, Throwable t) {
-                        }
-                    });
+
+                                @Override
+                                public void onFailure(Call<Integer> call, Throwable t) {
+                                    Log.d("onResponse----", "onResponse: " + call.toString() + "++++++++++++++++++++++++" + t.getMessage());
+                                }
+                            });
                 }
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
-
 
 }
