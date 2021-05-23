@@ -1,7 +1,5 @@
 package com.example.meetapp.model.meetings;
 
-import androidx.annotation.NonNull;
-
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
@@ -12,7 +10,13 @@ import java.util.HashMap;
 
 public class GroupMeeting extends Meeting implements Serializable {
 
+    /**
+     * represents whether the meeting is open for everyone
+     */
     private boolean isOpen;
+    /**
+     * represents the group id of the meeting
+     */
     private String groupId;
 
     public GroupMeeting(long millis, String id, String subject, LatLng location, boolean isOpen, String groupId) {
@@ -71,7 +75,6 @@ public class GroupMeeting extends Meeting implements Serializable {
         isOpen = open;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "GroupMeeting{" + super.toString()
@@ -80,20 +83,31 @@ public class GroupMeeting extends Meeting implements Serializable {
                 '}';
     }
 
+    /**
+     * a method that adds the user to the meeting
+     * @param Uid is the Id of the user
+     */
     @Override
     public void confirmUserArrival(String Uid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.id).child("whoComing");
         reference.child(Uid).setValue(Uid);
     }
 
+    /**
+     * a method that removes the user to the meeting
+     * @param Uid is the Id of the user
+     */
     @Override
     public void deleteUserArrival(String Uid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.id).child("whoComing");
         reference.child(Uid).removeValue();
     }
 
+    /**
+     * a method that adds or updates to the database
+     */
     @Override
-    public void updateOrAddReturnId() {
+    public void updateOrAddToDatabase() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).push();
         this.id = reference.getKey();
         HashMap<String,Object> map = new HashMap<>();

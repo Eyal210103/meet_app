@@ -1,9 +1,21 @@
 package com.example.meetapp.model;
 
 public class User {
+    /**
+     * represents the unique id of the user
+     */
     private String id;
+    /**
+     * represents the email of the user
+     */
     private String email;
+    /**
+     * represents a url to the profile pic of the user
+     */
     private String profileImageUrl;
+    /**
+     * represents the display name of the user
+     */
     private String displayName;
 
     public User() {

@@ -1,12 +1,33 @@
 package com.example.meetapp.model;
 
 public class Message {
+    /**
+     * represents the sender id
+     */
     private String senderId;
+    /**
+     * represents the sender's display name
+     */
     private String senderDisplayName;
+    /**
+     * represents the text that is being sent
+     */
     private String context;
-    private long time; // millis
+    /**
+     * represents the time when the message has sent
+     */
+    private long time;
+    /**
+     * represents the unique id of the message
+     */
     private String id;
+    /**
+     * represents the name of the group where the message is from
+     */
     private String groupName;
+    /**
+     * represents the url to a pic of the message - @nullable
+     */
     private String url;
 
     public Message(String senderId, String senderDisplayName, String context, long time) {

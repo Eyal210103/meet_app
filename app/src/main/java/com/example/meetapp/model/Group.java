@@ -9,11 +9,29 @@ import java.util.HashMap;
 
 public class Group implements Serializable {
 
+    /**
+     * represents the name of the group
+     */
     private String name;
+    /**
+     * represents the unique id of the group
+     */
     private String id;
+    /**
+     *  represents the main group topic
+     */
     private String subject;
+    /**
+     * represents the group description
+     */
     private String description;
+    /**
+     * represents a url to the pic of the group
+     */
     private String photoUrl;
+    /**
+     * represents whether the group is public
+     */
     private boolean isPublic;
 
     public Group() {
@@ -106,12 +124,16 @@ public class Group implements Serializable {
     }
 
     public void addUserToGroup(){
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.id).child(FirebaseTags.MEMBERS_CHILDES)
-                .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES)
-                .child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES).child(this.id).setValue(this.id);
+        if (isPublic) {
+            FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.id).child(FirebaseTags.MEMBERS_CHILDES)
+                    .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
+            FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES)
+                    .child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES).child(this.id).setValue(this.id);
+        }else
+            requestToJoin();
     }
-    public void requestToJoin(){
+
+    private void requestToJoin(){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.getId()).child(FirebaseTags.WAITING_CHILDES)
                 .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
     }

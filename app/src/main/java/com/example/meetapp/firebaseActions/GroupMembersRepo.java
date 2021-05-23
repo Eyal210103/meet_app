@@ -20,8 +20,8 @@ public class GroupMembersRepo {
     private final ArrayList<LiveData<User>> membersAL;
     private final HashMap<String,String> usersIdsMap;
     private final String groupId;
-    MutableLiveData<ArrayList<LiveData<User>>> mutableLiveData;
-    ChildEventListener childEventListener;
+    private final MutableLiveData<ArrayList<LiveData<User>>> mutableLiveData;
+    private ChildEventListener childEventListener;
 
     public GroupMembersRepo(String groupId){
         this.groupId = groupId;
@@ -31,6 +31,9 @@ public class GroupMembersRepo {
         this.loadMembers();
     }
 
+    /**
+     * a method that responsible to add database listening for group members
+     */
     private void loadMembers(){
         mutableLiveData.setValue(membersAL);
         this.childEventListener = new ChildEventListener() {
@@ -75,8 +78,13 @@ public class GroupMembersRepo {
         return mutableLiveData;
     }
 
-    private LiveData<User> putUserData(String key){
-        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
+    /**
+     *  a method that responsible to add database listening for a certain user who comes to a certain meeting
+     * @param id  represents the user's UId
+     * @return LiveData of the user
+     */
+    private LiveData<User> putUserData(String id){
+        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(id);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -164,7 +164,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     boolean isOpen = binding.isPublicGroupMeetingSwitch.isChecked();
                     meeting.setOpen(isOpen);
                     meeting.setGroupId(gId);
-                    meeting.updateOrAddReturnId();
+                    meeting.updateOrAddToDatabase();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES, gId);
                     MeetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
@@ -175,7 +175,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setLongitude(location.longitude);
                     meeting.setDescription(binding.createMeetingDescriptionEt.getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
-                    meeting.updateOrAddReturnId();
+                    meeting.updateOrAddToDatabase();
                     meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES, meeting.getId());
                     MeetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);

@@ -27,6 +27,10 @@ public class MeetingInfoRepo {
         this.meetingId = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public LiveData<Meeting> loadPublicMeeting() {
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES)
                 .child(this.meetingId).addValueEventListener(new ValueEventListener() {
@@ -44,6 +48,11 @@ public class MeetingInfoRepo {
         return meetingLiveData;
     }
 
+    /**
+     *
+     * @param groupId
+     * @return
+     */
     public LiveData<GroupMeeting> loadGroupMeeting(String groupId) {
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
                 .child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(this.meetingId)
@@ -61,6 +70,10 @@ public class MeetingInfoRepo {
         return gMeetingLiveData;
     }
 
+    /**
+     *
+     * @return
+     */
     public LiveData<ArrayList<User>> loadWhoComing() {
         ArrayList<User> arrayList = new ArrayList<User>();
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();
@@ -108,6 +121,11 @@ public class MeetingInfoRepo {
         return mutableLiveData;
     }
 
+    /**
+     *
+     * @param groupId
+     * @return
+     */
     public LiveData<ArrayList<User>> loadWhoComing(String groupId) {
         ArrayList<User> arrayList = new ArrayList<User>();
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();

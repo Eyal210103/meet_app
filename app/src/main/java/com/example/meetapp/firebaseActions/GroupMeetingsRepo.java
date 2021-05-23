@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GroupMeetingsRepo {
+
     private final HashMap<String, ArrayList<LiveData<GroupMeeting>>> allMeetings;
     private final MutableLiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> mutableLiveData;
     private final HashMap<String, LiveData<HashMap<String, LiveData<User>>>> whoComing;
@@ -45,6 +46,9 @@ public class GroupMeetingsRepo {
         this.loadMeetings();
     }
 
+    /**
+     * a method that responsible to add database listening for group meetings
+     */
     private void loadMeetings() {
         mutableLiveData.setValue(allMeetings);
 
@@ -76,6 +80,10 @@ public class GroupMeetingsRepo {
 
                     allMeetings.put(meeting.getDateString(), temp);
                     mutableLiveData.postValue(allMeetings);
+
+                    GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
+                    HashMap<String, String> hashMap = (HashMap<String, String>) snapshot.child(FirebaseTags.WHO_COMING_CHILDES).getValue(genericTypeIndicator);
+                    loadWhoComing(hashMap, meeting.getId());
 
                     if (closesMeetingDAO == null || closesMeetingDAO != null && closesMeetingDAO.getMillis() > meeting.getMillis()) {
                         closesMeeting.setValue(meeting);
@@ -148,10 +156,18 @@ public class GroupMeetingsRepo {
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.id).child(FirebaseTags.MEETINGS_CHILDES).addChildEventListener(this.listener);
     }
 
+    /**
+     * @return mutableLiveData
+     */
     public LiveData<HashMap<String, ArrayList<LiveData<GroupMeeting>>>> getMeetings() {
         return mutableLiveData;
     }
 
+    /**
+     * a method that responsible to add database listening for a who comes to a certain meeting
+     * @param members represents a hashmap of users as we get it from firebase
+     * @param mId represents the meeting id
+     */
     private void loadWhoComing(HashMap<String, String> members, String mId) {
         if (!whoComing.containsKey(mId)) {
             MutableLiveData<HashMap<String, LiveData<User>>> temp = new MutableLiveData<>();
@@ -168,8 +184,13 @@ public class GroupMeetingsRepo {
         mutableLiveWhoComing.postValue(whoComing);
     }
 
-    private LiveData<User> putUserData(String key) {
-        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(key);
+    /**
+     *  a method that responsible to add database listening for a certain user who comes to a certain meeting
+     * @param id  represents the user's UId
+     * @return LiveData of the user
+     */
+    private LiveData<User> putUserData(String id) {
+        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(id);
         final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -184,6 +205,9 @@ public class GroupMeetingsRepo {
         return userMutableLiveData;
     }
 
+    /**
+     * @return closesMeeting
+     */
     public LiveData<GroupMeeting> getClosesMeeting() {
         return closesMeeting;
     }

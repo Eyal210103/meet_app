@@ -21,13 +21,17 @@ public class UserGroupsRepo {
 
     private final ArrayList<LiveData<Group>> groupList = new ArrayList<LiveData<Group>>();
     private final HashMap<String, LiveData<Group>> groupMap = new HashMap<>();
-    MutableLiveData<ArrayList<LiveData<Group>>> mutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<LiveData<Group>>> mutableLiveData = new MutableLiveData<>();
 
     static UserGroupsRepo instance = null;
 
     private UserGroupsRepo() {
     }
 
+    /**
+     * getInstance as part of singleton pattern
+     * @return the only instance of the class
+     */
     public static UserGroupsRepo getInstance() {
         if (instance == null) {
             instance = new UserGroupsRepo();
@@ -36,6 +40,9 @@ public class UserGroupsRepo {
         return instance;
     }
 
+    /**
+     * a method that responsible to add database listening to get the user's group's
+     */
     private void loadGroups() {
         mutableLiveData.setValue(groupList);
 
@@ -45,9 +52,8 @@ public class UserGroupsRepo {
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         String key = snapshot.getValue(String.class);
                         if (!groupMap.containsKey(key)) {
-                            MutableLiveData<Group> groupMutableLiveData = new MutableLiveData<>();
+                            LiveData<Group> groupMutableLiveData = getGroupsData(key);
                             groupList.add(groupMutableLiveData);
-                            putGroupsData(key, groupMutableLiveData);
                             mutableLiveData.postValue(groupList);
                             groupMap.put(key, groupMutableLiveData);
                         }
@@ -82,12 +88,20 @@ public class UserGroupsRepo {
 
     }
 
+    /**
+     * @return LiveData of ArrayList of LiveData of Group
+     */
     public LiveData<ArrayList<LiveData<Group>>> getGroups() {
         return mutableLiveData;
     }
 
-    private void putGroupsData(String key, MutableLiveData<Group> mutableLiveData) {
-        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(key);
+    /**
+     * @param id represents the id of the group that we want to load
+     * @return LiveData of the group
+     */
+    private LiveData<Group> getGroupsData(String id) {
+        MutableLiveData<Group> mutableLiveData = new MutableLiveData<>();
+        Query reference = FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(id);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,12 +112,17 @@ public class UserGroupsRepo {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+        return mutableLiveData;
     }
 
     public HashMap<String, LiveData<Group>> getHashMapGroups() {
         return groupMap;
     }
 
+    /**
+     * a method that responsible to delete the user from a group
+     * @param id represents the id of the group that the user want to leave
+     */
     public void leaveGroup(String id) {
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES).child(id).removeValue();
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(id).child(FirebaseTags.MEMBERS_CHILDES).child(CurrentUser.getInstance().getId()).removeValue();

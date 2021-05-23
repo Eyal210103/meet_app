@@ -65,7 +65,7 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
         holder.date.setText("" + calendar.get(Calendar.DAY_OF_MONTH));
         holder.invisibleDots();
 
-        String key = "" + calendar.get(java.util.Calendar.YEAR) + calendar.get(java.util.Calendar.MONTH) + calendar.get(java.util.Calendar.DAY_OF_MONTH);
+        String key = Meeting.getDateString(calendar.getTime().getTime());//"" + calendar.get(java.util.Calendar.YEAR) + calendar.get(java.util.Calendar.MONTH) + calendar.get(java.util.Calendar.DAY_OF_MONTH);
 
         boolean isGood = false;
         boolean isRegular = false;

@@ -16,7 +16,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.meetapp.R;
 import com.example.meetapp.ui.MainActivity;
-import com.example.meetapp.ui.SplashScreenActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +27,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String CHANNEL_ID = "com.example.meetapp.chat";
     private static final String CHANNEL_NAME = "MeetApp Meetings";
-
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -42,24 +40,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String icon = remoteMessage.getData().get("icon");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
-        Intent intent = new Intent(this, SplashScreenActivity.class);
+//        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
+        Intent intent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder builder = getOreoNotification(remoteMessage);
 
-        int i = 0;
-        if (j > 0){
-            i = j;
-        }
+//        int i = 0;
+//        if (j > 0){
+//            i = j;
+//        }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(i, builder.build());
+        notificationManager.notify(80, builder.build());
 
     }
 

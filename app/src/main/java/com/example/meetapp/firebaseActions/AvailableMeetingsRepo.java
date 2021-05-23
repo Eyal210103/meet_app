@@ -21,9 +21,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.inject.Singleton;
-
 @Singleton
 public class AvailableMeetingsRepo {
+
 
     private final MutableLiveData<ArrayList<MutableLiveData<Meeting>>> publicMeetingsMutableLiveData = new MutableLiveData<>();
     private final HashMap<String,String> meetingIdToGroupId = new HashMap<>();
@@ -37,6 +37,10 @@ public class AvailableMeetingsRepo {
     private AvailableMeetingsRepo() {
     }
 
+    /**
+     * getInstance as part of singleton pattern
+     * @return the only instance of the class
+     */
     public static AvailableMeetingsRepo getInstance() {
         if (instance == null) {
             instance = new AvailableMeetingsRepo();
@@ -46,6 +50,10 @@ public class AvailableMeetingsRepo {
         return instance;
     }
 
+    /**
+     * getInstance as part of singleton pattern
+     * @return the only instance of the class
+     */
     public static AvailableMeetingsRepo getInstance(Context context){
         if (instance == null) {
             instance = new AvailableMeetingsRepo();
@@ -56,6 +64,9 @@ public class AvailableMeetingsRepo {
         return instance;
     }
 
+    /**
+     * a method that responsible to add database listening for public meetings
+     */
     private void loadPublicMeetings(){
         publicMeetingsMutableLiveData.setValue(publicMeetings);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
@@ -87,6 +98,9 @@ public class AvailableMeetingsRepo {
         });
     }
 
+    /**
+     * a method that responsible to add database listening for group meetings
+     */
     private void loadPublicGroupMeetings(){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUP_MEETINGS_CHILDES).addChildEventListener(new ChildEventListener() {
             @Override
@@ -124,6 +138,11 @@ public class AvailableMeetingsRepo {
         });
     }
 
+    /**
+     *  a method that responsible to add database listening for a single group meeting
+     * @param groupId represents the group id
+     * @param meetingId represents the meeting id
+     */
     private void loadSinglePublicGroupMeetingData(String groupId, String meetingId){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(groupId).child(FirebaseTags.MEETINGS_CHILDES).child(meetingId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -147,12 +166,20 @@ public class AvailableMeetingsRepo {
         });
     }
 
+    /**
+     * @return LiveData of ArrayList of LiveData of Meetings
+     */
     public LiveData<ArrayList<MutableLiveData<Meeting>>> getPublicMeetings(){
         return publicMeetingsMutableLiveData;
     }
 
+    /**
+     * a method that responsible to add database listening for a who comes to a certain meeting
+     * @param mId represents the meeting id
+     * @return LiveData of ArrayList of Users
+     */
     public static LiveData<ArrayList<User>> getWhoComing(String mId){
-        ArrayList<User> arrayList = new ArrayList<User>();
+        ArrayList<User> arrayList = new ArrayList<User>(); // TODO need to do group
         MutableLiveData<ArrayList<User>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(arrayList);
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.PUBLIC_MEETINGS_CHILDES).child(mId)
@@ -189,7 +216,7 @@ public class AvailableMeetingsRepo {
         });
         return mutableLiveData;
     }
-
+    
     public HashMap<String, String> getMeetingIdToGroupId() {
         return meetingIdToGroupId;
     }

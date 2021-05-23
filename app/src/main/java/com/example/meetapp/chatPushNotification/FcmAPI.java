@@ -8,7 +8,7 @@ import retrofit2.http.POST;
 
 public interface FcmAPI {
     @Headers(
-            {"Content-Type:application/json", "Authorization:key=ADD HERE YOUR KEY FROM FIREBASE PROJECT"
+            {"Content-Type:application/json", "Authorization:key=AAAAcujv7pk:APA91bHMFEod8roanRDiRaKrzMvFe6IGCSjL7jbvH9S_MUwLKadw3Jmh8qBXAm07bzfYPP_IJmV_wfZEciOuHJqhpwY6IWxMI5obFAhSIXmMtBzcOqAvQBoTWENYZ6KnTS6eon-Rm1GD"
             }
             )
 
