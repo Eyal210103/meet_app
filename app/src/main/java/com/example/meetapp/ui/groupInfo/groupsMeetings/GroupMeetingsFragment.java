@@ -14,7 +14,7 @@ import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInCalender;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.GroupMeeting;
-import com.example.meetapp.ui.calenderBar.CalenderBarFragment;
+import com.example.meetapp.ui.calenderBar.CalendarBarFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoFragment;
 import com.example.meetapp.ui.groupInfo.GroupInfoViewModel;
 import com.example.meetapp.ui.meetings.SelectDateFragment;
@@ -49,8 +49,8 @@ public class GroupMeetingsFragment extends Fragment implements OnClickInCalender
         View view = inflater.inflate(R.layout.group_meetings_fragment, container, false);
         prevMillis = Calendar.getInstance().getTimeInMillis();
 
-        CalenderBarFragment calenderBarFragment = new CalenderBarFragment(mViewModel, this);
-        getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container_group, calenderBarFragment).commit();
+        CalendarBarFragment calendarBarFragment = new CalendarBarFragment(mViewModel, this);
+        getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container_group, calendarBarFragment).commit();
         return view;
     }
 

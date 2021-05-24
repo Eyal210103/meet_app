@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.CalenderBarViewHolder> {
+public class CalendarBarAdapter extends RecyclerView.Adapter<CalendarBarAdapter.CalenderBarViewHolder> {
 
-    private final CalenderBarFragment context;
+    private final CalendarBarFragment context;
     private ArrayList<Date> days;
     private HashMap<String, ArrayList<LiveData<Meeting>>> publicMeetings;
     private HashMap<String, ArrayList<LiveData<GroupMeeting>>> groupMeetings;
@@ -36,13 +36,13 @@ public class CalenderBarAdapter extends RecyclerView.Adapter<CalenderBarAdapter.
     private String goTo;
 
 
-    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String, ArrayList<LiveData<Meeting>>> meetings) {
+    public CalendarBarAdapter(CalendarBarFragment context, ArrayList<Date> days, HashMap<String, ArrayList<LiveData<Meeting>>> meetings) {
         this.context = context;
         this.days = days;
         this.publicMeetings = meetings;
     }
 
-    public CalenderBarAdapter(CalenderBarFragment context, ArrayList<Date> days, HashMap<String, ArrayList<LiveData<GroupMeeting>>> meetings, String group) {
+    public CalendarBarAdapter(CalendarBarFragment context, ArrayList<Date> days, HashMap<String, ArrayList<LiveData<GroupMeeting>>> meetings, String group) {
         this.context = context;
         this.days = days;
         this.groupMeetings = meetings;

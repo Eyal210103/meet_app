@@ -19,7 +19,7 @@ import com.example.meetapp.databinding.MyMeetingsFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.meetings.Meeting;
 import com.example.meetapp.ui.MainActivityViewModel;
-import com.example.meetapp.ui.calenderBar.CalenderBarFragment;
+import com.example.meetapp.ui.calenderBar.CalendarBarFragment;
 import com.example.meetapp.ui.meetings.SelectDateFragment;
 import com.example.meetapp.ui.meetings.meetingInfo.MeetingInfoFragment;
 
@@ -45,20 +45,20 @@ public class MyMeetingsFragment extends Fragment implements OnClickInCalender {
 
         MyMeetingsFragmentBinding binding = MyMeetingsFragmentBinding.inflate(inflater, container, false);
 
-        CalenderBarFragment calenderBarFragment;
+        CalendarBarFragment calendarBarFragment;
         if (getArguments() != null) {
             if (getArguments().containsKey(Const.BUNDLE_GOTO_DATE)) {
                 String goTo = getArguments().getString(Const.BUNDLE_GOTO_DATE);
-                calenderBarFragment = new CalenderBarFragment(mViewModel, goTo, this);
+                calendarBarFragment = new CalendarBarFragment(mViewModel, goTo, this);
             }
             else {
-                calenderBarFragment = new CalenderBarFragment(mViewModel, this);
+                calendarBarFragment = new CalendarBarFragment(mViewModel, this);
             }
         } else {
-            calenderBarFragment = new CalenderBarFragment(mViewModel, this);
+            calendarBarFragment = new CalendarBarFragment(mViewModel, this);
         }
 
-        getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container, calenderBarFragment).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.calender_bar_fragment_container, calendarBarFragment).commit();
 
         prevMillis = Calendar.getInstance().getTimeInMillis();
 

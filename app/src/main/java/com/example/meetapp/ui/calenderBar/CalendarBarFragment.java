@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class CalenderBarFragment extends Fragment implements MonthListener{
+public class CalendarBarFragment extends Fragment implements MonthListener{
 
     private final ViewModel mViewModel;
-    private CalenderBarAdapter adapter;
+    private CalendarBarAdapter adapter;
     private ArrayList<Date> days;
     private LinearLayoutManager llm;
     private int position;
@@ -44,16 +44,16 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
 
     TextView monthTextView;
 
-    public CalenderBarFragment(MyMeetingsViewModel mViewModel, Fragment parent) {
+    public CalendarBarFragment(MyMeetingsViewModel mViewModel, Fragment parent) {
         this.mViewModel = mViewModel;
         this.parent= parent;
     }
-    public CalenderBarFragment(GroupInfoViewModel mViewModel, Fragment parent) {
+    public CalendarBarFragment(GroupInfoViewModel mViewModel, Fragment parent) {
         this.mViewModel = mViewModel;
         this.parent= parent;
     }
 
-    public CalenderBarFragment(MyMeetingsViewModel mViewModel, String goTo, MyMeetingsFragment parent) {
+    public CalendarBarFragment(MyMeetingsViewModel mViewModel, String goTo, MyMeetingsFragment parent) {
         this.mViewModel = mViewModel;
         this.parent= parent;
         this.goTo = goTo;
@@ -96,7 +96,7 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
 
 
         if (mViewModel instanceof MyMeetingsViewModel) {
-            this.adapter = new CalenderBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
+            this.adapter = new CalendarBarAdapter(this, this.days, ((MyMeetingsViewModel)mViewModel).getMeetings().getValue());
             ((MyMeetingsViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<Meeting>>>>() {
                 @Override
                 public void onChanged(HashMap<String, ArrayList<LiveData<Meeting>>> stringArrayListHashMap) {
@@ -104,7 +104,7 @@ public class CalenderBarFragment extends Fragment implements MonthListener{
                 }
             });
         }else {
-            this.adapter = new CalenderBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(), Const.BUNDLE_GROUP_ID);
+            this.adapter = new CalendarBarAdapter(this, this.days, ((GroupInfoViewModel)mViewModel).getMeetings().getValue(), Const.BUNDLE_GROUP_ID);
 
             ((GroupInfoViewModel)mViewModel).getMeetings().observe(getViewLifecycleOwner(), new Observer<HashMap<String, ArrayList<LiveData<GroupMeeting>>>>() {
                 @Override
