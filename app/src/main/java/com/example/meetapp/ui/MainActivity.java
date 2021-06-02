@@ -14,7 +14,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInFragment;
-import com.example.meetapp.chatPushNotification.FirebaseDatabaseListening;
 import com.example.meetapp.chatPushNotification.MyFirebaseMessagingService;
 import com.example.meetapp.chatPushNotification.Token;
 import com.example.meetapp.firebaseActions.UserGroupsRepo;
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         Intent i = new Intent("com.example.meetapp.notifications.MyFirebaseMessaging");
         i.setClass(this, MyFirebaseMessagingService.class);
         startService(i);
-        FirebaseDatabaseListening.getInstance().startService();
 
         FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener(new OnCompleteListener<InstallationTokenResult>() {
             @Override

@@ -95,7 +95,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabaseListening.getInstance().startService();
         if (firebaseUser != null) {
             updateToken(s);
         }
