@@ -67,7 +67,7 @@ public class MeetingInfoViewModel extends ViewModel {
     private MutableLiveData<Group> getGroupData(String key) {
         MutableLiveData<Group> mutableLiveData = new MutableLiveData<>();
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(key)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         mutableLiveData.setValue(snapshot.getValue(Group.class));

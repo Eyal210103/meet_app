@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -22,7 +19,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -35,26 +31,17 @@ import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.model.User;
 import com.example.meetapp.ui.MainActivityViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupInfoFragment extends Fragment {
 
     private GroupInfoViewModel mViewModel;
     private MembersAdapter membersAdapter;
-    private ViewPager2 viewPager;
 
-    CircleImageView groupImage;
-    ImageView groupSubject;
-    TextView groupName;
-    ConstraintLayout constraintLayout;
+    private GroupInfoFragmentBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,21 +55,8 @@ public class GroupInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        GroupInfoFragmentBinding binding = GroupInfoFragmentBinding.inflate(inflater,container,false);
+        binding = GroupInfoFragmentBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
-
-        groupImage = binding.groupInfoGroupCiv;
-        groupName = binding.groupInfoGroupName;
-        groupSubject = binding.groupInfoSubjectImageView;
-        constraintLayout = binding.groupInfoMain;
-
-
-        FirebaseMessaging.getInstance().subscribeToTopic(requireArguments().getString(Const.BUNDLE_GROUP_ID)).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-            }
-        });
 
 
         RecyclerView recyclerViewMembers = binding.groupInfoRecyclerViewMembers;
@@ -92,17 +66,16 @@ public class GroupInfoFragment extends Fragment {
 
         membersAdapter = new MembersAdapter(this, mViewModel.getMembersLiveData().getValue());
         recyclerViewMembers.setAdapter(membersAdapter);
-        
-        viewPager =binding.viewPagerGroup;
-        viewPager.setNestedScrollingEnabled(true);
+
+        binding.viewPagerGroup.setNestedScrollingEnabled(true);
         ViewPagerGroupInfoAdapter adapter = new ViewPagerGroupInfoAdapter(this,mViewModel.getGroupId());
-        viewPager.setAdapter(adapter);
-        viewPager.setUserInputEnabled(false);
+        binding.viewPagerGroup.setAdapter(adapter);
+        binding.viewPagerGroup.setUserInputEnabled(false);
 
         String[] titles = {getResources().getString(R.string.title_dashboard), getResources().getString(R.string.chats), getResources().getString(R.string.meetings)};
 
         TabLayout tabLayout = binding.tabLayoutGroup;//view.findViewById(R.id.tab_layout_group);
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+        new TabLayoutMediator(tabLayout, binding.viewPagerGroup, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(titles[position]);
@@ -160,14 +133,14 @@ public class GroupInfoFragment extends Fragment {
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
                 gd.setCornerRadius(0f);
 
-                constraintLayout.setBackground(gd);
+                binding.groupInfoMain.setBackground(gd);
                 return false;
             }
-        }).into(groupImage);
+        }).into(binding.groupInfoGroupCiv);
 
-        groupName.setText(group.getName());
-        groupName.setSelected(true);
-        groupSubject.setImageResource(getSubjectIcon(group.getSubject()));
+        binding.groupInfoGroupName.setText(group.getName());
+        binding.groupInfoGroupName.setSelected(true);
+        binding.groupInfoSubjectImageView.setImageResource(getSubjectIcon(group.getSubject()));
     }
 
     public static int getDominantColor(Bitmap bitmap) {
@@ -178,10 +151,10 @@ public class GroupInfoFragment extends Fragment {
     }
 
     public void swipeToChat(){
-        viewPager.setCurrentItem(1, true);
+        binding.viewPagerGroup.setCurrentItem(1, true);
     }
     public void swipeToMeetings(){
-        viewPager.setCurrentItem(2, true);
+        binding.viewPagerGroup.setCurrentItem(2, true);
     }
 
     private int getSubjectIcon(String subject){

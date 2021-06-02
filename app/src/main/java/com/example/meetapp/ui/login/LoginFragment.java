@@ -22,30 +22,24 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
-    View view;
     FragmentLoginBinding binding;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        view = binding.getRoot();
+        View view = binding.getRoot();
 
         EditText emailET = binding.loginEditTextTextEmailAddress;
         EditText passwordET = binding.loginEditTextTextPassword;
 
-        view.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
+       binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailET.getText().toString();
                 String pass = passwordET.getText().toString();
                 if (validateEmailAndPassword(email,pass))
-                    singInWithEmail(email,pass);
+                    signInWithEmail(email,pass);
                 else{
                     Snackbar snackbar = Snackbar
                             .make(view, getResources().getString(R.string.invalid_inputs), Snackbar.LENGTH_LONG);
@@ -57,7 +51,7 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private void singInWithEmail(String email , String password){
+    private void signInWithEmail(String email , String password){
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginFragment.this.requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -67,7 +61,7 @@ public class LoginFragment extends Fragment {
                             openMainAppScreen();
                         } else {
                             Snackbar snackbar = Snackbar
-                                    .make(view, getResources().getString(R.string.auth_failed_message), Snackbar.LENGTH_LONG);
+                                    .make(binding.getRoot(), getResources().getString(R.string.auth_failed_message), Snackbar.LENGTH_LONG);
                             snackbar.show();
                         }
                     }

@@ -71,7 +71,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         subjects.add(new Subject(R.drawable.groupsicon , Const.SUBJECT_OTHER));
     }
 
-    class SubjectViewHolder extends RecyclerView.ViewHolder{
+    static class SubjectViewHolder extends RecyclerView.ViewHolder{
         public CircleImageView circleImageView;
         public SubjectViewHolder(@NonNull View itemView) {
             super(itemView);

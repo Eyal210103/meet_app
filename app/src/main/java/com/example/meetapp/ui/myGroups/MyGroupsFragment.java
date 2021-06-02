@@ -1,6 +1,5 @@
 package com.example.meetapp.ui.myGroups;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +15,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
+import com.example.meetapp.databinding.MyGroupsFragmentBinding;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.ui.MainActivityViewModel;
@@ -29,32 +28,32 @@ import java.util.ArrayList;
 public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView {
 
     MainActivityViewModel mViewModel;
-    RecyclerView recyclerView;
-    GroupsAdapter adapter;
+    MyGroupsFragmentBinding binding;
+
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.my_groups_fragment, container, false);
+        binding = MyGroupsFragmentBinding.inflate(inflater,container,false);
+        View view = binding.getRoot();
 
         final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue(), Const.TYPE_MY_GROUPS);
+        GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getGroups().getValue(), Const.TYPE_MY_GROUPS);
 
         Button buttonCreateGroup = view.findViewById(R.id.groups_create_group_fab);
         Button buttonJoinGroup = view.findViewById(R.id.groups_join_group_fab);
 
-        recyclerView = view.findViewById(R.id.groups_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+        binding.groupsRecyclerView.setLayoutManager(llm);
+        binding.groupsRecyclerView.setHasFixedSize(true);
+        binding.groupsRecyclerView.setAdapter(adapter);
 
         buttonCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +68,7 @@ public class MyGroupsFragment extends Fragment implements OnClickInRecyclerView 
                 navController.navigate(R.id.action_socialMenuFragment_to_joinGroupFragment);
             }
         });
-        recyclerView.setAdapter(adapter);
+        binding.groupsRecyclerView.setAdapter(adapter);
 
         mViewModel.getGroups().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Group>>>() {
             @Override

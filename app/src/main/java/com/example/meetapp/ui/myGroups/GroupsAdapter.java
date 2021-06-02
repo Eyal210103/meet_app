@@ -44,6 +44,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     Fragment context;
     int type;
     ArrayList<LiveData<Group>> groups;
+    ArrayList<Group> groupsNonLD;
+
 
     public GroupsAdapter(Fragment context, ArrayList<LiveData<Group>> groups, int type) {
         this.context = context;
@@ -51,6 +53,11 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         this.type = type;
     }
 
+    public GroupsAdapter(ArrayList<Group> groupsNonLD, Fragment context, int type) {
+        this.context = context;
+        this.groupsNonLD = groupsNonLD;
+        this.type = type;
+    }
     @NonNull
     @Override
     public GroupsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,7 +68,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
-        final Group current = groups.get(position).getValue();
+        final Group current = groups != null?groups.get(position).getValue():groupsNonLD.get(position);
         if (current != null) {
             holder.groupName.setText(current.getName());
 
@@ -155,7 +162,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         }
     }
 
-    class GroupsViewHolder extends RecyclerView.ViewHolder {
+    static class GroupsViewHolder extends RecyclerView.ViewHolder {
         CircleImageView groupImage;
         TextView groupName;
         ImageView subject;

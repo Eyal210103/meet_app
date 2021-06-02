@@ -12,11 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,12 +24,11 @@ import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.PhotoUploadCompleteListener;
 import com.example.meetapp.callbacks.PhotoUploadErrorListener;
+import com.example.meetapp.databinding.FragmentCreateGroupBinding;
 import com.example.meetapp.firebaseActions.StorageUpload;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
 import com.example.meetapp.ui.createMeeting.SubjectAdapter;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
@@ -41,30 +37,23 @@ import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColo
 public class CreateGroupFragment extends Fragment implements PhotoUploadCompleteListener, PhotoUploadErrorListener, OnClickInRecyclerView {
 
     private static final int PICK_IMAGE = 52;
-    private EditText groupNameEditText;
-    private EditText groupSubjectEditText;
-    private SwitchCompat switchCompat;
-    private CircleImageView groupImageCIV;
     private ProgressDialog progressDialog;
-    private ConstraintLayout layout;
     private Uri imageUri;
     private NavController navController;
     private int position;
     private GridLayoutManager gridLayoutManager;
     private SubjectAdapter subjectAdapter;
+    private FragmentCreateGroupBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        binding = FragmentCreateGroupBinding.inflate(inflater,container,false);
 
         View view = inflater.inflate(R.layout.fragment_create_group, container, false);
 
         position = -1;
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        groupImageCIV = view.findViewById(R.id.create_group_civ);
-        groupNameEditText = view.findViewById(R.id.create_group_group_name_et);
-        groupSubjectEditText = view.findViewById(R.id.create_group_group_subject);
-        switchCompat = view.findViewById(R.id.create_group_public_switch);
-        layout = view.findViewById(R.id.create_group_layout);
 
         RecyclerView recyclerView = view.findViewById(R.id.create_group_choose_subject);
         subjectAdapter = new SubjectAdapter(this);
@@ -93,11 +82,11 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
         boolean isGood = false;
         String name = "";
         String sub = "";
-        if (!groupNameEditText.getText().toString().matches("")) {
-            name = groupNameEditText.getText().toString();
+        if (!binding.createGroupGroupNameEt.getText().toString().matches("")) {
+            name = binding.createGroupGroupNameEt.getText().toString();
             isGood = true;
-            if (!groupSubjectEditText.getText().toString().equals("")){
-                sub = groupSubjectEditText.getText().toString();
+            if (!binding.createGroupGroupSubject.getText().toString().equals("")) {
+                sub = binding.createGroupGroupSubject.getText().toString();
             }
             if (isGood) {
                 final String groupImageURL = "https://www.liberaldictionary.com/wp-content/uploads/2018/11/null.png";
@@ -105,7 +94,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 newGroup.setDescription(sub);
                 newGroup.setPhotoUrl(groupImageURL);
                 newGroup.setSubject(subjectAdapter.getSelected());
-                switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                binding.createGroupPublicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         newGroup.setIsPublic(isChecked);
@@ -116,17 +105,11 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle(getString(R.string.create_group_message));
                 progressDialog.show();
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        StorageUpload.uploadGroupImage(CreateGroupFragment.this,id,imageUri);
-                    }
-                });
-                thread.start();
+                StorageUpload.uploadGroupImage(CreateGroupFragment.this, id, imageUri);
                 //StorageUpload.uploadGroupImage(CreateGroupFragment.this,id,imageUri);
             }
         } else {
-           // errors.setText("Type");
+            // errors.setText("Type");
         }
     }
 
@@ -141,13 +124,13 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             if (data != null) {
                 imageUri = data.getData();
-                groupImageCIV.setImageURI(imageUri);
-                Bitmap bitmap = ((BitmapDrawable)groupImageCIV.getDrawable()).getBitmap();
+                binding.createGroupCiv.setImageURI(imageUri);
+                Bitmap bitmap = ((BitmapDrawable)binding.createGroupCiv.getDrawable()).getBitmap();
                 int colorFromImg = getDominantColor(bitmap);
                 int[] colors = {colorFromImg,requireActivity().getColor(R.color.background)};
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
                 gd.setCornerRadius(0f);
-                layout.setBackground(gd);
+                binding.createGroupLayout.setBackground(gd);
             }
         }
     }

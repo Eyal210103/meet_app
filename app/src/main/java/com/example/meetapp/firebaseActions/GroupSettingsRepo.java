@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.meetapp.model.CurrentUser;
 import com.example.meetapp.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -152,7 +151,7 @@ public class GroupSettingsRepo {
 
     public void removeUser(String userId){
         FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.groupId).child(FirebaseTags.MEMBERS_CHILDES).child(userId).removeValue();
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES).child(groupId).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES).child(userId).child(FirebaseTags.GROUPS_CHILDES).child(groupId).removeValue();
     }
 
     private void removeFromList(String userId) {

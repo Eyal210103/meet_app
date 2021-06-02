@@ -92,7 +92,7 @@ public class MeetingsToLocationAdapter extends RecyclerView.Adapter<MeetingsToLo
         return meetings.size();
     }
 
-    public String getAddress(LatLng location) {
+    private String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(context.requireActivity(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);

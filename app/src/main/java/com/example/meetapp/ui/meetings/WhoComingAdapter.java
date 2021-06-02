@@ -19,7 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class WhoComingAdapter extends RecyclerView.Adapter<WhoComingAdapter.MembersViewHolder>{
 
     private Context context;
-    private ArrayList<User> members;
+    private final ArrayList<User> members;
 
     public WhoComingAdapter(Context context, ArrayList<User> members) {
         this.context = context;

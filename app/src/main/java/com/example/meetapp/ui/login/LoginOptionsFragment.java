@@ -33,33 +33,19 @@ import com.google.firebase.database.annotations.NotNull;
 
 public class LoginOptionsFragment extends Fragment {
 
-    private static final String TAG = "LoginActivity";
     private static final int GOOGLE = 101;
 
-    private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseAuth mAuth;
-    View view;
     LoginOptionsFragmentBinding binding;
-
-    public static LoginOptionsFragment newInstance() {
-        return new LoginOptionsFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = LoginOptionsFragmentBinding.inflate(inflater,container,false);
-        view =  binding.getRoot();
+        View view =  binding.getRoot();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
-        this.mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+    //    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+   //             .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        //this.mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         binding.googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +73,9 @@ public class LoginOptionsFragment extends Fragment {
 
 
     private void onClickSignInWithGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, GOOGLE);
     }
@@ -101,7 +90,7 @@ public class LoginOptionsFragment extends Fragment {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 Snackbar snackbar = Snackbar
-                        .make(view, getString(R.string.auth_failed_message), Snackbar.LENGTH_LONG);
+                        .make(binding.getRoot(), getString(R.string.auth_failed_message), Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         }
@@ -109,7 +98,7 @@ public class LoginOptionsFragment extends Fragment {
 
     private void firebaseAuthWithGoogle(@NotNull GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(requireActivity() , new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

@@ -33,8 +33,8 @@ import static android.app.Activity.RESULT_OK;
 public class SignupFragment extends Fragment implements PhotoUploadErrorListener, PhotoUploadCompleteListener {
 
     private static final int PICK_IMAGE = 50;
+
     Uri imageUri;
-    View view;
     FragmentSignupBinding binding;
     ProgressDialog progressDialog;
 
@@ -48,8 +48,8 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentSignupBinding.inflate(inflater,container,false);
-        view = binding.getRoot();
+        binding = FragmentSignupBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         progressDialog = new ProgressDialog(requireActivity());
         progressDialog.setCancelable(false);
@@ -75,9 +75,9 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                 String pass = passET.getText().toString();
                 String passConfirm = passConfirmET.getText().toString();
 
-                if (validateSignUp(display,email,pass,passConfirm)){
+                if (validateSignUp(display, email, pass, passConfirm)) {
                     progressDialog.show();
-                    signUpWithEmail(display,email,pass);
+                    signUpWithEmail(display, email, pass);
                 }
             }
         });
@@ -85,13 +85,13 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
         return view;
     }
 
-    private void signUpWithEmail(String display , String email, String password){
+    private void signUpWithEmail(String display, String email, String password) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(SignupFragment.this.requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user =  FirebaseAuth.getInstance().getCurrentUser();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(display)
                                     .setPhotoUri(Uri.parse("https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"))
@@ -101,18 +101,13 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         CurrentUser.addOrUpdateUser();
-                                        if (imageUri != null){
-                                            Thread thread = new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    StorageUpload.uploadProfileImage(SignupFragment.this
-                                                                    ,CurrentUser.getInstance().getId()
-                                                                    ,imageUri);
-                                                }
-                                            });
-                                            thread.start();
-                                        }
-                                        else {
+                                        if (imageUri != null) {
+
+                                            StorageUpload.uploadProfileImage(SignupFragment.this
+                                                    , CurrentUser.getInstance().getId()
+                                                    , imageUri);
+
+                                        } else {
                                             signUpComplete();
                                         }
                                     }
@@ -123,28 +118,25 @@ public class SignupFragment extends Fragment implements PhotoUploadErrorListener
                 });
     }
 
-    private boolean validateSignUp(String display , String email, String pass , String passConfirm){
-        if (display.matches("")){
+    private boolean validateSignUp(String display, String email, String pass, String passConfirm) {
+        if (display.matches("")) {
             Snackbar snackbar = Snackbar
-                    .make(view, getString(R.string.display_name_error), Snackbar.LENGTH_LONG);
+                    .make(binding.getRoot(), getString(R.string.display_name_error), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
-        }
-        else if (email.matches("") || email.indexOf('@') == -1 || email.indexOf('.') == -1 || email.charAt(0) == '@' ){
+        } else if (email.matches("") || !email.contains("@") || !email.contains(".") || email.charAt(0) == '@') {
             Snackbar snackbar = Snackbar
-                    .make(view, getString(R.string.invalid_email_message), Snackbar.LENGTH_LONG);
+                    .make(binding.getRoot(), getString(R.string.invalid_email_message), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
-        }
-        else if (pass.length() < 6){
+        } else if (pass.length() < 6) {
             Snackbar snackbar = Snackbar
-                    .make(view, getString(R.string.short_password_message), Snackbar.LENGTH_LONG);
+                    .make(binding.getRoot(), getString(R.string.short_password_message), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
-        }
-        else if (!pass.equals(passConfirm)){
+        } else if (!pass.equals(passConfirm)) {
             Snackbar snackbar = Snackbar
-                    .make(view, getString(R.string.not_same_password_message), Snackbar.LENGTH_LONG);
+                    .make(binding.getRoot(), getString(R.string.not_same_password_message), Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }

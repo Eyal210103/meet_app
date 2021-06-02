@@ -62,14 +62,10 @@ public class CurrentUser {
         FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                getInstance();
                 OnCompleteAction onCompleteAction = (OnCompleteAction)context;
                 onCompleteAction.OnComplete();
             }
         });
     }
-
-    public static void setCurrentUser(User user) {
-        CurrentUser.user = user;
-    }
-
 }

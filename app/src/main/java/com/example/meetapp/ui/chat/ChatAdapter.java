@@ -30,7 +30,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.context = context;
     }
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -89,8 +88,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (list.get(position).getValue().getSenderId().equals(CurrentUser.getInstance().getId())){
                 return 1;
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        }catch (Exception ignored){
         }
         return 0;
     }

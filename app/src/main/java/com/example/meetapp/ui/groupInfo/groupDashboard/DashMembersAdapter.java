@@ -19,8 +19,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DashMembersAdapter extends RecyclerView.Adapter<DashMembersAdapter.DashMembersViewHolder> {
 
-    private Fragment context;
-    private ArrayList<LiveData<User>> members;
+    private final Fragment context;
+    private final ArrayList<LiveData<User>> members;
 
     public DashMembersAdapter(Fragment context, ArrayList<LiveData<User>> members) {
         this.context = context;
@@ -47,7 +47,7 @@ public class DashMembersAdapter extends RecyclerView.Adapter<DashMembersAdapter.
         return members.size();
     }
 
-    class DashMembersViewHolder extends RecyclerView.ViewHolder {
+    static class DashMembersViewHolder extends RecyclerView.ViewHolder {
         CircleImageView circleImageView;
         public DashMembersViewHolder(@NonNull View itemView) {
             super(itemView);

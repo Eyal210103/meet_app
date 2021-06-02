@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.Fragment;
@@ -45,11 +43,8 @@ import java.util.Locale;
 public class CreateMeetingFragment extends Fragment implements OnDismissPlacePicker, OnClickInRecyclerView {
 
     private MainActivityViewModel mainActivityViewModel;
-    private View view;
-    private Spinner spinnerSelectGroup;
     private DatePickerDialog datePickerDialog;
     private LatLng location;
-    private TextView locationTV;
     private boolean isGroup;
     private GridLayoutManager gridLayoutManager;
     private int position;
@@ -67,7 +62,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCreateMeetingBinding.inflate(inflater,container,false);
-        view = binding.getRoot();
+        View view = binding.getRoot();
 
         RecyclerView recyclerViewSubjects = binding.createMeetingRecyclerView;
         SubjectAdapter subjectAdapter = new SubjectAdapter(this);
@@ -79,11 +74,9 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         position = -1;
 
 
-        spinnerSelectGroup = binding.createSelectGroupSpinner;
-        SpinnerGroupAdapter spinnerAdapter = new SpinnerGroupAdapter(requireActivity(), R.layout.select_group_adapter, mainActivityViewModel.getGroups().getValue());
-        spinnerSelectGroup.setAdapter(spinnerAdapter);
+        SpinnerGroupAdapter spinnerAdapter = new SpinnerGroupAdapter(requireActivity(), mainActivityViewModel.getGroups().getValue());
+        binding.createSelectGroupSpinner.setAdapter(spinnerAdapter);
 
-        locationTV = binding.createMeetingLocationTextView;
 
         RadioGroup radioGroup = binding.radioGroup;
         radioGroup.check(R.id.radio_meeting);
@@ -91,19 +84,19 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radio_group) {
-                    ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
+                    ViewGroup.LayoutParams layoutParams = binding.createSelectGroupSpinner.getLayoutParams();
                     layoutParams.height = 200;
-                    spinnerSelectGroup.setLayoutParams(layoutParams);
+                    binding.createSelectGroupSpinner.setLayoutParams(layoutParams);
                     binding.isPublicGroupMeetingSwitch.setVisibility(View.VISIBLE);
                     binding.isPublicTextView.setVisibility(View.VISIBLE);
                     isGroup = true;
                 } else if (checkedId == R.id.radio_meeting) {
-                    ViewGroup.LayoutParams layoutParams = spinnerSelectGroup.getLayoutParams();
+                    ViewGroup.LayoutParams layoutParams = binding.createSelectGroupSpinner.getLayoutParams();
                     layoutParams.height = 0;
                     binding.isPublicGroupMeetingSwitch.setVisibility(View.INVISIBLE);
                     binding.isPublicTextView.setVisibility(View.INVISIBLE);
                     isGroup = false;
-                    spinnerSelectGroup.setLayoutParams(layoutParams);
+                    binding.createSelectGroupSpinner.setLayoutParams(layoutParams);
                 }
             }
         });
@@ -115,7 +108,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int minutes = c.get(Calendar.MINUTE);
 
-        updateDateUI(c, view);
+        updateDateUI(c);
 
         binding.createMeetingChooseTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +121,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), selectedHour, selectedMinute);
-                updateDateUI(c, view);
+                updateDateUI(c);
             }
         }, mHour, minutes, true);
 
@@ -160,7 +153,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     meeting.setLongitude(location.longitude);
                     meeting.setDescription(binding.createMeetingDescriptionEt.getText().toString());
                     meeting.setSubject(subjectAdapter.getSelected());
-                    String gId = ((MutableLiveData<Group>) spinnerSelectGroup.getSelectedItem()).getValue().getId();
+                    String gId = ((MutableLiveData<Group>) binding.createSelectGroupSpinner.getSelectedItem()).getValue().getId();
                     boolean isOpen = binding.isPublicGroupMeetingSwitch.isChecked();
                     meeting.setOpen(isOpen);
                     meeting.setGroupId(gId);
@@ -191,9 +184,9 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
             String groupId = getArguments().getString(Const.BUNDLE_GROUP_ID);
             int index = spinnerAdapter.getIndex(groupId);
             if (index != -1) {
-                spinnerSelectGroup.setSelection(index);
+                binding.createSelectGroupSpinner.setSelection(index);
                 radioGroup.check(R.id.radio_group);
-                spinnerSelectGroup.setEnabled(false);
+                binding.createSelectGroupSpinner.setEnabled(false);
                 radioGroup.setEnabled(false);
             }
         }
@@ -202,7 +195,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     }
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
-    private void updateDateUI(Calendar c , View view){
+    private void updateDateUI(Calendar c){
         binding.createMeetingTvDayCalendarItem.setText(getMonth(c.get(Calendar.MONTH)));
         binding.createMeetingTvDayOfMonthCalendarItem.setText("" + (c.get(Calendar.DAY_OF_MONTH)));
         binding.createMeetingHourTextView.setText(String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE)));
@@ -295,7 +288,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
     @Override
     public void getSelectedLocation(LatLng latLng) {
         location = latLng;
-        locationTV.setText(getAddress(latLng));
+        binding.createMeetingLocationTextView.setText(getAddress(latLng));
     }
 
     @Override

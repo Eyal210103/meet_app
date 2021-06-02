@@ -1,4 +1,4 @@
-package com.example.meetapp.ui.myGroups;
+package com.example.meetapp.ui.myGroups.joinGroup;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

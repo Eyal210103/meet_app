@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,20 +35,15 @@ import com.example.meetapp.ui.MainActivityViewModel;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static com.example.meetapp.ui.groupInfo.GroupInfoFragment.getDominantColor;
 
 public class GroupSettingsFragment extends Fragment implements OnClickInRecyclerView {
 
     private GroupSettingsViewModel mViewModel;
-    private CircleImageView circleImageView;
-    private TextView nameTextView;
-    private TextView descriptionTextView;
     private LinearLayout linearLayoutWaiting;
     private LinearLayout themeLinearLayout;
     private GroupSettingsFragmentBinding binding;
-    boolean isManagerAndIsPendingNotEmpty = true;
+    boolean isManagerAndIsPendingNotEmpty = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,9 +60,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
         binding = GroupSettingsFragmentBinding.inflate(inflater, container, false);
         View view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
 
-        this.circleImageView = binding.groupSettingsCircleImageView;//view.findViewById(R.id.group_settings_circleImageView);
-        this.nameTextView = binding.groupSettingsNameTextView;//view.findViewById(R.id.group_settings_name_textView);
-        this.descriptionTextView = binding.groupSettingsDescriptionTextView;
         this.linearLayoutWaiting = binding.groupSettingsLinearWaiting;//view.findViewById(R.id.group_settings_linear_waiting);
         this.themeLinearLayout = binding.groupSettingsGroupThemeLayout;//view.findViewById(R.id.group_settings_group_theme_layout);
 
@@ -132,13 +123,17 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             public void onChanged(ArrayList<String> ids) {
                 settingsAdapter.setManagers(ids);
                 settingsAdapter.notifyDataSetChanged();
+                boolean isThere = false;
                 for (String s : ids) {
                     if (s.equals(CurrentUser.getInstance().getId())) {
                         settingsAdapter.setIsManager(true);
                         setVisible();
+                        isThere = true;
                         break;
                     }
                 }
+                if (!isThere)
+                    setInvisible();
                 settingsAdapter.notifyDataSetChanged();
                 adapter.notifyDataSetChanged();
             }
@@ -163,7 +158,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     }
 
     private void setInvisible() {
-
         linearLayoutWaiting.setVisibility(View.INVISIBLE);
         binding.waitingReqTv.setVisibility(View.INVISIBLE);
     }
@@ -194,11 +188,11 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
 
                 return false;
             }
-        }).into(circleImageView);
-        this.nameTextView.setText(group.getName());
-        this.nameTextView.setSelected(true);
-        this.descriptionTextView.setText(group.getDescription());
-        this.descriptionTextView.setSelected(true);
+        }).into(binding.groupSettingsCircleImageView);
+        this.binding.groupSettingsNameTextView.setText(group.getName());
+        this.binding.groupSettingsNameTextView.setSelected(true);
+        this.binding.groupSettingsDescriptionTextView.setText(group.getDescription());
+        this.binding.groupSettingsDescriptionTextView.setSelected(true);
     }
 
     @Override

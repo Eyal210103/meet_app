@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meetapp.R;
 import com.example.meetapp.model.Const;
 import com.example.meetapp.model.Group;
+import com.example.meetapp.ui.myGroups.GroupsAdapter;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ public class JoinGroupFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
 
-        GroupsAdapter adapter = new GroupsAdapter(this, mViewModel.getResult().getValue(), Const.TYPE_JOIN_GROUP);
+        GroupsAdapter adapter = new GroupsAdapter(mViewModel.getResult().getValue(),this, Const.TYPE_JOIN_GROUP);
         recyclerView.setAdapter(adapter);
 
         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<ArrayList<Group>>() {

@@ -38,8 +38,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class GroupChatFragment extends Fragment {
 
-    protected static final int CAMERA_REQUEST = 0;
-    protected static final int GALLERY_PICTURE = 1;
+    private static final int CAMERA_REQUEST = 0;
+    private static final int GALLERY_PICTURE = 1;
     private static final int REQUEST_CAMERA = 103;
 
     private GroupChatViewModel mViewModel;

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +42,6 @@ public class GroupDashboardFragment extends Fragment {
 
     private GroupInfoViewModel mViewModel;
     private GroupInfoFragment parent;
-    private TextView lastMessageTextView;
     private DashMembersAdapter adapter;
     private String id;
     private GroupDashboardFragmentBinding binding;
@@ -70,8 +68,7 @@ public class GroupDashboardFragment extends Fragment {
         View view = binding.getRoot();
 
 
-        lastMessageTextView = binding.include2.dashLastMessageTextView;
-        lastMessageTextView.setText(getResources().getString(R.string.no_messages_alert));
+        binding.include2.dashLastMessageTextView.setText(getResources().getString(R.string.no_messages_alert));
 
         RecyclerView recyclerView = binding.include3.groupDashMembersRecycler;
         adapter = new DashMembersAdapter(this, mViewModel.getMembersLiveData().getValue());
@@ -141,7 +138,7 @@ public class GroupDashboardFragment extends Fragment {
                     m = message.getSenderDisplayName() + ":\n" + message.getContext().substring(0, 15) + "...";
                 else
                     m = message.getSenderDisplayName() + ":\n" + message.getContext();
-                lastMessageTextView.setText(m);
+                binding.include2.dashLastMessageTextView.setText(m);
             }
         });
         return view;

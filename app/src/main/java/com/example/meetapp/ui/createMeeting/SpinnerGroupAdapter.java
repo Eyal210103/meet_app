@@ -30,10 +30,10 @@ public class SpinnerGroupAdapter extends ArrayAdapter<LiveData<Group>> {
     int resource;
     Context context;
 
-    public SpinnerGroupAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<LiveData<Group>> objects) {
-        super(context, resource);
+    public SpinnerGroupAdapter(@NonNull Activity context, @NonNull ArrayList<LiveData<Group>> objects) {
+        super(context, R.layout.select_group_adapter);
         groups = objects;
-        this.resource = resource;
+        this.resource = R.layout.select_group_adapter;
         layoutInflater = context.getLayoutInflater();
         this.context = context;
     }
