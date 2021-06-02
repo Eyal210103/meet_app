@@ -52,10 +52,6 @@ public class PlacePickerDialog extends DialogFragment {
         this.context = context;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
