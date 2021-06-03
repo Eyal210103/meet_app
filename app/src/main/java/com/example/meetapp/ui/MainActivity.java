@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         unregisterReceiver(networkChangeReceiver);
     }
 }

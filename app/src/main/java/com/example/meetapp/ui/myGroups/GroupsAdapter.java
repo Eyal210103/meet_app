@@ -58,6 +58,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
         this.groupsNonLD = groupsNonLD;
         this.type = type;
     }
+
     @NonNull
     @Override
     public GroupsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,7 +69,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull GroupsViewHolder holder, int position) {
-        final Group current = groups != null?groups.get(position).getValue():groupsNonLD.get(position);
+        final Group current = groups != null ? groups.get(position).getValue() : groupsNonLD.get(position);
         if (current != null) {
             holder.groupName.setText(current.getName());
 
@@ -140,7 +141,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
 
     @Override
     public int getItemCount() {
-        return groups.size();
+        if (groups != null)
+            return groups.size();
+        return groupsNonLD.size();
     }
 
     private int getSubjectIcon(String subject) {
