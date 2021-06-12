@@ -115,15 +115,16 @@ public class GroupChatFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<LiveData<Message>> mutableLiveData) {
                 adapter.notifyDataSetChanged();
-                recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                recyclerView.scrollToPosition(mutableLiveData.size()-1);
                 for (LiveData<Message> m : mutableLiveData) {
-                    m.observe(getViewLifecycleOwner(), new Observer<Message>() {
-                        @Override
-                        public void onChanged(Message message) {
-                            adapter.notifyDataSetChanged();
-                            recyclerView.smoothScrollToPosition(adapter.getItemCount());
-                        }
-                    });
+                    if (!m.hasActiveObservers()) {
+                        m.observe(getViewLifecycleOwner(), new Observer<Message>() {
+                            @Override
+                            public void onChanged(Message message) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
             }
         });

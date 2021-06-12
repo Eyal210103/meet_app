@@ -2,7 +2,6 @@ package com.example.meetapp.ui.home;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,12 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -42,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +50,7 @@ public class HomeFragment extends Fragment {
     public static final int BITMAP_SIZE = 90;
     private static final int REQUEST_LOCATION = 103;
 
-    private final HashMap<String,MarkerOptions> markersHash = new HashMap<>();
+    private final HashMap<String, MarkerOptions> markersHash = new HashMap<>();
     private final ArrayList<MarkerOptions> markers = new ArrayList<>();
     private final ArrayList<String> ids = new ArrayList<>();
 
@@ -74,7 +70,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = HomeFragmentBinding.inflate(inflater,container,false);
+        binding = HomeFragmentBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         this.mapView = binding.mapView;
@@ -93,24 +89,24 @@ public class HomeFragment extends Fragment {
         mViewModel.getMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<MutableLiveData<Meeting>>>() {
             @Override
             public void onChanged(ArrayList<MutableLiveData<Meeting>> mutableLiveData) {
-                for (LiveData<Meeting> m: mutableLiveData) {
+                for (LiveData<Meeting> m : mutableLiveData) {
                     if (!m.hasObservers()) {
                         m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                             @Override
                             public void onChanged(Meeting meeting) {
-                                String locationInString = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
-                                mViewModel.addMeetingToMarker(locationInString,m);
-                                if (!markersHash.containsKey(locationInString)){
+                                String locationInString = getLatLngString(meeting.getLatitude(), meeting.getLongitude());
+                                mViewModel.addMeetingToMarker(locationInString, m);
+                                if (!markersHash.containsKey(locationInString)) {
                                     MarkerOptions markerOptions = new MarkerOptions();
                                     markerOptions.position(meeting.getLocation());
-                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(), getSubjectIcon(meeting.getSubject()));
                                     icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
                                     markers.add(markerOptions);
                                     ids.add(locationInString);
-                                    markersHash.put(locationInString,markerOptions);
-                                } else if (mViewModel.getListOfMeetings(locationInString).size()>1){
-                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),R.drawable.multi_meeting);
+                                    markersHash.put(locationInString, markerOptions);
+                                } else if (mViewModel.getListOfMeetings(locationInString).size() > 1) {
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(), R.drawable.multi_meeting);
                                     icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
                                     markersHash.get(locationInString).icon(BitmapDescriptorFactory.fromBitmap(icon));
                                 }
@@ -118,7 +114,7 @@ public class HomeFragment extends Fragment {
                         });
                     }
                 }
-                if (mapView!=null)
+                if (mapView != null)
                     addMarkers();
             }
         });
@@ -127,24 +123,24 @@ public class HomeFragment extends Fragment {
         mViewModel.getUserMeetings().observe(getViewLifecycleOwner(), new Observer<ArrayList<LiveData<Meeting>>>() {
             @Override
             public void onChanged(ArrayList<LiveData<Meeting>> mutableLiveData) {
-                for (LiveData<Meeting> m: mutableLiveData) {
+                for (LiveData<Meeting> m : mutableLiveData) {
                     if (!m.hasObservers()) {
                         m.observe(getViewLifecycleOwner(), new Observer<Meeting>() {
                             @Override
                             public void onChanged(Meeting meeting) {
-                                String id = getLatLngString(meeting.getLatitude(),meeting.getLongitude());
-                                mViewModel.addMeetingToMarker(id,m);
-                                if (!markersHash.containsKey(id)){
+                                String id = getLatLngString(meeting.getLatitude(), meeting.getLongitude());
+                                mViewModel.addMeetingToMarker(id, m);
+                                if (!markersHash.containsKey(id)) {
                                     MarkerOptions markerOptions = new MarkerOptions();
                                     markerOptions.position(meeting.getLocation());
-                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),getSubjectIcon(meeting.getSubject()));
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(), getSubjectIcon(meeting.getSubject()));
                                     icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
                                     markers.add(markerOptions);
                                     ids.add(id);
-                                    markersHash.put(id,markerOptions);
-                                } else if (mViewModel.getListOfMeetings(id).size()>1){
-                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(),R.drawable.multi_meeting);
+                                    markersHash.put(id, markerOptions);
+                                } else if (mViewModel.getListOfMeetings(id).size() > 1) {
+                                    Bitmap icon = BitmapFactory.decodeResource(requireContext().getResources(), R.drawable.multi_meeting);
                                     icon = Bitmap.createScaledBitmap(icon, BITMAP_SIZE, BITMAP_SIZE, false);
                                     markersHash.get(id).icon(BitmapDescriptorFactory.fromBitmap(icon));
                                 }
@@ -152,7 +148,7 @@ public class HomeFragment extends Fragment {
                         });
                     }
                 }
-                if (mapView!=null)
+                if (mapView != null)
                     addMarkers();
             }
         });
@@ -161,60 +157,50 @@ public class HomeFragment extends Fragment {
 
     private LatLng getLocation() {
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             assert locationManager != null;
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
                 double latitude = locationGPS.getLatitude();
                 double longitude = locationGPS.getLongitude();
-                return new LatLng(latitude,longitude);
+                return new LatLng(latitude, longitude);
             }
         }
-        return new LatLng(0,0);
+        return new LatLng(0, 0);
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
-        LatLng latLng = getLocation();
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    googleMap.setMyLocationEnabled(true);
-
-                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
-                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                        @Override
-                        public void onMapClick(LatLng latLng) {
-                             binding.homeMotionLayout.transitionToStart();
-                        }
-                    });
-                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
+                setMapCameraToCurrentLocation();
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        binding.homeMotionLayout.transitionToStart();
+                    }
+                });
+                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
 //                            locationTV.setText(getAddress(marker.getPosition()));
 //                            topicTV.setText(marker.getTitle());
 //                            topicIV.setImageResource(getSubjectIcon(marker.getTitle()));
-                            LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
-                            llm.setOrientation(LinearLayoutManager.VERTICAL);
-                            binding.meetingsInLocationRecyclerView.setLayoutManager(llm);
-                            binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(HomeFragment.this,mViewModel.getListOfMeetings((String) marker.getTag()),mViewModel.getGroupMeetingToGroupId(),mViewModel.getAllUserMeetingsIds()));
-                            binding.homeMotionLayout.transitionToEnd();
-                            binding.constraintLayout4.setTag(marker.getTag());
-                            return false;
-                        }
-                    });
-                    addMarkers();
-                } else {
-                    Toast.makeText(requireActivity(), "Map Error", Toast.LENGTH_LONG).show();
-                }
+                        LinearLayoutManager llm = new LinearLayoutManager(requireActivity());
+                        llm.setOrientation(LinearLayoutManager.VERTICAL);
+                        binding.meetingsInLocationRecyclerView.setLayoutManager(llm);
+                        binding.meetingsInLocationRecyclerView.setAdapter(new MeetingsToLocationAdapter(HomeFragment.this, mViewModel.getListOfMeetings((String) marker.getTag()), mViewModel.getGroupMeetingToGroupId(), mViewModel.getAllUserMeetingsIds()));
+                        binding.homeMotionLayout.transitionToEnd();
+                        binding.constraintLayout4.setTag(marker.getTag());
+                        return false;
+                    }
+                });
+                addMarkers();
+
             }
         });
     }
@@ -231,7 +217,7 @@ public class HomeFragment extends Fragment {
 
             if (!address.isEmpty()) {
                 Address location = address.get(0);
-                p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+                p1 = new LatLng(location.getLatitude(), location.getLongitude());
             }
         } catch (IOException ex) {
 
@@ -243,11 +229,11 @@ public class HomeFragment extends Fragment {
     public String getAddress(LatLng location) {
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
+            List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
             try {
                 Address obj = addresses.get(0);
                 return obj.getAddressLine(0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (IOException e) {
@@ -256,21 +242,21 @@ public class HomeFragment extends Fragment {
         return "Error Has Occurred";
     }
 
-    private void addMarkerToMap(MarkerOptions location , String id) {
-        if (location != null && mMap!= null) {
+    private void addMarkerToMap(MarkerOptions location, String id) {
+        if (location != null && mMap != null) {
             Marker m = mMap.addMarker(location);
             m.setTag(id);
         }
     }
 
-    private void addMarkers(){
+    private void addMarkers() {
         for (int i = 0; i < markers.size(); i++) {
-            addMarkerToMap(markers.get(i) , ids.get(i));
+            addMarkerToMap(markers.get(i), ids.get(i));
         }
     }
 
-    private int getSubjectIcon(String subject){
-        switch (subject){
+    private int getSubjectIcon(String subject) {
+        switch (subject) {
             case Const.SUBJECT_RESTAURANT:
                 return R.drawable.restaurant;
             case Const.SUBJECT_BASKETBALL:
@@ -288,17 +274,17 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void fixGoogleBug(){
-        SharedPreferences googleBug = requireActivity().getSharedPreferences("google_bug", Context.MODE_PRIVATE);
-        if (!googleBug.contains("fixed")) {
-            File corruptedZoomTables = new File(requireActivity().getFilesDir(), "ZoomTables.data");
-            corruptedZoomTables.delete();
-            googleBug.edit().putBoolean("fixed", true).apply();
-        }
-    }
+//    public void fixGoogleBug() {
+//        SharedPreferences googleBug = requireActivity().getSharedPreferences("google_bug", Context.MODE_PRIVATE);
+//        if (!googleBug.contains("fixed")) {
+//            File corruptedZoomTables = new File(requireActivity().getFilesDir(), "ZoomTables.data");
+//            corruptedZoomTables.delete();
+//            googleBug.edit().putBoolean("fixed", true).apply();
+//        }
+//    }
 
-    private void zoomToLocation(LatLng location){
-        if (location!=null) {
+    private void zoomToLocation(LatLng location) {
+        if (location != null) {
             CameraUpdate center = CameraUpdateFactory.newLatLng(location);
             CameraUpdate zoom = CameraUpdateFactory.zoomTo(20);
             mMap.moveCamera(center);
@@ -306,8 +292,28 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private String getLatLngString(double latitude,double longitude){
-        return "" + latitude +""+ longitude;
+    private String getLatLngString(double latitude, double longitude) {
+        return "" + latitude + "" + longitude;
+    }
+
+    private void setMapCameraToCurrentLocation(){
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions( new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        }else{
+            LatLng latLng = getLocation();
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+         //   mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_LOCATION) {
+            setMapCameraToCurrentLocation();
+        }
     }
 
     @Override
