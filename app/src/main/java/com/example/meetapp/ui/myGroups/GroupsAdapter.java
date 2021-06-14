@@ -87,12 +87,12 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                     Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
                     int colorFromImg = getDominantColor(bitmap);
-                    int[] colors = {context.requireContext().getColor(R.color.backgroundSec), colorFromImg, colorFromImg};
-
-                    GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
-                    gd.setCornerRadius(60);
-                    holder.cardView.setBackground(gd);
-
+                    try {
+                        int[] colors = {context.requireActivity().getColor(R.color.backgroundSec), colorFromImg, colorFromImg};
+                        GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+                        gd.setCornerRadius(60);
+                        holder.cardView.setBackground(gd);
+                    }catch (Exception e){e.printStackTrace();}
                     return false;
                 }
             }).into(holder.groupImage);

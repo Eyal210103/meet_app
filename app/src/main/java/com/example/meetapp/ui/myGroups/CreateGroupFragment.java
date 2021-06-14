@@ -48,33 +48,31 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentCreateGroupBinding.inflate(inflater,container,false);
-
-        View view = inflater.inflate(R.layout.fragment_create_group, container, false);
+        binding = FragmentCreateGroupBinding.inflate(inflater, container, false);
 
         position = -1;
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
-        RecyclerView recyclerView = view.findViewById(R.id.create_group_choose_subject);
+        RecyclerView recyclerView = binding.createGroupChooseSubject;
         subjectAdapter = new SubjectAdapter(this);
         recyclerView.setAdapter(subjectAdapter);
         gridLayoutManager = new GridLayoutManager(requireActivity(), 5);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        view.findViewById(R.id.create_group_choose_img_button).setOnClickListener(new View.OnClickListener() {
+        binding.createGroupChooseImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
             }
         });
 
-        view.findViewById(R.id.create_group_submit_button).setOnClickListener(new View.OnClickListener() {
+        binding.createGroupSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickCreateGroup();
             }
         });
-        return view;
+        return binding.getRoot();
     }
 
     private void onClickCreateGroup() {
@@ -94,13 +92,10 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 newGroup.setDescription(sub);
                 newGroup.setPhotoUrl(groupImageURL);
                 newGroup.setSubject(subjectAdapter.getSelected());
-                binding.createGroupPublicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        newGroup.setIsPublic(isChecked);
-                    }
-                });
+                newGroup.setIsPublic(binding.createGroupPublicSwitch.isChecked());
+
                 String id = newGroup.addGroup();
+                newGroup.addUserToGroup();
                 progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle(getString(R.string.create_group_message));
@@ -125,9 +120,9 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
             if (data != null) {
                 imageUri = data.getData();
                 binding.createGroupCiv.setImageURI(imageUri);
-                Bitmap bitmap = ((BitmapDrawable)binding.createGroupCiv.getDrawable()).getBitmap();
+                Bitmap bitmap = ((BitmapDrawable) binding.createGroupCiv.getDrawable()).getBitmap();
                 int colorFromImg = getDominantColor(bitmap);
-                int[] colors = {colorFromImg,requireActivity().getColor(R.color.background)};
+                int[] colors = {colorFromImg, requireActivity().getColor(R.color.background)};
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
                 gd.setCornerRadius(0f);
                 binding.createGroupLayout.setBackground(gd);
@@ -149,9 +144,9 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
 
     @Override
     public void onClickInRecyclerView(Object value, String action, Integer i) {
-        if (action.equals(Const.ACTION_SUBJECT)){
-            int v = (int)value;
-            if (position != -1){
+        if (action.equals(Const.ACTION_SUBJECT)) {
+            int v = (int) value;
+            if (position != -1) {
                 gridLayoutManager.findViewByPosition(position).setBackgroundResource(R.drawable.subject_background);
             }
             position = v;

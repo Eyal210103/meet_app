@@ -26,6 +26,8 @@ import java.util.ArrayList;
 public class JoinGroupFragment extends Fragment {
 
     private JoinGroupViewModel mViewModel;
+    private GroupsAdapter adapter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,15 +45,15 @@ public class JoinGroupFragment extends Fragment {
         textResult.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                mViewModel.search(textResult.getText().toString());
+                mViewModel.search(s.toString());
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mViewModel.search(textResult.getText().toString());
+                mViewModel.search(s.toString());
             }
             @Override
             public void afterTextChanged(Editable s) {
-                mViewModel.search(textResult.getText().toString());
+                mViewModel.search(s.toString());
             }
         });
 
@@ -61,13 +63,14 @@ public class JoinGroupFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
 
-        GroupsAdapter adapter = new GroupsAdapter(mViewModel.getResult().getValue(),this, Const.TYPE_JOIN_GROUP);
+        adapter = new GroupsAdapter(mViewModel.getResult().getValue(),this, Const.TYPE_JOIN_GROUP);
         recyclerView.setAdapter(adapter);
 
         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<ArrayList<Group>>() {
             @Override
             public void onChanged(ArrayList<Group> groups) {
-                adapter.notifyDataSetChanged();
+                adapter = new GroupsAdapter(mViewModel.getResult().getValue(),JoinGroupFragment.this, Const.TYPE_JOIN_GROUP);
+                recyclerView.setAdapter(adapter);
             }
         });
 

@@ -52,9 +52,12 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         this.finish();
     }
 
+
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(networkChangeReceiver);
+        try {
+            unregisterReceiver(networkChangeReceiver);
+        }catch (Exception ignored){}
     }
 }

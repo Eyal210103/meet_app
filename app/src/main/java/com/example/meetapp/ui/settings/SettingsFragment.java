@@ -162,10 +162,13 @@ public class SettingsFragment extends Fragment implements PhotoUploadCompleteLis
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                 Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                 int colorFromImg = getDominantColor(bitmap);
-                int[] colors = {requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),colorFromImg};
-
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
-                binding.settingsLayout.setBackground(gd);
+                try {
+                    int[] colors = {requireActivity().getColor(R.color.background),requireActivity().getColor(R.color.background),colorFromImg};
+                    GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+                    binding.settingsLayout.setBackground(gd);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 return false;
             }
