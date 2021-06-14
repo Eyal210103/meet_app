@@ -89,7 +89,7 @@ public class AvailableMeetingsRepo {
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                //TODO implement
+                
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
