@@ -59,16 +59,13 @@ public class JoinGroupDialog extends DialogFragment {
             public void onClick(View v) {
                 if (group.isPublic()) {
                     group.addUserToGroup();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Const.BUNDLE_GROUP_ID, group.getId());
                     final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.groupInfoFragment, bundle);
+                    navController.navigate(R.id.myGroupsFragment);
                 }else {
                     JoinGroupDialog.this.dismiss();
                     final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.RequestSentDialog);
                 }
-                group.addUserToGroup();
             }
         });
         

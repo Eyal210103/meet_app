@@ -1,5 +1,7 @@
 package com.example.meetapp.firebaseActions;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -24,14 +26,19 @@ public class SearchGroupFirebase {
         ArrayList<Group> groups = new ArrayList<>();
         groupMutableLiveData.setValue(groups);
         groupMutableLiveData.getValue().clear();
+
+
         Query query = FirebaseDatabase.getInstance().getReference(FirebaseTags.GROUPS_CHILDES)
-                .orderByChild(FirebaseTags.SORT_GROUPS_NAME).startAt(name).endAt(name + "\uf8ff");
+                .orderByChild(FirebaseTags.SORT_GROUPS_NAME)
+                .startAt(name)
+                .endAt(name + "\uf8ff").limitToFirst(6);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Group group = snapshot.getValue(Group.class);
                 Boolean isPublic = snapshot.child("isPublic").getValue(Boolean.class);
                 group.setIsPublic(isPublic);
+                Log.d("query", "onChildAdded: " + group.toString());
                 if (!UserGroupsRepo.getInstance().getHashMapGroups().containsKey(group.getId())) {
                     groups.add(group);
                     groupMutableLiveData.postValue(groups);
