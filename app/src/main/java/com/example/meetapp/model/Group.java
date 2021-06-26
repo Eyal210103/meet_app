@@ -106,7 +106,7 @@ public class Group implements Serializable {
         map.put("isPublic", this.isPublic);
         map.put("description", this.description);
         reference.updateChildren(map);
-        addUserToGroup();
+        forceAddUserToGroup();
         reference.child("manager/"+CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
         return reference.getKey();
     }
@@ -133,8 +133,16 @@ public class Group implements Serializable {
             requestToJoin();
     }
 
+    public void forceAddUserToGroup() {
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.id).child(FirebaseTags.MEMBERS_CHILDES)
+                .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.USER_CHILDES)
+                .child(CurrentUser.getInstance().getId()).child(FirebaseTags.GROUPS_CHILDES).child(this.id).setValue(this.id);
+    }
+
     private void requestToJoin(){
-        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES).child(this.getId()).child(FirebaseTags.WAITING_CHILDES)
+        FirebaseDatabase.getInstance().getReference().child(FirebaseTags.GROUPS_CHILDES)
+                .child(this.getId()).child(FirebaseTags.WAITING_CHILDES)
                 .child(CurrentUser.getInstance().getId()).setValue(CurrentUser.getInstance().getId());
     }
 

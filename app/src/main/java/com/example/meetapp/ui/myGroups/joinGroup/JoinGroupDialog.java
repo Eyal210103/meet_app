@@ -57,8 +57,8 @@ public class JoinGroupDialog extends DialogFragment {
         binding.joinGroupDialogJoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                group.addUserToGroup();
                 if (group.isPublic()) {
-                    group.addUserToGroup();
                     final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.myGroupsFragment);
                 }else {

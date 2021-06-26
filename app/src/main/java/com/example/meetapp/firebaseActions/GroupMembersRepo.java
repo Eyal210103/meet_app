@@ -62,6 +62,7 @@ public class GroupMembersRepo {
                         break;
                     }
                 }
+                mutableLiveData.postValue(membersAL);
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

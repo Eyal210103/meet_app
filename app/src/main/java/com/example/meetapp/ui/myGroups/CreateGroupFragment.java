@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -93,9 +92,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 newGroup.setPhotoUrl(groupImageURL);
                 newGroup.setSubject(subjectAdapter.getSelected());
                 newGroup.setIsPublic(binding.createGroupPublicSwitch.isChecked());
-
                 String id = newGroup.addGroup();
-                newGroup.addUserToGroup();
                 progressDialog = new ProgressDialog(requireActivity());
                 progressDialog.setCancelable(false);
                 progressDialog.setTitle(getString(R.string.create_group_message));
@@ -104,7 +101,7 @@ public class CreateGroupFragment extends Fragment implements PhotoUploadComplete
                 //StorageUpload.uploadGroupImage(CreateGroupFragment.this,id,imageUri);
             }
         } else {
-            // errors.setText("Type");
+            Toast.makeText(requireActivity(), "Please Type A Name", Toast.LENGTH_SHORT).show();
         }
     }
 

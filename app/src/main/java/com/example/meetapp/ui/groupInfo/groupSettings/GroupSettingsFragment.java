@@ -58,10 +58,9 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = GroupSettingsFragmentBinding.inflate(inflater, container, false);
-        View view = binding.getRoot(); //inflater.inflate(R.layout.group_setting_fragment, container, false);
 
-        this.linearLayoutWaiting = binding.groupSettingsLinearWaiting;//view.findViewById(R.id.group_settings_linear_waiting);
-        this.themeLinearLayout = binding.groupSettingsGroupThemeLayout;//view.findViewById(R.id.group_settings_group_theme_layout);
+        this.linearLayoutWaiting = binding.groupSettingsLinearWaiting;
+        this.themeLinearLayout = binding.groupSettingsGroupThemeLayout;
 
         binding.groupSettingsEditImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +126,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
                 for (String s : ids) {
                     if (s.equals(CurrentUser.getInstance().getId())) {
                         settingsAdapter.setIsManager(true);
+                        settingsAdapter.notifyDataSetChanged();
                         setVisible();
                         isThere = true;
                         break;
@@ -135,7 +135,6 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
                 if (!isThere)
                     setInvisible();
                 settingsAdapter.notifyDataSetChanged();
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -154,7 +153,7 @@ public class GroupSettingsFragment extends Fragment implements OnClickInRecycler
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     private void setInvisible() {
