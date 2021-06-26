@@ -130,7 +130,9 @@
         tools:layout="@layout/fragment_create_meeting" >
         <action
             android:id="@+id/action_createMeetingFragment_to_socialMenuFragment"
-            app:destination="@id/myMeetingsFragment" />
+            app:destination="@id/myMeetingsFragment"
+            app:enterAnim="@anim/page_transition_slide_right_enter"
+            app:exitAnim="@anim/page_transition_slide_right_exit" />
     </fragment>
     <fragment
         android:id="@+id/groupSettingsFragment"

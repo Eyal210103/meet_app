@@ -43,7 +43,7 @@ public class MeetingReminderNotificationBroadcastReceiver extends BroadcastRecei
         @SuppressLint("DefaultLocale") String dateString = String.format(" %02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_NAME)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp) //TODO
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(context.getString(R.string.meetings))
                 .setChannelId(CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

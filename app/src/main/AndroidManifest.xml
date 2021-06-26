@@ -64,7 +64,7 @@
 
         <receiver android:name=".receivers.MeetingReminderNotificationBroadcastReceiver" />
 
-
+        <service android:name=".chatPushNotification.CreateMeetingService" />
         <service
             android:name=".chatPushNotification.MyFirebaseMessagingService"
             android:stopWithTask="false">

@@ -194,15 +194,8 @@ public class PlacePickerDialog extends DialogFragment {
         try {
             List<Address> addresses = geocoder.getFromLocation(location.latitude,location.longitude,1);
             Address obj = addresses.get(0);
-            //add = add + "\n" + obj.getCountryName();
-            //add = add + "\n" + obj.getCountryCode();
-            //add = add + "\n" + obj.getAdminArea();
-            //add = add + "\n" + obj.getPostalCode();
-            //add = add + "\n" + obj.getSubAdminArea();
-            //add = add + "\n" + obj.getLocality();
-            //add = add + "\n" + obj.getSubThoroughfare();
             return obj.getAddressLine(0);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "Null";

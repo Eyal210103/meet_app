@@ -145,7 +145,8 @@ public class MeetingInfoFragment extends Fragment {
                         CurrentUser.quitMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES);
                         meeting.deleteUserArrival(CurrentUser.getInstance().getId());
                     }
-                    binding.imComingButtonMeetingInfo.setText(getString(R.string.user_is_not_coming));
+                    isUserAlreadyIn= false;
+                    binding.imComingButtonMeetingInfo.setText(getString(R.string.confirm_arrival));
                 } else {
                     if (type.equals(Const.MEETING_TYPE_PUBLIC)) {
                         Meeting meeting = mViewModel.getPublicM().getValue();
@@ -156,7 +157,8 @@ public class MeetingInfoFragment extends Fragment {
                         CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.GROUP_MEETINGS_CHILDES, mViewModel.getGroupId());
                         meeting.confirmUserArrival(CurrentUser.getInstance().getId());
                     }
-                    binding.imComingButtonMeetingInfo.setText(getString(R.string.user_is_coming));
+                    isUserAlreadyIn= true;
+                    binding.imComingButtonMeetingInfo.setText(getString(R.string.user_is_not_coming));
                     adapter.notifyDataSetChanged();
                 }
                 //adapter.notifyDataSetChanged();
@@ -235,7 +237,7 @@ public class MeetingInfoFragment extends Fragment {
     }
 
     private void toggleIsUserIn() {
-        Button button = binding.imComingButtonMeetingInfo; // view.findViewById(R.id.im_coming_button_meeting_info);
+        Button button = binding.imComingButtonMeetingInfo;
         if (isUserAlreadyIn)
             button.setText(getString(R.string.user_is_coming));
         else

@@ -84,8 +84,10 @@ public class AvailableMeetingsRepo {
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int i = publicMeetingToIndexHash.get(snapshot.getKey());
-                publicMeetings.get(i).postValue(snapshot.getValue(Meeting.class));
+                if (publicMeetingToIndexHash.containsKey(snapshot.getKey())) {
+                    int i = publicMeetingToIndexHash.get(snapshot.getKey());
+                    publicMeetings.get(i).postValue(snapshot.getValue(Meeting.class));
+                }
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {

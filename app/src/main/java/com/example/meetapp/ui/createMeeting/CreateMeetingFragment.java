@@ -3,6 +3,7 @@ package com.example.meetapp.ui.createMeeting;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meetapp.R;
 import com.example.meetapp.callbacks.OnClickInRecyclerView;
 import com.example.meetapp.callbacks.OnDismissPlacePicker;
+import com.example.meetapp.chatPushNotification.CreateMeetingService;
 import com.example.meetapp.databinding.FragmentCreateMeetingBinding;
 import com.example.meetapp.firebaseActions.FirebaseTags;
 import com.example.meetapp.model.Const;
@@ -146,6 +148,7 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
         binding.createMeetingCompleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (isGroup) {
                     GroupMeeting meeting = new GroupMeeting();
                     meeting.setMillis(c.getTimeInMillis());
@@ -173,10 +176,12 @@ public class CreateMeetingFragment extends Fragment implements OnDismissPlacePic
                     CurrentUser.joinMeeting(meeting.getId(), FirebaseTags.PUBLIC_MEETINGS_CHILDES, meeting.getId());
                     MeetingReminderNotificationBroadcastReceiver.setAlarm(CreateMeetingFragment.this.requireContext(),meeting);
                 }
-                Bundle bundle = new Bundle();
-                bundle.putString(Const.ACTION, Const.BUNDLE_MEETING);
+                Intent intent = new Intent(requireContext(),CreateMeetingService.class);
+                intent.putExtra(Const.BUNDLE_MEETING,c.getTimeInMillis());
+                requireActivity().startService(intent);
+
                 final NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment, bundle);
+                navController.navigate(R.id.action_createMeetingFragment_to_socialMenuFragment);
             }
         });
 

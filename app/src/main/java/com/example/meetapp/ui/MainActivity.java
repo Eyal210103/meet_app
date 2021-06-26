@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements OnClickInFragment
         UserGroupsRepo.getInstance().getGroups();
     }
 
-
     @Override
     public void onClickInFragment(String action) {
         if (action.equals(Const.ACTION_LOGOUT))
