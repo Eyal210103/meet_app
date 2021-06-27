@@ -60,21 +60,15 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                         OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView)context;
-                        menu.add(position, 0, 0, context.getString(R.string.menu_option_view_profile)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                return false;
-                            }
-                        });
                         if (isManager) {
-                            menu.add(position, 1, 1, context.getString(R.string.menu_option_set_manager)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            menu.add( context.getString(R.string.menu_option_set_manager)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
                                     onClickInRecyclerView.onClickInRecyclerView(user.getId(), Const.ACTION_SET_MANAGER,null);
                                     return false;
                                 }
                             });
-                            menu.add(position, 2, 2, context.getString(R.string.menu_option_remove_from_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            menu.add( context.getString(R.string.menu_option_remove_from_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
                                     onClickInRecyclerView.onClickInRecyclerView(user.getId(), Const.ACTION_REMOVE,null);
@@ -88,7 +82,7 @@ public class MembersSettingsAdapter extends RecyclerView.Adapter<MembersSettings
                 holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                        menu.add(position, 0, 0, context.getString(R.string.menu_option_leave_group))
+                        menu.add( context.getString(R.string.menu_option_leave_group))
                                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {

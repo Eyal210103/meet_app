@@ -126,7 +126,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsView
             holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                 @Override
                 public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    menu.add(position, 0, 0, context.getString(R.string.menu_option_leave_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    menu.add( context.getString(R.string.menu_option_leave_group)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             OnClickInRecyclerView onClickInRecyclerView = (OnClickInRecyclerView) context;

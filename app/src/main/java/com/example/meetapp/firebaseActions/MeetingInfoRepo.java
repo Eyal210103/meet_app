@@ -71,7 +71,6 @@ public class MeetingInfoRepo {
     }
 
     /**
-     *
      * @return
      */
     public LiveData<ArrayList<User>> loadWhoComing() {
