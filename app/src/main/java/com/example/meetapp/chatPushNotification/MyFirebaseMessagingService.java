@@ -48,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
 
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         return new NotificationCompat.Builder(this, CHANNEL_NAME)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
