@@ -175,9 +175,11 @@ public class GroupMeetingsRepo {
             whoComing.put(mId, temp);
         }
         LiveData<HashMap<String, LiveData<User>>> curr = whoComing.get(mId);
-        for (String s : members.values()) {
-            if (!curr.getValue().containsKey(s)) {
-                curr.getValue().put(s, putUserData(s));
+        if (members!= null) {
+            for (String s : members.values()) {
+                if (!curr.getValue().containsKey(s)) {
+                    curr.getValue().put(s, putUserData(s));
+                }
             }
         }
         whoComing.put(mId, curr);
